@@ -50,6 +50,16 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: Dev Ops + Threading
 
+### Heng Jia Yuan
+
+<img src="images/jyheng02.png" width="200px">
+
+[[github](http://github.com/jyheng02)]
+[[portfolio](team/jiayuan.md)]
+
+* Role: Developer
+* Responsibilities: UI
+
 ### Kimberlee Soo
 
 <img src="images/kimberlee97.png" width="200px">
