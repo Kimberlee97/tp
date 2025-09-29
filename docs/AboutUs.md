@@ -38,12 +38,12 @@ We are a team based in the [School of Computing, National University of Singapor
 * Role: Developer
 * Responsibilities: Data
 
-### Jean Doe
+### Yun Qi
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/t-yunqi.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/t-yunqi)]
+[[portfolio](team/yunqi.md)]
 
 * Role: Developer
 * Responsibilities: Dev Ops + Threading
