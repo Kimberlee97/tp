@@ -9,21 +9,21 @@ We are a team based in the [School of Computing, National University of Singapor
 
 You can reach us at the email `seer[at]comp.nus.edu.sg`
 
-## Project team
+## Project team 15a-4 "Homey"
 
-### John Doe
+### Zhe Quan
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/zhequan00.png" width="200px">
 
 [[homepage](http://www.comp.nus.edu.sg/~damithch)]
-[[github](https://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](https://github.com/zhequan00)]
+[[portfolio](team/zhequan00.md)]
 
 * Role: Project Advisor
 
 ### Jane Doe
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/janedoe.png" width="200px">
 
 [[github](http://github.com/johndoe)]
 [[portfolio](team/johndoe.md)]
