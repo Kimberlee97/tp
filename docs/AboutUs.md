@@ -40,22 +40,22 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: Data
 
-### Jean Doe
+### Yun Qi
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/t-yunqi.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/t-yunqi)]
+[[portfolio](team/yunqi.md)]
 
 * Role: Developer
 * Responsibilities: Dev Ops + Threading
 
-### James Doe
+### Kimberlee Soo
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/kimberlee97.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/Kimberlee97)]
+[[portfolio](team/kimberlee.md)]
 
 * Role: Developer
 * Responsibilities: UI
