@@ -16,17 +16,19 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/zhequan00.png" width="200px">
 
 [[homepage](http://www.comp.nus.edu.sg/~damithch)]
+
 [[github](https://github.com/zhequan00)]
 [[portfolio](team/zhequan.md)]
 
+
 * Role: Project Advisor
 
-### Jane Doe
+### Koh Zhiyu
 
-<img src="images/janedoe.png" width="200px">
+<img src="images/zhiyu05.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/zhiyu05)]
+[[portfolio](team/zhiyu.md)]
 
 * Role: Team Lead
 * Responsibilities: UI
@@ -35,7 +37,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 <img src="images/johndoe.png" width="200px">
 
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[github](http://github.com/johndoe)] [[portfolio](team/johndoe)]
 
 * Role: Developer
 * Responsibilities: Data
@@ -43,6 +45,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 ### Yun Qi
 
 <img src="images/t-yunqi.png" width="200px">
+
 
 [[github](http://github.com/t-yunqi)]
 [[portfolio](team/yunqi.md)]
