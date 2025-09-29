@@ -17,7 +17,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[homepage](http://www.comp.nus.edu.sg/~damithch)]
 [[github](https://github.com/zhequan00)]
-[[portfolio](team/zhequan.md)]
+[[portfolio](team/zhequan00.md)]
 
 * Role: Project Advisor
 
