@@ -272,7 +272,7 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Product scope
 
-**Target user profile**:
+**Target user profile**: Property Agent
 
 * has a need to manage a significant number of contacts
 * prefer desktop apps over other types
@@ -280,29 +280,80 @@ _{Explain here how the data archiving feature will be implemented}_
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: 
 
+**What problem does the product solve?**
+Difficult to organise contacts and tasks on a singular centralised platform
+Easy to forget meetings when they’re tracked on separate apps
+Hard to navigate
+Grouping stakeholders by location/transaction
+
+**How does it make the user's life easier?**
+Centralised platform for property agents to use to track, sort and schedule contacts in order for them to work more efficiently and stay organised
+Calendar reminders to keep the user on track with their schedule
+Able to be used on the go
+
+**What is the boundary beyond which the app will not help?**
+Unable to track legal/financial processing
+Not CRM replacement
+No marketing/listing management
+
+**Persona:**
+Working adult, graduate already
+popular so a lot of clients
+generally independent but collaborates with other agents
+On the go since need to travel a lot to different property, so need something convenient
+Prefers typing to mouse usage
+Slightly forgetful due to large number of clients, hard to track
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
-
-*{More to be added}*
+| Priority | As a ...                                                                                            | I want to ...                                                          | So that I can ...                                                                |
+|----------|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| `* *`    | Property Agent                                                                                      | view my contacts and schedule in one platform                          | I don’t have to switch between apps                                              |
+| `* *`    | Property Agent with many clients and colleagues                                                     | sort my contacts into categories (tagging)                             | it is easier to remember my relationship with them                               |
+| `* *`    | Forgetful user                                                                                      | Get reminded of meetings and appointments when they are approaching    | I don’t ghost my clients or agents                                               |
+| `*`      | Busy property agent                                                                                 | view my schedule and contact list on-the-go                            | I can easily access necessary information when I’m outside or in a rush          |
+| `* *`    | Property Agent has to juggle multiple stakeholders                                                  | Set reminders linked to specific contacts                              | I don’t miss client meetings or property showings                                |
+| `*`      | Property agent                                                                                      | Add notes visible only to me                                           | Keep private thoughts while still sharing client basics                          |
+| `* *`    | Property Agent managing clients                                                                     | Sort clients and agents by type                                        | I can filter out which types of deals I want to focus on at any point of time    |
+| `*`      | Forgetful User                                                                                      | Add detail related to the events in my schedule e.g. event description | I can remember what to prepare                                                   |
+| `*`      | Property agent                                                                                      | Attach notes to each contact                                           | I can remember important details                                                 |
+| `*`      | Property agent that travels a lot                                                                   | Group my clients and deals by area                                     | I can easily plan out meetings by proximity                                      |
+| `* *`    | Property agent                                                                                      | Set recurring reminders like weekly check-in calls                     | I can maintain consistent follow-ups                                             |
+| `* *`    | Property Agent                                                                                      | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                            |
+| `* *`    | Property agent                                                                                      | Tag contacts by transaction stage like prospect, negotiating, closed   | I can track progress easily                                                      |
+| `* *`    | User that prefers visual information                                                                | Colour code my tags and events                                         | I can easily identify the type of contacts and events                            |
+| `* *`    | Property Agent                                                                                      | Set overdue tasks or meetings highlighted                              | I can prioritise catching up quickly                                             |
+| `* *`    | Property agent                                                                                      | Add dates for meetings                                                 | I can keep track of important events and attend them                             |
+| `* *`    | Property agent that wants to track their current deals                                              | Sort contacts by latest meeting                                        | I can prioritise deals or meetings that have been delayed or are taking too long |
+| `* *`    | Forgetful property agent                                                                            | Search for contacts using partial names                                | I can find their contact information despite not remembering their full name     |
+| `*`      | Property agent                                                                                      | Input details for a new contact in one line                            | It is convenient                                                                 |
+| `* *`    | Property agent who handles many meetings                                                            | Tag each client with their property location                           | I can quickly group and search for clients by area                               |
+| `* * *`  | Property agent who prefers typing                                                                   | Search for client by typing their name                                 | Save time instead of scrolling through the whole address book                    |
+| `* *`    | Property agent managing multiple tasks                                                              | View upcoming meeting with the nearest deadline first                  | I know which client to attend to next                                            |
+| `*`      | Property agent who prefers typing                                                                   | Autocomplete names/commands as I search through the addressbook        | Find my client more efficiently                                                  |
+| `*`      | Property agent juggling many deals                                                                  | Attach notes to each client’s profile                                  | I can remember key details of past conversations                                 |
+| `*`      | Property agent                                                                                      | See which agent is linked to a shared client                           | Responsibilities are clear                                                       |
+| `* *`    | Property agent that wants to track deal history                                                     | Sort contacts by date added as contact                                 | Prioritise loyal customers                                                       |
+| `*`      | Property agent                                                                                      | Write multiple different commands to do the same thing                 | I don’t have to remember specific syntax for each command                        |
+| `*`      | Property agent with a lot of contacts                    Archive contacts that have completed deals | I can prioritise contacts that I have ongoing deals with               |                                                                                  |
+| `*`      | Forgetful user                                                                                      | Write simpler commands intuitively and when prompted to                | I don’t have to remember the complex syntax for each command                     |
+| `* *`    | Property agent                                                                                      | Sort contacts by alphabetical order                                    | Easier to locate contacts within address book                                    |
+| `* *`    | Property agent                                                                                      | Edit contacts to add new information about them                        | I don’t have to delete and add contacts to add more information                  |
+| `* * *`  | Property agent                                                                                      | Delete contacts that I no longer require                               | I have a less cluttered contact list that is easier to navigate                  |
+| `* * *`  | Property agent                                                                                      | Add new contacts                                                       | I am able to contact new clients or agents                                       |
+| `* * *`  | Property agent                                                                                      | Clear all entries                                                      | Faster delete all contacts if necessary                                          |
+| `* * *`  | Property agent                                                                                      | List all my contact entries                                            | I can see my contact list in case I forget their names                           |
+| `* * *`  | New user                                                                                            | Learn all the commands available                                       | I know how to use the address book                                               |
 
 ### Use cases
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: Delete contacts that I no longer require**
 
 **MSS**
 
@@ -325,20 +376,396 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 2.
 
-*{More to be added}*
+**Use case: View my contacts and schedule in one platform**
+
+**MSS**
+
+1.  User lists all contacts
+2.  System displays all contacts and meetings associated with each contact
+
+    Use case ends.
+
+**Use case: Sort my contacts into categories (tagging)**
+
+**MSS**
+
+1. User lists all contacts by categories using command line
+2. System displays contacts list sorted by categories specified
+
+    Use case ends.
+
+**Use case: Get reminded of meetings and appointments when they are approaching**
+
+**MSS**
+
+1. User opens application
+2. Systems displays upcoming meetings at top of application page in a message bar upon startup
+
+    Use case ends.
+
+**Use case: Set reminders linked to specific contacts**
+
+**MSS**
+
+1. User searches for a certain contact
+2. System displays details associated with contact
+3. User adds reminder to contact using command line
+4. System displays success message and reminder details
+
+    Use case ends.
+
+**Use case: Add dates for meetings **
+
+**MSS**
+
+1. User searches for a certain contact
+2. System displays details associated with contact including meetings
+3. User adds meeting date using command line
+4. System displays success message and meeting details
+
+    Use case ends.
+
+**Use case: Search for contacts using partial names**
+
+**MSS**
+
+1. User searches for client using find command with a partial name
+2. System retrieves and displays list of contacts containing partial query
+
+    Use case ends.
+
+**Use case: Tag each client with their property location**
+
+**MSS**
+
+1. User lists all contacts or searches for client
+2. System retrieves and displays list of contacts
+3. User inputs command for tagging client location based on displayed index
+4. System displays success message and location details
+
+    Use case ends.
+
+**Use case: Sort clients and agents by type**
+
+**MSS**
+
+1. User opens application
+2. User requests to sort contacts by type
+3. System prompts for sort criteria
+4. User specifies criteria
+5. System retrieves and displays filtered list of contacts matching the criteria
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. User specifies multiple criteria.
+    * 1a1. System applies all specified filters.
+    * 1a2. System displays contacts matching all criteria.
+
+* 1b. No contacts match the selected type.
+    * 1b1. System shows “No contacts found.”
+
+**Use case: Set recurring reminders for contacts**
+
+**MSS**
+
+1. User opens application
+2. User types client’s name into the search bar
+3. System retrieves and displays contact
+4. User requests to set a recurring reminder
+5. System prompts for reminder details
+6. User enters reminder details
+7. System validates reminder details
+8. System saves the recurring reminder and confirms creation
+9. User views the reminder linked to the contact
+
+   Use case ends.
+
+**Use case: Link meeting to multiple contacts**
+
+**MSS**
+
+1. User opens application
+2. User views contact list and selects contact
+3. User requests to set a meeting for this contact
+4. System prompts for meeting details
+5. User enters meeting details, including other contacts involved
+6. System validates meeting details and validates other contacts exist
+7. System adds meeting details to the original contact
+8. System adds meeting details for all specified attendees
+9. System displays success message listing all contacts updated with the meeting
+
+   Use case ends.
+
+**Extensions**
+
+* 6a. User enters invalid meeting details.
+    * 6a1. System displays error message with correct format.
+    * 6a2. User re-enters date/time.
+
+      Use case resumes at step 6.
+
+* 6b. One or more specified contacts do not exist.
+    * 6b1. System displays error “Contact not found: [name].”
+    * 6b2. User removes invalid name or cancels.
+
+      Use case resumes at step 7 or ends.
+
+
+**Use case: Tag contacts by transaction stage**
+
+**MSS**
+
+1. User views contact list or searches for a specific contact
+2. System retrieves and displays contacts with their current details
+3. User inputs command for tagging transaction stage
+4. System updates the contact with the specified transaction stage tag
+5. System displays success message and transaction details
+
+   Use case ends.
+
+**Use case: Color code tags and events**
+
+**MSS**
+
+1. User views contact list or searches for a specific contact
+2. System retrieves and displays contacts with their current details
+3. User inputs command for tagging and specifies color
+4. System updates the contact with the specified tag and color
+5. System displays success message
+
+   Use case ends.
+
+**Use case: Highlight overdue tasks and meetings**
+
+**MSS**
+
+1. User opens application
+2. System scans all meetings and tasks for overdue items (past current date/time)
+3. System displays overdue items highlighted at the top of the interface
+4. User views the highlighted overdue items with associated contact details
+
+   Use case ends.
+
+**Use case: Sort contacts by latest meeting**
+
+**MSS**
+
+1. User opens application
+2. User selects “Sort by → Meeting date”
+3. System rearranges contacts by latest meeting date, with nearest meeting first
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. No contacts in list.
+    * 2a1. System displays “Contact list empty.”
+
+**Use case: Search for client by typing name**
+
+**MSS**
+
+Precondition: User has launched the app.
+
+1. User types client’s name into the search bar
+2. System retrieves and displays all matching clients in real time
+3. User clicks on desired client
+4. System displays the client’s profile and details
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. System detects no matching client
+* 1b. System shows “No client found” and suggests adding new contact
+
+**Use case: View upcoming meeting with nearest deadline first**
+
+**MSS**
+
+Precondition: User has meetings scheduled and is at the landing page of the app.
+
+1. User selects “Sort by → Meeting Date”
+2. System rearranges client list by meeting times, with nearest deadline at the top
+3. User views the first item to check details (time, location, client notes, etc)
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. No meetings scheduled.
+    * 2a1. System shows “No meetings scheduled” and suggests adding a meeting
+
+
+**Use case: Sort contacts by dates added**
+
+**MSS**
+
+Precondition: User is at the landing page of the app and has existing list of contacts.
+
+1. User selects “Sort by → Date Added”
+2. System rearranges contacts chronologically, with oldest client on top to prioritise loyal customers
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. No contacts in list
+* 1b. System displays “Contact list empty”
+
+**Use case: Sort contacts by alphabetical order**
+
+**MSS**
+
+1. User opens the app
+2. User selects “Sort by → Alphabetical Order”
+3. System rearranges all contacts in A–Z order
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. No contacts in list
+    * 1a1. System displays “Contact list empty”
+* 1b. Duplicate names exist
+    * 1b1. System sorts by secondary field (e.g., phone number or email)
+
+**Use case: Edit contacts to add new information about them**
+
+**MSS**
+
+1. User opens app
+2. User selects a contact from the list
+3. System displays the contact’s profile and details
+4. User selects “Edit” option
+5. User enters new or updated information
+6. System saves the updated contact information
+7. User views the updated contact profile
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. No contacts in list
+    * 1a1. System displays “Contact list empty”
+* 2a. Contact not found
+    * 2a1. System displays “Contact not found”
+* 5a. User enters invalid information (e.g., invalid email format)
+    * 5a1. System displays error message and prompts correction
+
+**Use case: Add new contacts**
+
+**MSS**
+
+1. User opens app
+2. User selects “Add Contact” option
+3. System displays an empty contact form
+4. User enters contact details (e.g., name, phone number, email)
+5. System validates the entered information
+6. System saves the new contact
+
+   Use case ends.
+
+**Extensions**
+
+* 4a. Required fields missing (e.g., name not provided)
+    * 4a1. System prompts user to fill in missing fields
+* 4b. Invalid data entered (e.g., email format incorrect)
+    * 4b1. System displays error message and prompts correction
+* 4c. Duplicate contact detected
+    * 4c1. System notifies user and suggests merging or editing
+
+**Use case: Clear all entries**
+
+**MSS**
+
+1. User opens app
+2. User selects “Clear All Contacts” option
+3. System prompts user for confirmation
+4. User confirms the action
+5. System deletes all contacts from the address book
+6. User views empty contact list
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. Contact list is already empty
+    * 2a1. System displays “Contact list empty”
+* 3a. User cancels the confirmation step
+    * 3a1. System aborts the operation and keeps all contacts
+
+**Use case: List all my contact entries**
+
+**MSS**
+
+1. User opens app
+2. User selects “List All Contacts” option
+3. System retrieves all saved contacts
+4. System displays the full list of contact entries
+5. User scrolls or navigates through the displayed list
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. Contact list is empty
+    * 2a1. System displays “Contact list empty”
+
+**Use case: Learn all the commands available**
+
+**MSS**
+
+1. User opens app
+2. User selects “Help” or “Commands” option
+3. System retrieves the list of available commands
+4. System displays all commands with descriptions
+5. User reviews the commands to understand usage
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. No commands available (system error or incomplete setup)
+    * 2a1. System displays “No commands found. Please check configuration.”
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-
-*{More to be added}*
+1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
+2. Works fully offline
+3. Should be able to hold up to `1000` persons without a noticeable sluggishness in performance for typical usage.
+4. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+5. All user data should be persistent and survives app restarts and OS reboots.
+6. Backups are stored locally
+7. Data storage must be human editable text storage
+8. Runs without installer, double-clickable JAR.
+9. Usable at `1280×720` (`150%` scale) and higher, optimised for `1920×1080` and higher (`100/125%` scale).
+10. All commands operable via typing/shortcuts (keyboard first)
+11. Support partial matches and case-insensitive search
+12. Product ≤ `100MB`, PDFs ≤ `15MB`, no unnecessary assets
+13. Dataset size tested up to `2000` contacts
+14. Clear separation of UI/Logic/Model/Storage
 
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Command**: A typed instruction entered by the user to interact with the app (e.g. add, delete, find, clear)
+* **Contact**: An entry in the system that stores the details of a person (name, phone number, email, address, (optional) relationship with the person or stage of transaction with the person). May represent clients and vendors
+* **Tag**: A label assigned to a contact to classify them by relationship (client or vendor) and/or transaction stage (prospect, negotiating or closed)
+* **Relational Tag**: An optional tag to denote the contact’s relationship with the user, for example, client or vendor
+* **Client**: A contact type representing a property buyer, seller, or tenant managed by the property agent
+* **Vendor**: A contact type representing third-party partners that a property agent works with during transactions (e.g. contractors, lawyers, service providers)
+* **Transaction Stage Tag**: An optional tag which denotes the phase of a property deal, for example, prospect, negotiating and closed
+* **Prospect**: A potential client or deal that has just been identified or contacted, but no agreement or commitment has been made yet. Used as a tag to track early-stage commitments
+* **Negotiating**: A deal in progress where the property agent and client are actively discussing terms, prices or conditions. Tagged to indicate an ongoing transaction that requires a follow-up
+* **Closed**: A completed deal where the transaction has been finalised (e.g. property successfully bought, sold or rented). Tagged to distinguish finished transactions from active ones
+* **Reminder**: A system notification that alerts the agent about upcoming events such as meetings, deadlines or tasks
+* **Meeting**: A scheduled event linked to one or more contacts, representing professional events such as property showings, negotiations or check-ins
+* **Human Editable Text Storage**: Data stored in plain text format (e.g. JSON, TXT) so users can open and manually edit it outside the app if needed
+* **Double-clickable JAR**: A Java Archive file packaged so that the application can be run directly by double-clicking, without needing an installer
+* **Partial Match Search**: A search feature that allows results to be found even if the user types only part of a name or keyword
 
 --------------------------------------------------------------------------------------------------------------------
 
