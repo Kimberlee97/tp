@@ -8,18 +8,16 @@ import java.util.function.Predicate;
 
 /**
  * Tests that a {@code Person}'s {@code Address} contains ANY of the given keywords (case-insensitive).
- * Pass a single keyword, but this supports multiple (future-proof).
+ * Works with one or more keywords.
  */
 public class AddressContainsKeywordsPredicate implements Predicate<Person> {
 
     private final List<String> keywordsLowerCased;
 
     /**
-     * Constructs a predicate that returns {@code true} if a person's address contains
-     * any of the provided {@code keywords}, ignoring case.
+     * Constructs a predicate that checks if a person's address contains any of the given keywords.
      *
-     * @param keywords list of tokens to search for in the address text; must not be {@code null}.
-     *                 Empty or {@code null} entries are ignored.
+     * @param keywords list of tokens to look for in the address (case-insensitive)
      */
     public AddressContainsKeywordsPredicate(List<String> keywords) {
         requireNonNull(keywords);
@@ -33,7 +31,7 @@ public class AddressContainsKeywordsPredicate implements Predicate<Person> {
         String addr = person.getAddress().value.toLowerCase(Locale.ROOT);
         for (String k : keywordsLowerCased) {
             if (!k.isEmpty() && addr.contains(k)) {
-                return true; // ANY-match
+                return true; // match if ANY keyword found
             }
         }
         return false;
