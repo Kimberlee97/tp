@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class CommandResultTest {
@@ -59,5 +60,40 @@ public class CommandResultTest {
                 + commandResult.getFeedbackToUser() + ", showHelp=" + commandResult.isShowHelp()
                 + ", exit=" + commandResult.isExit() + "}";
         assertEquals(expected, commandResult.toString());
+    }
+
+    @Test
+    public void equals_sameHelpTopic_true() {
+        CommandResult a = new CommandResult("feedback", true,
+                false, Optional.of("add"));
+        CommandResult b = new CommandResult("feedback", true,
+                false, Optional.of("add"));
+        assertTrue(a.equals(b));
+    }
+
+    @Test
+    public void equals_differentHelpTopic_false() {
+        CommandResult a = new CommandResult("feedback", true,
+                false, Optional.of("add"));
+        CommandResult b = new CommandResult("feedback", true,
+                false, Optional.of("edit"));
+        assertFalse(a.equals(b));
+    }
+
+    @Test
+    public void hashcode_differentHelpTopic() {
+        CommandResult a = new CommandResult("feedback", true,
+                false, Optional.of("add"));
+        CommandResult b = new CommandResult("feedback", true,
+                false, Optional.of("edit"));
+        assertNotEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    public void toString_withTopic_includesHelpTopic() {
+        CommandResult cr = new CommandResult("ok", true,
+                false, Optional.of("add"));
+        String s = cr.toString();
+        assertTrue(s.contains("helpTopic=Optional[add]"));
     }
 }
