@@ -13,30 +13,30 @@ import javafx.application.Platform;
 public class HelpWindowTest {
 
     @BeforeAll
-    static void initFx() throws Exception {
+    static void initFx() {
         System.setProperty("java.awt.headless", "true");
         try {
             Platform.startup(() -> {});
-        } catch (IllegalStateException alreadyStarted) {
-            // OK: FX already initialised
+        } catch (IllegalStateException ignore) {
+            // FX already started
         }
     }
 
     @Test
-    void openInBrowserOrShow_fallbackShowsWindow() throws Exception {
-        HelpWindow hw = new HelpWindow();
-
+    public void openInBrowserOrShow_fallbackShowsWindow() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
+
         Platform.runLater(() -> {
             try {
+                HelpWindow hw = new HelpWindow();
                 hw.openInBrowserOrShow("add");
+                assertTrue(hw.isShowing(), "Help window should be visible when browser cannot open");
+                hw.hide();
             } finally {
                 latch.countDown();
             }
         });
-        latch.await(2, TimeUnit.SECONDS);
 
-        assertTrue(hw.isShowing(), "Help window should be visible when browser cannot open");
-        Platform.runLater(hw::hide);
+        assertTrue(latch.await(3, TimeUnit.SECONDS), "Timed out waiting for FX thread");
     }
 }

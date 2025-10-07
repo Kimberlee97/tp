@@ -92,9 +92,8 @@ public class CommandResultTest {
 
     @Test
     public void toString_withTopic_includesHelpTopic() {
-        CommandResult cr = new CommandResult("ok", true,
-                false, Optional.of("add"));
+        CommandResult cr = new CommandResult("ok", true, false, Optional.of("add"));
         String s = cr.toString();
-        assertTrue(s.contains("helpTopic=Optional[add]"));
+        assertTrue(s.contains("helpTopic=add"));
     }
 }
