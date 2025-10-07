@@ -96,4 +96,16 @@ public class CommandResultTest {
         String s = cr.toString();
         assertTrue(s.contains("helpTopic=add"));
     }
+
+    @Test
+    public void getHelpTopic_present_returnsValue() {
+        CommandResult cr = new CommandResult("ok", true, false, Optional.of("add"));
+        assertEquals(Optional.of("add"), cr.getHelpTopic());
+    }
+
+    @Test
+    public void ctor_nullHelpTopic_treatedAsEmpty() {
+        CommandResult cr = new CommandResult("ok", true, false, null);
+        assertEquals(Optional.empty(), cr.getHelpTopic());
+    }
 }

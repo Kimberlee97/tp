@@ -8,7 +8,16 @@ public class BrowserUtilTest {
 
     @Test
     void open_returnsFalse_inHeadless() {
+        String prev = System.getProperty("java.awt.headless");
         System.setProperty("java.awt.headless", "true");
-        assertFalse(BrowserUtil.open("https://example.com"));
+        try {
+            assertFalse(BrowserUtil.open("https://example.com"));
+        } finally {
+            if (prev != null) {
+                System.setProperty("java.awt.headless", prev);
+            } else {
+                System.clearProperty("java.awt.headless");
+            }
+        }
     }
 }

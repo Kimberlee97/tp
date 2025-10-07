@@ -43,4 +43,19 @@ public class HelpCommandTest {
     public void equals_noTopicVsTopic_false() {
         assertNotEquals(new HelpCommand(), new HelpCommand("add"));
     }
+
+    @Test
+    public void getTopic_present_returnsValue() {
+        assertEquals(Optional.of("add"), new HelpCommand("add").getTopic());
+    }
+
+    @Test
+    public void getTopic_empty_returnsEmpty() {
+        assertEquals(Optional.empty(), new HelpCommand("").getTopic());
+    }
+
+    @Test
+    public void hashCode_differsByTopic() {
+        assertNotEquals(new HelpCommand("add").hashCode(), new HelpCommand("edit").hashCode());
+    }
 }
