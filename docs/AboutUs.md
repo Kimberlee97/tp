@@ -9,7 +9,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 You can reach us at the email `seer[at]comp.nus.edu.sg`
 
-## Project team 15a-4 "Homey"
+## Project team 15a-4 "homey"
 
 ### Zhe Quan
 
