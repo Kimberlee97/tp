@@ -14,6 +14,13 @@ public class AddressContainsKeywordsPredicate implements Predicate<Person> {
 
     private final List<String> keywordsLowerCased;
 
+    /**
+     * Constructs a predicate that returns {@code true} if a person's address contains
+     * any of the provided {@code keywords}, ignoring case.
+     *
+     * @param keywords list of tokens to search for in the address text; must not be {@code null}.
+     *                 Empty or {@code null} entries are ignored.
+     */
     public AddressContainsKeywordsPredicate(List<String> keywords) {
         requireNonNull(keywords);
         this.keywordsLowerCased = keywords.stream()
