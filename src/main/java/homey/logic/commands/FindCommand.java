@@ -2,27 +2,29 @@ package homey.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import homey.commons.util.ToStringBuilder;
-import homey.logic.Messages;
+import java.util.function.Predicate;
+
 import homey.model.Model;
-import homey.model.person.NameContainsKeywordsPredicate;
+import homey.model.person.Person;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case insensitive.
+ * Finds and lists persons in address book whose name (default) or address (with a/ prefix)
+ * matches any of the argument keywords.
+ * Keyword matching is case-insensitive and tokens are ANY-match.
  */
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds persons by name (default) "
+            + "or by address using the address prefix.\n"
+            + "Name: find KEYWORD [MORE_KEYWORDS]\n"
+            + "Address: find a/KEYWORD [MORE_KEYWORDS]\n"
+            + "Examples: find alice    |   find a/bedok   |   find a/bedok north";
 
-    private final NameContainsKeywordsPredicate predicate;
+    private final Predicate<Person> predicate;
 
-    public FindCommand(NameContainsKeywordsPredicate predicate) {
+    public FindCommand(Predicate<Person> predicate) {
         this.predicate = predicate;
     }
 
@@ -31,28 +33,13 @@ public class FindCommand extends Command {
         requireNonNull(model);
         model.updateFilteredPersonList(predicate);
         return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+                String.format("%d persons listed.", model.getFilteredPersonList().size()));
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof FindCommand)) {
-            return false;
-        }
-
-        FindCommand otherFindCommand = (FindCommand) other;
-        return predicate.equals(otherFindCommand.predicate);
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .add("predicate", predicate)
-                .toString();
+        return other == this
+                || (other instanceof FindCommand)
+                && predicate.equals(((FindCommand) other).predicate);
     }
 }
