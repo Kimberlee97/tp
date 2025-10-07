@@ -58,4 +58,20 @@ public class HelpCommandTest {
     public void hashCode_differsByTopic() {
         assertNotEquals(new HelpCommand("add").hashCode(), new HelpCommand("edit").hashCode());
     }
+
+    @Test
+    public void equals_sameObject_true() {
+        HelpCommand cmd = new HelpCommand("add");
+        assertEquals(cmd, cmd);
+    }
+
+    @Test
+    public void equals_differentType_false() {
+        assertNotEquals(new HelpCommand("add"), "not a HelpCommand");
+    }
+
+    @Test
+    public void topic_isLowercasedAndTrimmed() {
+        assertEquals(Optional.of("add"), new HelpCommand("  ADD ").getTopic());
+    }
 }
