@@ -136,15 +136,12 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Opens the help window or focuses on it if it's already opened.
+     * Opens the User Guide in the default web browser when Help is clicked or F1 is pressed.
+     * If the browser cannot be opened, shows the help window instead.
      */
     @FXML
     public void handleHelp() {
-        if (!helpWindow.isShowing()) {
-            helpWindow.show();
-        } else {
-            helpWindow.focus();
-        }
+        helpWindow.openInBrowserOrShow();
     }
 
     void show() {
@@ -179,7 +176,9 @@ public class MainWindow extends UiPart<Stage> {
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
             if (commandResult.isShowHelp()) {
-                handleHelp();
+                commandResult.getHelpTopic().ifPresentOrElse(
+                        t -> helpWindow.openInBrowserOrShow(t), () -> helpWindow.openInBrowserOrShow()
+                );
             }
 
             if (commandResult.isExit()) {

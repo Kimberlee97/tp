@@ -2,6 +2,10 @@ package homey.logic.commands;
 
 import static homey.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static homey.logic.commands.HelpCommand.SHOWING_HELP_MESSAGE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,5 +20,58 @@ public class HelpCommandTest {
     public void execute_help_success() {
         CommandResult expectedCommandResult = new CommandResult(SHOWING_HELP_MESSAGE, true, false);
         assertCommandSuccess(new HelpCommand(), model, expectedCommandResult, expectedModel);
+    }
+
+    @Test
+    public void execute_helpWithTopic_success() {
+        CommandResult expected = new CommandResult(SHOWING_HELP_MESSAGE, true,
+                false, Optional.of("add"));
+        assertCommandSuccess(new HelpCommand("add"), model, expected, expectedModel);
+    }
+
+    @Test
+    public void equals_sameTopic_true() {
+        assertEquals(new HelpCommand("add"), new HelpCommand("add"));
+    }
+
+    @Test
+    public void equals_differentTopic_false() {
+        assertNotEquals(new HelpCommand("add"), new HelpCommand("edit"));
+    }
+
+    @Test
+    public void equals_noTopicVsTopic_false() {
+        assertNotEquals(new HelpCommand(), new HelpCommand("add"));
+    }
+
+    @Test
+    public void getTopic_present_returnsValue() {
+        assertEquals(Optional.of("add"), new HelpCommand("add").getTopic());
+    }
+
+    @Test
+    public void getTopic_empty_returnsEmpty() {
+        assertEquals(Optional.empty(), new HelpCommand("").getTopic());
+    }
+
+    @Test
+    public void hashCode_differsByTopic() {
+        assertNotEquals(new HelpCommand("add").hashCode(), new HelpCommand("edit").hashCode());
+    }
+
+    @Test
+    public void equals_sameObject_true() {
+        HelpCommand cmd = new HelpCommand("add");
+        assertEquals(cmd, cmd);
+    }
+
+    @Test
+    public void equals_differentType_false() {
+        assertNotEquals(new HelpCommand("add"), "not a HelpCommand");
+    }
+
+    @Test
+    public void topic_isLowercasedAndTrimmed() {
+        assertEquals(Optional.of("add"), new HelpCommand("  ADD ").getTopic());
     }
 }
