@@ -5,6 +5,7 @@ import static homey.commons.util.CollectionUtil.requireAllNonNull;
 import homey.commons.core.index.Index;
 import homey.logic.commands.exceptions.CommandException;
 import homey.model.Model;
+import homey.model.tag.Relation;
 
 /**
  * Changes the relation tag of an existing person in the address book.
@@ -16,7 +17,7 @@ public class RelationCommand extends Command {
     public static final String MESSAGE_ARGUMENTS = "Index: %1$d, Relation: %2$s";
 
     private final Index index;
-    private final String relation;
+    private final Relation relation;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Edits relation tag of the person identified "
@@ -34,7 +35,7 @@ public class RelationCommand extends Command {
      * @param index of the person in the filtered person list to edit the remark
      * @param relation of the person to be updated to
      */
-    public RelationCommand(Index index, String relation) {
+    public RelationCommand(Index index, Relation relation) {
         requireAllNonNull(index, relation);
 
         this.index = index;
