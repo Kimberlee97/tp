@@ -6,17 +6,17 @@ import static java.util.Objects.requireNonNull;
 public class Relation {
     public static final String MESSAGE_CONSTRAINTS = "Relation should be 'client' or 'vendor'.";
 
-    public final String relationName;
+    public final String value;
 
     /**
      * Constructs a {@code Relation}.
      *
-     * @param relationName A valid relation.
+     * @param value A valid relation.
      */
-    public Relation(String relationName) {
-        requireNonNull(relationName);
-        checkArgument(isValidRelation(relationName), MESSAGE_CONSTRAINTS);
-        this.relationName = relationName;
+    public Relation(String value) {
+        requireNonNull(value);
+        checkArgument(isValidRelation(value), MESSAGE_CONSTRAINTS);
+        this.value = value;
     }
 
     /**
@@ -38,18 +38,18 @@ public class Relation {
         }
 
         Relation otherRelation = (Relation) other;
-        return relationName.equals(otherRelation.relationName);
+        return value.equals(otherRelation.value);
     }
 
     @Override
     public int hashCode() {
-        return relationName.hashCode();
+        return value.hashCode();
     }
 
     /**
      * Format state as text for viewing.
      */
     public String toString() {
-        return '[' + relationName + ']';
+        return '[' + value + ']';
     }
 }

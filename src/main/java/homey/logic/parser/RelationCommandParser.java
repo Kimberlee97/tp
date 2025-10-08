@@ -14,7 +14,7 @@ import homey.model.tag.Relation;
 public class RelationCommandParser {
     public RelationCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CLIENT, PREFIX_VENDOR);
 
         Index index;
         try {
