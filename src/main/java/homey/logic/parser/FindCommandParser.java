@@ -1,6 +1,7 @@
 package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -21,25 +22,26 @@ import homey.model.person.NameContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
-    private static final String ADDR_PREFIX = "a/";
-
     @Override
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        String trimmedArgs = args.trim();
+        final String trimmedArgs = args.trim();
 
         if (trimmedArgs.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        if (trimmedArgs.startsWith(ADDR_PREFIX)) {
-            String afterPrefix = trimmedArgs.substring(ADDR_PREFIX.length()).trim();
+        // Address search: look for the address prefix (e.g., "a/")
+        final String addrPrefix = PREFIX_ADDRESS.toString();
+        if (trimmedArgs.startsWith(addrPrefix)) {
+            final String afterPrefix = trimmedArgs.substring(addrPrefix.length()).trim();
             if (afterPrefix.isEmpty()) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
             }
             List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
             return new FindCommand(new AddressContainsKeywordsPredicate(keywords));
         }
+
 
         List<String> nameKeywords = Arrays.asList(trimmedArgs.split("\\s+"));
         return new FindCommand(new NameContainsKeywordsPredicate(nameKeywords));

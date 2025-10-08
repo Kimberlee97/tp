@@ -9,6 +9,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import homey.logic.commands.FindCommand;
+import homey.model.person.AddressContainsKeywordsPredicate;
 import homey.model.person.NameContainsKeywordsPredicate;
 
 public class FindCommandParserTest {
@@ -29,6 +30,21 @@ public class FindCommandParserTest {
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
+    }
+
+    @Test
+    public void parse_addressKeywords_success() {
+        // a/ with two tokens → ANY-match
+        String input = " a/bedok north ";
+        FindCommand expected = new FindCommand(
+                new AddressContainsKeywordsPredicate(Arrays.asList("bedok", "north")));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_addressEmpty_throwsParseException() {
+        assertParseFailure(parser, " a/   ",
+                String.format(homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
 }
