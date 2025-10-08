@@ -1,6 +1,7 @@
 package homey.ui;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 import homey.commons.core.LogsCenter;
@@ -113,10 +114,7 @@ public class HelpWindow extends UiPart<Stage> {
      * so the user can view and copy the URL manually.
      */
     public void openInBrowserOrShow() {
-        boolean opened = BrowserUtil.open(USERGUIDE_URL);
-        if (!opened) {
-            show();
-        }
+        openInBrowserOrShow(null);
     }
 
     /**
@@ -126,19 +124,49 @@ public class HelpWindow extends UiPart<Stage> {
      * @param topic Command/topic to open (e.g. "add", "edit"). If null or unknown, opens the UG root.
      */
     public void openInBrowserOrShow(String topic) {
-        String anchor = (topic == null) ? "" : ANCHORS.getOrDefault(topic, "");
-        String url = USERGUIDE_URL + anchor;
-        boolean opened = BrowserUtil.open(url);
+        openInBrowserOrShow(topic, BrowserUtil::open, this::show);
+    }
+
+    /**
+     * Pure helper for opening the User Guide that is unit-testable without JavaFX.
+     * Builds the URL, tries to open via {@code opener}, and runs {@code fallback} if that fails.
+     *
+     * @param topic Command/topic to open (e.g., "add"); may be null.
+     * @param opener Function that attempts to open the URL and returns true on success.
+     * @param fallback Fallback runnable to execute when opener fails (e.g., show the Help window).
+     */
+    static void openInBrowserOrShow(String topic,
+                                    Function<String, Boolean> opener,
+                                    Runnable fallback) {
+        String url = buildUserGuideUrl(topic);
+        boolean opened = Boolean.TRUE.equals(opener.apply(url));
         if (!opened) {
-            show();
+            fallback.run();
         }
+    }
+    /**
+     * Builds the full User Guide URL for the given topic.
+     * If the topic is null or not found, returns the root User Guide URL.
+     *
+     * @param topic command/topic like "add" or "edit"; may be null
+     * @return full URL to the User Guide (with anchor if available)
+     */
+    static String buildUserGuideUrl(String topic) {
+        String anchor;
+        if (topic == null) {
+            anchor = "";
+        } else {
+            String key = topic.trim().toLowerCase(java.util.Locale.ROOT);
+            anchor = ANCHORS.getOrDefault(key, "");
+        }
+        return USERGUIDE_URL + anchor;
     }
 
     /**
      * Copies the URL to the user guide to the clipboard.
      */
     @FXML
-    private void copyUrl() {
+    void copyUrl() {
         final Clipboard clipboard = Clipboard.getSystemClipboard();
         final ClipboardContent url = new ClipboardContent();
         url.putString(USERGUIDE_URL);
