@@ -8,6 +8,7 @@ import static homey.testutil.TypicalPersons.FIONA;
 import static homey.testutil.TypicalPersons.getTypicalAddressBook;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -80,6 +81,21 @@ public class FindCommandTest {
         FindCommand findCommand = new FindCommand(predicate);
         String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
         assertEquals(expected, findCommand.toString());
+    }
+
+    @Test
+    public void constructorOverload_addressPredicate_constructsSuccessfully() {
+        var addressPredicate =
+                new homey.model.person.AddressContainsKeywordsPredicate(Collections.singletonList("bedok"));
+        FindCommand findCommand = new FindCommand(addressPredicate);
+
+        assertNotNull(findCommand);
+
+        FindCommand findCommandCopy = new FindCommand(
+                new homey.model.person.AddressContainsKeywordsPredicate(Collections.singletonList("bedok")));
+        assertEquals(findCommand, findCommandCopy);
+
+        assertNotNull(findCommand.toString());
     }
 
     /**
