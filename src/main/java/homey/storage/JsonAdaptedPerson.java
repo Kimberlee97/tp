@@ -15,6 +15,7 @@ import homey.model.person.Email;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
+import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 
 /**
@@ -101,9 +102,10 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
         }
         final Address modelAddress = new Address(address);
+        final Relation modelRelation = new Relation("client"); //TODO: Implement parsing and marshalling in the storage commit.
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelRelation, modelTags);
     }
 
 }
