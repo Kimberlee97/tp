@@ -1,11 +1,16 @@
 package homey.logic.commands;
 
 import homey.commons.core.index.Index;
+import homey.logic.Messages;
 import homey.logic.commands.exceptions.CommandException;
 import homey.model.Model;
+import homey.model.person.Person;
 import homey.model.tag.TransactionStage;
 
+import java.util.List;
+
 import static homey.commons.util.CollectionUtil.requireAllNonNull;
+import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 /**
  * Changes the transaction stage of an existing contact.
@@ -25,8 +30,7 @@ public class TransactionStageCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1 "
             + "s/prospect";
 
-    public static final String MESSAGE_NOT_IMPLEMENTED_YET =
-            "Transaction Stage command not implemented yet";
+    public static final String MESSAGE_ADD_TRANSACTION_STAGE_SUCCESS = "Added transaction stage to Person: %1$s";
 
     private final Index index;
     private final TransactionStage stage;
@@ -41,10 +45,33 @@ public class TransactionStageCommand extends Command {
         this.index = index;
         this.stage = stage;
     }
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        throw new CommandException(
-                String.format(MESSAGE_ARGUMENTS, index.getOneBased(), stage));
+        List<Person> lastShownList = model.getFilteredPersonList();
+
+        if (index.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
+
+        Person personToEdit = lastShownList.get(index.getZeroBased());
+        Person editedPerson = new Person(
+                personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
+                personToEdit.getAddress(), stage, personToEdit.getTags());
+
+        model.setPerson(personToEdit, editedPerson);
+        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+
+        return new CommandResult(generateSuccessMessage(editedPerson));
+    }
+
+    /**
+     * Generates a command execution success message based on whether
+     * the transaction stage is added to or removed from
+     * {@code personToEdit}.
+     */
+    private String generateSuccessMessage(Person personToEdit) {
+        return String.format(MESSAGE_ADD_TRANSACTION_STAGE_SUCCESS, Messages.format(personToEdit));
     }
 
     @Override
