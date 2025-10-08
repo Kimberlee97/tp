@@ -8,15 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import homey.commons.core.LogsCenter;
-import homey.logic.commands.AddCommand;
-import homey.logic.commands.ClearCommand;
-import homey.logic.commands.Command;
-import homey.logic.commands.DeleteCommand;
-import homey.logic.commands.EditCommand;
-import homey.logic.commands.ExitCommand;
-import homey.logic.commands.FindCommand;
-import homey.logic.commands.HelpCommand;
-import homey.logic.commands.ListCommand;
+import homey.logic.commands.*;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
@@ -76,6 +68,9 @@ public class AddressBookParser {
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
+
+        case TransactionStageCommand.COMMAND_WORD:
+            return new TransactionStageCommand();
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
