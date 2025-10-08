@@ -82,4 +82,38 @@ public class NameContainsKeywordsPredicateTest {
         String expected = NameContainsKeywordsPredicate.class.getCanonicalName() + "{keywords=" + keywords + "}";
         assertEquals(expected, predicate.toString());
     }
+
+    @Test
+    public void test_partialKeywordMatch_returnsTrue() {
+        // Partial match at start of word
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Collections.singletonList("Ali"));
+        assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+
+        // Partial match at the end of word
+        predicate = new NameContainsKeywordsPredicate(Collections.singletonList("ice"));
+        assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+
+        // Partial match in middle of word
+        predicate = new NameContainsKeywordsPredicate(Collections.singletonList("lic"));
+        assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+
+        // Partial match spanning across words (substring match)
+        predicate = new NameContainsKeywordsPredicate(Collections.singletonList("e B"));
+        assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+
+        // Partial match with mixed case
+        predicate = new NameContainsKeywordsPredicate(Collections.singletonList("aLi"));
+        assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+    }
+
+    @Test
+    public void test_emptyKeyword_returnsFalse() {
+        // Empty string keyword should be ignored, non-empty keyword matches
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Arrays.asList("", "Alice"));
+        assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+
+        // Only empty keywords
+        predicate = new NameContainsKeywordsPredicate(Arrays.asList("", ""));
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+    }
 }
