@@ -2,10 +2,13 @@ package homey.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Predicate;
+
 import homey.commons.util.ToStringBuilder;
 import homey.logic.Messages;
 import homey.model.Model;
 import homey.model.person.NameContainsKeywordsPredicate;
+import homey.model.person.Person;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -20,9 +23,15 @@ public class FindCommand extends Command {
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
 
-    private final NameContainsKeywordsPredicate predicate;
+    // Store generically
+    private final Predicate<Person> predicate;
 
     public FindCommand(NameContainsKeywordsPredicate predicate) {
+        this.predicate = predicate;
+    }
+
+    /** Overload used by address-search (a/...) and any future predicates. */
+    public FindCommand(Predicate<Person> predicate) {
         this.predicate = predicate;
     }
 
@@ -39,12 +48,9 @@ public class FindCommand extends Command {
         if (other == this) {
             return true;
         }
-
-        // instanceof handles nulls
         if (!(other instanceof FindCommand)) {
             return false;
         }
-
         FindCommand otherFindCommand = (FindCommand) other;
         return predicate.equals(otherFindCommand.predicate);
     }
