@@ -34,7 +34,7 @@ public class RelationCommand extends Command {
     private final Relation relation;
 
     /**
-     * @param index of the person in the filtered person list to edit the remark
+     * @param index of the person in the filtered person list to edit the relation
      * @param relation of the person to be updated to
      */
     public RelationCommand(Index index, Relation relation) {
