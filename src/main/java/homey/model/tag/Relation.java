@@ -3,6 +3,9 @@ package homey.model.tag;
 import static homey.commons.util.AppUtil.checkArgument;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Represents a Person's relation in the address book.
+ */
 public class Relation {
     public static final String MESSAGE_CONSTRAINTS = "Relation should be 'client' or 'vendor'.";
 

@@ -11,7 +11,15 @@ import homey.logic.commands.RelationCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.tag.Relation;
 
+/**
+ * Parses input arguments and creates a new {@code RelationCommand} object
+ */
 public class RelationCommandParser {
+    /**
+     * Parses the given {@code String} of arguments in the context of the {@code RelationCommand}
+     * and returns a {@code RelationCommand} object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
     public RelationCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CLIENT, PREFIX_VENDOR);

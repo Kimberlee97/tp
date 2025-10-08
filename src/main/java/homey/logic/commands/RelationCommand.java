@@ -21,9 +21,6 @@ public class RelationCommand extends Command {
 
     public static final String MESSAGE_ADD_RELATION_SUCCESS = "Added relation %1$s to Person: %2$s";
 
-    private final Index index;
-    private final Relation relation;
-
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Edits relation tag of the person identified "
             + "by the index number used in the last person listing. "
@@ -32,6 +29,9 @@ public class RelationCommand extends Command {
             + "[client/vendor]\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + "client";
+
+    private final Index index;
+    private final Relation relation;
 
     /**
      * @param index of the person in the filtered person list to edit the remark
