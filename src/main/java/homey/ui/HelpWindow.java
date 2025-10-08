@@ -113,10 +113,7 @@ public class HelpWindow extends UiPart<Stage> {
      * so the user can view and copy the URL manually.
      */
     public void openInBrowserOrShow() {
-        boolean opened = BrowserUtil.open(USERGUIDE_URL);
-        if (!opened) {
-            show();
-        }
+        openInBrowserOrShow(null);
     }
 
     /**
@@ -126,8 +123,7 @@ public class HelpWindow extends UiPart<Stage> {
      * @param topic Command/topic to open (e.g. "add", "edit"). If null or unknown, opens the UG root.
      */
     public void openInBrowserOrShow(String topic) {
-        String anchor = (topic == null) ? "" : ANCHORS.getOrDefault(topic, "");
-        String url = USERGUIDE_URL + anchor;
+        String url = buildUserGuideUrl(topic);
         boolean opened = BrowserUtil.open(url);
         if (!opened) {
             show();
@@ -135,10 +131,28 @@ public class HelpWindow extends UiPart<Stage> {
     }
 
     /**
+     * Builds the full User Guide URL for the given topic.
+     * If the topic is null or not found, returns the root User Guide URL.
+     *
+     * @param topic command/topic like "add" or "edit"; may be null
+     * @return full URL to the User Guide (with anchor if available)
+     */
+    static String buildUserGuideUrl(String topic) {
+        String anchor;
+        if (topic == null) {
+            anchor = "";
+        } else {
+            String key = topic.trim().toLowerCase(java.util.Locale.ROOT);
+            anchor = ANCHORS.getOrDefault(key, "");
+        }
+        return USERGUIDE_URL + anchor;
+    }
+
+    /**
      * Copies the URL to the user guide to the clipboard.
      */
     @FXML
-    private void copyUrl() {
+    void copyUrl() {
         final Clipboard clipboard = Clipboard.getSystemClipboard();
         final ClipboardContent url = new ClipboardContent();
         url.putString(USERGUIDE_URL);
