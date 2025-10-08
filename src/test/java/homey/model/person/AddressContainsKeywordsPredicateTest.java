@@ -9,6 +9,8 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
+import homey.model.tag.Relation;
+
 public class AddressContainsKeywordsPredicateTest {
 
     private static Person personWith(String address) {
@@ -17,6 +19,7 @@ public class AddressContainsKeywordsPredicateTest {
                 new Phone("87438807"),
                 new Email("alex@example.com"),
                 new Address(address),
+                new Relation("client"),
                 new java.util.HashSet<>()); // tags
     }
 
