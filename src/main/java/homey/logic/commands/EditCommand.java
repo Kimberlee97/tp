@@ -1,10 +1,6 @@
 package homey.logic.commands;
 
-import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static homey.logic.parser.CliSyntax.PREFIX_NAME;
-import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
-import static homey.logic.parser.CliSyntax.PREFIX_TAG;
+import static homey.logic.parser.CliSyntax.*;
 import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static java.util.Objects.requireNonNull;
 
@@ -27,6 +23,7 @@ import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
 import homey.model.tag.Tag;
+import homey.model.tag.TransactionStage;
 
 /**
  * Edits the details of an existing person in the address book.
@@ -43,6 +40,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_TRANSACTION + "TRANSACTION STAGE] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -99,9 +97,10 @@ public class EditCommand extends Command {
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        TransactionStage updatedStage = editPersonDescriptor.getStage().orElse(personToEdit.getStage());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedStage, updatedTags);
     }
 
     @Override
@@ -137,6 +136,7 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Address address;
+        private TransactionStage stage;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -150,6 +150,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
+            setStage(toCopy.stage);
             setTags(toCopy.tags);
         }
 
@@ -192,6 +193,10 @@ public class EditCommand extends Command {
             return Optional.ofNullable(address);
         }
 
+        public void setStage(TransactionStage stage) { this.stage = stage; }
+
+        public Optional<TransactionStage> getStage() { return Optional.ofNullable(stage); }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -225,6 +230,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && Objects.equals(stage, otherEditPersonDescriptor.stage)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -235,6 +241,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("address", address)
+                    .add("transaction stage", stage)
                     .add("tags", tags)
                     .toString();
         }

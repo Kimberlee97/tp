@@ -1,11 +1,7 @@
 package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static homey.logic.parser.CliSyntax.PREFIX_NAME;
-import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
-import static homey.logic.parser.CliSyntax.PREFIX_TAG;
+import static homey.logic.parser.CliSyntax.*;
 
 import java.util.Set;
 import java.util.stream.Stream;
@@ -18,6 +14,7 @@ import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
 import homey.model.tag.Tag;
+import homey.model.tag.TransactionStage;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -43,9 +40,10 @@ public class AddCommandParser implements Parser<AddCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
+        TransactionStage transaction = ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Person person = new Person(name, phone, email, address, tagList);
+        Person person = new Person(name, phone, email, address, transaction, tagList);
 
         return new AddCommand(person);
     }

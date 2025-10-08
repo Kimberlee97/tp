@@ -7,12 +7,12 @@ public class TransactionStage {
     public static final String MESSAGE_CONSTRAINTS = "Transaction stage should be 'prospect', 'negotiating'"
             + "or 'closed'.";
 
-    public final String stageName;
+    public final String value;
 
     public TransactionStage(String stageName) {
         requireNonNull(stageName);
         checkArgument(isValid(stageName), MESSAGE_CONSTRAINTS);
-        this.stageName = stageName;
+        this.value = stageName;
     }
 
     public static boolean isValid(String test) {
@@ -29,15 +29,15 @@ public class TransactionStage {
             return false;
         }
 
-        return stageName.equals(((TransactionStage) other).stageName);
+        return value.equals(((TransactionStage) other).value);
     }
 
     @Override
     public int hashCode() {
-        return stageName.hashCode();
+        return value.hashCode();
     }
 
     public String toString() {
-        return '[' + stageName + ']';
+        return '[' + value + ']';
     }
 }
