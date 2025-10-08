@@ -1,12 +1,13 @@
 package homey.model.person;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
 
 import homey.commons.util.ToStringBuilder;
 
-import static java.util.Objects.requireNonNull;
 
 /**
  * Tests that a {@code Person}'s {@code Name} matches any of the keywords given.
