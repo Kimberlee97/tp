@@ -29,13 +29,13 @@ public class TransactionStageCommand extends Command {
             "Transaction Stage command not implemented yet";
 
     private final Index index;
-    private final String stage;
+    private final TransactionStage stage;
 
     /**
      * @param index of the person in the filtered person list to edit the stage
      * @param stage of the person to be updated to
      */
-    public TransactionStageCommand(Index index, String stage) {
+    public TransactionStageCommand(Index index, TransactionStage stage) {
         requireAllNonNull(index, stage);
 
         this.index = index;
