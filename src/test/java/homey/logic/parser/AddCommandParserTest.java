@@ -32,11 +32,13 @@ import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static homey.testutil.TypicalPersons.AMY;
 import static homey.testutil.TypicalPersons.BOB;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
 import homey.logic.Messages;
 import homey.logic.commands.AddCommand;
+import homey.logic.commands.HelpCommand;
 import homey.model.person.Address;
 import homey.model.person.Email;
 import homey.model.person.Name;
@@ -192,5 +194,19 @@ public class AddCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_helpNoTopic_returnsHelpCommand() throws Exception {
+        AddressBookParser parser = new AddressBookParser();
+        HelpCommand cmd = (HelpCommand) parser.parseCommand("help");
+        assertEquals(new HelpCommand(), cmd);
+    }
+
+    @Test
+    public void parse_helpWithTopic_returnsHelpCommand() throws Exception {
+        AddressBookParser parser = new AddressBookParser();
+        HelpCommand cmd = (HelpCommand) parser.parseCommand("help add");
+        assertEquals(new HelpCommand("add"), cmd);
     }
 }

@@ -32,6 +32,23 @@ public class AddressBookParser {
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
 
     /**
+     * Parses the help command with an optional topic.
+     * Examples:
+     *  - "help" -> new HelpCommand()
+     *  - "help add" -> new HelpCommand("add")
+     *
+     * @param arguments The raw arguments after the "help" keyword.
+     * @return a HelpCommand with or without a topic.
+     */
+    private Command parseHelp(String arguments) {
+        String trimmed = arguments.trim();
+        if (trimmed.isEmpty()) {
+            return new HelpCommand();
+        }
+        return new HelpCommand(trimmed);
+    }
+
+    /**
      * Parses user input into command for execution.
      *
      * @param userInput full user input string
@@ -79,8 +96,7 @@ public class AddressBookParser {
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
-            return new HelpCommand();
-
+            return parseHelp(arguments);
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

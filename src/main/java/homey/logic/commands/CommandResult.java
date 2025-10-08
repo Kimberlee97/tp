@@ -3,6 +3,7 @@ package homey.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import homey.commons.util.ToStringBuilder;
 
@@ -19,13 +20,14 @@ public class CommandResult {
     /** The application should exit. */
     private final boolean exit;
 
+    /** Optional help topic (e.g., "add", "edit") to open a specific UG anchor. */
+    private final Optional<String> helpTopic;
+
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this.feedbackToUser = requireNonNull(feedbackToUser);
-        this.showHelp = showHelp;
-        this.exit = exit;
+        this(feedbackToUser, showHelp, exit, Optional.empty());
     }
 
     /**
@@ -33,7 +35,17 @@ public class CommandResult {
      * and other fields set to their default value.
      */
     public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false);
+        this(feedbackToUser, false, false, Optional.empty());
+    }
+
+    /**
+     * New canonical constructor that allows passing an optional help topic.
+     */
+    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, Optional<String> helpTopic) {
+        this.feedbackToUser = requireNonNull(feedbackToUser);
+        this.showHelp = showHelp;
+        this.exit = exit;
+        this.helpTopic = helpTopic == null ? Optional.empty() : helpTopic;
     }
 
     public String getFeedbackToUser() {
@@ -48,35 +60,42 @@ public class CommandResult {
         return exit;
     }
 
+    /**
+     * Returns the optional help topic (e.g. "add") if present.
+     *
+     * @return the help topic, or an empty Optional if none was provided.
+     */
+    public Optional<String> getHelpTopic() {
+        return helpTopic;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
             return true;
         }
-
-        // instanceof handles nulls
         if (!(other instanceof CommandResult)) {
             return false;
         }
-
-        CommandResult otherCommandResult = (CommandResult) other;
-        return feedbackToUser.equals(otherCommandResult.feedbackToUser)
-                && showHelp == otherCommandResult.showHelp
-                && exit == otherCommandResult.exit;
+        CommandResult o = (CommandResult) other;
+        return feedbackToUser.equals(o.feedbackToUser)
+                && showHelp == o.showHelp
+                && exit == o.exit
+                && helpTopic.equals(o.helpTopic);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit);
+        return Objects.hash(feedbackToUser, showHelp, exit, helpTopic);
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        ToStringBuilder builder = new ToStringBuilder(this)
                 .add("feedbackToUser", feedbackToUser)
                 .add("showHelp", showHelp)
-                .add("exit", exit)
-                .toString();
+                .add("exit", exit);
+        helpTopic.ifPresent(topic -> builder.add("helpTopic", topic));
+        return builder.toString();
     }
-
 }
