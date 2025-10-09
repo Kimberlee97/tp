@@ -19,8 +19,6 @@ public class TransactionStageCommand extends Command {
 
     public static final String COMMAND_WORD = "transaction";
 
-    public static final String MESSAGE_ARGUMENTS = "Index: %1$d, Stage: %2$s";
-
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Edits the transaction stage of the person identified "
             + "by the index number used in the last person listing. "
