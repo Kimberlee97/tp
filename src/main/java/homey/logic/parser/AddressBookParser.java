@@ -8,7 +8,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import homey.commons.core.LogsCenter;
-import homey.logic.commands.*;
+import homey.logic.commands.AddCommand;
+import homey.logic.commands.ClearCommand;
+import homey.logic.commands.Command;
+import homey.logic.commands.DeleteCommand;
+import homey.logic.commands.EditCommand;
+import homey.logic.commands.ExitCommand;
+import homey.logic.commands.FindCommand;
+import homey.logic.commands.HelpCommand;
+import homey.logic.commands.ListCommand;
+import homey.logic.commands.TransactionStageCommand;
+import homey.logic.commands.RelationCommand;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
@@ -21,6 +31,23 @@ public class AddressBookParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
+
+    /**
+     * Parses the help command with an optional topic.
+     * Examples:
+     *  - "help" -> new HelpCommand()
+     *  - "help add" -> new HelpCommand("add")
+     *
+     * @param arguments The raw arguments after the "help" keyword.
+     * @return a HelpCommand with or without a topic.
+     */
+    private Command parseHelp(String arguments) {
+        String trimmed = arguments.trim();
+        if (trimmed.isEmpty()) {
+            return new HelpCommand();
+        }
+        return new HelpCommand(trimmed);
+    }
 
     /**
      * Parses user input into command for execution.
@@ -51,6 +78,9 @@ public class AddressBookParser {
         case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
 
+        case RelationCommand.COMMAND_WORD:
+            return new RelationCommandParser().parse(arguments);
+
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
 
@@ -67,7 +97,7 @@ public class AddressBookParser {
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
-            return new HelpCommand();
+            return parseHelp(arguments);
 
         case TransactionStageCommand.COMMAND_WORD:
             return new TransactionStageCommandParser().parse(arguments);

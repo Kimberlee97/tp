@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import homey.commons.util.ToStringBuilder;
+import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
 
@@ -25,18 +26,20 @@ public class Person {
     // Data fields
     private final Address address;
     private final TransactionStage stage;
+    private final Relation relation;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, TransactionStage stage, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, Relation relation, TransactionStage stage, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.stage = stage;
+        this.relation = relation;
         this.tags.addAll(tags);
     }
 
@@ -57,6 +60,10 @@ public class Person {
     }
 
     public TransactionStage getStage() { return stage; }
+
+    public Relation getRelation() {
+        return relation;
+    }
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}

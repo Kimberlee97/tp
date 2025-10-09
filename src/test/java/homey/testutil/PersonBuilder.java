@@ -8,6 +8,7 @@ import homey.model.person.Email;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
+import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.util.SampleDataUtil;
 
@@ -20,11 +21,13 @@ public class PersonBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_RELATION = "client";
 
     private Name name;
     private Phone phone;
     private Email email;
     private Address address;
+    private Relation relation;
     private Set<Tag> tags;
 
     /**
@@ -34,6 +37,7 @@ public class PersonBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
+        relation = new Relation(DEFAULT_RELATION);
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
     }
@@ -46,6 +50,7 @@ public class PersonBuilder {
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
+        relation = personToCopy.getRelation();
         tags = new HashSet<>(personToCopy.getTags());
     }
 
@@ -89,8 +94,16 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Relation} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withRelation(String relation) {
+        this.relation = new Relation(relation);
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, tags);
+        return new Person(name, phone, email, address, relation, transaction, tags);
     }
 
 }

@@ -1,6 +1,11 @@
 package homey.logic.commands;
 
-import static homey.logic.parser.CliSyntax.*;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
+import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static homey.logic.parser.CliSyntax.PREFIX_TAG;
+import static homey.logic.parser.CliSyntax.PREFIX_NAME;
+import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
 import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static java.util.Objects.requireNonNull;
 
@@ -22,6 +27,7 @@ import homey.model.person.Email;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
+import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
 
@@ -98,9 +104,10 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         TransactionStage updatedStage = editPersonDescriptor.getStage().orElse(personToEdit.getStage());
+        Relation updatedRelation = personToEdit.getRelation(); // edit command does not allow editing relation tags
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedStage, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedRelation, updatedStage, updatedTags);
     }
 
     @Override
