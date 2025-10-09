@@ -7,8 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.Collections;
 
-import homey.model.tag.TransactionStage;
 import org.junit.jupiter.api.Test;
+
+import homey.model.tag.TransactionStage;
 
 import homey.model.tag.Relation;
 
