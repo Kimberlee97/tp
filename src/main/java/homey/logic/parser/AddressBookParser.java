@@ -17,8 +17,8 @@ import homey.logic.commands.ExitCommand;
 import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
 import homey.logic.commands.ListCommand;
-import homey.logic.commands.TransactionStageCommand;
 import homey.logic.commands.RelationCommand;
+import homey.logic.commands.TransactionStageCommand;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
@@ -35,8 +35,8 @@ public class AddressBookParser {
     /**
      * Parses the help command with an optional topic.
      * Examples:
-     *  - "help" -> new HelpCommand()
-     *  - "help add" -> new HelpCommand("add")
+     * - "help" -> new HelpCommand()
+     * - "help add" -> new HelpCommand("add")
      *
      * @param arguments The raw arguments after the "help" keyword.
      * @return a HelpCommand with or without a topic.

@@ -1,14 +1,14 @@
 package homey.logic.parser;
 
+import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
+import static java.util.Objects.requireNonNull;
+
 import homey.commons.core.index.Index;
 import homey.commons.exceptions.IllegalValueException;
 import homey.logic.commands.TransactionStageCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.tag.TransactionStage;
-
-import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
-import static java.util.Objects.requireNonNull;
 
 /**
  * Parses input arguments and creates a new {@code TransactionStageCommand} object.

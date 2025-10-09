@@ -1,11 +1,11 @@
 package homey.logic.commands;
 
-import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
+import static homey.logic.parser.CliSyntax.PREFIX_TAG;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static java.util.Objects.requireNonNull;
 
@@ -107,7 +107,8 @@ public class EditCommand extends Command {
         Relation updatedRelation = personToEdit.getRelation(); // edit command does not allow editing relation tags
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedRelation, updatedStage, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
+                updatedRelation, updatedStage, updatedTags);
     }
 
     @Override
@@ -200,9 +201,13 @@ public class EditCommand extends Command {
             return Optional.ofNullable(address);
         }
 
-        public void setStage(TransactionStage stage) { this.stage = stage; }
+        public void setStage(TransactionStage stage) {
+            this.stage = stage;
+        }
 
-        public Optional<TransactionStage> getStage() { return Optional.ofNullable(stage); }
+        public Optional<TransactionStage> getStage() {
+            return Optional.ofNullable(stage);
+        }
 
         /**
          * Sets {@code tags} to this object's {@code tags}.
