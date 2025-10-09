@@ -14,6 +14,7 @@ import homey.model.person.Email;
 import homey.model.person.Name;
 import homey.model.person.Phone;
 import homey.model.tag.Tag;
+import homey.model.tag.TransactionStage;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -120,5 +121,19 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code String stage} into a {@code TransactionStage}.
+     *
+     * @throws ParseException if the given {@code} stage is invalid.
+     */
+    public static TransactionStage parseStage(String stage) throws ParseException {
+        requireNonNull(stage);
+        String trimmed = stage.trim();
+        if (trimmed.isEmpty() || !TransactionStage.isValid(trimmed)) {
+            throw new ParseException(TransactionStage.MESSAGE_CONSTRAINTS);
+        }
+        return new TransactionStage(trimmed);
     }
 }

@@ -18,6 +18,7 @@ import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
 import homey.logic.commands.ListCommand;
 import homey.logic.commands.RelationCommand;
+import homey.logic.commands.TransactionStageCommand;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
@@ -34,8 +35,8 @@ public class AddressBookParser {
     /**
      * Parses the help command with an optional topic.
      * Examples:
-     *  - "help" -> new HelpCommand()
-     *  - "help add" -> new HelpCommand("add")
+     * - "help" -> new HelpCommand()
+     * - "help add" -> new HelpCommand("add")
      *
      * @param arguments The raw arguments after the "help" keyword.
      * @return a HelpCommand with or without a topic.
@@ -97,6 +98,10 @@ public class AddressBookParser {
 
         case HelpCommand.COMMAND_WORD:
             return parseHelp(arguments);
+
+        case TransactionStageCommand.COMMAND_WORD:
+            return new TransactionStageCommandParser().parse(arguments);
+
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

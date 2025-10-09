@@ -10,6 +10,7 @@ import homey.model.person.Person;
 import homey.model.person.Phone;
 import homey.model.tag.Relation;
 import homey.model.tag.Tag;
+import homey.model.tag.TransactionStage;
 import homey.model.util.SampleDataUtil;
 
 /**
@@ -22,12 +23,14 @@ public class PersonBuilder {
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_RELATION = "client";
+    public static final String DEFAULT_STAGE = "prospect";
 
     private Name name;
     private Phone phone;
     private Email email;
     private Address address;
     private Relation relation;
+    private TransactionStage stage;
     private Set<Tag> tags;
 
     /**
@@ -38,6 +41,7 @@ public class PersonBuilder {
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
         relation = new Relation(DEFAULT_RELATION);
+        stage = new TransactionStage(DEFAULT_STAGE);
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
     }
@@ -51,6 +55,7 @@ public class PersonBuilder {
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
         relation = personToCopy.getRelation();
+        stage = personToCopy.getStage();
         tags = new HashSet<>(personToCopy.getTags());
     }
 
@@ -102,8 +107,16 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code TransactionStage} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withStage(String stage) {
+        this.stage = new TransactionStage(stage);
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, relation, tags);
+        return new Person(name, phone, email, address, relation, stage, tags);
     }
 
 }

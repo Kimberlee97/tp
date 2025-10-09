@@ -10,6 +10,7 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 import homey.model.tag.Relation;
+import homey.model.tag.TransactionStage;
 
 public class AddressContainsKeywordsPredicateTest {
 
@@ -20,7 +21,7 @@ public class AddressContainsKeywordsPredicateTest {
                 new Email("alex@example.com"),
                 new Address(address),
                 new Relation("client"),
-                new java.util.HashSet<>()); // tags
+                new TransactionStage("prospect"), new java.util.HashSet<>()); // tags
     }
 
     @Test
