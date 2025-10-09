@@ -9,9 +9,8 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
-import homey.model.tag.TransactionStage;
-
 import homey.model.tag.Relation;
+import homey.model.tag.TransactionStage;
 
 public class AddressContainsKeywordsPredicateTest {
 
