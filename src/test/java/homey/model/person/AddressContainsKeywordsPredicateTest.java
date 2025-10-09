@@ -20,7 +20,7 @@ public class AddressContainsKeywordsPredicateTest {
                 new Email("alex@example.com"),
                 new Address(address),
                 new Relation("client"),
-                new java.util.HashSet<>()); // tags
+                transaction, new java.util.HashSet<>()); // tags
     }
 
     @Test
