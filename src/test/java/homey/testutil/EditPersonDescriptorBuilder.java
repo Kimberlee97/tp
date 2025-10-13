@@ -11,6 +11,7 @@ import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
 import homey.model.tag.Tag;
+import homey.model.tag.TransactionStage;
 
 /**
  * A utility class to help with building EditPersonDescriptor objects.
@@ -68,6 +69,14 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withAddress(String address) {
         descriptor.setAddress(new Address(address));
+        return this;
+    }
+
+    /**
+     * Sets the {@code Transaction Stage} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withStage(String stage) {
+        descriptor.setStage(new TransactionStage(stage));
         return this;
     }
 
