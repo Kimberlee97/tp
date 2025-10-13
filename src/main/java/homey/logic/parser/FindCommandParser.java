@@ -14,11 +14,15 @@ import homey.model.person.NameContainsKeywordsPredicate;
 
 /**
  * Parses input arguments and creates a new {@link FindCommand}.
- * Supports:
+ *
+ * <p>Supported forms:
  * <ul>
  *   <li>Name search (default): {@code find KEYWORD [MORE_KEYWORDS]}</li>
  *   <li>Address search: {@code find a/KEYWORD [MORE_KEYWORDS]}</li>
  * </ul>
+ *
+ * <p>When {@code a/} is provided without any keywords (e.g., {@code find a/}),
+ * this parser returns an error showing the address-specific usage only.
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
@@ -27,6 +31,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         requireNonNull(args);
         final String trimmedArgs = args.trim();
 
+        // Blank input
         if (trimmedArgs.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
@@ -35,15 +40,25 @@ public class FindCommandParser implements Parser<FindCommand> {
         final String addrPrefix = PREFIX_ADDRESS.toString();
         if (trimmedArgs.startsWith(addrPrefix)) {
             final String afterPrefix = trimmedArgs.substring(addrPrefix.length()).trim();
+
+            // a/ with no keywords -> show address-only usage
             if (afterPrefix.isEmpty()) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                throw new ParseException(String.format(
+                        MESSAGE_INVALID_COMMAND_FORMAT, buildAddressOnlyUsage()));
             }
-            List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
+
+            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
             return new FindCommand(new AddressContainsKeywordsPredicate(keywords));
         }
 
-
-        List<String> nameKeywords = Arrays.asList(trimmedArgs.split("\\s+"));
+        final List<String> nameKeywords = Arrays.asList(trimmedArgs.split("\\s+"));
         return new FindCommand(new NameContainsKeywordsPredicate(nameKeywords));
+    }
+
+    /**
+     * Builds the address-only usage string for {@code find a/KEYWORD [MORE_KEYWORDS]}.
+     */
+    private static String buildAddressOnlyUsage() {
+        return "Address: " + FindCommand.COMMAND_WORD + " " + PREFIX_ADDRESS + "KEYWORD [MORE_KEYWORDS]";
     }
 }
