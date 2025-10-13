@@ -1,15 +1,41 @@
 package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static homey.logic.commands.CommandTestUtil.*;
-import static homey.logic.parser.CliSyntax.*;
+import static homey.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
+import static homey.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
+import static homey.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
+import static homey.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
+import static homey.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
+import static homey.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
+import static homey.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
+import static homey.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
+import static homey.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
+import static homey.logic.commands.CommandTestUtil.NAME_DESC_AMY;
+import static homey.logic.commands.CommandTestUtil.NAME_DESC_BOB;
+import static homey.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static homey.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
+import static homey.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
+import static homey.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
+import static homey.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
+import static homey.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
+import static homey.logic.commands.CommandTestUtil.TRANSACTION_DESC_CLOSED;
+import static homey.logic.commands.CommandTestUtil.TRANSACTION_DESC_PROSPECT;
+import static homey.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static homey.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static homey.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static homey.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static homey.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static homey.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static homey.logic.parser.CliSyntax.PREFIX_NAME;
+import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static homey.testutil.TypicalPersons.AMY;
 import static homey.testutil.TypicalPersons.BOB;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import homey.model.tag.TransactionStage;
 import org.junit.jupiter.api.Test;
 
 import homey.logic.Messages;
@@ -40,7 +66,7 @@ public class AddCommandParserTest {
                 .build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + TRANSACTION_DESC_PROSPECT
-                        +  TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 new AddCommand(expectedPersonMultipleTags));
     }
 

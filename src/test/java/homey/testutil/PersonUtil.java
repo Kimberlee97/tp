@@ -1,13 +1,18 @@
 package homey.testutil;
 
+import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static homey.logic.parser.CliSyntax.PREFIX_NAME;
+import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
+import static homey.logic.parser.CliSyntax.PREFIX_TAG;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
+
 import java.util.Set;
 
 import homey.logic.commands.AddCommand;
 import homey.logic.commands.EditCommand.EditPersonDescriptor;
 import homey.model.person.Person;
 import homey.model.tag.Tag;
-
-import static homey.logic.parser.CliSyntax.*;
 
 /**
  * A utility class for Person.

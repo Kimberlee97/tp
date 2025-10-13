@@ -2,7 +2,11 @@ package homey.logic;
 
 import static homey.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static homey.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static homey.logic.commands.CommandTestUtil.*;
+import static homey.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
+import static homey.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
+import static homey.logic.commands.CommandTestUtil.NAME_DESC_AMY;
+import static homey.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static homey.logic.commands.CommandTestUtil.TRANSACTION_DESC_PROSPECT;
 import static homey.testutil.Assert.assertThrows;
 import static homey.testutil.TypicalPersons.AMY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
