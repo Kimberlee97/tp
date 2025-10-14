@@ -75,6 +75,10 @@ The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `Re
 
 The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
 
+The `HelpWindow` in the UI component was enhanced to open the User Guide directly in the user’s browser.  
+If the browser cannot be opened (e.g., in headless environments), the fallback "Help" window remains available to copy the link manually.  
+Additionally, the "Help" command can now open the specific section of the User Guide based on the topic provided (e.g., `help add`, `help edit`).
+
 The `UI` component,
 
 * executes user commands using the `Logic` component.
@@ -720,17 +724,18 @@ Precondition: User is at the landing page of the app and has existing list of co
 **MSS**
 
 1. User opens app
-2. User selects “Help” or “Commands” option
-3. System retrieves the list of available commands
-4. System displays all commands with descriptions
-5. User reviews the commands to understand usage
+2. User enters `help` command or selects the "Help" option from the menu
+3. System opens the User Guide in the user's default web browser
+4. User reviews the guide to understand available commands and their usage
 
    Use case ends.
 
 **Extensions**
 
-* 2a. No commands available (system error or incomplete setup)
-    * 2a1. System displays “No commands found. Please check configuration.”
+* 2a. User specifies a topic (e.g. `help add`, `help edit`)
+    * 2a1. System opens the User Guide directly at the corresponding section for that command
+* 3a. Browser cannot be opened (e.g. headless environment or OS restriction)
+    * 3a1. System displays a small in-app "Help" window with the User Guide link and an option to copy it manually
 
 **Use case: Find contacts by address**
 

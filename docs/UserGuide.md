@@ -26,7 +26,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the User Guide in your web browser (if the browser can’t be opened, a Help window will appear instead).<br>
    Some example commands you can try:
 
    * `list` : Lists all contacts.
@@ -61,20 +61,37 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
-  e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+* Extraneous parameters for commands that do not take in parameters (such as `list`, `exit` and `clear`) will be ignored.<br>
+  e.g. if the command specifies `list 123`, it will be interpreted as `list`.
+
+* `help` accepts an optional topic to deep-link to a specific section of this guide.
+  e.g. `help add`, `help edit` and `help delete`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Viewing help : `help`
+### Viewing help : `help [topic]`
 
-Shows a message explaining how to access the help page.
+Opens the User Guide in your web browser.
+If the browser cannot be opened (e.g. blocked by the environment), a Help window is shown so you can copy the link manually.
+
+![help add](images/helpAdd.png)
+<figcaption>User enters help add command. The browser automatically opens the "Adding a person" section of the User Guide.</figcaption>
 
 ![help message](images/helpMessage.png)
+<figcaption>Opens the User Guide in your web browser. If blocked, the Help window appears instead.</figcaption>
 
-Format: `help`
+Format: `help [topic]`
 
+* `topic` is optional and deep-links to a specific section of this guide.
+* Topic matching is case-insensitive and ignores surrounding spaces.
+* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`.
+
+Examples:
+* `help` opens the User Guide home.
+* `help add` opens the "Adding a person" section.
+* `help edit` opens the "Editing a person" section.
+* You can also open help using the Help menu or by pressing F1.
 
 ### Adding a person: `add`
 
@@ -205,7 +222,7 @@ _Details coming soon ..._
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+2. **If the Help window is shown** (e.g. when your system blocks opening the browser) and you **minimize it**, running the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again will not restore it automatically. The remedy is to manually restore the minimized Help Window.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -220,4 +237,5 @@ _Details coming soon ..._
 | **Find**    | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                            |
 | **Find a/** | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                               |
 | **List**    | `list`                                                                                                                                                                |
-| **Help**    | `help`                                                                                                                                                                |
+| **Help**    | `help [topic]`<br> e.g., `help add`                                                                                                                                                                |
+
