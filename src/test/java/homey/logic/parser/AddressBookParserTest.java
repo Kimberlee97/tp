@@ -14,21 +14,20 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-import homey.logic.commands.EditCommand.EditPersonDescriptor;
 import homey.logic.commands.AddCommand;
 import homey.logic.commands.ClearCommand;
 import homey.logic.commands.DeleteCommand;
 import homey.logic.commands.EditCommand;
+import homey.logic.commands.EditCommand.EditPersonDescriptor;
 import homey.logic.commands.ExitCommand;
 import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
 import homey.logic.commands.ListCommand;
 import homey.logic.commands.TransactionStageCommand;
-import homey.model.tag.TransactionStage;
-
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.NameContainsKeywordsPredicate;
 import homey.model.person.Person;
+import homey.model.tag.TransactionStage;
 import homey.testutil.EditPersonDescriptorBuilder;
 import homey.testutil.PersonBuilder;
 import homey.testutil.PersonUtil;

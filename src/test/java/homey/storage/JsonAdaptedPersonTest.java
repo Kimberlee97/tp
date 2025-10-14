@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import homey.model.tag.TransactionStage;
-import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
 import homey.commons.exceptions.IllegalValueException;
@@ -19,6 +17,7 @@ import homey.model.person.Email;
 import homey.model.person.Name;
 import homey.model.person.Phone;
 import homey.model.tag.Relation;
+import homey.model.tag.TransactionStage;
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";

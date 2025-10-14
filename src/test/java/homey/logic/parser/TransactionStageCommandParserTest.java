@@ -1,15 +1,16 @@
 package homey.logic.parser;
 
-import homey.commons.core.index.Index;
-import homey.logic.commands.TransactionStageCommand;
-import homey.model.tag.TransactionStage;
-import org.junit.jupiter.api.Test;
-
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static homey.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+
+import org.junit.jupiter.api.Test;
+
+import homey.commons.core.index.Index;
+import homey.logic.commands.TransactionStageCommand;
+import homey.model.tag.TransactionStage;
 
 public class TransactionStageCommandParserTest {
 
