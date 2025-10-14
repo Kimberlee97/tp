@@ -140,12 +140,13 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
 * Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
+* Partial matches are supported - e.g. `Han` will match `Hans`
 * Persons matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
 * `find John` returns `john` and `John Doe`
+* `find ale` returns `Alex Yeoh` and `Alecia Tan`
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
@@ -164,6 +165,23 @@ Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
 * `find a/bed` returns all persons living in `bedok` and `Bedok` or other addresses with `bed`<br>
   ![result for 'find alex david'](images/findAddressBedok.png)
+
+### Locating persons by tag: `find t/`
+
+Finds persons whose tags contain any of the given keywords.
+
+Format: `find t/KEYWORD [MORE_KEYWORDS]`
+
+* The search is case-insensitive. e.g. `friend` will match `Friend`
+* The order of the keywords does not matter.
+* Only tags are searched.
+* Partial matches are supported - e.g. `fri` will match `friend`
+* Persons matching at least one keyword will be returned (i.e. `OR` search).
+
+Examples:
+* `find t/friend` returns all persons tagged with `friend`
+* `find t/fri` returns all persons with tags containing `fri` (e.g., `friend`, `Friday`)
+* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`
 
 ### Deleting a person : `delete`
 
@@ -236,6 +254,7 @@ _Details coming soon ..._
 | **Edit**    | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                           |
 | **Find**    | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                            |
 | **Find a/** | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                               |
+| **Find t/** | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                            |
 | **List**    | `list`                                                                                                                                                                |
-| **Help**    | `help [topic]`<br> e.g., `help add`                                                                                                                                                                |
+| **Help**    | `help [topic]`<br> e.g., `help add`                                                                                                                                   |
 
