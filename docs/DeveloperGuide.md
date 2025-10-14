@@ -310,44 +310,45 @@ Slightly forgetful due to large number of clients, hard to track
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a ...                                                                                            | I want to ...                                                          | So that I can ...                                                                |
-|----------|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| `* *`    | Property Agent                                                                                      | view my contacts and schedule in one platform                          | I don’t have to switch between apps                                              |
-| `* *`    | Property Agent with many clients and colleagues                                                     | sort my contacts into categories (tagging)                             | it is easier to remember my relationship with them                               |
-| `* *`    | Forgetful user                                                                                      | Get reminded of meetings and appointments when they are approaching    | I don’t ghost my clients or agents                                               |
-| `*`      | Busy property agent                                                                                 | view my schedule and contact list on-the-go                            | I can easily access necessary information when I’m outside or in a rush          |
-| `* *`    | Property Agent has to juggle multiple stakeholders                                                  | Set reminders linked to specific contacts                              | I don’t miss client meetings or property showings                                |
-| `*`      | Property agent                                                                                      | Add notes visible only to me                                           | Keep private thoughts while still sharing client basics                          |
-| `* *`    | Property Agent managing clients                                                                     | Sort clients and agents by type                                        | I can filter out which types of deals I want to focus on at any point of time    |
-| `*`      | Forgetful User                                                                                      | Add detail related to the events in my schedule e.g. event description | I can remember what to prepare                                                   |
-| `*`      | Property agent                                                                                      | Attach notes to each contact                                           | I can remember important details                                                 |
-| `*`      | Property agent that travels a lot                                                                   | Group my clients and deals by area                                     | I can easily plan out meetings by proximity                                      |
-| `* *`    | Property agent                                                                                      | Set recurring reminders like weekly check-in calls                     | I can maintain consistent follow-ups                                             |
-| `* *`    | Property Agent                                                                                      | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                            |
-| `* *`    | Property agent                                                                                      | Tag contacts by transaction stage like prospect, negotiating, closed   | I can track progress easily                                                      |
-| `* *`    | User that prefers visual information                                                                | Colour code my tags and events                                         | I can easily identify the type of contacts and events                            |
-| `* *`    | Property Agent                                                                                      | Set overdue tasks or meetings highlighted                              | I can prioritise catching up quickly                                             |
-| `* *`    | Property agent                                                                                      | Add dates for meetings                                                 | I can keep track of important events and attend them                             |
-| `* *`    | Property agent that wants to track their current deals                                              | Sort contacts by latest meeting                                        | I can prioritise deals or meetings that have been delayed or are taking too long |
-| `* *`    | Forgetful property agent                                                                            | Search for contacts using partial names                                | I can find their contact information despite not remembering their full name     |
-| `*`      | Property agent                                                                                      | Input details for a new contact in one line                            | It is convenient                                                                 |
-| `* *`    | Property agent who handles many meetings                                                            | Tag each client with their property location                           | I can quickly group and search for clients by area                               |
-| `* * *`  | Property agent who prefers typing                                                                   | Search for client by typing their name                                 | Save time instead of scrolling through the whole address book                    |
-| `* *`    | Property agent managing multiple tasks                                                              | View upcoming meeting with the nearest deadline first                  | I know which client to attend to next                                            |
-| `*`      | Property agent who prefers typing                                                                   | Autocomplete names/commands as I search through the addressbook        | Find my client more efficiently                                                  |
-| `*`      | Property agent juggling many deals                                                                  | Attach notes to each client’s profile                                  | I can remember key details of past conversations                                 |
-| `*`      | Property agent                                                                                      | See which agent is linked to a shared client                           | Responsibilities are clear                                                       |
-| `* *`    | Property agent that wants to track deal history                                                     | Sort contacts by date added as contact                                 | Prioritise loyal customers                                                       |
-| `*`      | Property agent                                                                                      | Write multiple different commands to do the same thing                 | I don’t have to remember specific syntax for each command                        |
-| `*`      | Property agent with a lot of contacts                                                               |  Archive contacts that have completed deals                            | I can prioritise contacts that I have ongoing deals with                         |
-| `*`      | Forgetful user                                                                                      | Write simpler commands intuitively and when prompted to                | I don’t have to remember the complex syntax for each command                     |
-| `* *`    | Property agent                                                                                      | Sort contacts by alphabetical order                                    | Easier to locate contacts within address book                                    |
-| `* *`    | Property agent                                                                                      | Edit contacts to add new information about them                        | I don’t have to delete and add contacts to add more information                  |
-| `* * *`  | Property agent                                                                                      | Delete contacts that I no longer require                               | I have a less cluttered contact list that is easier to navigate                  |
-| `* * *`  | Property agent                                                                                      | Add new contacts                                                       | I am able to contact new clients or agents                                       |
-| `* * *`  | Property agent                                                                                      | Clear all entries                                                      | Faster delete all contacts if necessary                                          |
-| `* * *`  | Property agent                                                                                      | List all my contact entries                                            | I can see my contact list in case I forget their names                           |
-| `* * *`  | New user                                                                                            | Learn all the commands available                                       | I know how to use the address book                                               |
+| Priority | As a ...                                               | I want to ...                                                          | So that I can ...                                                                |
+|----------|--------------------------------------------------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| `* *`    | Property Agent                                         | view my contacts and schedule in one platform                          | I don’t have to switch between apps                                              |
+| `* *`    | Property Agent with many clients and colleagues        | sort my contacts into categories (tagging)                             | it is easier to remember my relationship with them                               |
+| `* *`    | Forgetful user                                         | Get reminded of meetings and appointments when they are approaching    | I don’t ghost my clients or agents                                               |
+| `*`      | Busy property agent                                    | view my schedule and contact list on-the-go                            | I can easily access necessary information when I’m outside or in a rush          |
+| `* *`    | Property Agent has to juggle multiple stakeholders     | Set reminders linked to specific contacts                              | I don’t miss client meetings or property showings                                |
+| `*`      | Property agent                                         | Add notes visible only to me                                           | Keep private thoughts while still sharing client basics                          |
+| `* *`    | Property Agent managing clients                        | Sort clients and agents by type                                        | I can filter out which types of deals I want to focus on at any point of time    |
+| `*`      | Forgetful User                                         | Add detail related to the events in my schedule e.g. event description | I can remember what to prepare                                                   |
+| `*`      | Property agent                                         | Attach notes to each contact                                           | I can remember important details                                                 |
+| `*`      | Property agent that travels a lot                      | Group my clients and deals by area                                     | I can easily plan out meetings by proximity                                      |
+| `* *`    | Property agent                                         | Set recurring reminders like weekly check-in calls                     | I can maintain consistent follow-ups                                             |
+| `* *`    | Property Agent                                         | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                            |
+| `* *`    | Property agent                                         | Tag contacts by transaction stage like prospect, negotiating, closed   | I can track progress easily                                                      |
+| `* *`    | User that prefers visual information                   | Colour code my tags and events                                         | I can easily identify the type of contacts and events                            |
+| `* *`    | Property Agent                                         | Set overdue tasks or meetings highlighted                              | I can prioritise catching up quickly                                             |
+| `* *`    | Property agent                                         | Add dates for meetings                                                 | I can keep track of important events and attend them                             |
+| `* *`    | Property agent that wants to track their current deals | Sort contacts by earliest meeting                                      | I can prioritise deals or meetings that have been delayed or are taking too long |
+| `* *`    | Forgetful property agent                               | Search for contacts using partial names                                | I can find their contact information despite not remembering their full name     |
+| `*`      | Property agent                                         | Input details for a new contact in one line                            | It is convenient                                                                 |
+| `* *`    | Property agent who handles many meetings               | Tag each client with their property location                           | I can quickly group and search for clients by area                               |
+| `* * *`  | Property agent who prefers typing                      | Search for client by typing their name                                 | Save time instead of scrolling through the whole address book                    |
+| `* *`    | Property agent managing multiple tasks                 | View upcoming meeting with the nearest deadline first                  | I know which client to attend to next                                            |
+| `*`      | Property agent who prefers typing                      | Autocomplete names/commands as I search through the addressbook        | Find my client more efficiently                                                  |
+| `*`      | Property agent juggling many deals                     | Attach notes to each client’s profile                                  | I can remember key details of past conversations                                 |
+| `*`      | Property agent                                         | See which agent is linked to a shared client                           | Responsibilities are clear                                                       |
+| `* *`    | Property agent that wants to track deal history        | Sort contacts by date added as contact                                 | Prioritise loyal customers                                                       |
+| `*`      | Property agent                                         | Write multiple different commands to do the same thing                 | I don’t have to remember specific syntax for each command                        |
+| `*`      | Property agent with a lot of contacts                  | Archive contacts that have completed deals                             | I can prioritise contacts that I have ongoing deals with                         |
+| `*`      | Forgetful user                                         | Write simpler commands intuitively and when prompted to                | I don’t have to remember the complex syntax for each command                     |
+| `* *`    | Property agent                                         | Sort contacts by alphabetical order                                    | Easier to locate contacts within address book                                    |
+| `* *`    | Property agent                                         | Edit contacts to add new information about them                        | I don’t have to delete and add contacts to add more information                  |
+| `* * *`  | Property agent                                         | Delete contacts that I no longer require                               | I have a less cluttered contact list that is easier to navigate                  |
+| `* * *`  | Property agent                                         | Add new contacts                                                       | I am able to contact new clients or agents                                       |
+| `* * *`  | Property agent                                         | Clear all entries                                                      | Faster delete all contacts if necessary                                          |
+| `* * *`  | Property agent                                         | List all my contact entries                                            | I can see my contact list in case I forget their names                           |
+| `* * *`  | New user                                               | Learn all the commands available                                       | I know how to use the address book                                               |
+| `* * *`  | Property agent                                         | Find contacts by address                                               | Easily locate contacts that stay in that area                                    |
 
 ### Use cases
 
@@ -730,6 +731,28 @@ Precondition: User is at the landing page of the app and has existing list of co
 
 * 2a. No commands available (system error or incomplete setup)
     * 2a1. System displays “No commands found. Please check configuration.”
+
+**Use case: Find contacts by address**
+
+**MSS**
+
+1. User requests to find contacts by specifying an address keyword.
+
+2. AddressBook filters and displays all contacts whose address contains the specified keyword.
+
+3. User views the list of matched contacts.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. No contact’s address matches the given keyword.
+
+    * 2a1. AddressBook shows a message indicating that no contacts were found.
+
+* 1a. User enters an invalid or empty address keyword.
+
+    * 1a1. AddressBook displays an error message prompting the user to provide a valid keyword.
 
 ### Non-Functional Requirements
 
