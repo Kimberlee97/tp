@@ -97,7 +97,7 @@ Examples:
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION STAGE [t/TAG]…​`
 
 <box type="tip" seamless>
 
@@ -105,8 +105,14 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 </box>
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` 
+  * Adds a person named John Doe whose phone number is `98765432`, email is `johnd@example.com`, address is
+  `John street, block 123, #01-01` and transaction stage is `prospect`.
+  ![Result for adding John Doe](images/AddJohnDoeResult.png)
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
+  * Adds a person named Betsy Crowe whose phone number is `1234567`, email is `betsycrowe@example.com`, address is
+  `Newgate Prison`, transaction stage is `negotiating`, and is tagged as `criminal` and `friend`.
+  ![Result for adding Betsy Crowe](images/AddBetsyCroweResult.png)
 
 ### Listing all persons : `list`
 
@@ -118,7 +124,7 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION STAGE] [t/TAG]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
@@ -130,6 +136,26 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+
+### Changing the transaction stage
+
+Replaces the transaction stage tag of an existing person to the given stage.
+
+Format: `transaction INDEX s/TRANSACTION STAGE`
+
+* Replaces the transaction stage of the person at the specified `INDEX`.
+* The given `TRANSACTION STAGE` must be one of the following: `prospect`, `negotiating` or `closed`.
+* Additional whitespace is accepted.
+* `TRANSACTION STAGE` is case-sensitive.
+* The Transaction Stage tag cannot be removed, only replaced.
+
+Examples:
+* `transaction 1 s/prospect` Replaces the transaction stage tag of the 1st person to be `prospect`.
+![Result of `transaction 1 s/prospect`](images/TransactionStageProspectResult.png)
+* `transaction 2 s/negotiating` Replaces the transaction stage tag of the 2nd person to be `negotiating`.
+![Result of `transaction 2 s/negotiating`](images/TransactionStageNegotiatingResult.png)
+* `transaction    2     s/  closed` Replaces the transaction stage tag of the 3rd person to be `closed`.
+![Result of `transaction    2     s/  closed`](images/TransactionStageClosedResult.png)
 
 ### Locating persons by name: `find`
 
