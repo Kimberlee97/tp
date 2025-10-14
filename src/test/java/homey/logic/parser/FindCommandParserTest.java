@@ -2,6 +2,7 @@ package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import homey.logic.commands.FindCommand;
 import homey.model.person.AddressContainsKeywordsPredicate;
 import homey.model.person.NameContainsKeywordsPredicate;
+import homey.model.person.TagContainsKeywordsPredicate;
+
 
 /**
  * Represents a parser that interprets user input for the {@code find} command.
@@ -75,4 +78,61 @@ public class FindCommandParserTest {
     private static String addressOnlyUsage() {
         return "Address: " + FindCommand.COMMAND_WORD + " " + PREFIX_ADDRESS + "KEYWORD [MORE_KEYWORDS]";
     }
+
+    @Test
+    public void parse_tagKeywords_success() {
+        String input = " t/friend colleague";
+        FindCommand expected = new FindCommand(
+                new TagContainsKeywordsPredicate(Arrays.asList("friend", "colleague")));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_tagKeywordsSingleWord_success() {
+        String input = " t/friend";
+        FindCommand expected = new FindCommand(
+                new TagContainsKeywordsPredicate(Arrays.asList("friend")));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_tagKeywordsWithExtraWhitespace_success() {
+        String input = " t/  friend   colleague  family  ";
+        FindCommand expected = new FindCommand(
+                new TagContainsKeywordsPredicate(Arrays.asList("friend", "colleague", "family")));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_tagEmpty_throwsParseException() {
+        // t/ + spaces -> tag-only usage
+        assertParseFailure(parser, " t/   ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, tagOnlyUsage()));
+    }
+
+    @Test
+    public void parse_tagPrefixOnlyWithoutSpaces_throwsParseException() {
+        assertParseFailure(parser, "t/",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, tagOnlyUsage()));
+    }
+
+    @Test
+    public void parse_tagPrefixWithSpaces_throwsParseException() {
+        assertParseFailure(parser, " t/   ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, tagOnlyUsage()));
+    }
+
+    @Test
+    public void parse_tagKeywordsWithNewlines_success() {
+        String input = " t/\n friend \n \t colleague  \t";
+        FindCommand expected = new FindCommand(
+                new TagContainsKeywordsPredicate(Arrays.asList("friend", "colleague")));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    private static String tagOnlyUsage() {
+        return "Tags: " + FindCommand.COMMAND_WORD + " " + PREFIX_TAG + "KEYWORD [MORE_KEYWORDS]";
+    }
+
+
 }
