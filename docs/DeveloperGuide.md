@@ -435,7 +435,16 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1. User searches for client using find command with a partial name
-2. System retrieves and displays list of contacts containing partial query
+2. System retrieves and displays list of contacts containing partial query (case-insensitive))
+
+    Use case ends.
+
+**Use case: Search for contacts by tag**
+
+**MSS**
+
+1. User searches for contacts using find tag command with a tag keyword
+2. System retrieves and displays list of contacts whose tags contain the keyword/partial keyword 
 
     Use case ends.
 
@@ -793,7 +802,7 @@ Precondition: User is at the landing page of the app and has existing list of co
 * **Meeting**: A scheduled event linked to one or more contacts, representing professional events such as property showings, negotiations or check-ins
 * **Human Editable Text Storage**: Data stored in plain text format (e.g. JSON, TXT) so users can open and manually edit it outside the app if needed
 * **Double-clickable JAR**: A Java Archive file packaged so that the application can be run directly by double-clicking, without needing an installer
-* **Partial Match Search**: A search feature that allows results to be found even if the user types only part of a name or keyword
+* **Partial Match Search**: A search feature that allows results to be found even if the user types only part of a name, address or tag. The search is case-insensitive and returns all matching entries containing the keyword substring.
 
 --------------------------------------------------------------------------------------------------------------------
 

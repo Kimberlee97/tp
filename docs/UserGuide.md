@@ -146,7 +146,8 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find ale` returns `Alex Yeoh` and `Alecia Tan`
+* `find ale` returns `Alex Yeoh`
+  ![result for 'find ale'](images/findAleResult.png)
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
@@ -182,6 +183,7 @@ Examples:
 * `find t/friend` returns all persons tagged with `friend`
 * `find t/fri` returns all persons with tags containing `fri` (e.g., `friend`, `Friday`)
 * `find t/friend buyer` returns persons tagged with either `friend` or `buyer`
+  ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
 
 ### Deleting a person : `delete`
 
