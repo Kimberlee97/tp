@@ -20,6 +20,7 @@ import homey.model.Model;
 import homey.model.ModelManager;
 import homey.model.UserPrefs;
 import homey.model.person.NameContainsKeywordsPredicate;
+import homey.model.person.TagContainsKeywordsPredicate;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -96,6 +97,68 @@ public class FindCommandTest {
         assertEquals(findCommand, findCommandCopy);
 
         assertNotNull(findCommand.toString());
+    }
+
+    @Test
+    public void constructorOverload_tagPredicate_constructsSuccessfully() {
+        TagContainsKeywordsPredicate tagPredicate =
+                new TagContainsKeywordsPredicate(Collections.singletonList("friend"));
+        FindCommand findCommand = new FindCommand(tagPredicate);
+
+        assertNotNull(findCommand);
+
+        FindCommand findCommandCopy = new FindCommand(
+                new TagContainsKeywordsPredicate(Collections.singletonList("friend")));
+        assertEquals(findCommand, findCommandCopy);
+
+        assertNotNull(findCommand.toString());
+    }
+
+    @Test
+    public void execute_tagPredicate_personsFound() {
+        TagContainsKeywordsPredicate predicate = new TagContainsKeywordsPredicate(
+                Arrays.asList("friends"));
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        CommandResult result = command.execute(model);
+
+        assertNotNull(result);
+        assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_tagPredicateNoMatch_noPersonsFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        TagContainsKeywordsPredicate predicate = new TagContainsKeywordsPredicate(
+                Arrays.asList("nonexistenttag"));
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Collections.emptyList(), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_tagPredicateMultipleKeywords_personsFound() {
+        TagContainsKeywordsPredicate predicate = new TagContainsKeywordsPredicate(
+                Arrays.asList("friend", "colleague"));
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        CommandResult result = command.execute(model);
+
+        assertNotNull(result);
+        assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void toStringMethod_tagPredicate() {
+        TagContainsKeywordsPredicate predicate = new TagContainsKeywordsPredicate(
+                Arrays.asList("friend"));
+        FindCommand findCommand = new FindCommand(predicate);
+        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
+        assertEquals(expected, findCommand.toString());
     }
 
     /**
