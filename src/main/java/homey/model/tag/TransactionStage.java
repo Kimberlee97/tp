@@ -9,7 +9,7 @@ import static java.util.Objects.requireNonNull;
 public class TransactionStage {
     public static final String MESSAGE_CONSTRAINTS = "Transaction stage should be 'prospect', 'negotiating'"
             + "or 'closed'.";
-
+    public static final String[] VALID_STAGES = new String[]{"prospect", "negotiating", "closed"};
     public final String value;
 
     /**
@@ -28,7 +28,13 @@ public class TransactionStage {
      * @return
      */
     public static boolean isValid(String test) {
-        return test.equals("prospect") || test.equals("negotiating") || test.equals("closed");
+        boolean isValid = false;
+        for (int i = 0; i < VALID_STAGES.length; i++) {
+            if (test.equals(VALID_STAGES[i])) {
+                isValid = true;
+            }
+        }
+        return isValid;
     }
 
     @Override
