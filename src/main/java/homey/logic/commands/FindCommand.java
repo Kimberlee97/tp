@@ -20,8 +20,14 @@ public class FindCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+            + "Parameters:\n"
+            + " - Name: KEYWORD [MORE_KEYWORDS]\n"
+            + " - Address: a/KEYWORD [MORE_KEYWORDS]\n"
+            + " - Tags: t/KEYWORD [MORE_KEYWORDS]\n"
+            + "Examples:\n"
+            + " find alice bob\n"
+            + " find a/bedok north\n"
+            + " find t/friend";
 
     // Store generically
     private final Predicate<Person> predicate;
@@ -30,7 +36,7 @@ public class FindCommand extends Command {
         this.predicate = predicate;
     }
 
-    /** Overload used by address-search (a/...) and any future predicates. */
+    /** Overload used by address-search (a/...) and tag-search (t/...) and any other future predicates. */
     public FindCommand(Predicate<Person> predicate) {
         this.predicate = predicate;
     }
