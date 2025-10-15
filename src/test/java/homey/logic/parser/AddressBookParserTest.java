@@ -2,9 +2,11 @@ package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static homey.logic.commands.CommandTestUtil.VALID_RELATION_CLIENT;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.testutil.Assert.assertThrows;
 import static homey.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static homey.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -23,10 +25,13 @@ import homey.logic.commands.ExitCommand;
 import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
 import homey.logic.commands.ListCommand;
+import homey.logic.commands.RelationCommand;
+import homey.logic.commands.RelationCommandTest;
 import homey.logic.commands.TransactionStageCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.NameContainsKeywordsPredicate;
 import homey.model.person.Person;
+import homey.model.tag.Relation;
 import homey.model.tag.TransactionStage;
 import homey.testutil.EditPersonDescriptorBuilder;
 import homey.testutil.PersonBuilder;
@@ -63,6 +68,14 @@ public class AddressBookParserTest {
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
                 + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
+    }
+
+    @Test
+    public void parseCommand_relation() throws Exception {
+        final Relation relation = new Relation("client");
+        RelationCommand command = (RelationCommand) parser.parseCommand(RelationCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + relation.value);
+        assertEquals(new RelationCommand(INDEX_FIRST_PERSON, relation), command);
     }
 
     @Test

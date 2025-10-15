@@ -8,13 +8,14 @@ import static java.util.Objects.requireNonNull;
 import homey.commons.core.index.Index;
 import homey.commons.exceptions.IllegalValueException;
 import homey.logic.commands.RelationCommand;
+import homey.logic.commands.TransactionStageCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.tag.Relation;
 
 /**
  * Parses input arguments and creates a new {@code RelationCommand} object
  */
-public class RelationCommandParser {
+public class RelationCommandParser implements Parser<RelationCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the {@code RelationCommand}
      * and returns a {@code RelationCommand} object for execution.
