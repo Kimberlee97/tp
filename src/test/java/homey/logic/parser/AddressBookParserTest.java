@@ -2,11 +2,9 @@ package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static homey.logic.commands.CommandTestUtil.VALID_RELATION_CLIENT;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.testutil.Assert.assertThrows;
 import static homey.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static homey.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,7 +24,6 @@ import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
 import homey.logic.commands.ListCommand;
 import homey.logic.commands.RelationCommand;
-import homey.logic.commands.RelationCommandTest;
 import homey.logic.commands.TransactionStageCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.NameContainsKeywordsPredicate;

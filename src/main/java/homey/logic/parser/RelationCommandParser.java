@@ -8,7 +8,6 @@ import static java.util.Objects.requireNonNull;
 import homey.commons.core.index.Index;
 import homey.commons.exceptions.IllegalValueException;
 import homey.logic.commands.RelationCommand;
-import homey.logic.commands.TransactionStageCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.tag.Relation;
 
