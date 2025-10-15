@@ -13,6 +13,7 @@ import homey.model.person.Address;
 import homey.model.person.Email;
 import homey.model.person.Name;
 import homey.model.person.Phone;
+import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
 
@@ -135,5 +136,19 @@ public class ParserUtil {
             throw new ParseException(TransactionStage.MESSAGE_CONSTRAINTS);
         }
         return new TransactionStage(trimmed);
+    }
+
+    /**
+     * Parses a {@code String relation} into a {@code Relation}.
+     *
+     * @throws ParseException if the given {@code} relation is invalid.
+     */
+    public static Relation parseRelation(String relation) throws ParseException {
+        requireNonNull(relation);
+        String trimmed = relation.trim();
+        if (trimmed.isEmpty() || !TransactionStage.isValid(trimmed)) {
+            throw new ParseException(Relation.MESSAGE_CONSTRAINTS);
+        }
+        return new Relation(trimmed);
     }
 }

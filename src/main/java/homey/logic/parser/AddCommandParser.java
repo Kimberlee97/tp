@@ -6,6 +6,7 @@ import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
+import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 
@@ -39,7 +40,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_TRANSACTION, PREFIX_TAG, PREFIX_MEETING);
+                        PREFIX_RELATION, PREFIX_TRANSACTION, PREFIX_TAG, PREFIX_MEETING);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)
                 || !argMultimap.getPreamble().isEmpty()) {
@@ -66,12 +67,17 @@ public class AddCommandParser implements Parser<AddCommand> {
             }
         }
 
-        if (!argMultimap.getValue(PREFIX_TRANSACTION).isPresent()) {
+        if (argMultimap.getValue(PREFIX_TRANSACTION).isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
         TransactionStage transaction = ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get());
 
+        // Default relation is client
         Relation relation = new Relation("client");
+        if (argMultimap.getValue(PREFIX_RELATION).isPresent()) {
+            relation = ParserUtil.parseRelation(argMultimap.getValue(PREFIX_RELATION).get());
+        }
+
         Person person = new Person(name, phone, email, address, relation, transaction, tagList, meeting);
         return new AddCommand(person);
     }
