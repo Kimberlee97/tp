@@ -53,12 +53,6 @@ public class AddCommandParser implements Parser<AddCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-
-        if (!argMultimap.getValue(PREFIX_TRANSACTION).isPresent()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
-        TransactionStage transaction = ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get());
-
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         Optional<Meeting> meeting = Optional.empty();
@@ -72,11 +66,16 @@ public class AddCommandParser implements Parser<AddCommand> {
             }
         }
 
-        Relation relation = new Relation("client");
+        if (!argMultimap.getValue(PREFIX_TRANSACTION).isPresent()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+        TransactionStage transaction = ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get());
 
+        Relation relation = new Relation("client");
         Person person = new Person(name, phone, email, address, relation, transaction, tagList, meeting);
         return new AddCommand(person);
     }
+
 
     /**
      * Returns true if all specified prefixes are present (i.e., have a value) in the argument multimap.

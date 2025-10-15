@@ -5,85 +5,71 @@ import static java.util.Objects.requireNonNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Objects;
+import java.time.format.ResolverStyle;
 
 /**
- * Represents an optional meeting date and time for a {@code Person}.
- * This class is immutable and uses ISO 8601 format: {@code yyyy-MM-dd HH:mm}.
+ * Represents an optional meeting date-time for a person.
+ * <p>Format: {@code yyyy-MM-dd HH:mm} (24-hour), strictly validated. Example: {@code 2025-11-03 14:00}.
  */
 public class Meeting {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Meetings should follow the format 'yyyy-MM-dd HH:mm', e.g., 2025-11-01 14:00";
+            "Meeting must be in yyyy-MM-dd HH:mm (24h) format and be a real date/time, e.g. 2025-11-03 14:00.";
 
-    private static final DateTimeFormatter FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
+            .ofPattern("uuuu-MM-dd HH:mm")
+            .withResolverStyle(ResolverStyle.STRICT);
 
-    private final LocalDateTime dateTime;
-
-    /**
-     * Constructs a {@code Meeting} from a valid {@link LocalDateTime}.
-     *
-     * @param dateTime The meeting date and time.
-     */
-    public Meeting(LocalDateTime dateTime) {
-        requireNonNull(dateTime);
-        this.dateTime = dateTime;
-    }
+    private final LocalDateTime value;
 
     /**
-     * Parses and constructs a {@code Meeting} from the given date-time string.
+     * Creates a Meeting from a raw string in {@code yyyy-MM-dd HH:mm} format.
      *
-     * @param dateTimeStr The string representation of the meeting date-time.
-     * @throws IllegalArgumentException If the string does not match the required format.
+     * @throws IllegalArgumentException if the string is invalid.
      */
-    public Meeting(String dateTimeStr) {
-        requireNonNull(dateTimeStr);
-        try {
-            this.dateTime = LocalDateTime.parse(dateTimeStr.trim(), FORMATTER);
-        } catch (DateTimeParseException e) {
+    public Meeting(String raw) {
+        requireNonNull(raw);
+        if (!isValidMeeting(raw)) {
             throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
         }
+        this.value = LocalDateTime.parse(raw.trim(), FORMATTER);
     }
 
-    /**
-     * Returns {@code true} if the given string is a valid meeting date-time.
-     */
+    /** Returns true if {@code test} is a valid meeting string. */
     public static boolean isValidMeeting(String test) {
+        if (test == null) {
+            return false;
+        }
+        String s = test.trim();
+        if (s.isEmpty()) {
+            return false;
+        }
         try {
-            LocalDateTime.parse(test.trim(), FORMATTER);
+            LocalDateTime.parse(s, FORMATTER); // STRICT: validates month/day/hour/min ranges
             return true;
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException ex) {
             return false;
         }
     }
 
-    /**
-     * Returns the meeting time formatted for display.
-     */
+    /** Returns a display string */
     public String toDisplayString() {
-        return dateTime.format(FORMATTER);
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
+        return value.format(FORMATTER);
     }
 
     @Override
     public String toString() {
-        return toDisplayString();
+        return value.format(FORMATTER);
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this
-                || (other instanceof Meeting)
-                && dateTime.equals(((Meeting) other).dateTime);
+                || (other instanceof Meeting && value.equals(((Meeting) other).value));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateTime);
+        return value.hashCode();
     }
 }
-

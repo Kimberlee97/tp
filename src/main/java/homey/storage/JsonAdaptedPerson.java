@@ -3,6 +3,7 @@ package homey.storage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import homey.commons.exceptions.IllegalValueException;
 import homey.model.person.Address;
 import homey.model.person.Email;
+import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
@@ -33,6 +35,7 @@ class JsonAdaptedPerson {
     private final String relation;
     private final String stage;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final String meeting;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -41,7 +44,7 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("relation") String relation, @JsonProperty("stage") String stage,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("tags") List<JsonAdaptedTag> tags, @JsonProperty("meeting") String meeting) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -51,6 +54,15 @@ class JsonAdaptedPerson {
         if (tags != null) {
             this.tags.addAll(tags);
         }
+        this.meeting = meeting;
+    }
+
+    /**
+     * Overloaded constructor
+     */
+    public JsonAdaptedPerson(String name, String phone, String email, String address,
+                             String relation, String stage, List<JsonAdaptedTag> tags) {
+        this(name, phone, email, address, relation, stage, tags, null);
     }
 
     /**
@@ -66,6 +78,7 @@ class JsonAdaptedPerson {
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
+        this.meeting = source.getMeeting().map(Meeting::toString).orElse(null);
     }
 
     /**
@@ -126,8 +139,17 @@ class JsonAdaptedPerson {
         }
         final TransactionStage modelStage = new TransactionStage(stage);
 
+        Optional<Meeting> modelMeeting = Optional.empty();
+        if (meeting != null && !meeting.trim().isEmpty()) {
+            if (!Meeting.isValidMeeting(meeting)) {
+                throw new IllegalValueException(Meeting.MESSAGE_CONSTRAINTS);
+            }
+            modelMeeting = Optional.of(new Meeting(meeting));
+        }
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelRelation, modelStage, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelRelation, modelStage, modelTags,
+                modelMeeting);
     }
 
 }
