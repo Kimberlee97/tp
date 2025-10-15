@@ -24,6 +24,7 @@ import homey.logic.commands.exceptions.CommandException;
 import homey.model.Model;
 import homey.model.person.Address;
 import homey.model.person.Email;
+import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
@@ -107,8 +108,13 @@ public class EditCommand extends Command {
         Relation updatedRelation = personToEdit.getRelation(); // edit command does not allow editing relation tags
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
+        // Meeting: preserve original unless user edited (m/ provided). Empty means 'clear'.
+        Optional<Meeting> updatedMeeting = editPersonDescriptor.isMeetingEdited()
+                ? editPersonDescriptor.getMeeting()
+                : personToEdit.getMeeting();
+
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
-                updatedRelation, updatedStage, updatedTags);
+                updatedRelation, updatedStage, updatedTags, updatedMeeting);
     }
 
     @Override
@@ -147,6 +153,9 @@ public class EditCommand extends Command {
         private TransactionStage stage;
         private Set<Tag> tags;
 
+        private boolean meetingEdited = false;
+        private Optional<Meeting> meeting = Optional.empty();
+
         public EditPersonDescriptor() {}
 
         /**
@@ -160,13 +169,16 @@ public class EditCommand extends Command {
             setAddress(toCopy.address);
             setStage(toCopy.stage);
             setTags(toCopy.tags);
+            this.meetingEdited = toCopy.meetingEdited;
+            this.meeting = toCopy.meeting;
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, stage, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, stage, tags)
+                    || meetingEdited; // include meeting edits
         }
 
         public void setName(Name name) {
@@ -226,6 +238,25 @@ public class EditCommand extends Command {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
         }
 
+        /**
+         * Marks the meeting as edited and sets the desired value.
+         * Pass {@code Optional.empty()} to clear the meeting.
+         */
+        public void setMeeting(Optional<Meeting> meeting) {
+            this.meetingEdited = true;
+            this.meeting = (meeting == null) ? Optional.empty() : meeting;
+        }
+
+        /** Returns the desired meeting value if edited (may be empty to indicate clearing). */
+        public Optional<Meeting> getMeeting() {
+            return meeting;
+        }
+
+        /** Returns true if the user supplied an {@code m/} prefix (edit or clear). */
+        public boolean isMeetingEdited() {
+            return meetingEdited;
+        }
+
         @Override
         public boolean equals(Object other) {
             if (other == this) {
@@ -243,7 +274,9 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(stage, otherEditPersonDescriptor.stage)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                    && meetingEdited == otherEditPersonDescriptor.meetingEdited
+                    && Objects.equals(meeting, otherEditPersonDescriptor.meeting);
         }
 
         @Override
@@ -257,5 +290,6 @@ public class EditCommand extends Command {
                     .add("tags", tags)
                     .toString();
         }
+
     }
 }

@@ -1,5 +1,6 @@
 package homey.testutil;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -7,6 +8,7 @@ import java.util.stream.Stream;
 import homey.logic.commands.EditCommand.EditPersonDescriptor;
 import homey.model.person.Address;
 import homey.model.person.Email;
+import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
@@ -77,6 +79,12 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withStage(String stage) {
         descriptor.setStage(new TransactionStage(stage));
+        return this;
+    }
+
+    /** Sets the {@code Meeting} (optional) of the descriptor. */
+    public EditPersonDescriptorBuilder withMeeting(String meeting) {
+        descriptor.setMeeting(Optional.of(new Meeting(meeting)));
         return this;
     }
 

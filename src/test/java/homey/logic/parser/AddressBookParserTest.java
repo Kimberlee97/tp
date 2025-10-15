@@ -2,6 +2,7 @@ package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.testutil.Assert.assertThrows;
 import static homey.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,9 +23,13 @@ import homey.logic.commands.ExitCommand;
 import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
 import homey.logic.commands.ListCommand;
+import homey.logic.commands.RelationCommand;
+import homey.logic.commands.TransactionStageCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.NameContainsKeywordsPredicate;
 import homey.model.person.Person;
+import homey.model.tag.Relation;
+import homey.model.tag.TransactionStage;
 import homey.testutil.EditPersonDescriptorBuilder;
 import homey.testutil.PersonBuilder;
 import homey.testutil.PersonUtil;
@@ -63,6 +68,14 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_relation() throws Exception {
+        final Relation relation = new Relation("client");
+        RelationCommand command = (RelationCommand) parser.parseCommand(RelationCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + relation.value);
+        assertEquals(new RelationCommand(INDEX_FIRST_PERSON, relation), command);
+    }
+
+    @Test
     public void parseCommand_exit() throws Exception {
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD) instanceof ExitCommand);
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3") instanceof ExitCommand);
@@ -86,6 +99,16 @@ public class AddressBookParserTest {
     public void parseCommand_list() throws Exception {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_transactionStage() throws Exception {
+        String stage = "prospect";
+        TransactionStage transactionStage = new TransactionStage(stage);
+        TransactionStageCommand command = (TransactionStageCommand) parser.parseCommand(
+                TransactionStageCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + " "
+                        + PREFIX_TRANSACTION + stage);
+        assertEquals(new TransactionStageCommand(INDEX_FIRST_PERSON, transactionStage), command);
     }
 
     @Test

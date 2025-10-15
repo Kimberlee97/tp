@@ -97,14 +97,16 @@ Examples:
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION STAGE [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION STAGE [t/TAG] [m/MEETING]…​`
 
 <box type="tip" seamless>
 
 **Tip:** A person can have any number of tags (including 0)
+The m/MEETING field is optional — use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
 </box>
 
 Examples:
+* `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` 
   * Adds a person named John Doe whose phone number is `98765432`, email is `johnd@example.com`, address is
   `John street, block 123, #01-01` and transaction stage is `prospect`.
@@ -124,7 +126,7 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION STAGE] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION STAGE] [t/TAG] [m/MEETING]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
@@ -132,10 +134,27 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION STAG
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
+* To clear an existing meeting, type m/ with no value after it.
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `edit 5 m/2025-11-10 09:30` Updates the 5th person’s next meeting to `10 Nov 2025 at 9:30 AM.`
+*  `edit 5 m/` Clears the meeting time for the 5th person.
+
+### Add relational tag : `relation`
+
+Adds a relational tag to an existing person in the address book.
+
+Format: `relation INDEX [client/vendor]`
+
+* Adds the specified relational tag to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* The specified relational tag must be a valid relation: 'client' or 'vendor'.
+* Existing values will be updated to the input values.
+
+Examples:
+*  `edit 1 client` Edits the relational tag of the 1st person to be `client`.
+*  `edit 2 vendor` Edits the relational tag of the 2nd person to be `vendor`.
 
 ### Changing the transaction stage
 
@@ -166,12 +185,14 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
 * Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
+* Partial matches are supported - e.g. `Han` will match `Hans`
 * Persons matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
 * `find John` returns `john` and `John Doe`
+* `find ale` returns `Alex Yeoh`
+  ![result for 'find ale'](images/findAleResult.png)
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
@@ -190,6 +211,24 @@ Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
 * `find a/bed` returns all persons living in `bedok` and `Bedok` or other addresses with `bed`<br>
   ![result for 'find alex david'](images/findAddressBedok.png)
+
+### Locating persons by tag: `find t/`
+
+Finds persons whose tags contain any of the given keywords.
+
+Format: `find t/KEYWORD [MORE_KEYWORDS]`
+
+* The search is case-insensitive. e.g. `friend` will match `Friend`
+* The order of the keywords does not matter.
+* Only tags are searched.
+* Partial matches are supported - e.g. `fri` will match `friend`
+* Persons matching at least one keyword will be returned (i.e. `OR` search).
+
+Examples:
+* `find t/friend` returns all persons tagged with `friend`
+* `find t/fri` returns all persons with tags containing `fri` (e.g., `friend`, `Friday`)
+* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`
+  ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
 
 ### Deleting a person : `delete`
 
@@ -254,14 +293,15 @@ _Details coming soon ..._
 
 ## Command summary
 
-| Action      | Format, Examples                                                                                                                                                      |
-|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Add**     | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague` |
-| **Clear**   | `clear`                                                                                                                                                               |
-| **Delete**  | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                   |
-| **Edit**    | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                           |
-| **Find**    | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                            |
-| **Find a/** | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                               |
-| **List**    | `list`                                                                                                                                                                |
-| **Help**    | `help [topic]`<br> e.g., `help add`                                                                                                                                                                |
+| Action      | Format, Examples                                                                                                                                                                                     |
+|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Add**     | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG] [m/MEETING]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague m/2025-10-10 09:30` |
+| **Clear**   | `clear`                                                                                                                                                                                              |
+| **Delete**  | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                                  |
+| **Edit**    | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG] [m/MEETING]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                                 |
+| **Find**    | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                           |
+| **Find a/** | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                                                              |
+| **Find t/** | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                           |
+| **List**    | `list`                                                                                                                                                                                               |
+| **Help**    | `help [topic]`<br> e.g., `help add`                                                                                                                                                                  |
 

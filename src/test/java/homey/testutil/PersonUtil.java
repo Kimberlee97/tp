@@ -2,6 +2,7 @@ package homey.testutil;
 
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
@@ -39,6 +40,8 @@ public class PersonUtil {
         person.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );
+        person.getMeeting().ifPresent(m ->
+                sb.append(PREFIX_MEETING).append(m.toString()).append(" "));
         return sb.toString();
     }
 
@@ -62,6 +65,8 @@ public class PersonUtil {
                 tags.forEach(s -> sb.append(PREFIX_TAG).append(s.tagName).append(" "));
             }
         }
+        descriptor.getMeeting().ifPresent(m ->
+                sb.append(PREFIX_MEETING).append(m.toString()).append(" "));
         return sb.toString();
     }
 }

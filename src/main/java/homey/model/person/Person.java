@@ -5,6 +5,7 @@ import static homey.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import homey.commons.util.ToStringBuilder;
@@ -28,6 +29,7 @@ public class Person {
     private final TransactionStage stage;
     private final Relation relation;
     private final Set<Tag> tags = new HashSet<>();
+    private final Optional<Meeting> meeting;
 
     /**
      * Every field must be present and not null.
@@ -42,6 +44,23 @@ public class Person {
         this.stage = stage;
         this.relation = relation;
         this.tags.addAll(tags);
+        this.meeting = Optional.empty();
+    }
+
+    /**
+     * Overloaded constructor that accepts an optional meeting.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Relation relation,
+                  TransactionStage stage, Set<Tag> tags, Optional<Meeting> meeting) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.stage = stage;
+        this.relation = relation;
+        this.tags.addAll(tags);
+        this.meeting = meeting == null ? Optional.empty() : meeting;
     }
 
     public Name getName() {
@@ -66,6 +85,10 @@ public class Person {
 
     public Relation getRelation() {
         return relation;
+    }
+
+    public Optional<Meeting> getMeeting() {
+        return meeting;
     }
 
     /**
