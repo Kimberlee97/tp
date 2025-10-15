@@ -9,6 +9,7 @@ import static homey.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static homey.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static homey.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static homey.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
+import static homey.logic.commands.CommandTestUtil.INVALID_RELATION_DESC;
 import static homey.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static homey.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static homey.logic.commands.CommandTestUtil.NAME_DESC_BOB;
@@ -16,6 +17,8 @@ import static homey.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static homey.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static homey.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static homey.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
+import static homey.logic.commands.CommandTestUtil.RELATION_DESC_CLIENT;
+import static homey.logic.commands.CommandTestUtil.RELATION_DESC_VENDOR;
 import static homey.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static homey.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static homey.logic.commands.CommandTestUtil.TRANSACTION_DESC_CLOSED;
@@ -24,12 +27,14 @@ import static homey.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static homey.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static homey.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static homey.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static homey.logic.commands.CommandTestUtil.VALID_RELATION_VENDOR;
 import static homey.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static homey.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
+import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static homey.testutil.TypicalPersons.AMY;
@@ -46,6 +51,7 @@ import homey.model.person.Email;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
+import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.testutil.PersonBuilder;
 
@@ -68,6 +74,14 @@ public class AddCommandParserTest {
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + TRANSACTION_DESC_PROSPECT
                         + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 new AddCommand(expectedPersonMultipleTags));
+
+        // with relation tag "vendor"
+        Person expectedPersonRelation = new PersonBuilder(BOB).withRelation(VALID_RELATION_VENDOR)
+                .build();
+        assertParseSuccess(parser,
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + RELATION_DESC_VENDOR
+                        + TRANSACTION_DESC_PROSPECT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                new AddCommand(expectedPersonRelation));
     }
 
     @Test
@@ -90,6 +104,10 @@ public class AddCommandParserTest {
         // multiple addresses
         assertParseFailure(parser, ADDRESS_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
+
+        // multiple relations
+        assertParseFailure(parser, RELATION_DESC_VENDOR + RELATION_DESC_CLIENT + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_RELATION));
 
         // multiple fields repeated
         assertParseFailure(parser,
@@ -115,6 +133,10 @@ public class AddCommandParserTest {
         assertParseFailure(parser, INVALID_ADDRESS_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
+        // invalid relation
+        assertParseFailure(parser, INVALID_RELATION_DESC + validExpectedPersonString + RELATION_DESC_VENDOR,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_RELATION));
+
         // valid value followed by invalid value
 
         // invalid name
@@ -132,6 +154,10 @@ public class AddCommandParserTest {
         // invalid address
         assertParseFailure(parser, validExpectedPersonString + INVALID_ADDRESS_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
+
+        // invalid relation
+        assertParseFailure(parser, RELATION_DESC_CLIENT + validExpectedPersonString + INVALID_RELATION_DESC,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_RELATION));
     }
 
     @Test
@@ -141,6 +167,12 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
                         + TRANSACTION_DESC_PROSPECT,
                 new AddCommand(expectedPerson));
+
+        // zero relations
+        Person expectedPersonRelation = new PersonBuilder(AMY).build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                        + TRANSACTION_DESC_PROSPECT + TAG_DESC_FRIEND,
+                new AddCommand(expectedPersonRelation));
     }
 
     @Test
@@ -190,6 +222,11 @@ public class AddCommandParserTest {
         // invalid address
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + INVALID_ADDRESS_DESC
                 + TRANSACTION_DESC_PROSPECT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Address.MESSAGE_CONSTRAINTS);
+
+        // invalid relation
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + INVALID_RELATION_DESC + TRANSACTION_DESC_PROSPECT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                Relation.MESSAGE_CONSTRAINTS);
 
         // invalid tag
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
