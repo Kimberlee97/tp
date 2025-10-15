@@ -97,12 +97,14 @@ Examples:
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION STAGE [t/TAG] [m/MEETING]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION STAGE [r/RELATION] [t/TAG] [m/MEETING]…​`
 
 <box type="tip" seamless>
 
-**Tip:** A person can have any number of tags (including 0)
-The m/MEETING field is optional — use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
+**Tips:** 
+* A person can have any number of tags (including 0).
+* The m/MEETING field is optional — use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
+* The r/RELATION field is optional. The default relation for a new contact is client.
 </box>
 
 Examples:
