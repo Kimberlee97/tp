@@ -42,6 +42,8 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane tags;
     @FXML
     private Label transaction;
+    @FXML
+    private Label meeting;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -59,5 +61,16 @@ public class PersonCard extends UiPart<Region> {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        person.getMeeting().ifPresentOrElse(
+                m -> {
+                    meeting.setText("Next meeting: " + m.toDisplayString());
+                    meeting.setManaged(true);
+                    meeting.setVisible(true);
+                }, () -> {
+                    meeting.setText("");
+                    meeting.setManaged(false);
+                    meeting.setVisible(false);
+                }
+        );
     }
 }
