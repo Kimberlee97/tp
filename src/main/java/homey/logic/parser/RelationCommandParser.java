@@ -14,7 +14,7 @@ import homey.model.tag.Relation;
 /**
  * Parses input arguments and creates a new {@code RelationCommand} object
  */
-public class RelationCommandParser {
+public class RelationCommandParser implements Parser<RelationCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the {@code RelationCommand}
      * and returns a {@code RelationCommand} object for execution.

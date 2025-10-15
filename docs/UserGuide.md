@@ -138,6 +138,20 @@ Examples:
 *  `edit 5 m/2025-11-10 09:30` Updates the 5th person’s next meeting to `10 Nov 2025 at 9:30 AM.`
 *  `edit 5 m/` Clears the meeting time for the 5th person.
 
+### Add relational tag : `relation`
+
+Adds a relational tag to an existing person in the address book.
+
+Format: `relation INDEX [client/vendor]`
+
+* Adds the specified relational tag to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* The specified relational tag must be a valid relation: 'client' or 'vendor'.
+* Existing values will be updated to the input values.
+
+Examples:
+*  `edit 1 client` Edits the relational tag of the 1st person to be `client`.
+*  `edit 2 vendor` Edits the relational tag of the 2nd person to be `vendor`.
+
 ### Locating persons by name: `find`
 
 Finds persons whose names contain any of the given keywords.

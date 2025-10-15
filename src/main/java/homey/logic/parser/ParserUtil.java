@@ -146,7 +146,7 @@ public class ParserUtil {
     public static Relation parseRelation(String relation) throws ParseException {
         requireNonNull(relation);
         String trimmed = relation.trim();
-        if (trimmed.isEmpty() || !TransactionStage.isValid(trimmed)) {
+        if (trimmed.isEmpty()) {
             throw new ParseException(Relation.MESSAGE_CONSTRAINTS);
         }
         return new Relation(trimmed);
