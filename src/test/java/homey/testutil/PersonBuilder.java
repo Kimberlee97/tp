@@ -1,10 +1,12 @@
 package homey.testutil;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import homey.model.person.Address;
 import homey.model.person.Email;
+import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
@@ -32,6 +34,7 @@ public class PersonBuilder {
     private Relation relation;
     private TransactionStage stage;
     private Set<Tag> tags;
+    private Optional<Meeting> meeting;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -44,6 +47,7 @@ public class PersonBuilder {
         stage = new TransactionStage(DEFAULT_STAGE);
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
+        meeting = Optional.empty();
     }
 
     /**
@@ -57,6 +61,7 @@ public class PersonBuilder {
         relation = personToCopy.getRelation();
         stage = personToCopy.getStage();
         tags = new HashSet<>(personToCopy.getTags());
+        meeting = personToCopy.getMeeting();
     }
 
     /**
@@ -112,6 +117,12 @@ public class PersonBuilder {
      */
     public PersonBuilder withStage(String stage) {
         this.stage = new TransactionStage(stage);
+        return this;
+    }
+
+    /** Sets the optional {@code Meeting} of the {@code Person} that we are building. */
+    public PersonBuilder withMeeting(String meeting) {
+        this.meeting = Optional.of(new Meeting(meeting));
         return this;
     }
 
