@@ -24,7 +24,7 @@ public class HelpWindowUrlBuilderTest {
 
     @Test
     public void knownTopic_help_usesAnchor() {
-        String expected = HelpWindow.USERGUIDE_URL + "#viewing-help-help";
+        String expected = HelpWindow.USERGUIDE_URL + "#viewing-help-help-topic";
         assertEquals(expected, HelpWindow.buildUserGuideUrl("help"));
     }
 

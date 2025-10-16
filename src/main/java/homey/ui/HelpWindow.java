@@ -37,7 +37,7 @@ public class HelpWindow extends UiPart<Stage> {
             "delete", "#deleting-a-person-delete",
             "find", "#locating-persons-by-name-find",
             "list", "#listing-all-persons-list",
-            "help", "#viewing-help-help"
+            "help", "#viewing-help-help-topic"
     );
 
     @FXML

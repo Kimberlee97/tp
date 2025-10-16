@@ -21,6 +21,6 @@ public class HelpWindowAnchorsTest {
         assertEquals("#deleting-a-person-delete", anchors.get("delete"));
         assertEquals("#locating-persons-by-name-find", anchors.get("find"));
         assertEquals("#listing-all-persons-list", anchors.get("list"));
-        assertEquals("#viewing-help-help", anchors.get("help"));
+        assertEquals("#viewing-help-help-topic", anchors.get("help"));
     }
 }
