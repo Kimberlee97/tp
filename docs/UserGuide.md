@@ -157,8 +157,9 @@ Format: `relation INDEX RELATION`
 * Existing values will be updated to the input values.
 
 Examples:
-*  `relation 1 client` Edits the relational tag of the 1st person to be `client`.
-*  `relation 2 vendor` Edits the relational tag of the 2nd person to be `vendor`.
+*  `relation 2 client` Edits the relational tag of the 2nd person to be `client`.
+   ![Result of `relation 2 client`](images/relationClient.png)
+*  `relation 1 vendor` Edits the relational tag of the 1st person to be `vendor`.
 
 ### Changing the transaction stage
 
