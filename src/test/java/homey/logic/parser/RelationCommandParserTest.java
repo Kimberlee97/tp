@@ -33,6 +33,9 @@ public class RelationCommandParserTest {
         // no parameters
         assertParseFailure(parser, RelationCommand.COMMAND_WORD, expectedMessage);
 
+        // no relation
+        assertParseFailure(parser, RelationCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON, expectedMessage);
+
         // no index
         assertParseFailure(parser, RelationCommand.COMMAND_WORD + " " + VALID_RELATION_VENDOR, expectedMessage);
     }

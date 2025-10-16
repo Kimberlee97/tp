@@ -39,6 +39,11 @@ public class RelationCommandParser implements Parser<RelationCommand> {
             relation = String.valueOf(PREFIX_VENDOR);
         }
 
-        return new RelationCommand(index, new Relation(relation));
+        try {
+            return new RelationCommand(index, new Relation(relation));
+        } catch (IllegalArgumentException iae) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    RelationCommand.MESSAGE_USAGE), iae);
+        }
     }
 }
