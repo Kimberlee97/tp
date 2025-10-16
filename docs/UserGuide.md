@@ -75,11 +75,11 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 Opens the User Guide in your web browser.
 If the browser cannot be opened (e.g. blocked by the environment), a Help window is shown so you can copy the link manually.
 
+* User enters help add command. The browser automatically opens the "Adding a person" section of the User Guide.
 ![help add](images/helpAdd.png)
-<figcaption>User enters help add command. The browser automatically opens the "Adding a person" section of the User Guide.</figcaption>
 
+* Opens the User Guide in your web browser. If blocked, the Help window appears instead.
 ![help message](images/helpMessage.png)
-<figcaption>Opens the User Guide in your web browser. If blocked, the Help window appears instead.</figcaption>
 
 Format: `help [topic]`
 
