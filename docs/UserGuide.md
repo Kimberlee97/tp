@@ -103,6 +103,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION STAGE [r/RELA
 
 **Tips:** 
 * A person can have any number of tags (including 0).
+* The s/TRANSACTION STAGE field only accepts the values `prospect`, `negotiating` or `closed`.
 * The m/MEETING field is optional — use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
 * The r/RELATION field is optional. The default relation for a new contact is client.
 </box>
