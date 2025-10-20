@@ -24,10 +24,12 @@ public class FindCommand extends Command {
             + " - Name: KEYWORD [MORE_KEYWORDS]\n"
             + " - Address: a/KEYWORD [MORE_KEYWORDS]\n"
             + " - Tags: t/KEYWORD [MORE_KEYWORDS]\n"
+            + " - Relation: r/KEYWORD\n"
             + "Examples:\n"
             + " find alice bob\n"
             + " find a/bedok north\n"
-            + " find t/friend";
+            + " find t/friend\n"
+            + " find r/client";
 
     // Store generically
     private final Predicate<Person> predicate;

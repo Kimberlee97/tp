@@ -1,7 +1,9 @@
 package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.Messages.MESSAGE_SINGLE_KEYWORD_ONLY;
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static java.util.Objects.requireNonNull;
 
@@ -12,6 +14,7 @@ import homey.logic.commands.FindCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.AddressContainsKeywordsPredicate;
 import homey.model.person.NameContainsKeywordsPredicate;
+import homey.model.person.RelationContainsKeywordPredicate;
 import homey.model.person.TagContainsKeywordsPredicate;
 
 /**
@@ -70,6 +73,29 @@ public class FindCommandParser implements Parser<FindCommand> {
             return new FindCommand(new TagContainsKeywordsPredicate(keywords));
         }
 
+        //Relation search: look for the relation prefix (e.g., "r/")
+        final String relationPrefix = PREFIX_RELATION.toString();
+        if (trimmedArgs.startsWith(relationPrefix)) {
+            final String afterPrefix = trimmedArgs.substring(relationPrefix.length()).trim();
+
+            // r/ with no keywords -> show relation-only usage
+            if (afterPrefix.isEmpty()) {
+                throw new ParseException(String.format(
+                        MESSAGE_INVALID_COMMAND_FORMAT, buildRelationOnlyUsage()));
+            }
+
+            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
+            // ensure only one keyword is given
+            if (keywords.size() > 1) {
+                throw new ParseException(String.format(
+                        MESSAGE_SINGLE_KEYWORD_ONLY,
+                        "Relation",
+                        buildRelationOnlyUsage()
+                ));
+            }
+            return new FindCommand(new RelationContainsKeywordPredicate(keywords.get(0)));
+        }
+
         final List<String> nameKeywords = Arrays.asList(trimmedArgs.split("\\s+"));
         return new FindCommand(new NameContainsKeywordsPredicate(nameKeywords));
     }
@@ -86,5 +112,12 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     private static String buildTagOnlyUsage() {
         return "Tags: " + FindCommand.COMMAND_WORD + " " + PREFIX_TAG + "KEYWORD [MORE_KEYWORDS]";
+    }
+
+    /**
+     * Builds the relation-only usage string for {@code find r/KEYWORD}
+     */
+    private static String buildRelationOnlyUsage() {
+        return "Relation: " + FindCommand.COMMAND_WORD + " " + PREFIX_RELATION + "KEYWORD";
     }
 }
