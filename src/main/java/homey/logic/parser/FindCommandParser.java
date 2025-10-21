@@ -25,6 +25,7 @@ import homey.model.person.TagContainsKeywordsPredicate;
  *   <li>Name search (default): {@code find KEYWORD [MORE_KEYWORDS]}</li>
  *   <li>Address search: {@code find a/KEYWORD [MORE_KEYWORDS]}</li>
  *   <li>Tag search: {@code find t/KEYWORD [MORE_KEYWORDS]}</li>
+ *   <li>Relation search: {@code find r/KEYWORD}</li>
  * </ul>
  *
  * <p>When {@code a/} is provided without any keywords (e.g., {@code find a/}, {@code find t/}),
@@ -93,7 +94,12 @@ public class FindCommandParser implements Parser<FindCommand> {
                         buildRelationOnlyUsage()
                 ));
             }
-            return new FindCommand(new RelationContainsKeywordPredicate(keywords.get(0)));
+
+            String keyword = keywords.get(0).toLowerCase();
+            if (!keyword.equals("client") && !keyword.equals("vendor")) {
+                throw new ParseException("Invalid relation. Only 'client' or 'vendor' are allowed.");
+            }
+            return new FindCommand(new RelationContainsKeywordPredicate(keyword));
         }
 
         final List<String> nameKeywords = Arrays.asList(trimmedArgs.split("\\s+"));

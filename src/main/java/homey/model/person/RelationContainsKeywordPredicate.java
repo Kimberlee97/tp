@@ -1,5 +1,6 @@
 package homey.model.person;
 
+import static homey.model.tag.Relation.isValidRelation;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Locale;
@@ -9,7 +10,7 @@ import homey.commons.util.ToStringBuilder;
 
 /**
  * Tests that a {@code Person}'s {@code Relation} matches the keyword given.
- * Matching is case-insensitive and allows partial keyword matches.
+ * Matching is case-insensitive and does not allow partial keyword matches.
  */
 public class RelationContainsKeywordPredicate implements Predicate<Person> {
     private final String keywordLowerCased;
@@ -28,7 +29,7 @@ public class RelationContainsKeywordPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         String relation = person.getRelation().value.toLowerCase(Locale.ROOT);
-        return !keywordLowerCased.isEmpty() && relation.contains(keywordLowerCased);
+        return !keywordLowerCased.isEmpty() && isValidRelation(relation) && keywordLowerCased.equals(relation);
     }
 
     @Override
