@@ -119,6 +119,11 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
+Additional parsers added for this feature:
+* `ArchiveCommandParser` – parses `archive INDEX`
+* `UnarchiveCommandParser` – parses `unarchive INDEX`
+* `ListCommandParser` – parses `list` (active) and `list archive` (archived)
+
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
@@ -131,6 +136,16 @@ The `Model` component,
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
+
+#### Archive state & filtered lists
+
+To support hiding archived contacts from the default view, `Person` has an immutable boolean
+field `archived`. Two predicates are exposed via `Model`:
+* `PREDICATE_SHOW_ACTIVE_PERSONS` – returns persons where `!person.isArchived()`
+* `PREDICATE_SHOW_ARCHIVED_PERSONS` – returns persons where `person.isArchived()`
+
+`ModelManager` sets the current filter to **active** by default and switches filters in
+`ArchiveCommand`, `UnarchiveCommand`, and `ListCommand` (see Implementation).
 
 <box type="info" seamless>
 
@@ -151,6 +166,11 @@ The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
+
+#### Persisting archive state
+
+`JsonAdaptedPerson` reads/writes an `archived` boolean. Older save files without this field
+are still accepted; the value defaults to `false` (active) on load for backward compatibility.
 
 ### Common classes
 
@@ -255,9 +275,50 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
-### \[Proposed\] Data archiving
+### \[Proposed\] Data archiving / unarchiving
 
-_{Explain here how the data archiving feature will be implemented}_
+#### Goal
+Allow users to hide completed/irrelevant contacts from the default list while keeping them retrievable.
+
+#### Model changes
+* `Person` is extended with an immutable boolean `archived`.
+  * Constructors accept `archived`.
+  * Query helpers: `isArchived()`, `archived()` (returns a copy with `archived=true`), and
+      `unarchived()` (copy with `archived=false`).
+* `Model` exposes
+  * `PREDICATE_SHOW_ACTIVE_PERSONS` and `PREDICATE_SHOW_ARCHIVED_PERSONS`.
+  * `ModelManager` sets the active predicate by default.
+
+#### Storage changes
+* `JsonAdaptedPerson` includes an `archived` field.
+  * Missing field on load defaults to `false` for backward compatibility.
+
+#### Logic changes
+* **Archive** – `archive INDEX`
+  * Validates index against the current filtered list.
+  * If already archived, throws `CommandException("This person is already archived.")`.
+  * Replaces the target with `person.archived()` via `model.setPerson(...)`.
+  * Keeps the user in the **active** view by calling
+    `model.updateFilteredPersonList(Model.PREDICATE_SHOW_ACTIVE_PERSONS)`.
+* **Unarchive** – `unarchive INDEX`
+  * Intended for use from the archived view.
+  * Validates index; if not archived, throws `CommandException("This person is not archived.")`.
+  * Replaces with `person.unarchived()` and switches the filter back to
+    `PREDICATE_SHOW_ACTIVE_PERSONS` so the contact reappears in the main list.
+* **List** – `list` / `list archive`
+  * Implemented via `ListCommandParser`.
+  * `list` (or `list active`) sets `PREDICATE_SHOW_ACTIVE_PERSONS`.
+  * `list archive` sets `PREDICATE_SHOW_ARCHIVED_PERSONS`.
+
+#### Error handling (user-visible)
+* Invalid index → `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX`.
+* Archiving an already archived contact → “This person is already archived.”
+* Unarchiving an active contact → “This person is not archived.”
+
+#### Rationale & alternatives
+* **Why a boolean on `Person`?** Simple, stable, and cheap to persist/filter.
+* **Why predicates not a field on `Model` state?** Keeps UI binding unchanged; only the predicate changes.
+
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -380,6 +441,32 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3a1. AddressBook shows an error message.
 
       Use case resumes at step 2.
+
+**Use case: Archive a contact**
+
+**MSS**
+1. User lists active contacts (`list`).
+2. AddressBook shows active list.
+3. User enters `archive INDEX`.
+4. System marks the person archived and keeps the active list visible.
+
+**Extensions**
+* 3a. Index invalid → System shows error, use case resumes at step 2.
+* 3b. Person already archived → System shows “This person is already archived.”, use case ends.
+
+---
+
+**Use case: Unarchive a contact**
+
+**MSS**
+1. User switches to archived list (`list archive`).
+2. AddressBook shows archived list.
+3. User enters `unarchive INDEX`.
+4. System marks the person active and switches back to the active list.
+
+**Extensions**
+* 3a. Index invalid → System shows error, use case resumes at step 2.
+* 3b. Person is not archived → System shows “This person is not archived.”, use case ends.
 
 **Use case: View my contacts and schedule in one platform**
 
@@ -850,6 +937,26 @@ testers are expected to do more *exploratory* testing.
       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
+
+### Archiving a person
+
+1. Prerequisites: Show active list with `list`. Ensure at least one person exists.
+2. Test case: `archive 1`  
+   Expected: “Archived: <name>”. Person disappears from active list.
+3. Test case: `archive 1` again  
+   Expected: Error “This person is already archived.”
+4. Test case: `archive 0`, `archive x` (x > list size)  
+   Expected: Invalid index error.
+
+### Unarchiving a person
+
+1. Prerequisites: Switch to archived list with `list archive`. Ensure it is non-empty (archive someone first).
+2. Test case: `unarchive 1`  
+   Expected: “Unarchived: <name>”. View switches back to active list and the person is visible there.
+3. Test case: `unarchive 1` again (from active list)  
+   Expected: Error “This person is not archived.”
+4. Test case: `unarchive 0`, `unarchive x`  
+   Expected: Invalid index error.
 
 ### Saving data
 

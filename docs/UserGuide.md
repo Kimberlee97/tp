@@ -235,6 +235,40 @@ Examples:
 * `find t/friend buyer` returns persons tagged with either `friend` or `buyer`
   ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
 
+### Archiving persons: `archive`
+
+Moves a person from the active list to the **archived list**, hiding them from normal view.
+Use this when you want to temporarily remove a contact without deleting their information.
+
+Format: `archive INDEX`
+
+* Archives the person at the specified `INDEX` (as shown in the currently displayed list).
+* The index must be a positive integer - e.g. `1`, `2`, `3`, ...
+* The command only works when viewing the **active list** (i.e. after using list).
+* Archived persons can be viewed later using `list archived` or `list archive`.
+
+Examples:
+* `archive 2` archives the 2nd person in the active list.
+![Command 'archive 2'](images/archiveCommand.png)
+![Result for 'archive 2'](images/archiveCommandResult.png)
+
+### Unarchiving persons: `unarchive`
+
+Restores a person from the **archived list** back to the **active list**.
+
+Format: `unarchive INDEX`
+
+* Unarchives the person at the specified `INDEX` (as shown in the **archived list**).
+* The index must be a positive integer - e.g. `1`, `2`, `3`, ...
+* The command only works when viewing the **archived list** (i.e. after using `list archived`).
+* The restored person will reappear in the active list
+* Unarchived persons can be viewed later using `list active` or `list`.
+
+Examples:
+* `unarchive 1` unarchives the first person in the archived list.
+![Command 'unarchive 1'](images/unarchiveCommand.png)
+![Result for 'unarchive 1'](images/unarchiveCommandResult.png)
+
 ### Deleting a person : `delete`
 
 Deletes the specified person from the address book.
@@ -309,6 +343,7 @@ _Details coming soon ..._
 | **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                            |
 | **Find a/**     | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                                                                                               |
 | **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                            |
-| **List**        | `list`                                                                                                                                                                                                                                |
+| **List**        | `list [archive]` <br> e.g., `list`, `list archive`                                                                                                                                                                                    |
 | **Help**        | `help [topic]`<br> e.g., `help add`                                                                                                                                                                                                   |
-
+| **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                 |
+| **Unarchive**   | `unarchive INDEX`<br> e.g., `unarchive 1`                                                                                                                                                                                             |
