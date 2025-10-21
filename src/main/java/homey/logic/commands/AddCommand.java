@@ -78,22 +78,14 @@ public class AddCommand extends InteractiveCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        // regular command
-        if (!isInteractive) {
-            if (model.hasPerson(toAdd)) {
-                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-            }
-
-            model.addPerson(toAdd);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
-        }
-
-        // all missing fields are filled
-        if (missingFields.isEmpty()) {
+        // regular command or all missing fields are filled
+        if (!isInteractive || missingFields.isEmpty()) {
             this.isInteractive = false;
+
             if (model.hasPerson(toAdd)) {
                 throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }
+
             model.addPerson(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
         }
