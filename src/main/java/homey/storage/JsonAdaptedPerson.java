@@ -152,10 +152,12 @@ class JsonAdaptedPerson {
             modelMeeting = Optional.of(new Meeting(meeting));
         }
 
+        final Remark modelRemark;
         if (remark == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Remark.class.getSimpleName()));
+            modelRemark = new Remark("");
+        } else {
+            modelRemark = new Remark(remark);
         }
-        final Remark modelRemark = new Remark(remark);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelRelation, modelStage, modelRemark,

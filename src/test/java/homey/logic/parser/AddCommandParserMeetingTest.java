@@ -15,7 +15,7 @@ class AddCommandParserMeetingTest {
     @Test
     void parse_invalidMeeting_throwsParseException() {
         // Correct required fields but invalid m/
-        String input = " n/Alex p/87438807 e/alex@ex.com a/Blk 30 tr/prospect m/2025-13-40 99:99";
+        String input = " n/Alex p/87438807 e/alex@ex.com a/Blk 30 s/prospect m/2025-13-40 99:99";
         assertParseFailure(parser, input, Meeting.MESSAGE_CONSTRAINTS);
     }
 
