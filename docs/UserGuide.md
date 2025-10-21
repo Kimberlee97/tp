@@ -85,7 +85,7 @@ Format: `help [topic]`
 
 * `topic` is optional and deep-links to a specific section of this guide.
 * Topic matching is case-insensitive and ignores surrounding spaces.
-* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `relation`, `transaction`, `clear` and `exit`.
+* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `relation`, `transaction`, `archive`, `unarchive`, `clear` and `exit`.
 
 Examples:
 * `help` opens the User Guide home.
