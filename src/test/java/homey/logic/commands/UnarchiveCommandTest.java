@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import homey.commons.core.index.Index;
 import homey.logic.commands.exceptions.CommandException;
 import homey.model.Model;
 import homey.model.ModelManager;
@@ -57,8 +58,8 @@ public class UnarchiveCommandTest {
      */
     @Test
     public void execute_invalidIndex_throwsCommandException() {
-        int outOfBoundsIndex = model.getFilteredPersonList().size() + 1;
-        UnarchiveCommand command = new UnarchiveCommand(homey.commons.core.index.Index.fromOneBased(outOfBoundsIndex));
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+        UnarchiveCommand command = new UnarchiveCommand(outOfBoundIndex);
         assertThrows(CommandException.class, () -> command.execute(model));
     }
 
