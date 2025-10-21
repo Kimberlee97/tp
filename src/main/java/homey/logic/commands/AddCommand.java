@@ -95,7 +95,7 @@ public class AddCommand extends InteractiveCommand {
                 throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }
             model.addPerson(toAdd);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd.toString()));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
         }
 
         String prompt = getPromptForField(getNextMissingField()) + "\n" + MESSAGE_INTERACTIVE;
