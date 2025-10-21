@@ -26,10 +26,10 @@
 
       <HBox>
         <!-- left navigation sidebar -->
-        <VBox fx:id="navigationPanelPlaceholder" styleClass="navigation-panel" HBox.hgrow="NEVER" />
+        <VBox fx:id="navigationPanelPlaceholder" styleClass="navigation-panel" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS" />
 
         <!-- main content area -->
-        <VBox HBox.hgrow="ALWAYS" >
+        <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
           <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
             <Menu text="File">
               <MenuItem onAction="#handleExit" text="Exit" />
@@ -41,22 +41,23 @@
 
           <!-- search bar -->
           <StackPane fx:id="commandBoxPlaceholder" styleClass="search-container" VBox.vgrow="NEVER" />
-
+          <!-- result display -->
           <StackPane fx:id="resultDisplayPlaceholder" VBox.vgrow="NEVER">
             <padding>
               <Insets top="5" right="10" bottom="5" left="10" />
             </padding>
           </StackPane>
 
-          <HBox VBox.vgrow="ALWAYS">
+          <!-- contact list and details -->
+          <SplitPane VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
             <!-- left column: contact list -->
-            <VBox fx:id="personList" styleClass="contacts-list-container" HBox.hgrow="ALWAYS">
-              <StackPane fx:id="personListPanelPlaceholder" />
+            <VBox styleClass="contacts-list-container" VBox.vgrow="ALWAYS">
+              <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS" />
             </VBox>
 
             <!-- right column: contact details -->
-            <VBox fx:id="contactDetailsPanelPlaceholder" styleClass="contact-details-panel" HBox.hgrow="ALWAYS" />
-          </HBox>
+            <VBox fx:id="contactDetailsPanelPlaceholder" styleClass="contact-details-panel" VBox.vgrow="ALWAYS" />
+          </SplitPane>
 
           <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />
         </VBox>

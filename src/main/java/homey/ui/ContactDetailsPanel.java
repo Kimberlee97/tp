@@ -79,6 +79,9 @@ public class ContactDetailsPanel extends UiPart<Region> {
             clearContact();
             return;
         }
+        // show panel when a contact is selected
+        getRoot().setVisible(true);
+        getRoot().setManaged(true);
 
         contactNameLabel.setText(person.getName().fullName);
         phoneLabel.setText("Phone: " + person.getPhone().value);
@@ -88,9 +91,26 @@ public class ContactDetailsPanel extends UiPart<Region> {
         stageLabel.setText("Stage: " + person.getStage().value);
 
         tagsFlowPane.getChildren().clear();
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tagsFlowPane.getChildren().add(new Label(tag.tagName)));
+
+        if (!person.getTags().isEmpty()) {
+            Label tagsLabel = new Label("Tags:");
+            tagsFlowPane.getStyleClass().add("plain-tag-label");
+            tagsFlowPane.getChildren().add(tagsLabel);
+
+            person.getTags().stream()
+                    .sorted(Comparator.comparing(tag -> tag.tagName))
+                    .forEach(tag -> {
+                        Label tagLabel = new Label(tag.tagName);
+                        tagLabel.getStyleClass().add("contact-tags");
+                        tagsFlowPane.getChildren().add(tagLabel);
+                    });
+
+            tagsFlowPane.setManaged(true);
+            tagsFlowPane.setVisible(true);
+        } else {
+            tagsFlowPane.setManaged(false);
+            tagsFlowPane.setVisible(false);
+        }
 
         person.getMeeting().ifPresentOrElse(
                 m -> {
@@ -120,5 +140,9 @@ public class ContactDetailsPanel extends UiPart<Region> {
         meetingLabel.setManaged(false);
         meetingLabel.setVisible(false);
         // remark label to be added later when implementation is finished
+
+        // hide entire panel
+        getRoot().setVisible(false);
+        getRoot().setManaged(false);
     }
 }
