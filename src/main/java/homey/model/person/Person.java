@@ -30,6 +30,7 @@ public class Person {
     private final Relation relation;
     private final Set<Tag> tags = new HashSet<>();
     private final Optional<Meeting> meeting;
+    private final boolean isArchived;
 
     /**
      * Every field must be present and not null.
@@ -45,6 +46,7 @@ public class Person {
         this.relation = relation;
         this.tags.addAll(tags);
         this.meeting = Optional.empty();
+        this.isArchived = false;
     }
 
     /**
@@ -61,6 +63,24 @@ public class Person {
         this.relation = relation;
         this.tags.addAll(tags);
         this.meeting = meeting == null ? Optional.empty() : meeting;
+        this.isArchived = false;
+    }
+
+    /**
+     * Overloaded constructor used by archived()/unarchived().
+     */
+    private Person(Name name, Phone phone, Email email, Address address, Relation relation,
+                   TransactionStage stage, Set<Tag> tags, Optional<Meeting> meeting, boolean isArchived) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.stage = stage;
+        this.relation = relation;
+        this.tags.addAll(tags);
+        this.meeting = meeting == null ? Optional.empty() : meeting;
+        this.isArchived = isArchived;
     }
 
     public Name getName() {
@@ -89,6 +109,38 @@ public class Person {
 
     public Optional<Meeting> getMeeting() {
         return meeting;
+    }
+
+    /**
+     * Returns true if this person has been archived.
+     * Archived persons are hidden from the active contact list by default.
+     *
+     * @return true if this person is archived, false otherwise
+     */
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    /**
+     * Returns a new {@code Person} instance representing this person
+     * but marked as archived.
+     * This method preserves immutability by returning a copy.
+     *
+     * @return a copy of this person with archived status set to true
+     */
+    public Person archived() {
+        return new Person(name, phone, email, address, relation, stage, tags, meeting, true);
+    }
+
+    /**
+     * Returns a new {@code Person} instance representing this person
+     * but marked as active (not archived).
+     * This method preserves immutability by returning a copy.
+     *
+     * @return a copy of this person with archived status set to false
+     */
+    public Person unarchived() {
+        return new Person(name, phone, email, address, relation, stage, tags, meeting, false);
     }
 
     /**
