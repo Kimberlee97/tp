@@ -43,7 +43,9 @@ public class HelpWindow extends UiPart<Stage> {
             Map.entry("find a/", "#locating-persons-by-address-find-a"),
             Map.entry("find t/", "#locating-persons-by-tag-find-t"),
             Map.entry("relation", "#add-relational-tag-relation"),
-            Map.entry("transaction", "#changing-the-transaction-stage")
+            Map.entry("transaction", "#changing-the-transaction-stage"),
+            Map.entry("archive", "#archiving-persons-archive"),
+            Map.entry("unarchive", "#unarchiving-persons-unarchive")
     );
 
     @FXML
