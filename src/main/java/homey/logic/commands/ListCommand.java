@@ -14,6 +14,9 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Listed all persons";
 
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists persons.\n"
+            + "Usage: list [archive]\n"
+            + "Examples: list | list archive";
 
     @Override
     public CommandResult execute(Model model) {

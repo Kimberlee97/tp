@@ -17,7 +17,6 @@ import homey.logic.commands.EditCommand;
 import homey.logic.commands.ExitCommand;
 import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
-import homey.logic.commands.ListArchivedCommand;
 import homey.logic.commands.ListCommand;
 import homey.logic.commands.RelationCommand;
 import homey.logic.commands.TransactionStageCommand;
@@ -50,6 +49,15 @@ public class AddressBookParser {
             return new HelpCommand();
         }
         return new HelpCommand(trimmed);
+    }
+
+    /**
+     * Parses the 'list' family of commands (e.g., "list", "list archive").
+     * Normalises whitespace/nulls before delegating to {@link ListCommandParser}.
+     */
+    private Command parseList(String arguments) throws ParseException {
+        final String normalised = (arguments.trim()).strip();
+        return new ListCommandParser().parse(normalised);
     }
 
     /**
@@ -94,10 +102,7 @@ public class AddressBookParser {
             return new FindCommandParser().parse(arguments);
 
         case ListCommand.COMMAND_WORD:
-            if (arguments.trim().equals("archived")) {
-                return new ListArchivedCommand();
-            }
-            return new ListCommand();
+            return parseList(arguments);
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
