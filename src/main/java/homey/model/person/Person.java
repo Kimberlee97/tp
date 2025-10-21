@@ -30,12 +30,13 @@ public class Person {
     private final Relation relation;
     private final Set<Tag> tags = new HashSet<>();
     private final Optional<Meeting> meeting;
+    private final Remark remark;
 
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Relation relation,
-                  TransactionStage stage, Set<Tag> tags) {
+                  TransactionStage stage, Remark remark, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
@@ -45,13 +46,14 @@ public class Person {
         this.relation = relation;
         this.tags.addAll(tags);
         this.meeting = Optional.empty();
+        this.remark = remark;
     }
 
     /**
      * Overloaded constructor that accepts an optional meeting.
      */
     public Person(Name name, Phone phone, Email email, Address address, Relation relation,
-                  TransactionStage stage, Set<Tag> tags, Optional<Meeting> meeting) {
+                  TransactionStage stage, Remark remark, Set<Tag> tags, Optional<Meeting> meeting) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
@@ -61,6 +63,7 @@ public class Person {
         this.relation = relation;
         this.tags.addAll(tags);
         this.meeting = meeting == null ? Optional.empty() : meeting;
+        this.remark = remark;
     }
 
     public Name getName() {
@@ -89,6 +92,10 @@ public class Person {
 
     public Optional<Meeting> getMeeting() {
         return meeting;
+    }
+
+    public Remark getRemark() {
+        return remark;
     }
 
     /**
