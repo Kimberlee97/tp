@@ -73,7 +73,6 @@ public class AddCommandParser implements Parser<AddCommand> {
                 return new AddCommand(partialPerson, true, missingFields);
             }
 
-            // should not reach here
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
@@ -89,76 +88,120 @@ public class AddCommandParser implements Parser<AddCommand> {
     }
 
     private Person createCompletePerson(ArgumentMultimap argMultimap) throws ParseException {
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_RELATION, PREFIX_MEETING);
+        verifyFields(argMultimap);
+        return createPersonFromArguments(argMultimap, false);
+    }
 
-        Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
-        Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
-        Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
-        Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-        TransactionStage transaction = ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get());
+    private Person createPartialPerson(ArgumentMultimap argMultimap) throws ParseException {
+        verifyFields(argMultimap);
+        return createPersonFromArguments(argMultimap, true);
+    }
+
+    /**
+     * Verifies no duplicate prefixes in the argument multimap.
+     */
+    private void verifyFields(ArgumentMultimap argMultimap) throws ParseException {
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                PREFIX_RELATION, PREFIX_TRANSACTION, PREFIX_MEETING);
+    }
+
+    /**
+     * Creates a Person object from the given arguments.
+     * @param argMultimap Contains the field values
+     * @param allowPlaceholders If true, uses placeholder values for missing fields
+     * @return Person object with the specified or placeholder values
+     * @throws ParseException if there are invalid field values
+     */
+    private Person createPersonFromArguments(ArgumentMultimap argMultimap, boolean allowPlaceholders)
+            throws ParseException {
+
+        // Parse name
+        Name name;
+        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
+            name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
+        } else if (allowPlaceholders) {
+            name = PlaceholderPerson.PLACEHOLDER_NAME;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+
+        // Parse phone
+        Phone phone;
+        if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
+            phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
+        } else if (allowPlaceholders) {
+            phone = PlaceholderPerson.PLACEHOLDER_PHONE;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+
+        // Parse email
+        Email email;
+        if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
+            email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+        } else if (allowPlaceholders) {
+            email = PlaceholderPerson.PLACEHOLDER_EMAIL;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+
+        // Parse address
+        Address address;
+        if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
+            address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
+        } else if (allowPlaceholders) {
+            address = PlaceholderPerson.PLACEHOLDER_ADDRESS;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+
+        // Parse transaction stage
+        TransactionStage transaction;
+        if (argMultimap.getValue(PREFIX_TRANSACTION).isPresent()) {
+            transaction = ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get());
+        } else if (allowPlaceholders) {
+            transaction = PlaceholderPerson.PLACEHOLDER_TRANSACTION;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+
+        // Parse tags
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Optional<Meeting> meeting = Optional.empty();
-        if (argMultimap.getValue(PREFIX_MEETING).isPresent()) {
-            String meetingValue = argMultimap.getValue(PREFIX_MEETING).get().trim();
-            if (!meetingValue.isEmpty()) {
-                if (!Meeting.isValidMeeting(meetingValue)) {
-                    throw new ParseException(Meeting.MESSAGE_CONSTRAINTS);
-                }
-                meeting = Optional.of(new Meeting(meetingValue));
-            }
-        }
+        // Parse meeting (optional)
+        Optional<Meeting> meeting = parseMeeting(argMultimap);
 
-        // Default relation is client
-        Relation relation = new Relation("client");
-        if (argMultimap.getValue(PREFIX_RELATION).isPresent()) {
-            relation = ParserUtil.parseRelation(argMultimap.getValue(PREFIX_RELATION).get());
-        }
+        // Parse relation (optional, defaults to client)
+        Relation relation = parseRelation(argMultimap);
 
         return new Person(name, phone, email, address, relation, transaction, tagList, meeting);
     }
 
-    private Person createPartialPerson(ArgumentMultimap argMultimap) throws ParseException {
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_RELATION, PREFIX_MEETING);
-
-        // Create a Person with available fields, using placeholder values for missing ones
-        Name name = argMultimap.getValue(PREFIX_NAME).isPresent()
-                ? ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get())
-                : PlaceholderPerson.PLACEHOLDER_NAME;
-        Phone phone = argMultimap.getValue(PREFIX_PHONE).isPresent()
-                ? ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get())
-                : PlaceholderPerson.PLACEHOLDER_PHONE;
-        Email email = argMultimap.getValue(PREFIX_EMAIL).isPresent()
-                ? ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get())
-                : PlaceholderPerson.PLACEHOLDER_EMAIL;
-        Address address = argMultimap.getValue(PREFIX_ADDRESS).isPresent()
-                ? ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get())
-                : PlaceholderPerson.PLACEHOLDER_ADDRESS;
-        TransactionStage transaction = argMultimap.getValue(PREFIX_TRANSACTION).isPresent()
-                ? ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get())
-                : PlaceholderPerson.PLACEHOLDER_TRANSACTION;
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-
-        Optional<Meeting> meeting = Optional.empty();
+    /**
+     * Parses the meeting field from the argument multimap.
+     */
+    private Optional<Meeting> parseMeeting(ArgumentMultimap argMultimap) throws ParseException {
         if (argMultimap.getValue(PREFIX_MEETING).isPresent()) {
             String meetingValue = argMultimap.getValue(PREFIX_MEETING).get().trim();
             if (!meetingValue.isEmpty()) {
                 if (!Meeting.isValidMeeting(meetingValue)) {
                     throw new ParseException(Meeting.MESSAGE_CONSTRAINTS);
                 }
-                meeting = Optional.of(new Meeting(meetingValue));
+                return Optional.of(new Meeting(meetingValue));
             }
         }
+        return Optional.empty();
+    }
 
-        // Default relation is client
-        Relation relation = new Relation("client");
+    /**
+     * Parses the relation field from the argument multimap.
+     */
+    private Relation parseRelation(ArgumentMultimap argMultimap) throws ParseException {
         if (argMultimap.getValue(PREFIX_RELATION).isPresent()) {
-            relation = ParserUtil.parseRelation(argMultimap.getValue(PREFIX_RELATION).get());
+            return ParserUtil.parseRelation(argMultimap.getValue(PREFIX_RELATION).get());
+        } else {
+            return new Relation("client");
         }
-
-        return new Person(name, phone, email, address, relation, transaction, tagList, meeting);
     }
 
     /**
