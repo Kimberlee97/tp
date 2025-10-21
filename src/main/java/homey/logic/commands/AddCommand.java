@@ -53,7 +53,6 @@ public class AddCommand extends InteractiveCommand {
     public static final String MESSAGE_MISSING_EMAIL = "Enter email.";
     public static final String MESSAGE_MISSING_ADDRESS = "Enter address.";
     public static final String MESSAGE_MISSING_STAGE = "Enter transaction stage (prospect/negotiating/closed).";
-    public static final String MESSAGE_INTERACTIVE = "Enter 'cancel' to stop command.";
 
     private Person toAdd;
 
@@ -91,6 +90,7 @@ public class AddCommand extends InteractiveCommand {
 
         // all missing fields are filled
         if (missingFields.isEmpty()) {
+            this.isInteractive = false;
             if (model.hasPerson(toAdd)) {
                 throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }

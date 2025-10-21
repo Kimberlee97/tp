@@ -25,7 +25,7 @@ class AddCommandParserMeetingTest {
     }
 
     @Test
-    void parse_missingRequired_stillFailsForUsage() {
+    void parse_missingRequired_returnsInteractiveCommand() {
         String input = " n/Alex p/87438807 e/alex@ex.com m/2025-11-03 14:00";
         Person partialPerson = new PersonBuilder()
                 .withName("Alex")

@@ -34,6 +34,7 @@ import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
 import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static homey.testutil.TypicalPersons.AMY;
@@ -177,7 +178,7 @@ public class AddCommandParserTest {
     }
 
     @Test
-    public void parse_compulsoryFieldMissing_failure() {
+    public void parse_compulsoryFieldMissing_returnsInteractiveCommand() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
 
         // missing name prefix
@@ -271,6 +272,35 @@ public class AddCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + TRANSACTION_DESC_PROSPECT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_missingCompulsoryAndInvalidFields_failure() {
+        // missing address, invalid email
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + INVALID_EMAIL_DESC
+                        + TRANSACTION_DESC_PROSPECT, Email.MESSAGE_CONSTRAINTS);
+
+        // missing email, invalid name
+        assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + ADDRESS_DESC_BOB
+                + TRANSACTION_DESC_PROSPECT, Name.MESSAGE_CONSTRAINTS);
+    }
+
+    @Test
+    public void parse_onlyOptionalFields_returnsInteractiveCommand() {
+        // only relation, stage and tags provided
+        Person emptyPerson = new PersonBuilder()
+                .withRelation(VALID_RELATION_VENDOR)
+                .withTags(VALID_TAG_FRIEND)
+                .build();
+        Map<Prefix, String> missingFields = Map.of(
+                PREFIX_NAME, "",
+                PREFIX_PHONE, "",
+                PREFIX_EMAIL, "",
+                PREFIX_ADDRESS, "",
+                PREFIX_TRANSACTION, ""
+        );
+        assertParseSuccess(parser, TAG_DESC_FRIEND + RELATION_DESC_VENDOR,
+                new AddCommand(emptyPerson, true, missingFields));
     }
 
     @Test
