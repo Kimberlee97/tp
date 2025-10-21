@@ -4,6 +4,7 @@ import homey.commons.core.index.Index;
 import homey.commons.exceptions.IllegalValueException;
 import homey.logic.commands.RemarkCommand;
 import homey.logic.parser.exceptions.ParseException;
+import homey.model.person.Remark;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
@@ -24,7 +25,7 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
                     RemarkCommand.MESSAGE_USAGE), ive);
         }
 
-        String remark = argMultimap.getValue(PREFIX_REMARK).orElse("");
+        Remark remark = new Remark(argMultimap.getValue(PREFIX_REMARK).orElse(""));
 
         return new RemarkCommand(index, remark);
     }

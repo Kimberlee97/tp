@@ -3,6 +3,7 @@ package homey.logic.commands;
 import homey.commons.core.index.Index;
 import homey.logic.commands.exceptions.CommandException;
 import homey.model.Model;
+import homey.model.person.Remark;
 
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 
@@ -25,15 +26,13 @@ public class RemarkCommand extends Command {
     public static final String MESSAGE_ARGUMENTS = "Index: %1$d, Remark: %2$s";
 
     private final Index index;
-    private final String remark;
-
-    public static final String MESSAGE_NOT_IMPLEMENTED_YET  = "Not implemented yet";
+    private final Remark remark;
 
     /**
      * @param index of the person in the filtered person list to edit the remark
      * @param remark of the person to be updated to
      */
-    public RemarkCommand(Index index, String remark) {
+    public RemarkCommand(Index index, Remark remark) {
         requireAllNonNull(index, remark);
 
         this.index = index;
