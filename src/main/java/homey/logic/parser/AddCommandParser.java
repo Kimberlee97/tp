@@ -7,9 +7,9 @@ import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
 import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
+import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
-import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 
 import java.util.Optional;
 import java.util.Set;

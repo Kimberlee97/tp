@@ -1,18 +1,17 @@
 package homey.logic.commands;
 
+import static homey.commons.util.CollectionUtil.requireAllNonNull;
+import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
+import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+
+import java.util.List;
+
 import homey.commons.core.index.Index;
 import homey.logic.Messages;
 import homey.logic.commands.exceptions.CommandException;
 import homey.model.Model;
 import homey.model.person.Person;
 import homey.model.person.Remark;
-
-import java.util.List;
-
-import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
-
-import static homey.commons.util.CollectionUtil.requireAllNonNull;
-import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 /**
  * Changes the remark of an existing person.

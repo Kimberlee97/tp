@@ -1,17 +1,24 @@
 package homey.logic.parser;
 
+import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
+import static java.util.Objects.requireNonNull;
+
 import homey.commons.core.index.Index;
 import homey.commons.exceptions.IllegalValueException;
 import homey.logic.commands.RemarkCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.Remark;
 
-import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
-import static java.util.Objects.requireNonNull;
-
+/**
+ * Parses input arguments and creates a new {@code RemarkCommand} object.
+ */
 public class RemarkCommandParser implements Parser<RemarkCommand> {
-
+    /**
+     * Parses the given {@code String} of arguments in the context of the {@code RemarkCommand}
+     * and returns a {@code RemarkCommand} object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
     public RemarkCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,

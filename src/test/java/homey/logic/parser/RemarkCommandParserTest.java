@@ -1,14 +1,16 @@
 package homey.logic.parser;
 
-import homey.commons.core.index.Index;
-import homey.logic.commands.RemarkCommand;
-import org.junit.jupiter.api.Test;
-
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static homey.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+
+import org.junit.jupiter.api.Test;
+
+import homey.commons.core.index.Index;
+import homey.logic.commands.RemarkCommand;
+import homey.model.person.Remark;
 
 public class RemarkCommandParserTest {
 
@@ -20,12 +22,12 @@ public class RemarkCommandParserTest {
         // have remark
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInput = targetIndex.getOneBased() + " " + PREFIX_REMARK + nonEmptyRemark;
-        RemarkCommand expectedCommand = new RemarkCommand(INDEX_FIRST_PERSON, nonEmptyRemark);
+        RemarkCommand expectedCommand = new RemarkCommand(INDEX_FIRST_PERSON, new Remark(nonEmptyRemark));
         assertParseSuccess(parser, userInput, expectedCommand);
 
         // no remark
         userInput = targetIndex.getOneBased() + " " + PREFIX_REMARK;
-        expectedCommand = new RemarkCommand(INDEX_FIRST_PERSON, "");
+        expectedCommand = new RemarkCommand(INDEX_FIRST_PERSON, new Remark(""));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
