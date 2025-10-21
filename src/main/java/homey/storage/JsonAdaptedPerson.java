@@ -17,6 +17,7 @@ import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
+import homey.model.person.Remark;
 import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
@@ -36,6 +37,7 @@ class JsonAdaptedPerson {
     private final String stage;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final String meeting;
+    private final String remark;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -44,7 +46,8 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("relation") String relation, @JsonProperty("stage") String stage,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags, @JsonProperty("meeting") String meeting) {
+            @JsonProperty("remark") String remark, @JsonProperty("tags") List<JsonAdaptedTag> tags,
+            @JsonProperty("meeting") String meeting) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -55,14 +58,15 @@ class JsonAdaptedPerson {
             this.tags.addAll(tags);
         }
         this.meeting = meeting;
+        this.remark = remark;
     }
 
     /**
      * Overloaded constructor
      */
     public JsonAdaptedPerson(String name, String phone, String email, String address,
-                             String relation, String stage, List<JsonAdaptedTag> tags) {
-        this(name, phone, email, address, relation, stage, tags, null);
+                             String relation, String stage, String remark, List<JsonAdaptedTag> tags) {
+        this(name, phone, email, address, relation, stage, remark, tags, null);
     }
 
     /**
@@ -147,9 +151,14 @@ class JsonAdaptedPerson {
             modelMeeting = Optional.of(new Meeting(meeting));
         }
 
+        if (remark == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Remark.class.getSimpleName()));
+        }
+        final Remark modelRemark = new Remark(remark);
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelRelation, modelStage, modelTags,
-                modelMeeting);
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelRelation, modelStage, modelRemark,
+                modelTags, modelMeeting);
     }
 
 }
