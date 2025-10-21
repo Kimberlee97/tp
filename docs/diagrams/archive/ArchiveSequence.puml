@@ -1,0 +1,24 @@
+@startuml
+autoactivate on
+hide footbox
+actor User
+participant "LogicManager" as L
+participant "AddressBookParser" as ABP
+participant "ArchiveCommandParser" as ACP
+participant "ArchiveCommand" as AC
+participant "Model" as M
+
+User -> L : execute("archive 3")
+L -> ABP : parseCommand("archive 3")
+ABP -> ACP : parse(" 3")
+ACP --> ABP : new ArchiveCommand(Index=3)
+ABP --> L : ArchiveCommand
+L -> AC : execute(Model)
+AC -> M : getFilteredPersonList()
+M --> AC : List<Person>
+AC -> AC : validate index & archived flag
+AC -> M : setPerson(target, archivedCopy)
+AC -> M : updateFilteredPersonList(PREDICATE_SHOW_ACTIVE_PERSONS)
+AC --> L : CommandResult("Archived: <name>")
+L --> User : result text
+@enduml

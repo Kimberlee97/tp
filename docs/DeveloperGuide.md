@@ -300,6 +300,12 @@ Allow users to hide completed/irrelevant contacts from the default list while ke
   * Replaces the target with `person.archived()` via `model.setPerson(...)`.
   * Keeps the user in the **active** view by calling
     `model.updateFilteredPersonList(Model.PREDICATE_SHOW_ACTIVE_PERSONS)`.
+
+**UML Diagrams**
+  <puml src="diagrams/archive/ArchiveClass.puml" width="420" />
+  <puml src="diagrams/archive/ArchiveSequence.puml" width="620" />
+  <puml src="diagrams/archive/ParserClass.puml" width="420" />
+
 * **Unarchive** – `unarchive INDEX`
   * Intended for use from the archived view.
   * Validates index; if not archived, throws `CommandException("This person is not archived.")`.
@@ -309,6 +315,11 @@ Allow users to hide completed/irrelevant contacts from the default list while ke
   * Implemented via `ListCommandParser`.
   * `list` (or `list active`) sets `PREDICATE_SHOW_ACTIVE_PERSONS`.
   * `list archive` sets `PREDICATE_SHOW_ARCHIVED_PERSONS`.
+
+**UML Diagrams**
+  <puml src="diagrams/unarchive/UnarchiveClass.puml" width="420" />
+  <puml src="diagrams/unarchive/UnarchiveSequence.puml" width="620" />
+  <puml src="diagrams/unarchive/ParserClass.puml" width="420" />
 
 #### Error handling (user-visible)
 * Invalid index → `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX`.
