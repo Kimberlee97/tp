@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"  styleClass="contact-details-panel">
+    <children>
+        <Label styleClass="contact-details-title" text="Details" />
+        <Label fx:id="contactNameLabel" styleClass="contact-name" />
+        <Label fx:id="phoneLabel" />
+        <Label fx:id="addressLabel" />
+        <Label fx:id="emailLabel" />
+        <Label fx:id="relationLabel" />
+        <Label fx:id="stageLabel" />
+        <FlowPane fx:id="tagsFlowPane" />
+        <Label fx:id="meetingLabel" />
+        <Label fx:id="remarkLabel" />
+        <HBox>
+            <Button fx:id="editButton" text="Edit" onAction="#handleEdit" />
+            <Button fx:id="deleteButton" text="Delete" onAction="#handleDelete" />
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <spacing>10.0</spacing>
+</VBox>

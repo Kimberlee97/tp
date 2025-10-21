@@ -15,6 +15,7 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -34,6 +35,8 @@ public class MainWindow extends UiPart<Stage> {
     private PersonListPanel personListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private NavigationPanel navigationPanel;
+    private ContactDetailsPanel contactDetailsPanel;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -49,6 +52,12 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    @FXML
+    private VBox navigationPanelPlaceholder;
+
+    @FXML
+    private VBox contactDetailsPanelPlaceholder;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -121,6 +130,21 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
+        navigationPanel = new NavigationPanel();
+        navigationPanelPlaceholder.getChildren().add(navigationPanel.getRoot());
+
+        contactDetailsPanel = new ContactDetailsPanel();
+        contactDetailsPanelPlaceholder.getChildren().add(contactDetailsPanel.getRoot());
+
+        // update contact details
+        personListPanel.setOnPersonSelected((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                contactDetailsPanel.setContact(newVal);
+            } else {
+                contactDetailsPanel.clearContact();
+            }
+        });
     }
 
     /**
