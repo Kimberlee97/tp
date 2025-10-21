@@ -7,9 +7,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
 
+/**
+ * Panel representing the left-side navigation menu of the application.
+ * Contains buttons for Dashboard, Contacts, Tasks, and Settings.
+ */
 public class NavigationPanel extends UiPart<Region> {
     private static final String FXML = "NavigationPanel.fxml";
-    private static final Logger logger = LogsCenter.getLogger(NavigationPanelController.class);
+    private static final Logger logger = LogsCenter.getLogger(NavigationPanel.class);
 
     @FXML
     private Button dashboardButton;
@@ -23,13 +27,19 @@ public class NavigationPanel extends UiPart<Region> {
     @FXML
     private Button settingsButton;
 
-
+    /**
+     * Constructs a {@code NavigationPanel} and loads its FXML layout.
+     * Sets the Contacts button as the default selected button.
+     */
     public NavigationPanel() {
         super(FXML);
         //set contacts as the default selected button
         selectButton(contactsButton);
     }
 
+    /**
+     * Handles the Dashboard button click.
+     */
     @FXML
     private void handleDashboard() {
         logger.info("Dashboard navigation clicked");
@@ -37,6 +47,9 @@ public class NavigationPanel extends UiPart<Region> {
         // TODO: Implement dashboard view switching
     }
 
+    /**
+     * Handles the Contacts button click.
+     */
     @FXML
     private void handleContacts() {
         logger.info("Contacts navigation clicked");
@@ -44,6 +57,9 @@ public class NavigationPanel extends UiPart<Region> {
         // TODO: Implement contacts view switching
     }
 
+    /**
+     * Handles the Tasks button click.
+     */
     @FXML
     private void handleTasks() {
         logger.info("Tasks navigation clicked");
@@ -51,6 +67,9 @@ public class NavigationPanel extends UiPart<Region> {
         // TODO: Implement tasks view switching
     }
 
+    /**
+     * Handles the Settings button click.
+     */
     @FXML
     private void handleSettings() {
         logger.info("Settings navigation clicked");

@@ -2,7 +2,6 @@ package homey.ui;
 
 import java.util.Comparator;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import homey.commons.core.LogsCenter;
 import homey.model.person.Person;
@@ -12,6 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 
+/**
+ * Panel that displays the details of a selected contact, including
+ * name, phone, email, address, relation, stage, tags, and meetings.
+ */
 public class ContactDetailsPanel extends UiPart<Region> {
     private static final String FXML = "ContactDetailsPanel.fxml";
     private static final Logger logger = LogsCenter.getLogger(ContactDetailsPanel.class);
@@ -49,6 +52,9 @@ public class ContactDetailsPanel extends UiPart<Region> {
     @FXML
     private Label remarkLabel;
 
+    /**
+     * Constructs a {@code ContactdetailsPanel} and loads its FXMl layout
+     */
     public ContactDetailsPanel() {
         super(FXML);
     }
@@ -62,17 +68,28 @@ public class ContactDetailsPanel extends UiPart<Region> {
         clearContact();
     }
 
+    /**
+     * Handles the edit button click
+     */
     @FXML
     private void handleEdit() {
         logger.info("Edit button clicked");
-
+        // to be implemented in future
     }
 
+    /**
+     * Handles the delete button click
+     */
     @FXML
     private void handleDelete() {
         logger.info("Delete button clicked");
+        // to be implemented in future
     }
 
+    /**
+     * Displays the details of a given {@code Person} in the panel.
+     * @param person the person whose details are to be displayed; if null, clears the panel
+     */
     @FXML
     public void setContact(Person person) {
         if (person == null) {
@@ -117,8 +134,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
                     meetingLabel.setText("Next meeting: " + m.toDisplayString());
                     meetingLabel.setManaged(true);
                     meetingLabel.setVisible(true);
-                },
-                () -> {
+                }, () -> {
                     meetingLabel.setText("");
                     meetingLabel.setManaged(false);
                     meetingLabel.setVisible(false);
@@ -127,6 +143,9 @@ public class ContactDetailsPanel extends UiPart<Region> {
         // remark label to be added later when implementation is finished
     }
 
+    /**
+     * Clears the contact details panel and hides it.
+     */
     @FXML
     public void clearContact() {
         contactNameLabel.setText("");
