@@ -227,7 +227,9 @@ public class AddCommandParser implements Parser<AddCommand> {
                     person.getMeeting()
             );
         default:
-            throw new ParseException("Unknown field prefix: " + prefix.toString());
+            // Unknown field prefix
+            assert false : "Unknown field prefix: " + prefix;
+            return null;
         }
     }
 }

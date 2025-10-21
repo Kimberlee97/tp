@@ -1,5 +1,6 @@
 package homey.logic;
 
+import static homey.logic.LogicManager.MESSAGE_CANCEL_COMMAND;
 import static homey.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static homey.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static homey.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
@@ -7,9 +8,15 @@ import static homey.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static homey.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static homey.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static homey.logic.commands.CommandTestUtil.TRANSACTION_DESC_PROSPECT;
+import static homey.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
+import static homey.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
+import static homey.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static homey.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static homey.logic.commands.CommandTestUtil.VALID_TRANSACTION_PROSPECT;
 import static homey.testutil.Assert.assertThrows;
 import static homey.testutil.TypicalPersons.AMY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -21,6 +28,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import homey.logic.commands.AddCommand;
 import homey.logic.commands.CommandResult;
+import homey.logic.commands.InteractiveCommand;
 import homey.logic.commands.ListCommand;
 import homey.logic.commands.exceptions.CommandException;
 import homey.logic.parser.exceptions.ParseException;
@@ -172,5 +180,74 @@ public class LogicManagerTest {
         ModelManager expectedModel = new ModelManager();
         expectedModel.addPerson(expectedPerson);
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_interactiveAddCommand_success() throws Exception {
+        Person expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY)
+                .withPhone(VALID_PHONE_AMY)
+                .withEmail(VALID_EMAIL_AMY)
+                .withAddress(VALID_ADDRESS_AMY)
+                .withStage(VALID_TRANSACTION_PROSPECT)
+                .build();
+
+        // Start with just the name
+        String initialCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY;
+        CommandResult result = logic.execute(initialCommand);
+        assertEquals(AddCommand.MESSAGE_MISSING_PHONE + "\n" + InteractiveCommand.MESSAGE_INTERACTIVE,
+                result.getFeedbackToUser());
+
+        // Add phone
+        result = logic.execute(VALID_PHONE_AMY);
+        assertEquals(AddCommand.MESSAGE_MISSING_EMAIL + "\n" + InteractiveCommand.MESSAGE_INTERACTIVE,
+                result.getFeedbackToUser());
+
+        // Add email
+        result = logic.execute(VALID_EMAIL_AMY);
+        assertEquals(AddCommand.MESSAGE_MISSING_ADDRESS + "\n" + InteractiveCommand.MESSAGE_INTERACTIVE,
+                result.getFeedbackToUser());
+
+        // Add address
+        result = logic.execute(VALID_ADDRESS_AMY);
+        assertEquals(AddCommand.MESSAGE_MISSING_STAGE + "\n" + InteractiveCommand.MESSAGE_INTERACTIVE,
+                result.getFeedbackToUser());
+
+        // Add transaction stage
+        result = logic.execute(VALID_TRANSACTION_PROSPECT);
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, expectedPerson), result.getFeedbackToUser());
+        assertEquals(expectedPerson, logic.getFilteredPersonList().get(0));
+    }
+
+    @Test
+    public void execute_interactiveCommandCancel_success() throws Exception {
+        // Start interactive command
+        String initialCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY;
+        CommandResult result = logic.execute(initialCommand);
+        assertEquals(AddCommand.MESSAGE_MISSING_PHONE + "\n" + InteractiveCommand.MESSAGE_INTERACTIVE,
+                result.getFeedbackToUser());
+
+        // Cancel the command
+        result = logic.execute("cancel");
+        assertEquals(MESSAGE_CANCEL_COMMAND, result.getFeedbackToUser());
+
+        // Verify no person was added
+        assertTrue(logic.getFilteredPersonList().isEmpty());
+    }
+
+    @Test
+    public void execute_interactiveCommandInvalidInput_promptsAgain() throws Exception {
+        // Start with just the name
+        String initialCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY;
+        CommandResult result = logic.execute(initialCommand);
+        assertEquals(AddCommand.MESSAGE_MISSING_PHONE + "\n" + InteractiveCommand.MESSAGE_INTERACTIVE,
+                result.getFeedbackToUser());
+
+        // Try invalid phone number
+        assertThrows(ParseException.class, () -> logic.execute("invalid-phone"));
+
+        // Should still prompt for phone
+        result = logic.execute(VALID_PHONE_AMY);
+        assertEquals(AddCommand.MESSAGE_MISSING_EMAIL + "\n" + InteractiveCommand.MESSAGE_INTERACTIVE,
+                result.getFeedbackToUser());
     }
 }

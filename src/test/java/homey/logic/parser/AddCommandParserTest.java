@@ -37,6 +37,7 @@ import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static homey.testutil.Assert.assertThrows;
 import static homey.testutil.TypicalPersons.AMY;
 import static homey.testutil.TypicalPersons.BOB;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -301,6 +302,16 @@ public class AddCommandParserTest {
         );
         assertParseSuccess(parser, TAG_DESC_FRIEND + RELATION_DESC_VENDOR,
                 new AddCommand(emptyPerson, true, missingFields));
+    }
+
+    @Test
+    public void updatePersonField_unknownPrefix_throwsAssertionError() {
+        Person person = new PersonBuilder().build();
+        Prefix unknownPrefix = new Prefix("unknown/");
+
+        // Test that assertion is triggered
+        assertThrows(AssertionError.class, () ->
+                AddCommandParser.updatePersonField(person, unknownPrefix, "any value"));
     }
 
     @Test
