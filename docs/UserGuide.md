@@ -85,7 +85,7 @@ Format: `help [topic]`
 
 * `topic` is optional and deep-links to a specific section of this guide.
 * Topic matching is case-insensitive and ignores surrounding spaces.
-* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`.
+* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `relation`, `transaction`, `clear` and `exit`.
 
 Examples:
 * `help` opens the User Guide home.
@@ -161,7 +161,7 @@ Examples:
    ![Result of `relation 2 client`](images/relationClient.png)
 *  `relation 1 vendor` Edits the relational tag of the 1st person to be `vendor`.
 
-### Changing the transaction stage
+### Changing the transaction stage : `transaction`
 
 Replaces the transaction stage tag of an existing person to the given stage.
 
