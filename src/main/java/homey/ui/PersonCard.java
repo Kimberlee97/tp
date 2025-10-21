@@ -46,6 +46,8 @@ public class PersonCard extends UiPart<Region> {
         tags.getChildren().clear();
         // add the relation as first tag
         tags.getChildren().add(new Label(person.getRelation().value));
+        // add the transaction stage as second tag
+        tags.getChildren().add(new Label(person.getStage().value));
         // add other tags
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
