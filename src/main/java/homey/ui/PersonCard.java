@@ -74,5 +74,6 @@ public class PersonCard extends UiPart<Region> {
                     meeting.setVisible(false);
                 }
         );
+        remark.setText("Remarks: " + person.getRemark().value);
     }
 }

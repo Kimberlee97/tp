@@ -79,6 +79,7 @@ class JsonAdaptedPerson {
         address = source.getAddress().value;
         stage = source.getStage().value;
         relation = source.getRelation().value;
+        remark = source.getRemark().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
