@@ -9,16 +9,21 @@ import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Map;
+
 import homey.commons.util.ToStringBuilder;
 import homey.logic.Messages;
 import homey.logic.commands.exceptions.CommandException;
+import homey.logic.parser.AddCommandParser;
+import homey.logic.parser.Prefix;
+import homey.logic.parser.exceptions.ParseException;
 import homey.model.Model;
 import homey.model.person.Person;
 
 /**
  * Adds a person to the address book.
  */
-public class AddCommand extends Command {
+public class AddCommand extends InteractiveCommand {
 
     public static final String COMMAND_WORD = "add";
 
@@ -43,27 +48,88 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_MISSING_NAME = "Enter name.";
+    public static final String MESSAGE_MISSING_PHONE = "Enter phone number.";
+    public static final String MESSAGE_MISSING_EMAIL = "Enter email.";
+    public static final String MESSAGE_MISSING_ADDRESS = "Enter address.";
+    public static final String MESSAGE_MISSING_STAGE = "Enter transaction stage (prospect/negotiating/closed).";
+    public static final String MESSAGE_INTERACTIVE = "Enter 'cancel' to stop command.";
 
-    private final Person toAdd;
+    private Person toAdd;
 
     /**
      * Creates an AddCommand to add the specified {@code Person}
      */
     public AddCommand(Person person) {
+        super(false, null);
         requireNonNull(person);
         toAdd = person;
+    }
+
+    /**
+     * Creates an interactive AddCommand with missing fields to be filled in.
+     */
+    public AddCommand(Person person, boolean isInteractive, Map<Prefix, String> missingFields) {
+        super(isInteractive, missingFields);
+        requireNonNull(person);
+        this.toAdd = person;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (model.hasPerson(toAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        // regular command
+        if (!isInteractive) {
+            if (model.hasPerson(toAdd)) {
+                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            }
+
+            model.addPerson(toAdd);
+            return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
         }
 
-        model.addPerson(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+        // all missing fields are filled
+        if (missingFields.isEmpty()) {
+            if (model.hasPerson(toAdd)) {
+                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            }
+            model.addPerson(toAdd);
+            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd.toString()));
+        }
+
+        String prompt = getPromptForField(getNextMissingField()) + "\n" + MESSAGE_INTERACTIVE;
+        return new CommandResult(prompt, false, false);
+    }
+
+    @Override
+    public void updateField(Prefix prefix, String value) throws ParseException {
+        super.updateField(prefix, value);
+        try {
+            this.toAdd = AddCommandParser.updatePersonField(toAdd, prefix, value);
+            missingFields.remove(prefix);
+        } catch (ParseException pe) {
+            missingFields.put(prefix, ""); // Keep the field as missing if parsing fails
+            throw pe;
+        }
+    }
+
+    @Override
+    public String getPromptForField(Prefix prefix) throws CommandException {
+        switch (prefix.toString()) {
+        case "n/":
+            return MESSAGE_MISSING_NAME;
+        case "p/":
+            return MESSAGE_MISSING_PHONE;
+        case "e/":
+            return MESSAGE_MISSING_EMAIL;
+        case "a/":
+            return MESSAGE_MISSING_ADDRESS;
+        case "s/":
+            return MESSAGE_MISSING_STAGE;
+        default:
+            throw new CommandException("Missing field error");
+        }
     }
 
     @Override

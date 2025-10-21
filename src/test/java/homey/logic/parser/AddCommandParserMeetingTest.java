@@ -1,12 +1,17 @@
 package homey.logic.parser;
 
-import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
+
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
 import homey.logic.commands.AddCommand;
 import homey.model.person.Meeting;
+import homey.model.person.Person;
+import homey.testutil.PersonBuilder;
 
 class AddCommandParserMeetingTest {
 
@@ -21,7 +26,14 @@ class AddCommandParserMeetingTest {
 
     @Test
     void parse_missingRequired_stillFailsForUsage() {
-        String input = " n/Alex p/87438807 e/alex@ex.com a/Blk 30 m/2025-11-03 14:00";
-        assertParseFailure(parser, input, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        String input = " n/Alex p/87438807 e/alex@ex.com m/2025-11-03 14:00";
+        Person partialPerson = new PersonBuilder()
+                .withName("Alex")
+                .withPhone("87438807")
+                .withEmail("alex@ex.com")
+                .withMeeting("2025-11-03 14:00")
+                .build();
+        assertParseSuccess(parser, input,
+                new AddCommand(partialPerson, true, Map.of(PREFIX_ADDRESS, "")));
     }
 }
