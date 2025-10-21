@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import homey.logic.commands.AddCommand;
+import homey.logic.commands.ArchiveCommand;
 import homey.logic.commands.ClearCommand;
 import homey.logic.commands.DeleteCommand;
 import homey.logic.commands.EditCommand;
@@ -25,6 +26,7 @@ import homey.logic.commands.HelpCommand;
 import homey.logic.commands.ListCommand;
 import homey.logic.commands.RelationCommand;
 import homey.logic.commands.TransactionStageCommand;
+import homey.logic.commands.UnarchiveCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.NameContainsKeywordsPredicate;
 import homey.model.person.Person;
@@ -110,6 +112,15 @@ public class AddressBookParserTest {
                         + PREFIX_TRANSACTION + stage);
         assertEquals(new TransactionStageCommand(INDEX_FIRST_PERSON, transactionStage), command);
     }
+
+    @Test
+    public void parseCommand_archiveAndUnarchiveCommands_success() throws Exception {
+        AddressBookParser parser = new AddressBookParser();
+
+        assertTrue(parser.parseCommand("archive 1") instanceof ArchiveCommand);
+        assertTrue(parser.parseCommand("unarchive 1") instanceof UnarchiveCommand);
+    }
+
 
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {

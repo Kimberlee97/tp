@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import homey.commons.core.LogsCenter;
 import homey.logic.commands.AddCommand;
+import homey.logic.commands.ArchiveCommand;
 import homey.logic.commands.ClearCommand;
 import homey.logic.commands.Command;
 import homey.logic.commands.DeleteCommand;
@@ -16,9 +17,11 @@ import homey.logic.commands.EditCommand;
 import homey.logic.commands.ExitCommand;
 import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
+import homey.logic.commands.ListArchivedCommand;
 import homey.logic.commands.ListCommand;
 import homey.logic.commands.RelationCommand;
 import homey.logic.commands.TransactionStageCommand;
+import homey.logic.commands.UnarchiveCommand;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
@@ -91,6 +94,9 @@ public class AddressBookParser {
             return new FindCommandParser().parse(arguments);
 
         case ListCommand.COMMAND_WORD:
+            if (arguments.trim().equals("archived")) {
+                return new ListArchivedCommand();
+            }
             return new ListCommand();
 
         case ExitCommand.COMMAND_WORD:
@@ -101,6 +107,12 @@ public class AddressBookParser {
 
         case TransactionStageCommand.COMMAND_WORD:
             return new TransactionStageCommandParser().parse(arguments);
+
+        case ArchiveCommand.COMMAND_WORD:
+            return new ArchiveCommandParser().parse(arguments);
+
+        case UnarchiveCommand.COMMAND_WORD:
+            return new UnarchiveCommandParser().parse(arguments);
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
