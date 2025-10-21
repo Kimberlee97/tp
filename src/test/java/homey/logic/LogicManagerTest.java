@@ -214,7 +214,8 @@ public class LogicManagerTest {
 
         // Add transaction stage
         result = logic.execute(VALID_TRANSACTION_PROSPECT);
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, expectedPerson), result.getFeedbackToUser());
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(expectedPerson)),
+                result.getFeedbackToUser());
         assertEquals(expectedPerson, logic.getFilteredPersonList().get(0));
     }
 
