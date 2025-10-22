@@ -1,18 +1,24 @@
 package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.Messages.MESSAGE_SINGLE_KEYWORD_ONLY;
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import homey.logic.commands.FindCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.AddressContainsKeywordsPredicate;
 import homey.model.person.NameContainsKeywordsPredicate;
+import homey.model.person.RelationContainsKeywordPredicate;
 import homey.model.person.TagContainsKeywordsPredicate;
+import homey.model.person.TransactionContainsKeywordPredicate;
 
 /**
  * Parses input arguments and creates a new {@link FindCommand}.
@@ -22,6 +28,8 @@ import homey.model.person.TagContainsKeywordsPredicate;
  *   <li>Name search (default): {@code find KEYWORD [MORE_KEYWORDS]}</li>
  *   <li>Address search: {@code find a/KEYWORD [MORE_KEYWORDS]}</li>
  *   <li>Tag search: {@code find t/KEYWORD [MORE_KEYWORDS]}</li>
+ *   <li>Relation search: {@code find r/KEYWORD}</li>
+ *   <li>Transaction Stage search: {@code find s/KEYWORD}</li>
  * </ul>
  *
  * <p>When {@code a/} is provided without any keywords (e.g., {@code find a/}, {@code find t/}),
@@ -29,49 +37,48 @@ import homey.model.person.TagContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
+    private static final Set<String> VALID_RELATIONS = Set.of("client", "vendor");
+    private static final String RELATION_ERROR_MESSAGE =
+            "Invalid relation. Only 'client' or 'vendor' are allowed";
+
+    private static final Set<String> VALID_TRANSACTIONS = Set.of("prospect", "negotiating", "closed");
+    private static final String TRANSACTION_ERROR_MESSAGE =
+            "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed' are allowed";
+
+    private static final Set<String> VALID_PREFIXES = Set.of(
+            PREFIX_ADDRESS.toString(),
+            PREFIX_TAG.toString(),
+            PREFIX_RELATION.toString(),
+            PREFIX_TRANSACTION.toString()
+    );
+
+
     @Override
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        final String trimmedArgs = args.trim();
+        String trimmedArgs = validateAndTrim(args);
 
-        // Blank input
-        if (trimmedArgs.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        if (trimmedArgs.startsWith(PREFIX_ADDRESS.toString())) {
+            String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_ADDRESS.toString());
+            return parseAddress(afterPrefix);
         }
 
-        // Address search: look for the address prefix (e.g., "a/")
-        final String addrPrefix = PREFIX_ADDRESS.toString();
-        if (trimmedArgs.startsWith(addrPrefix)) {
-            final String afterPrefix = trimmedArgs.substring(addrPrefix.length()).trim();
-
-            // a/ with no keywords -> show address-only usage
-            if (afterPrefix.isEmpty()) {
-                throw new ParseException(String.format(
-                        MESSAGE_INVALID_COMMAND_FORMAT, buildAddressOnlyUsage()));
-            }
-
-            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
-            return new FindCommand(new AddressContainsKeywordsPredicate(keywords));
+        if (trimmedArgs.startsWith(PREFIX_TAG.toString())) {
+            String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_TAG.toString());
+            return parseTag(afterPrefix);
         }
 
-        //Tag search: look for the tag prefix (e.g., "t/")
-        final String tagPrefix = PREFIX_TAG.toString();
-        if (trimmedArgs.startsWith(tagPrefix)) {
-            final String afterPrefix = trimmedArgs.substring(tagPrefix.length()).trim();
-
-            // t/ with no keywords -> show tag-only usage
-            if (afterPrefix.isEmpty()) {
-                throw new ParseException(String.format(
-                    MESSAGE_INVALID_COMMAND_FORMAT, buildTagOnlyUsage()));
-
-            }
-
-            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
-            return new FindCommand(new TagContainsKeywordsPredicate(keywords));
+        if (trimmedArgs.startsWith(PREFIX_RELATION.toString())) {
+            String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_RELATION.toString());
+            return parseRelation(afterPrefix);
         }
 
-        final List<String> nameKeywords = Arrays.asList(trimmedArgs.split("\\s+"));
-        return new FindCommand(new NameContainsKeywordsPredicate(nameKeywords));
+        if (trimmedArgs.startsWith(PREFIX_TRANSACTION.toString())) {
+            String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_TRANSACTION.toString());
+            return parseTransaction(afterPrefix);
+        }
+
+        return parseName(trimmedArgs);
     }
 
     /**
@@ -86,5 +93,106 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     private static String buildTagOnlyUsage() {
         return "Tags: " + FindCommand.COMMAND_WORD + " " + PREFIX_TAG + "KEYWORD [MORE_KEYWORDS]";
+    }
+
+    /**
+     * Builds the transaction-only usage string for {@code find s/KEYWORD}.
+     */
+    private static String buildTransactionOnlyUsage() {
+        return "Transaction stage: " + FindCommand.COMMAND_WORD + " " + PREFIX_TRANSACTION + "KEYWORD";
+    }
+
+    /**
+     * Builds the relation-only usage string for {@code find r/KEYWORD}
+     */
+    private static String buildRelationOnlyUsage() {
+        return "Relation: " + FindCommand.COMMAND_WORD + " " + PREFIX_RELATION + "KEYWORD";
+    }
+
+    private FindCommand parseAddress(String args) throws ParseException {
+        validateNotEmpty(args, buildAddressOnlyUsage());
+        List<String> keywords = extractKeywords(args);
+        return new FindCommand(new AddressContainsKeywordsPredicate(keywords));
+    }
+
+    private FindCommand parseTag(String args) throws ParseException {
+        validateNotEmpty(args, buildTagOnlyUsage());
+        List<String> keywords = extractKeywords(args);
+        return new FindCommand(new TagContainsKeywordsPredicate(keywords));
+    }
+
+    private FindCommand parseRelation(String args) throws ParseException {
+        validateNotEmpty(args, buildRelationOnlyUsage());
+        String keyword = extractSingleKeyword(args, "Relation", buildRelationOnlyUsage());
+        validateRelationKeyword(keyword);
+        return new FindCommand(new RelationContainsKeywordPredicate(keyword));
+    }
+
+    private FindCommand parseTransaction(String args) throws ParseException {
+        validateNotEmpty(args, buildTransactionOnlyUsage());
+        String keyword = extractSingleKeyword(args, "Transaction stage", buildTransactionOnlyUsage());
+        validateTransactionKeyword(keyword);
+        return new FindCommand(new TransactionContainsKeywordPredicate(keyword));
+    }
+
+    private FindCommand parseName(String args) throws ParseException {
+        validateNotEmpty(args, FindCommand.MESSAGE_USAGE);
+        List<String> keywords = extractKeywords(args);
+        return new FindCommand(new NameContainsKeywordsPredicate(keywords));
+    }
+
+    private String validateAndTrim(String args) throws ParseException {
+        String trimmed = args.trim();
+        if (trimmed.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
+            );
+        }
+        if (trimmed.matches("^[a-zA-Z]+/.*")) {
+            String potentialPrefix = trimmed.substring(0, trimmed.indexOf('/') + 1);
+            if (!VALID_PREFIXES.contains(potentialPrefix)) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
+                );
+            }
+        }
+        return trimmed;
+    }
+
+    private void validateNotEmpty(String args, String usage) throws ParseException {
+        if (args.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, usage));
+        }
+    }
+
+    private void validateRelationKeyword(String keyword) throws ParseException {
+        if (!VALID_RELATIONS.contains(keyword)) {
+            throw new ParseException(RELATION_ERROR_MESSAGE);
+        }
+    }
+
+    private void validateTransactionKeyword(String keyword) throws ParseException {
+        if (!VALID_TRANSACTIONS.contains(keyword)) {
+            throw new ParseException(TRANSACTION_ERROR_MESSAGE);
+        }
+    }
+
+    private String extractAfterPrefix(String trimmedArgs, String prefix) {
+        return trimmedArgs.substring(prefix.length()).trim();
+    }
+
+    private List<String> extractKeywords(String args) {
+        return Arrays.asList(args.split("\\s+"));
+    }
+
+    private String extractSingleKeyword(String args, String fieldName, String usage) throws ParseException {
+        List<String> keywords = extractKeywords(args);
+
+        if (keywords.size() > 1) {
+            throw new ParseException(
+                    String.format(MESSAGE_SINGLE_KEYWORD_ONLY, fieldName, usage)
+            );
+        }
+        return keywords.get(0).toLowerCase();
     }
 }

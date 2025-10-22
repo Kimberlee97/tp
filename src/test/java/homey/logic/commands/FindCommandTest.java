@@ -20,7 +20,9 @@ import homey.model.Model;
 import homey.model.ModelManager;
 import homey.model.UserPrefs;
 import homey.model.person.NameContainsKeywordsPredicate;
+import homey.model.person.RelationContainsKeywordPredicate;
 import homey.model.person.TagContainsKeywordsPredicate;
+import homey.model.person.TransactionContainsKeywordPredicate;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -167,4 +169,128 @@ public class FindCommandTest {
     private NameContainsKeywordsPredicate preparePredicate(String userInput) {
         return new NameContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+")));
     }
+    // relation search tests
+    @Test
+    public void constructorOverload_relationPredicate_constructsSuccessfully() {
+        RelationContainsKeywordPredicate relationPredicate =
+                new RelationContainsKeywordPredicate("client");
+        FindCommand findCommand = new FindCommand(relationPredicate);
+        assertNotNull(findCommand);
+        FindCommand findCommandCopy = new FindCommand(
+                new RelationContainsKeywordPredicate("client"));
+        assertEquals(findCommand, findCommandCopy);
+        assertNotNull(findCommand.toString());
+    }
+    @Test
+    public void execute_relationPredicateClient_personsFound() {
+        RelationContainsKeywordPredicate predicate = new RelationContainsKeywordPredicate("client");
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+        CommandResult result = command.execute(model);
+        assertNotNull(result);
+        assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+    }
+    @Test
+    public void toStringMethod_relationPredicate() {
+        RelationContainsKeywordPredicate predicate = new RelationContainsKeywordPredicate("client");
+        FindCommand findCommand = new FindCommand(predicate);
+        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
+        assertEquals(expected, findCommand.toString());
+    }
+    @Test
+    public void equals_relationPredicate() {
+        RelationContainsKeywordPredicate clientPredicate =
+                new RelationContainsKeywordPredicate("client");
+        RelationContainsKeywordPredicate vendorPredicate =
+                new RelationContainsKeywordPredicate("vendor");
+        FindCommand findClientCommand = new FindCommand(clientPredicate);
+        FindCommand findVendorCommand = new FindCommand(vendorPredicate);
+        assertTrue(findClientCommand.equals(findClientCommand));
+        FindCommand findClientCommandCopy = new FindCommand(
+                new RelationContainsKeywordPredicate("client"));
+        assertTrue(findClientCommand.equals(findClientCommandCopy));
+        assertFalse(findClientCommand.equals(findVendorCommand));
+    }
+    // transaction stage tests
+    @Test
+    public void constructorOverload_transactionPredicate_constructsSuccessfully() {
+        TransactionContainsKeywordPredicate transactionPredicate =
+                new TransactionContainsKeywordPredicate("prospect");
+        FindCommand findCommand = new FindCommand(transactionPredicate);
+
+        assertNotNull(findCommand);
+
+        FindCommand findCommandCopy = new FindCommand(
+                new TransactionContainsKeywordPredicate("prospect"));
+        assertEquals(findCommand, findCommandCopy);
+
+        assertNotNull(findCommand.toString());
+    }
+
+    @Test
+    public void execute_transactionPredicateProspect_personsFound() {
+        TransactionContainsKeywordPredicate predicate = new TransactionContainsKeywordPredicate("prospect");
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        CommandResult result = command.execute(model);
+
+        assertNotNull(result);
+        assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_transactionPredicateNegotiating_personsFound() {
+        TransactionContainsKeywordPredicate predicate = new TransactionContainsKeywordPredicate("negotiating");
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        CommandResult result = command.execute(model);
+
+        assertNotNull(result);
+        assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_transactionPredicateClosed_personsFound() {
+        TransactionContainsKeywordPredicate predicate = new TransactionContainsKeywordPredicate("closed");
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+
+        CommandResult result = command.execute(model);
+
+        assertNotNull(result);
+        assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void toStringMethod_transactionPredicate() {
+        TransactionContainsKeywordPredicate predicate = new TransactionContainsKeywordPredicate("prospect");
+        FindCommand findCommand = new FindCommand(predicate);
+        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
+        assertEquals(expected, findCommand.toString());
+    }
+
+    @Test
+    public void equals_transactionPredicate() {
+        TransactionContainsKeywordPredicate prospectPredicate =
+                new TransactionContainsKeywordPredicate("prospect");
+        TransactionContainsKeywordPredicate closedPredicate =
+                new TransactionContainsKeywordPredicate("closed");
+
+        FindCommand findProspectCommand = new FindCommand(prospectPredicate);
+        FindCommand findClosedCommand = new FindCommand(closedPredicate);
+
+        // same object -> returns true
+        assertTrue(findProspectCommand.equals(findProspectCommand));
+
+        // same values -> returns true
+        FindCommand findProspectCommandCopy = new FindCommand(
+                new TransactionContainsKeywordPredicate("prospect"));
+        assertTrue(findProspectCommand.equals(findProspectCommandCopy));
+
+        // different transaction stage -> returns false
+        assertFalse(findProspectCommand.equals(findClosedCommand));
+    }
+
 }
