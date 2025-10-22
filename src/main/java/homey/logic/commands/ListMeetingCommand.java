@@ -20,11 +20,13 @@ public class ListMeetingCommand extends Command {
     private static final Predicate<Person> HAS_MEETING_ACTIVE =
             p -> p.getMeeting() != null && p.getMeeting().isPresent() && !p.isArchived();
 
-    // Sort by meeting time ascending; if anything is missing, push to the end
-    private static final Comparator<Person> BY_MEETING_ASC = Comparator.comparing(
-            p -> p.getMeeting()
+    // Sort by meeting time ascending; if anything is missing, push to the end.
+    // If times are equal, break ties by name (case-insensitive A→Z).
+    private static final Comparator<Person> BY_MEETING_ASC = Comparator
+            .comparing((Person p) -> p.getMeeting()
                     .map(Meeting::getDateTime)
-                    .orElse(LocalDateTime.MAX));
+                    .orElse(LocalDateTime.MAX))
+            .thenComparing(p -> p.getName().fullName, String.CASE_INSENSITIVE_ORDER);
 
     @Override
     public CommandResult execute(Model model) {
