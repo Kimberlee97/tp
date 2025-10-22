@@ -79,7 +79,6 @@ public class AddCommand extends InteractiveCommand {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        model.updateMeetingOverdueStatus();
 
         // regular command or all missing fields are filled
         if (!isInteractive || missingFields.isEmpty()) {

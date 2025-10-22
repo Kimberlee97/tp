@@ -34,7 +34,6 @@ public class DeleteCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        model.updateMeetingOverdueStatus();
 
         List<Person> lastShownList = model.getFilteredPersonList();
 

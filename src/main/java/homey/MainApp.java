@@ -38,6 +38,7 @@ import javafx.stage.Stage;
  * Runs the application.
  */
 public class MainApp extends Application {
+    public static final long INTERVAL = 60000; // one minute
 
     public static final Version VERSION = new Version(0, 2, 2, true);
 
@@ -185,7 +186,7 @@ public class MainApp extends Application {
             public void run() {
                 Platform.runLater(() -> model.updateMeetingOverdueStatus());
             }
-        }, 60000, 60000); // Check every minute
+        }, INTERVAL, INTERVAL);
     }
 
     @Override
