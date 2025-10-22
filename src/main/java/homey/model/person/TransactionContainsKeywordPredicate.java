@@ -16,7 +16,7 @@ public class TransactionContainsKeywordPredicate implements Predicate<Person> {
 
     /**
      * Constructs a {@code TransactionContainsKeywordPredicate} with the given keyword.
-     * @param keyword must match against the person's tramsaction stage.
+     * @param keyword must match against the person's transaction stage.
      *                Must not be null.
      */
     public TransactionContainsKeywordPredicate(String keyword) {

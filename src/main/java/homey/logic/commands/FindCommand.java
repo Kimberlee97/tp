@@ -12,7 +12,8 @@ import homey.model.person.Person;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case-insensitive except for relation and transaction find.
+ * Keyword matching is case-insensitive
+ * Allows for partial matching except for relation and transaction find.
  */
 public class FindCommand extends Command {
 

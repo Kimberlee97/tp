@@ -45,6 +45,13 @@ public class FindCommandParser implements Parser<FindCommand> {
     private static final String TRANSACTION_ERROR_MESSAGE =
             "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed' are allowed";
 
+    private static final Set<String> VALID_PREFIXES = Set.of(
+            PREFIX_ADDRESS.toString(),
+            PREFIX_TAG.toString(),
+            PREFIX_RELATION.toString(),
+            PREFIX_TRANSACTION.toString()
+    );
+
 
     @Override
     public FindCommand parse(String args) throws ParseException {
@@ -140,6 +147,14 @@ public class FindCommandParser implements Parser<FindCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
             );
+        }
+        if (trimmed.matches("^[a-zA-Z]/.*")) {
+            String prefix = trimmed.substring(0, 2);
+            if (!VALID_PREFIXES.contains(prefix)) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
+                );
+            }
         }
         return trimmed;
     }
