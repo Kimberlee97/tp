@@ -37,7 +37,7 @@ public class Person {
      */
     public Person(Name name, Phone phone, Email email, Address address, Relation relation,
                   TransactionStage stage, Remark remark, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+        requireAllNonNull(name, phone, email, address, stage, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -46,7 +46,7 @@ public class Person {
         this.relation = relation;
         this.tags.addAll(tags);
         this.meeting = Optional.empty();
-        this.remark = remark;
+        this.remark = remark == null ? new Remark("") : remark;
     }
 
     /**
@@ -54,7 +54,7 @@ public class Person {
      */
     public Person(Name name, Phone phone, Email email, Address address, Relation relation,
                   TransactionStage stage, Remark remark, Set<Tag> tags, Optional<Meeting> meeting) {
-        requireAllNonNull(name, phone, email, address, tags);
+        requireAllNonNull(name, phone, email, address, stage, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -63,7 +63,7 @@ public class Person {
         this.relation = relation;
         this.tags.addAll(tags);
         this.meeting = meeting == null ? Optional.empty() : meeting;
-        this.remark = remark;
+        this.remark = remark == null ? new Remark("") : remark;
     }
 
     public Name getName() {
