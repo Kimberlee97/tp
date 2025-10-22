@@ -7,9 +7,18 @@ import java.util.function.Predicate;
 
 import homey.commons.util.ToStringBuilder;
 
-public class TransactionContainsKeywordPredicate implements Predicate<Person>{
+/**
+ * Tests that a {@code Person}'s {@code Stage} matches the given keyword.
+ * The keyword must match exactly (case-insensitive) with the person's transaction stage
+ */
+public class TransactionContainsKeywordPredicate implements Predicate<Person> {
     private final String keywordLowerCased;
 
+    /**
+     * Constructs a {@code TransactionContainsKeywordPredicate} with the given keyword.
+     * @param keyword must match against the person's tramsaction stage.
+     *                Must not be null.
+     */
     public TransactionContainsKeywordPredicate(String keyword) {
         requireNonNull(keyword);
         this.keywordLowerCased = keyword.toLowerCase(Locale.ROOT);
@@ -18,7 +27,7 @@ public class TransactionContainsKeywordPredicate implements Predicate<Person>{
     @Override
     public boolean test(Person person) {
         String transaction = person.getStage().value.toLowerCase(Locale.ROOT);
-        return !transaction.isEmpty() && transaction.contains(keywordLowerCased);
+        return !transaction.isEmpty() && transaction.equals(keywordLowerCased);
     }
 
     @Override
