@@ -330,6 +330,112 @@ Allow users to hide completed/irrelevant contacts from the default list while ke
 * **Why a boolean on `Person`?** Simple, stable, and cheap to persist/filter.
 * **Why predicates not a field on `Model` state?** Keeps UI binding unchanged; only the predicate changes.
 
+### [Proposed] List contacts by meeting date and time
+
+#### Proposed Implementation
+
+The proposed `list meeting` command enhances the `Logic` component by allowing users to view all contacts that have an upcoming meeting scheduled, ordered from the earliest to latest meeting date.
+
+This feature is implemented through the new `ListMeetingCommand` class, which extends the existing `Command` abstraction and works seamlessly with the existing `ListCommandParser`.
+
+The parsing and execution flow are as follows:
+* The user enters `list meeting` in the command box.
+* `AddressBookParser` detects that the command word is `list` and delegates to `ListCommandParser`.
+* `ListCommandParser` interprets the argument `meeting` and returns a new `ListMeetingCommand`.
+* Upon execution, `ListMeetingCommand` filters the person list to include only those with a meeting scheduled (i.e., `person.getMeeting().isPresent()`), excluding archived persons.
+* The filtered list is then sorted by meeting date and time in ascending order, with names used as a secondary tiebreaker.
+
+This ensures that the user can easily see which meetings are coming up first, providing a chronological overview of scheduled client engagements.
+
+The following class diagram illustrates how `ListMeetingCommand` integrates with the existing `Logic` component:
+
+<puml src="diagrams/ListMeetingClassDiagram.puml" alt="ListMeetingClassDiagram" />
+
+#### Example Usage
+
+Given below is an example usage scenario and how the feature behaves at each step.
+
+Step&nbsp;1. The user launches the application and types the command `list meeting`.
+
+Step&nbsp;2. `LogicManager` calls `AddressBookParser#parseCommand("list meeting")`.  
+The `AddressBookParser` passes the argument `"meeting"` to `ListCommandParser`.
+
+Step&nbsp;3. `ListCommandParser` recognizes the argument and returns a new instance of `ListMeetingCommand`.
+
+Step&nbsp;4. `LogicManager` executes the command, which calls `model.updateFilteredPersonList(predicate)` and `model.sortFilteredPersonListBy(comparator)` to filter and order the contacts by meeting time.
+
+Step&nbsp;5. The UI (`PersonListPanel`) automatically refreshes to display only the persons with meetings, sorted from earliest to latest.
+
+The following sequence diagram shows how the `list meeting` command flows through the `Logic` component:
+
+<puml src="diagrams/ListMeetingSequenceDiagram-Logic.puml" alt="ListMeetingSequenceDiagram-Logic" />
+
+<box type="info" seamless>
+
+**Note:** Persons without a meeting or that have been archived are excluded from the filtered list.  
+The comparator used ensures ascending order by meeting date and time; if two meetings share the same time, contacts are ordered alphabetically by name.
+
+</box>
+
+#### Model Interaction
+
+The `ModelManager` exposes a sorted view layered on top of the filtered view:
+
+* `updateFilteredPersonList(predicate)` narrows the list to relevant persons (for `list meeting`: persons with a meeting and not archived).
+* `sortFilteredPersonListBy(comparator)` sets a comparator on the `SortedList` that wraps the filtered list; it does not mutate data.
+* `clearPersonListSorting()` removes any comparator, restoring the original order.
+* `getFilteredPersonList()` returns the `SortedList<Person>` that the UI binds to.
+
+<puml src="diagrams/ListMeetingModelDiagram.puml" alt="ListMeetingModelDiagram" />
+
+#### Error handling (user-visible)
+
+* Invalid `list` variant (e.g., `list mm`) →  
+  `Invalid command format!` followed by
+  list: Lists persons.
+  Usage: list [archive | meeting]
+  Examples: list | list archive | list meeting
+* No contacts have meetings → command succeeds with normal success message; the list simply shows **0** persons.
+* Internal failures (e.g., null model) are guarded via `requireNonNull` and handled as assertions during development; no user-visible state change occurs.
+
+#### Rationale & alternatives
+
+* **Why a separate `ListMeetingCommand`?**  
+  Keeps the `list` family modular (mirrors `list archive`). Clear separation of concerns, easier testing, consistent with AB3’s command-per-variant pattern.
+
+* **Why predicates rather than toggling model state?**  
+  The UI already binds to an observable list. Changing only the **predicate** (and comparator) avoids additional state flags and minimises UI coupling.
+
+* **Why the two-level ordering (date, then name)?**  
+  Predictable and stable ordering in the presence of ties: first by earliest meeting, then case-insensitive alphabetical by name.
+
+* **Alternative considered – add a `meeting` flag to `Person`**  
+  Rejected. Meeting is already a dedicated value object; filtering by `Optional<Meeting>` is simpler and avoids redundancy.
+
+* **Alternative considered – merge into `ListCommand`**  
+  Rejected to prevent command bloat and branching complexity in a single class. A dedicated command keeps behaviour explicit and testable.
+
+#### Design considerations
+
+* **Simplicity**: Uses a `Predicate<Person>` + `Comparator<Person>` only; no new model fields or persistence changes.
+* **Safety**: Nulls are guarded with `requireNonNull`. Missing meetings are treated as `LocalDateTime.MAX` so they sort to the end, but such persons are filtered out anyway.
+* **Extensibility**: Future variants (e.g., `list by tag`, `list upcoming <N> days`) can reuse the same pattern with different predicates/comparators.
+
+#### Design Considerations
+
+**Aspect:** How to incorporate meeting-based listing within the existing list framework
+* **Alternative 1 (Chosen):** Introduce a dedicated `ListMeetingCommand` that cleanly extends `Command`
+    * Pros: Adheres to the Single Responsibility Principle; keeps `list` behavior modular and consistent with existing `list archive` logic.
+    * Cons: Adds one additional command class.
+
+* **Alternative 2:** Merge functionality into the existing `ListCommand`
+    * Pros: Fewer classes.
+    * Cons: Blurs responsibility between generic listing and meeting-specific logic; complicates parser branching and testing.
+
+---
+
+**Rationale:**  
+Alternative 1 was chosen as it offers clear separation of concerns, testability, and extensibility (future list variants like `list active`, `list by tag` can reuse the same parser pattern).
 
 
 --------------------------------------------------------------------------------------------------------------------
