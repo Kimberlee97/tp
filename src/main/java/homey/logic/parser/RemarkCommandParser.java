@@ -4,11 +4,14 @@ import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
+
 import homey.commons.core.index.Index;
 import homey.commons.exceptions.IllegalValueException;
 import homey.logic.commands.RemarkCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.Remark;
+
 
 /**
  * Parses input arguments and creates a new {@code RemarkCommand} object.
@@ -32,12 +35,13 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
                     RemarkCommand.MESSAGE_USAGE), ive);
         }
 
-        if (!argMultimap.getValue(PREFIX_REMARK).isPresent()) {
+        Optional<String> remarkArg = argMultimap.getValue(PREFIX_REMARK);
+        if (remarkArg.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
         }
-        String remarkValue = argMultimap.getValue(PREFIX_REMARK).get().trim();
-        Remark remark = new Remark(remarkValue);
 
+        String remarkValue = remarkArg.get().trim();
+        Remark remark = new Remark(remarkValue);
         return new RemarkCommand(index, remark);
     }
 
