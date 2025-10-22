@@ -1,10 +1,13 @@
 package homey.ui;
 
 import java.util.Comparator;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import homey.commons.core.LogsCenter;
+import homey.model.person.Meeting;
 import homey.model.person.Person;
+import homey.model.tag.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -96,51 +99,16 @@ public class ContactDetailsPanel extends UiPart<Region> {
             clearContact();
             return;
         }
-        // show panel when a contact is selected
+
+        showPanel();
+        displayBasicFields(person);
+        displayTags(person);
+        displayMeeting(person);
+    }
+
+    private void showPanel() {
         getRoot().setVisible(true);
         getRoot().setManaged(true);
-
-        contactNameLabel.setText(person.getName().fullName);
-        phoneLabel.setText("Phone: " + person.getPhone().value);
-        addressLabel.setText("Address: " + person.getAddress().value);
-        emailLabel.setText("Email: " + person.getEmail().value);
-        relationLabel.setText("Relation: " + person.getRelation().value);
-        stageLabel.setText("Stage: " + person.getStage().value);
-
-        tagsFlowPane.getChildren().clear();
-
-        if (!person.getTags().isEmpty()) {
-            Label tagsLabel = new Label("Tags:");
-            tagsFlowPane.getStyleClass().add("plain-tag-label");
-            tagsFlowPane.getChildren().add(tagsLabel);
-
-            person.getTags().stream()
-                    .sorted(Comparator.comparing(tag -> tag.tagName))
-                    .forEach(tag -> {
-                        Label tagLabel = new Label(tag.tagName);
-                        tagLabel.getStyleClass().add("contact-tags");
-                        tagsFlowPane.getChildren().add(tagLabel);
-                    });
-
-            tagsFlowPane.setManaged(true);
-            tagsFlowPane.setVisible(true);
-        } else {
-            tagsFlowPane.setManaged(false);
-            tagsFlowPane.setVisible(false);
-        }
-
-        person.getMeeting().ifPresentOrElse(
-                m -> {
-                    meetingLabel.setText("Next meeting: " + m.toDisplayString());
-                    meetingLabel.setManaged(true);
-                    meetingLabel.setVisible(true);
-                }, () -> {
-                    meetingLabel.setText("");
-                    meetingLabel.setManaged(false);
-                    meetingLabel.setVisible(false);
-                }
-        );
-        remarkLabel.setText("Remarks: " + person.getRemark().value);
     }
 
     /**
@@ -148,19 +116,98 @@ public class ContactDetailsPanel extends UiPart<Region> {
      */
     @FXML
     public void clearContact() {
+        clearAllBasicFields();
+        clearTags();
+        hideMeeting();
+        hidePanel();
+    }
+
+    private void displayTags(Person person) {
+        tagsFlowPane.getChildren().clear();
+
+        if (person.getTags().isEmpty()) {
+            hideTagsSection();
+            return;
+        }
+
+        addTagsLabel();
+        addTagElements(person.getTags());
+        showTagsSection();
+    }
+
+    private void hideTagsSection() {
+        tagsFlowPane.setManaged(false);
+        tagsFlowPane.setVisible(false);
+    }
+
+    private void addTagsLabel() {
+        Label tagsLabel = new Label("Tags:");
+        tagsLabel.getStyleClass().add("plain-tag-label");
+        tagsFlowPane.getChildren().add(tagsLabel);
+    }
+
+    private void addTagElements(Set<Tag> tags) {
+        tags.stream()
+                .sorted(Comparator.comparing(tag -> tag.tagName))
+                .forEach(tag -> {
+                    tagsFlowPane.getStyleClass().add("contact-tags");
+                    Label tagLabel = new Label(tag.tagName);
+                    tagsFlowPane.getChildren().add(tagLabel);
+                });
+    }
+
+    private void showTagsSection() {
+        tagsFlowPane.setManaged(true);
+        tagsFlowPane.setVisible(true);
+    }
+
+    private void displayMeeting(Person person) {
+        person.getMeeting().ifPresentOrElse(
+                this::showMeeting,
+                this::hideMeeting
+        );
+    }
+
+    private void showMeeting(Meeting meeting) {
+        meetingLabel.setText("Next meeting: " + meeting.toDisplayString());
+        setMeetingVisibility(true);
+    }
+
+    private void hideMeeting() {
+        meetingLabel.setText("");
+        setMeetingVisibility(false);
+    }
+
+    private void setMeetingVisibility(boolean visible) {
+        meetingLabel.setManaged(visible);
+        meetingLabel.setVisible(visible);
+    }
+
+    private void displayBasicFields(Person person) {
+        contactNameLabel.setText(person.getName().fullName);
+        phoneLabel.setText("Phone: " + person.getPhone().value);
+        addressLabel.setText("Address: " + person.getAddress().value);
+        emailLabel.setText("Email: " + person.getEmail().value);
+        relationLabel.setText("Relation: " + person.getRelation().value);
+        stageLabel.setText("Stage: " + person.getStage().value);
+        remarkLabel.setText("Remarks: " + person.getRemark().value);
+    }
+
+    private void clearAllBasicFields() {
         contactNameLabel.setText("");
         phoneLabel.setText("");
         addressLabel.setText("");
         emailLabel.setText("");
         relationLabel.setText("");
         stageLabel.setText("");
-        tagsFlowPane.getChildren().clear();
-        meetingLabel.setText("");
-        meetingLabel.setManaged(false);
-        meetingLabel.setVisible(false);
         remarkLabel.setText("");
+    }
 
-        // hide entire panel
+    private void clearTags() {
+        tagsFlowPane.getChildren().clear();
+    }
+
+    private void hidePanel() {
         getRoot().setVisible(false);
         getRoot().setManaged(false);
     }
