@@ -91,7 +91,10 @@ public class MainWindow extends UiPart<Stage> {
      */
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
         menuItem.setAccelerator(keyCombination);
+        addAcceleratorEventFilter(menuItem, keyCombination);
+    }
 
+    private void addAcceleratorEventFilter(MenuItem menuItem, KeyCombination keyCombination) {
         /*
          * TODO: the code below can be removed once the bug reported here
          * https://bugs.openjdk.java.net/browse/JDK-8131666
@@ -108,36 +111,65 @@ public class MainWindow extends UiPart<Stage> {
          * in CommandBox or ResultDisplay.
          */
         getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
-                menuItem.getOnAction().handle(new ActionEvent());
+            if (shouldTriggerAccelerator(event, keyCombination)) {
+                triggerMenuItem(menuItem);
                 event.consume();
             }
         });
+    }
+
+    private boolean shouldTriggerAccelerator(KeyEvent event, KeyCombination keyCombination) {
+        return event.getTarget() instanceof TextInputControl && keyCombination.match(event);
+    }
+
+    private void triggerMenuItem(MenuItem menuItem) {
+        menuItem.getOnAction().handle(new ActionEvent());
     }
 
     /**
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
+        setUpPersonListPanel();
+        setUpResultDisplay();
+        setUpStatusBar();
+        setUpCommandBox();
+        setUpNavigationPanel();
+        setUpContactDetailsPanel();
+        setUpPersonSelectionListener();
+    }
+
+    private void setUpPersonListPanel() {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
+    }
 
+    private void setUpResultDisplay() {
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
+    }
 
+    private void setUpStatusBar() {
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
+    }
 
+    private void setUpCommandBox() {
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+    }
 
+    private void setUpNavigationPanel() {
         navigationPanel = new NavigationPanel();
         navigationPanelPlaceholder.getChildren().add(navigationPanel.getRoot());
+    }
 
+    private void setUpContactDetailsPanel() {
         contactDetailsPanel = new ContactDetailsPanel();
         contactDetailsPanelPlaceholder.getChildren().add(contactDetailsPanel.getRoot());
+    }
 
-        // update contact details
+    private void setUpPersonSelectionListener() {
         personListPanel.setOnPersonSelected((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 contactDetailsPanel.setContact(newVal);
@@ -146,7 +178,6 @@ public class MainWindow extends UiPart<Stage> {
             }
         });
     }
-
     /**
      * Sets the default size based on {@code guiSettings}.
      */
@@ -177,9 +208,20 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     private void handleExit() {
-        GuiSettings guiSettings = new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
-                (int) primaryStage.getX(), (int) primaryStage.getY());
+        GuiSettings guiSettings = createCurrentGuiSettings();
         logic.setGuiSettings(guiSettings);
+        closeAllWindows();
+    }
+
+    private GuiSettings createCurrentGuiSettings() {
+        return new GuiSettings(primaryStage.getWidth(),
+                primaryStage.getHeight(),
+                (int) primaryStage.getX(),
+                (int) primaryStage.getY()
+        );
+    }
+
+    private void closeAllWindows() {
         helpWindow.hide();
         primaryStage.hide();
     }
@@ -196,24 +238,54 @@ public class MainWindow extends UiPart<Stage> {
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
             CommandResult commandResult = logic.execute(commandText);
-            logger.info("Result: " + commandResult.getFeedbackToUser());
-            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
-
-            if (commandResult.isShowHelp()) {
-                commandResult.getHelpTopic().ifPresentOrElse(
-                        t -> helpWindow.openInBrowserOrShow(t), () -> helpWindow.openInBrowserOrShow()
-                );
-            }
-
-            if (commandResult.isExit()) {
-                handleExit();
-            }
-
+            handleSuccessfulCommand(commandResult);
             return commandResult;
         } catch (CommandException | ParseException e) {
-            logger.info("An error occurred while executing command: " + commandText);
-            resultDisplay.setFeedbackToUser(e.getMessage());
+            handleFailedCommand(commandText, e);
             throw e;
         }
+    }
+
+    private void handleSuccessfulCommand(CommandResult commandResult) {
+        logCommandResult(commandResult);
+        displayCommandResult(commandResult);
+        processCommandActions(commandResult);
+    }
+
+    private void handleFailedCommand(String commandText, Exception e) {
+        logCommandError(commandText);
+        displayErrorMessage(e);
+    }
+
+    private void logCommandError(String commandText) {
+        logger.info("An error occurred while executing command: " + commandText);
+    }
+
+    private void displayErrorMessage(Exception e) {
+        resultDisplay.setFeedbackToUser(e.getMessage());
+    }
+
+    private void logCommandResult(CommandResult commandResult) {
+        logger.info("Result: " + commandResult.getFeedbackToUser());
+    }
+
+    private void displayCommandResult(CommandResult commandResult) {
+        resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+    }
+
+    private void processCommandActions(CommandResult commandResult) {
+        if (commandResult.isShowHelp()) {
+            handleHelpCommand(commandResult);
+        }
+
+        if (commandResult.isExit()) {
+            handleExit();
+        }
+    }
+
+    private void handleHelpCommand(CommandResult commandResult) {
+        commandResult.getHelpTopic().ifPresentOrElse(
+                topic -> helpWindow.openInBrowserOrShow(topic), () -> helpWindow.openInBrowserOrShow()
+        );
     }
 }
