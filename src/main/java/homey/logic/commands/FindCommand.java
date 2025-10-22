@@ -12,7 +12,7 @@ import homey.model.person.Person;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case insensitive with the exception of relation find.
+ * Keyword matching is case-insensitive except for relation and transaction find.
  */
 public class FindCommand extends Command {
 
@@ -24,20 +24,14 @@ public class FindCommand extends Command {
             + " - Name: KEYWORD [MORE_KEYWORDS]\n"
             + " - Address: a/KEYWORD [MORE_KEYWORDS]\n"
             + " - Tags: t/KEYWORD [MORE_KEYWORDS]\n"
-<<<<<<< HEAD
             + " - Relation: r/KEYWORD\n"
-=======
             + " - Transaction stage: s/KEYWORD\n"
->>>>>>> feature/find-transactions
             + "Examples:\n"
             + " find alice bob\n"
             + " find a/bedok north\n"
             + " find t/friend\n"
-<<<<<<< HEAD
-            + " find r/client";
-=======
+            + " find r/client\n"
             + " find s/closed";
->>>>>>> feature/find-transactions
 
     // Store generically
     private final Predicate<Person> predicate;

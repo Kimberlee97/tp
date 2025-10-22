@@ -4,8 +4,8 @@ import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.Messages.MESSAGE_SINGLE_KEYWORD_ONLY;
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
-import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -41,6 +41,10 @@ public class FindCommandParser implements Parser<FindCommand> {
     private static final String RELATION_ERROR_MESSAGE =
             "Invalid relation. Only 'client' or 'vendor' are allowed";
 
+    private static final Set<String> VALID_TRANSACTIONS = Set.of("prospect", "negotiating", "closed");
+    private static final String TRANSACTION_ERROR_MESSAGE =
+            "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed' are allowed";
+
 
     @Override
     public FindCommand parse(String args) throws ParseException {
@@ -62,46 +66,12 @@ public class FindCommandParser implements Parser<FindCommand> {
             return parseRelation(afterPrefix);
         }
 
+        if (trimmedArgs.startsWith(PREFIX_TRANSACTION.toString())) {
+            String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_TRANSACTION.toString());
+            return parseTransaction(afterPrefix);
+        }
+
         return parseName(trimmedArgs);
-        //Tag search: look for the tag prefix (e.g., "t/")
-        final String tagPrefix = PREFIX_TAG.toString();
-        if (trimmedArgs.startsWith(tagPrefix)) {
-            final String afterPrefix = trimmedArgs.substring(tagPrefix.length()).trim();
-
-            // t/ with no keywords -> show tag-only usage
-            if (afterPrefix.isEmpty()) {
-                throw new ParseException(String.format(
-                    MESSAGE_INVALID_COMMAND_FORMAT, buildTagOnlyUsage()));
-
-            }
-
-            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
-            return new FindCommand(new TagContainsKeywordsPredicate(keywords));
-        }
-
-        final String transactionPrefix = PREFIX_TRANSACTION.toString();
-        if (trimmedArgs.startsWith(transactionPrefix)) {
-            final String afterPrefix = trimmedArgs.substring(transactionPrefix.length()).trim();
-
-            // s/ with no keywords -> show transaction-only usage
-            if (afterPrefix.isEmpty()) {
-                throw new ParseException(String.format(
-                        MESSAGE_INVALID_COMMAND_FORMAT, buildTransactionOnlyUsage()));
-            }
-
-            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
-            if (keywords.size() > 1) {
-                throw new ParseException(String.format(
-                        MESSAGE_SINGLE_KEYWORD_CONSTRAINT,
-                        "Transaction",
-                        buildTransactionOnlyUsage()
-                ));
-            }
-            return new FindCommand(new TransactionContainsKeywordPredicate(keywords.get(0)));
-        }
-
-        final List<String> nameKeywords = Arrays.asList(trimmedArgs.split("\\s+"));
-        return new FindCommand(new NameContainsKeywordsPredicate(nameKeywords));
     }
 
     /**
@@ -146,9 +116,16 @@ public class FindCommandParser implements Parser<FindCommand> {
 
     private FindCommand parseRelation(String args) throws ParseException {
         validateNotEmpty(args, buildRelationOnlyUsage());
-        String keyword = extractSingleKeyword(args);
+        String keyword = extractSingleKeyword(args, "Relation", buildRelationOnlyUsage());
         validateRelationKeyword(keyword);
         return new FindCommand(new RelationContainsKeywordPredicate(keyword));
+    }
+
+    private FindCommand parseTransaction(String args) throws ParseException {
+        validateNotEmpty(args, buildTransactionOnlyUsage());
+        String keyword = extractSingleKeyword(args, "Transaction stage", buildTransactionOnlyUsage());
+        validateTransactionKeyword(keyword);
+        return new FindCommand(new TransactionContainsKeywordPredicate(keyword));
     }
 
     private FindCommand parseName(String args) throws ParseException {
@@ -179,6 +156,12 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
     }
 
+    private void validateTransactionKeyword(String keyword) throws ParseException {
+        if (!VALID_TRANSACTIONS.contains(keyword)) {
+            throw new ParseException(TRANSACTION_ERROR_MESSAGE);
+        }
+    }
+
     private String extractAfterPrefix(String trimmedArgs, String prefix) {
         return trimmedArgs.substring(prefix.length()).trim();
     }
@@ -187,12 +170,12 @@ public class FindCommandParser implements Parser<FindCommand> {
         return Arrays.asList(args.split("\\s+"));
     }
 
-    private String extractSingleKeyword(String args) throws ParseException {
+    private String extractSingleKeyword(String args, String fieldName, String usage) throws ParseException {
         List<String> keywords = extractKeywords(args);
 
         if (keywords.size() > 1) {
             throw new ParseException(
-                    String.format(MESSAGE_SINGLE_KEYWORD_ONLY, "Relation", buildRelationOnlyUsage())
+                    String.format(MESSAGE_SINGLE_KEYWORD_ONLY, fieldName, usage)
             );
         }
         return keywords.get(0).toLowerCase();
