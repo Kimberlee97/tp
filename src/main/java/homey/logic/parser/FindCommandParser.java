@@ -4,6 +4,7 @@ import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.Messages.MESSAGE_SINGLE_KEYWORD_ONLY;
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static java.util.Objects.requireNonNull;
 
@@ -17,6 +18,7 @@ import homey.model.person.AddressContainsKeywordsPredicate;
 import homey.model.person.NameContainsKeywordsPredicate;
 import homey.model.person.RelationContainsKeywordPredicate;
 import homey.model.person.TagContainsKeywordsPredicate;
+import homey.model.person.TransactionContainsKeywordPredicate;
 
 /**
  * Parses input arguments and creates a new {@link FindCommand}.
@@ -27,6 +29,7 @@ import homey.model.person.TagContainsKeywordsPredicate;
  *   <li>Address search: {@code find a/KEYWORD [MORE_KEYWORDS]}</li>
  *   <li>Tag search: {@code find t/KEYWORD [MORE_KEYWORDS]}</li>
  *   <li>Relation search: {@code find r/KEYWORD}</li>
+ *   <li>Transaction Stage search: {@code find s/KEYWORD}</li>
  * </ul>
  *
  * <p>When {@code a/} is provided without any keywords (e.g., {@code find a/}, {@code find t/}),
@@ -60,6 +63,45 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
 
         return parseName(trimmedArgs);
+        //Tag search: look for the tag prefix (e.g., "t/")
+        final String tagPrefix = PREFIX_TAG.toString();
+        if (trimmedArgs.startsWith(tagPrefix)) {
+            final String afterPrefix = trimmedArgs.substring(tagPrefix.length()).trim();
+
+            // t/ with no keywords -> show tag-only usage
+            if (afterPrefix.isEmpty()) {
+                throw new ParseException(String.format(
+                    MESSAGE_INVALID_COMMAND_FORMAT, buildTagOnlyUsage()));
+
+            }
+
+            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
+            return new FindCommand(new TagContainsKeywordsPredicate(keywords));
+        }
+
+        final String transactionPrefix = PREFIX_TRANSACTION.toString();
+        if (trimmedArgs.startsWith(transactionPrefix)) {
+            final String afterPrefix = trimmedArgs.substring(transactionPrefix.length()).trim();
+
+            // s/ with no keywords -> show transaction-only usage
+            if (afterPrefix.isEmpty()) {
+                throw new ParseException(String.format(
+                        MESSAGE_INVALID_COMMAND_FORMAT, buildTransactionOnlyUsage()));
+            }
+
+            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
+            if (keywords.size() > 1) {
+                throw new ParseException(String.format(
+                        MESSAGE_SINGLE_KEYWORD_CONSTRAINT,
+                        "Transaction",
+                        buildTransactionOnlyUsage()
+                ));
+            }
+            return new FindCommand(new TransactionContainsKeywordPredicate(keywords.get(0)));
+        }
+
+        final List<String> nameKeywords = Arrays.asList(trimmedArgs.split("\\s+"));
+        return new FindCommand(new NameContainsKeywordsPredicate(nameKeywords));
     }
 
     /**
@@ -74,6 +116,13 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     private static String buildTagOnlyUsage() {
         return "Tags: " + FindCommand.COMMAND_WORD + " " + PREFIX_TAG + "KEYWORD [MORE_KEYWORDS]";
+    }
+
+    /**
+     * Builds the transaction-only usage string for {@code find s/KEYWORD}.
+     */
+    private static String buildTransactionOnlyUsage() {
+        return "Transaction stage: " + FindCommand.COMMAND_WORD + " " + PREFIX_TRANSACTION + "KEYWORD";
     }
 
     /**
