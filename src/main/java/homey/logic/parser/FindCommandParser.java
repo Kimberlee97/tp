@@ -148,9 +148,9 @@ public class FindCommandParser implements Parser<FindCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
             );
         }
-        if (trimmed.matches("^[a-zA-Z]/.*")) {
-            String prefix = trimmed.substring(0, 2);
-            if (!VALID_PREFIXES.contains(prefix)) {
+        if (trimmed.matches("^[a-zA-Z]+/.*")) {
+            String potentialPrefix = trimmed.substring(0, trimmed.indexOf('/') + 1);
+            if (!VALID_PREFIXES.contains(potentialPrefix)) {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
                 );
