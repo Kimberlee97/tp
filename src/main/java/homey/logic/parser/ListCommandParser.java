@@ -4,6 +4,7 @@ import homey.logic.Messages;
 import homey.logic.commands.Command;
 import homey.logic.commands.ListArchivedCommand;
 import homey.logic.commands.ListCommand;
+import homey.logic.commands.ListMeetingCommand;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
@@ -16,6 +17,8 @@ import homey.logic.parser.exceptions.ParseException;
  * </ul>
  */
 public class ListCommandParser implements Parser<Command> {
+
+    private static final String COMMAND_MEETING = "meeting";
 
     @Override
     public Command parse(String args) throws ParseException {
@@ -38,8 +41,8 @@ public class ListCommandParser implements Parser<Command> {
             return new ListCommand();
         }
 
-        if ("meeting".equalsIgnoreCase(trimmed)) {
-            return new homey.logic.commands.ListMeetingCommand();
+        if (COMMAND_MEETING.equalsIgnoreCase(trimmed)) {
+            return new ListMeetingCommand();
         }
 
         // Anything else is invalid
