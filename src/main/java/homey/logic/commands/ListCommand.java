@@ -1,6 +1,6 @@
 package homey.logic.commands;
 
-import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static homey.model.Model.PREDICATE_SHOW_ACTIVE_PERSONS;
 import static java.util.Objects.requireNonNull;
 
 import homey.model.Model;
@@ -14,11 +14,14 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Listed all persons";
 
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists persons.\n"
+            + "Usage: list [archive]\n"
+            + "Examples: list | list archive";
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredPersonList(PREDICATE_SHOW_ACTIVE_PERSONS);
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

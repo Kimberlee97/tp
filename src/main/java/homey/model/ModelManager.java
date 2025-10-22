@@ -25,6 +25,7 @@ public class ModelManager implements Model {
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
+     * By default, the filtered list shows only active (non archived) persons.
      */
     public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
         requireAllNonNull(addressBook, userPrefs);
@@ -34,6 +35,7 @@ public class ModelManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        updateFilteredPersonList(PREDICATE_SHOW_ACTIVE_PERSONS);
     }
 
     public ModelManager() {
@@ -101,7 +103,7 @@ public class ModelManager implements Model {
     @Override
     public void addPerson(Person person) {
         addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        updateFilteredPersonList(PREDICATE_SHOW_ACTIVE_PERSONS);
     }
 
     @Override

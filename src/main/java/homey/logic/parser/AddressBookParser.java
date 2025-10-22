@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import homey.commons.core.LogsCenter;
 import homey.logic.commands.AddCommand;
+import homey.logic.commands.ArchiveCommand;
 import homey.logic.commands.ClearCommand;
 import homey.logic.commands.Command;
 import homey.logic.commands.DeleteCommand;
@@ -20,6 +21,7 @@ import homey.logic.commands.ListCommand;
 import homey.logic.commands.RelationCommand;
 import homey.logic.commands.RemarkCommand;
 import homey.logic.commands.TransactionStageCommand;
+import homey.logic.commands.UnarchiveCommand;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
@@ -48,6 +50,15 @@ public class AddressBookParser {
             return new HelpCommand();
         }
         return new HelpCommand(trimmed);
+    }
+
+    /**
+     * Parses the 'list' family of commands (e.g., "list", "list archive").
+     * Normalises whitespace/nulls before delegating to {@link ListCommandParser}.
+     */
+    private Command parseList(String arguments) throws ParseException {
+        final String normalised = (arguments.trim()).strip();
+        return new ListCommandParser().parse(normalised);
     }
 
     /**
@@ -92,7 +103,7 @@ public class AddressBookParser {
             return new FindCommandParser().parse(arguments);
 
         case ListCommand.COMMAND_WORD:
-            return new ListCommand();
+            return parseList(arguments);
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
@@ -102,6 +113,12 @@ public class AddressBookParser {
 
         case TransactionStageCommand.COMMAND_WORD:
             return new TransactionStageCommandParser().parse(arguments);
+
+        case ArchiveCommand.COMMAND_WORD:
+            return new ArchiveCommandParser().parse(arguments);
+
+        case UnarchiveCommand.COMMAND_WORD:
+            return new UnarchiveCommandParser().parse(arguments);
 
         case RemarkCommand.COMMAND_WORD:
             return new RemarkCommandParser().parse(arguments);
