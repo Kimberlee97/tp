@@ -1,0 +1,50 @@
+@startuml
+title Logic component (partial) – ListMeetingCommand class diagram
+
+skinparam classAttributeIconSize 0
+skinparam wrapWidth 220
+skinparam maxMessageSize 80
+
+package "Logic" {
+  class LogicManager
+  class AddressBookParser
+  class ListCommandParser
+  abstract class Command
+  class ListCommand
+  class ListArchivedCommand
+  class ListMeetingCommand
+
+  LogicManager ..> AddressBookParser : uses
+  AddressBookParser ..> ListCommandParser : delegates\nlist-variants parsing
+
+  Command <|-- ListCommand
+  Command <|-- ListArchivedCommand
+  Command <|-- ListMeetingCommand
+
+  ListCommandParser ..> ListCommand : creates
+  ListCommandParser ..> ListArchivedCommand : creates
+  ListCommandParser ..> ListMeetingCommand : creates
+}
+
+package "Model" {
+  interface Model
+  class ModelManager
+  Model <|.. ModelManager
+}
+
+' Command executes against Model (dependency)
+ListMeetingCommand ..> Model : execute(model)
+
+note right of ListMeetingCommand
+  Filters: meeting present ∧ !archived
+  Sorts: dateTime↑, then name↑ (case-insensitive)
+end note
+
+note bottom of ModelManager
+  Exposes list ops to Logic:
+   • updateFilteredPersonList(predicate)
+   • sortFilteredPersonListBy(comparator)
+   • clearPersonListSorting()
+end note
+
+@enduml
