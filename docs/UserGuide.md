@@ -197,6 +197,91 @@ Examples:
 * `remark 1 rm/Likes nature` Replaces the remark of the 1st person to be "Likes nature".
 * `remark 1 rm/` Removes the remark of the 1st person.
 
+### Setting a meeting with date and time
+
+This feature helps property agents schedule, update, and view upcoming client meetings directly within Homey.
+
+---
+
+### Adding a meeting when creating a contact : `add`
+
+You can add a meeting date and time when adding a new contact.
+
+**Format:**  
+`add n/NAME p/PHONE e/EMAIL a/ADDRESS s/STAGE m/MEETING_DATETIME`
+
+* `MEETING_DATETIME` must follow **YYYY-MM-DD HH:mm** format.  
+  Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
+
+**Example:**
+add n/Jade Tan p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00
+
+![Result for adding Jade Tan meeting](images/AddJadeMeeting.png)
+
+&nbsp;
+<box type="tip" seamless>
+You can omit the `m/` prefix if the contact does not have a scheduled meeting.
+</box>
+
+---
+
+### Editing a contact’s meeting : `edit`
+
+Updates or removes a contact’s meeting date and time.
+
+**Format:**  
+`edit INDEX m/MEETING_DATETIME`
+
+* Use the contact’s index as shown in the contact list.
+* To remove a meeting, leave the `m/` field empty.
+
+**Examples:**
+edit 1 m/2025-11-10 09:30
+
+Updates the 1st contact’s meeting.
+
+edit 2 m/
+
+Clears the meeting from the 2nd contact.
+
+---
+
+### Listing contacts by meeting date : `list meeting`
+
+Displays all contacts with meetings, sorted by the **earliest meeting first**.  
+Contacts without meetings or that are archived will not be shown.
+
+**Format:**  
+`list meeting`
+
+**Examples:**
+list meeting
+
+![Result for listing meeting](images/ListMeeting.png)
+
+&nbsp;
+Shows all contacts with meetings in ascending order of date and time.
+
+<box type="tip" seamless>
+Use this command to quickly view who you are meeting next.
+</box>
+
+---
+
+### Error handling
+
+* Invalid date/time format → “Invalid meeting format! Please use YYYY-MM-DD HH:mm.”
+* Invalid contact index → “The person index provided is invalid.”
+* Typo in list command →  
+  “Invalid command format! Usage: list [archive | meeting]”
+
+---
+
+### Rationale
+
+* Meetings are stored as an optional field in each contact for simplicity.
+* The `list meeting` command was added separately for clarity and easy sorting.
+* This approach keeps data persistent in `addressbook.json` and displays cleanly in the GUI.
 
 ### Locating persons by name: `find`
 
