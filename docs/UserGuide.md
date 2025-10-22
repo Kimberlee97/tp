@@ -268,21 +268,6 @@ Use this command to quickly view who you are meeting next.
 
 ---
 
-### Error handling
-
-* Invalid date/time format → “Invalid meeting format! Please use YYYY-MM-DD HH:mm.”
-* Invalid contact index → “The person index provided is invalid.”
-* Typo in list command →  
-  “Invalid command format! Usage: list [archive | meeting]”
-
----
-
-### Rationale
-
-* Meetings are stored as an optional field in each contact for simplicity.
-* The `list meeting` command was added separately for clarity and easy sorting.
-* This approach keeps data persistent in `addressbook.json` and displays cleanly in the GUI.
-
 ### Locating persons by name: `find`
 
 Finds persons whose names contain any of the given keywords.
