@@ -10,6 +10,7 @@ import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
+import homey.model.person.Remark;
 import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
@@ -26,6 +27,7 @@ public class PersonBuilder {
     public static final String DEFAULT_ADDRESS = "placeholder";
     public static final String DEFAULT_RELATION = "client";
     public static final String DEFAULT_STAGE = "prospect";
+    public static final String DEFAULT_REMARK = "Likes nature.";
 
     private Name name;
     private Phone phone;
@@ -35,6 +37,7 @@ public class PersonBuilder {
     private TransactionStage stage;
     private Set<Tag> tags;
     private Optional<Meeting> meeting;
+    private Remark remark;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -48,6 +51,7 @@ public class PersonBuilder {
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
         meeting = Optional.empty();
+        remark = new Remark(DEFAULT_REMARK);
     }
 
     /**
@@ -62,6 +66,7 @@ public class PersonBuilder {
         stage = personToCopy.getStage();
         tags = new HashSet<>(personToCopy.getTags());
         meeting = personToCopy.getMeeting();
+        remark = personToCopy.getRemark();
     }
 
     /**
@@ -126,8 +131,14 @@ public class PersonBuilder {
         return this;
     }
 
+    /** Sets the {@code Remark} of the {@code Person} that we are building. */
+    public PersonBuilder withRemark(String remark) {
+        this.remark = new Remark(remark);
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, relation, stage, tags);
+        return new Person(name, phone, email, address, relation, stage, remark, tags);
     }
 
 }

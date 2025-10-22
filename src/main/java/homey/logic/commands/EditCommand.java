@@ -28,6 +28,7 @@ import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
+import homey.model.person.Remark;
 import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
@@ -107,6 +108,7 @@ public class EditCommand extends Command {
         TransactionStage updatedStage = editPersonDescriptor.getStage().orElse(personToEdit.getStage());
         Relation updatedRelation = personToEdit.getRelation(); // edit command does not allow editing relation tags
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
 
         // Meeting: preserve original unless user edited (m/ provided). Empty means 'clear'.
         Optional<Meeting> updatedMeeting = editPersonDescriptor.isMeetingEdited()
@@ -114,7 +116,7 @@ public class EditCommand extends Command {
                 : personToEdit.getMeeting();
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
-                updatedRelation, updatedStage, updatedTags, updatedMeeting);
+                updatedRelation, updatedStage, updatedRemark, updatedTags, updatedMeeting);
     }
 
     @Override
@@ -151,6 +153,7 @@ public class EditCommand extends Command {
         private Email email;
         private Address address;
         private TransactionStage stage;
+        private Remark remark;
         private Set<Tag> tags;
 
         private boolean meetingEdited = false;
@@ -168,6 +171,7 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setStage(toCopy.stage);
+            setRemark(toCopy.remark);
             setTags(toCopy.tags);
             this.meetingEdited = toCopy.meetingEdited;
             this.meeting = toCopy.meeting;
@@ -219,6 +223,14 @@ public class EditCommand extends Command {
 
         public Optional<TransactionStage> getStage() {
             return Optional.ofNullable(stage);
+        }
+
+        public void setRemark(Remark remark) {
+            this.remark = remark;
+        }
+
+        public Optional<Remark> getRemark() {
+            return Optional.ofNullable(remark);
         }
 
         /**
@@ -274,6 +286,7 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(stage, otherEditPersonDescriptor.stage)
+                    && Objects.equals(remark, otherEditPersonDescriptor.remark)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags)
                     && meetingEdited == otherEditPersonDescriptor.meetingEdited
                     && Objects.equals(meeting, otherEditPersonDescriptor.meeting);
@@ -287,9 +300,9 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("address", address)
                     .add("transaction stage", stage)
+                    .add("remark", remark)
                     .add("tags", tags)
                     .toString();
         }
-
     }
 }

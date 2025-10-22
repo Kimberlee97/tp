@@ -44,6 +44,8 @@ public class PersonCard extends UiPart<Region> {
     private Label transaction;
     @FXML
     private Label meeting;
+    @FXML
+    private Label remark;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -72,5 +74,6 @@ public class PersonCard extends UiPart<Region> {
                     meeting.setVisible(false);
                 }
         );
+        remark.setText("Remarks: " + person.getRemark().value);
     }
 }

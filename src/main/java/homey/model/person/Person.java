@@ -31,13 +31,14 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final Optional<Meeting> meeting;
     private final boolean isArchived;
+    private final Remark remark;
 
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Relation relation,
-                  TransactionStage stage, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+                  TransactionStage stage, Remark remark, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, address, stage, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -47,14 +48,15 @@ public class Person {
         this.tags.addAll(tags);
         this.meeting = Optional.empty();
         this.isArchived = false;
+        this.remark = remark == null ? new Remark("") : remark;
     }
 
     /**
      * Overloaded constructor that accepts an optional meeting.
      */
     public Person(Name name, Phone phone, Email email, Address address, Relation relation,
-                  TransactionStage stage, Set<Tag> tags, Optional<Meeting> meeting) {
-        requireAllNonNull(name, phone, email, address, tags);
+                  TransactionStage stage, Remark remark, Set<Tag> tags, Optional<Meeting> meeting) {
+        requireAllNonNull(name, phone, email, address, stage, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -63,6 +65,7 @@ public class Person {
         this.relation = relation;
         this.tags.addAll(tags);
         this.meeting = meeting == null ? Optional.empty() : meeting;
+        this.remark = remark == null ? new Remark("") : remark;
         this.isArchived = false;
     }
 
@@ -70,7 +73,8 @@ public class Person {
      * Overloaded constructor used by archived()/unarchived().
      */
     private Person(Name name, Phone phone, Email email, Address address, Relation relation,
-                   TransactionStage stage, Set<Tag> tags, Optional<Meeting> meeting, boolean isArchived) {
+                   TransactionStage stage, Remark remark, Set<Tag> tags, Optional<Meeting> meeting,
+                   boolean isArchived) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
@@ -81,6 +85,7 @@ public class Person {
         this.tags.addAll(tags);
         this.meeting = meeting == null ? Optional.empty() : meeting;
         this.isArchived = isArchived;
+        this.remark = remark == null ? new Remark("") : remark;
     }
 
     public Name getName() {
@@ -111,6 +116,10 @@ public class Person {
         return meeting;
     }
 
+    public Remark getRemark() {
+        return remark;
+    }
+
     /**
      * Returns true if this person has been archived.
      * Archived persons are hidden from the active contact list by default.
@@ -129,7 +138,7 @@ public class Person {
      * @return a copy of this person with archived status set to true
      */
     public Person archived() {
-        return new Person(name, phone, email, address, relation, stage, tags, meeting, true);
+        return new Person(name, phone, email, address, relation, stage, remark, tags, meeting, true);
     }
 
     /**
@@ -140,7 +149,7 @@ public class Person {
      * @return a copy of this person with archived status set to false
      */
     public Person unarchived() {
-        return new Person(name, phone, email, address, relation, stage, tags, meeting, false);
+        return new Person(name, phone, email, address, relation, stage, remark, tags, meeting, false);
     }
 
     /**
@@ -191,7 +200,7 @@ public class Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, stage, tags);
+        return Objects.hash(name, phone, email, address, stage, remark, tags);
     }
 
     @Override

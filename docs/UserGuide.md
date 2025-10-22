@@ -97,7 +97,7 @@ Examples:
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [r/RELATION] [t/TAG] [m/MEETING]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]…​`
 
 <box type="tip" seamless>
 
@@ -107,6 +107,8 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [r/RELA
 * The r/RELATION field only accepts the values `client` or `vendor`.
 * The m/MEETING field is optional — use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
 * The r/RELATION field is optional. The default relation for a new contact is client.
+* The rm/REMARK field is optional — use it to add additional details regarding the person.
+The remark field will be empty if no remark is given.
 </box>
 
 Examples:
@@ -130,7 +132,7 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [t/TAG] [m/MEETING]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG] [m/MEETING]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
@@ -180,6 +182,21 @@ Examples:
 ![Result of `transaction 2 s/negotiating`](images/TransactionStageNegotiatingResult.png)
 * `transaction    2     s/  closed` Replaces the transaction stage tag of the 3rd person to be `closed`.
 ![Result of `transaction    2     s/  closed`](images/TransactionStageClosedResult.png)
+
+### Adding a remark: `remark`
+
+Edits the remark of an existing person.
+
+Format: `remark INDEX rm/REMARK`
+
+* The remark of the person at `INDEX` is replaced with the given `REMARK`.
+* If the person at `INDEX` does not have a remark, the given `REMARK` is added.
+* If `REMARK` is empty (e.g. `remark 1 rm/`), the remark of the person at `INDEX` is removed.
+
+Examples:
+* `remark 1 rm/Likes nature` Replaces the remark of the 1st person to be "Likes nature".
+* `remark 1 rm/` Removes the remark of the 1st person.
+
 
 ### Locating persons by name: `find`
 

@@ -12,7 +12,7 @@ import homey.logic.parser.exceptions.ParseException;
 import homey.model.tag.Relation;
 
 /**
- * Parses input arguments and creates a new {@code RelationCommand} object
+ * Parses input arguments and creates a new {@code RelationCommand} object.
  */
 public class RelationCommandParser implements Parser<RelationCommand> {
     /**
