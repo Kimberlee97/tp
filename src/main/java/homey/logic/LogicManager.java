@@ -29,6 +29,7 @@ public class LogicManager implements Logic {
     public static final String FILE_OPS_PERMISSION_ERROR_FORMAT =
             "Could not save data to file %s due to insufficient permissions to write to the file or the folder.";
 
+    public static final String CANCEL_COMMAND_WORD = "command";
     public static final String MESSAGE_CANCEL_COMMAND = "Command cancelled";
 
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
@@ -77,7 +78,7 @@ public class LogicManager implements Logic {
     }
 
     private CommandResult handleInteractiveResponse(String input) throws CommandException, ParseException {
-        if (input.equalsIgnoreCase("cancel")) {
+        if (input.equalsIgnoreCase(CANCEL_COMMAND_WORD)) {
             pendingInteractiveCommand = null;
             return new CommandResult(MESSAGE_CANCEL_COMMAND);
         }
