@@ -194,7 +194,6 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && stage.equals(otherPerson.stage)
-                && remark.equals(otherPerson.remark)
                 && tags.equals(otherPerson.tags);
     }
 
@@ -212,7 +211,6 @@ public class Person {
                 .add("email", email)
                 .add("address", address)
                 .add("transaction stage", stage)
-                .add("remark", remark)
                 .add("tags", tags)
                 .toString();
     }

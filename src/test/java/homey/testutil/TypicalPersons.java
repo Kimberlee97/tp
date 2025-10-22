@@ -32,7 +32,7 @@ public class TypicalPersons {
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withEmail("johnd@example.com").withPhone("98765432").withRelation("client")
-            .withStage("prospect").withRemark("Has 5 kids.").withTags("owesMoney", "friends").build();
+            .withStage("prospect").withRemark("Likes nature").withTags("owesMoney", "friends").build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
             .withEmail("heinz@example.com").withAddress("wall street").withStage("prospect").withRemark("Likes nature")
             .build();
