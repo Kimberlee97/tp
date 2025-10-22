@@ -7,6 +7,7 @@ import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
 import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
+import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 
@@ -25,6 +26,7 @@ import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
 import homey.model.person.PlaceholderPerson;
+import homey.model.person.Remark;
 import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
@@ -43,7 +45,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_RELATION, PREFIX_TRANSACTION, PREFIX_TAG, PREFIX_MEETING);
+                        PREFIX_RELATION, PREFIX_TRANSACTION, PREFIX_REMARK, PREFIX_TAG, PREFIX_MEETING);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL,
                 PREFIX_TRANSACTION)
@@ -102,7 +104,7 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     private void verifyFields(ArgumentMultimap argMultimap) throws ParseException {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_RELATION, PREFIX_TRANSACTION, PREFIX_MEETING);
+                PREFIX_RELATION, PREFIX_REMARK, PREFIX_TRANSACTION, PREFIX_MEETING);
     }
 
     /**
@@ -139,7 +141,10 @@ public class AddCommandParser implements Parser<AddCommand> {
         // Parse relation (optional, defaults to client)
         Relation relation = parseRelation(argMultimap);
 
-        return new Person(name, phone, email, address, relation, transaction, tagList, meeting);
+        // Parse remark (optional, defaults to empty string)
+        Remark remark = parseRemark(argMultimap);
+
+        return new Person(name, phone, email, address, relation, transaction, remark, tagList, meeting);
     }
 
     /**
@@ -234,6 +239,14 @@ public class AddCommandParser implements Parser<AddCommand> {
         }
     }
 
+    private Remark parseRemark(ArgumentMultimap argMultimap) throws ParseException {
+        if (argMultimap.getValue(PREFIX_REMARK).isPresent()) {
+            return ParserUtil.parseRemark(argMultimap.getValue(PREFIX_REMARK).get());
+        } else {
+            return new Remark("");
+        }
+    }
+
     /**
      * Updates the partial person with a new field value.
      * @param person Current partial person
@@ -252,6 +265,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     person.getAddress(),
                     person.getRelation(),
                     person.getStage(),
+                    person.getRemark(),
                     person.getTags(),
                     person.getMeeting()
             );
@@ -263,6 +277,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     person.getAddress(),
                     person.getRelation(),
                     person.getStage(),
+                    person.getRemark(),
                     person.getTags(),
                     person.getMeeting()
             );
@@ -274,6 +289,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     person.getAddress(),
                     person.getRelation(),
                     person.getStage(),
+                    person.getRemark(),
                     person.getTags(),
                     person.getMeeting()
             );
@@ -285,6 +301,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     ParserUtil.parseAddress(value),
                     person.getRelation(),
                     person.getStage(),
+                    person.getRemark(),
                     person.getTags(),
                     person.getMeeting()
             );
@@ -296,6 +313,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     person.getAddress(),
                     person.getRelation(),
                     ParserUtil.parseStage(value),
+                    person.getRemark(),
                     person.getTags(),
                     person.getMeeting()
             );

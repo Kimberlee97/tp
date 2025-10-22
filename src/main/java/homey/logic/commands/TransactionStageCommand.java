@@ -46,6 +46,7 @@ public class TransactionStageCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
+        requireAllNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
@@ -55,7 +56,8 @@ public class TransactionStageCommand extends Command {
         Person personToEdit = lastShownList.get(index.getZeroBased());
         Person editedPerson = new Person(
                 personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), personToEdit.getRelation(), stage, personToEdit.getTags());
+                personToEdit.getAddress(), personToEdit.getRelation(), stage, personToEdit.getRemark(),
+                personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
