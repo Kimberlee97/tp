@@ -38,6 +38,10 @@ public class ListCommandParser implements Parser<Command> {
             return new ListCommand();
         }
 
+        if ("meeting".equalsIgnoreCase(trimmed)) {
+            return new homey.logic.commands.ListMeetingCommand();
+        }
+
         // Anything else is invalid
         throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                 ListCommand.MESSAGE_USAGE));
