@@ -36,15 +36,18 @@ class JsonAdaptedPerson {
     private final String stage;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final String meeting;
+    private final Boolean isArchived;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
+     * Now also accepts {@code isArchived} to persist the archive status.
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("relation") String relation, @JsonProperty("stage") String stage,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags, @JsonProperty("meeting") String meeting) {
+            @JsonProperty("tags") List<JsonAdaptedTag> tags, @JsonProperty("meeting") String meeting,
+            @JsonProperty("isArchived") Boolean isArchived) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -55,6 +58,7 @@ class JsonAdaptedPerson {
             this.tags.addAll(tags);
         }
         this.meeting = meeting;
+        this.isArchived = isArchived;
     }
 
     /**
@@ -62,11 +66,12 @@ class JsonAdaptedPerson {
      */
     public JsonAdaptedPerson(String name, String phone, String email, String address,
                              String relation, String stage, List<JsonAdaptedTag> tags) {
-        this(name, phone, email, address, relation, stage, tags, null);
+        this(name, phone, email, address, relation, stage, tags, null, null);
     }
 
     /**
      * Converts a given {@code Person} into this class for Jackson use.
+     * Now also maps {@code isArchived}.
      */
     public JsonAdaptedPerson(Person source) {
         name = source.getName().fullName;
@@ -79,10 +84,12 @@ class JsonAdaptedPerson {
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
         this.meeting = source.getMeeting().map(Meeting::toString).orElse(null);
+        this.isArchived = source.isArchived();
     }
 
     /**
      * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
+     * Archive status defaults to {@code false} if missing (backwards compatible with old saves).
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted person.
      */
@@ -148,8 +155,14 @@ class JsonAdaptedPerson {
         }
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelRelation, modelStage, modelTags,
-                modelMeeting);
+
+        final boolean modelArchived = (isArchived != null) && isArchived;
+        Person modelPerson = new Person(modelName, modelPhone, modelEmail, modelAddress,
+                modelRelation, modelStage, modelTags, modelMeeting);
+        if (modelArchived) {
+            modelPerson = modelPerson.archived();
+        }
+        return modelPerson;
     }
 
 }
