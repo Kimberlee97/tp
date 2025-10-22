@@ -68,4 +68,16 @@ class MeetingTest {
         LocalDateTime expected = LocalDateTime.of(2025, 12, 1, 9, 0);
         assertEquals(expected, mtg.getDateTime());
     }
+
+    @Test
+    public void updateOverdueStatus() {
+        Meeting meeting = new Meeting("2023-10-20 14:00");
+        LocalDateTime now = LocalDateTime.of(2023, 10, 21, 14, 0);
+        meeting.updateOverdueStatus();
+        assertTrue(Meeting.isOverdueMeeting(meeting));
+
+        meeting = new Meeting("3000-10-22 14:00");
+        meeting.updateOverdueStatus();
+        assertFalse(Meeting.isOverdueMeeting(meeting));
+    }
 }

@@ -191,6 +191,13 @@ public class AddCommandTest {
             requireNonNull(person);
             return this.person.isSamePerson(person);
         }
+
+        @Override
+        public void updateMeetingOverdueStatus() {
+            if (this.person.getMeeting().isPresent()) {
+                this.person.getMeeting().get().updateOverdueStatus();
+            }
+        }
     }
 
     /**
@@ -209,6 +216,15 @@ public class AddCommandTest {
         public void addPerson(Person person) {
             requireNonNull(person);
             personsAdded.add(person);
+        }
+
+        @Override
+        public void updateMeetingOverdueStatus() {
+            personsAdded.forEach(person -> {
+                if (person.getMeeting().isPresent()) {
+                    person.getMeeting().get().updateOverdueStatus();
+                }
+            });
         }
 
         @Override
