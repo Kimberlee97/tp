@@ -140,7 +140,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
                     meetingLabel.setVisible(false);
                 }
         );
-        // remark label to be added later when implementation is finished
+        remarkLabel.setText("Remarks: " + person.getRemark().value);
     }
 
     /**
@@ -158,7 +158,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
         meetingLabel.setText("");
         meetingLabel.setManaged(false);
         meetingLabel.setVisible(false);
-        // remark label to be added later when implementation is finished
+        remarkLabel.setText("");
 
         // hide entire panel
         getRoot().setVisible(false);

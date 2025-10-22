@@ -119,6 +119,11 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
+Additional parsers added for this feature:
+* `ArchiveCommandParser` – parses `archive INDEX`
+* `UnarchiveCommandParser` – parses `unarchive INDEX`
+* `ListCommandParser` – parses `list` (active) and `list archive` (archived)
+
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
@@ -131,6 +136,16 @@ The `Model` component,
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
+
+#### Archive state & filtered lists
+
+To support hiding archived contacts from the default view, `Person` has an immutable boolean
+field `archived`. Two predicates are exposed via `Model`:
+* `PREDICATE_SHOW_ACTIVE_PERSONS` – returns persons where `!person.isArchived()`
+* `PREDICATE_SHOW_ARCHIVED_PERSONS` – returns persons where `person.isArchived()`
+
+`ModelManager` sets the current filter to **active** by default and switches filters in
+`ArchiveCommand`, `UnarchiveCommand`, and `ListCommand` (see Implementation).
 
 <box type="info" seamless>
 
@@ -151,6 +166,11 @@ The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
+
+#### Persisting archive state
+
+`JsonAdaptedPerson` reads/writes an `archived` boolean. Older save files without this field
+are still accepted; the value defaults to `false` (active) on load for backward compatibility.
 
 ### Common classes
 
@@ -255,9 +275,167 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
-### \[Proposed\] Data archiving
+### \[Proposed\] Data archiving / unarchiving
 
-_{Explain here how the data archiving feature will be implemented}_
+#### Goal
+Allow users to hide completed/irrelevant contacts from the default list while keeping them retrievable.
+
+#### Model changes
+* `Person` is extended with an immutable boolean `archived`.
+  * Constructors accept `archived`.
+  * Query helpers: `isArchived()`, `archived()` (returns a copy with `archived=true`), and
+      `unarchived()` (copy with `archived=false`).
+* `Model` exposes
+  * `PREDICATE_SHOW_ACTIVE_PERSONS` and `PREDICATE_SHOW_ARCHIVED_PERSONS`.
+  * `ModelManager` sets the active predicate by default.
+
+#### Storage changes
+* `JsonAdaptedPerson` includes an `archived` field.
+  * Missing field on load defaults to `false` for backward compatibility.
+
+#### Logic changes
+* **Archive** – `archive INDEX`
+  * Validates index against the current filtered list.
+  * If already archived, throws `CommandException("This person is already archived.")`.
+  * Replaces the target with `person.archived()` via `model.setPerson(...)`.
+  * Keeps the user in the **active** view by calling
+    `model.updateFilteredPersonList(Model.PREDICATE_SHOW_ACTIVE_PERSONS)`.
+
+**UML Diagrams**
+  <puml src="diagrams/archive/ArchiveClass.puml" width="420" />
+  <puml src="diagrams/archive/ArchiveSequence.puml" width="620" />
+  <puml src="diagrams/archive/ParserClass.puml" width="420" />
+
+* **Unarchive** – `unarchive INDEX`
+  * Intended for use from the archived view.
+  * Validates index; if not archived, throws `CommandException("This person is not archived.")`.
+  * Replaces with `person.unarchived()` and switches the filter back to
+    `PREDICATE_SHOW_ACTIVE_PERSONS` so the contact reappears in the main list.
+* **List** – `list` / `list archive`
+  * Implemented via `ListCommandParser`.
+  * `list` (or `list active`) sets `PREDICATE_SHOW_ACTIVE_PERSONS`.
+  * `list archive` sets `PREDICATE_SHOW_ARCHIVED_PERSONS`.
+
+**UML Diagrams**
+  <puml src="diagrams/unarchive/UnarchiveClass.puml" width="420" />
+  <puml src="diagrams/unarchive/UnarchiveSequence.puml" width="620" />
+  <puml src="diagrams/unarchive/ParserClass.puml" width="420" />
+
+#### Error handling (user-visible)
+* Invalid index → `Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX`.
+* Archiving an already archived contact → “This person is already archived.”
+* Unarchiving an active contact → “This person is not archived.”
+
+#### Rationale & alternatives
+* **Why a boolean on `Person`?** Simple, stable, and cheap to persist/filter.
+* **Why predicates not a field on `Model` state?** Keeps UI binding unchanged; only the predicate changes.
+
+### [Proposed] List contacts by meeting date and time
+
+#### Proposed Implementation
+
+The proposed `list meeting` command enhances the `Logic` component by allowing users to view all contacts that have an upcoming meeting scheduled, ordered from the earliest to latest meeting date.
+
+This feature is implemented through the new `ListMeetingCommand` class, which extends the existing `Command` abstraction and works seamlessly with the existing `ListCommandParser`.
+
+The parsing and execution flow are as follows:
+* The user enters `list meeting` in the command box.
+* `AddressBookParser` detects that the command word is `list` and delegates to `ListCommandParser`.
+* `ListCommandParser` interprets the argument `meeting` and returns a new `ListMeetingCommand`.
+* Upon execution, `ListMeetingCommand` filters the person list to include only those with a meeting scheduled (i.e., `person.getMeeting().isPresent()`), excluding archived persons.
+* The filtered list is then sorted by meeting date and time in ascending order, with names used as a secondary tiebreaker.
+
+This ensures that the user can easily see which meetings are coming up first, providing a chronological overview of scheduled client engagements.
+
+The following class diagram illustrates how `ListMeetingCommand` integrates with the existing `Logic` component:
+
+<puml src="diagrams/ListMeetingClassDiagram.puml" alt="ListMeetingClassDiagram" />
+
+#### Example Usage
+
+Given below is an example usage scenario and how the feature behaves at each step.
+
+Step&nbsp;1. The user launches the application and types the command `list meeting`.
+
+Step&nbsp;2. `LogicManager` calls `AddressBookParser#parseCommand("list meeting")`.  
+The `AddressBookParser` passes the argument `"meeting"` to `ListCommandParser`.
+
+Step&nbsp;3. `ListCommandParser` recognizes the argument and returns a new instance of `ListMeetingCommand`.
+
+Step&nbsp;4. `LogicManager` executes the command, which calls `model.updateFilteredPersonList(predicate)` and `model.sortFilteredPersonListBy(comparator)` to filter and order the contacts by meeting time.
+
+Step&nbsp;5. The UI (`PersonListPanel`) automatically refreshes to display only the persons with meetings, sorted from earliest to latest.
+
+The following sequence diagram shows how the `list meeting` command flows through the `Logic` component:
+
+<puml src="diagrams/ListMeetingSequenceDiagram-Logic.puml" alt="ListMeetingSequenceDiagram-Logic" />
+
+<box type="info" seamless>
+
+**Note:** Persons without a meeting or that have been archived are excluded from the filtered list.  
+The comparator used ensures ascending order by meeting date and time; if two meetings share the same time, contacts are ordered alphabetically by name.
+
+</box>
+
+#### Model Interaction
+
+The `ModelManager` exposes a sorted view layered on top of the filtered view:
+
+* `updateFilteredPersonList(predicate)` narrows the list to relevant persons (for `list meeting`: persons with a meeting and not archived).
+* `sortFilteredPersonListBy(comparator)` sets a comparator on the `SortedList` that wraps the filtered list; it does not mutate data.
+* `clearPersonListSorting()` removes any comparator, restoring the original order.
+* `getFilteredPersonList()` returns the `SortedList<Person>` that the UI binds to.
+
+<puml src="diagrams/ListMeetingModelDiagram.puml" alt="ListMeetingModelDiagram" />
+
+#### Error handling (user-visible)
+
+* Invalid `list` variant (e.g., `list mm`) →  
+  `Invalid command format!` followed by
+  list: Lists persons.
+  Usage: list [archive | meeting]
+  Examples: list | list archive | list meeting
+* No contacts have meetings → command succeeds with normal success message; the list simply shows **0** persons.
+* Internal failures (e.g., null model) are guarded via `requireNonNull` and handled as assertions during development; no user-visible state change occurs.
+
+#### Rationale & alternatives
+
+* **Why a separate `ListMeetingCommand`?**  
+  Keeps the `list` family modular (mirrors `list archive`). Clear separation of concerns, easier testing, consistent with AB3’s command-per-variant pattern.
+
+* **Why predicates rather than toggling model state?**  
+  The UI already binds to an observable list. Changing only the **predicate** (and comparator) avoids additional state flags and minimises UI coupling.
+
+* **Why the two-level ordering (date, then name)?**  
+  Predictable and stable ordering in the presence of ties: first by earliest meeting, then case-insensitive alphabetical by name.
+
+* **Alternative considered – add a `meeting` flag to `Person`**  
+  Rejected. Meeting is already a dedicated value object; filtering by `Optional<Meeting>` is simpler and avoids redundancy.
+
+* **Alternative considered – merge into `ListCommand`**  
+  Rejected to prevent command bloat and branching complexity in a single class. A dedicated command keeps behaviour explicit and testable.
+
+#### Design considerations
+
+* **Simplicity**: Uses a `Predicate<Person>` + `Comparator<Person>` only; no new model fields or persistence changes.
+* **Safety**: Nulls are guarded with `requireNonNull`. Missing meetings are treated as `LocalDateTime.MAX` so they sort to the end, but such persons are filtered out anyway.
+* **Extensibility**: Future variants (e.g., `list by tag`, `list upcoming <N> days`) can reuse the same pattern with different predicates/comparators.
+
+#### Design Considerations
+
+**Aspect:** How to incorporate meeting-based listing within the existing list framework
+* **Alternative 1 (Chosen):** Introduce a dedicated `ListMeetingCommand` that cleanly extends `Command`
+    * Pros: Adheres to the Single Responsibility Principle; keeps `list` behavior modular and consistent with existing `list archive` logic.
+    * Cons: Adds one additional command class.
+
+* **Alternative 2:** Merge functionality into the existing `ListCommand`
+    * Pros: Fewer classes.
+    * Cons: Blurs responsibility between generic listing and meeting-specific logic; complicates parser branching and testing.
+
+---
+
+**Rationale:**  
+Alternative 1 was chosen as it offers clear separation of concerns, testability, and extensibility (future list variants like `list active`, `list by tag` can reuse the same parser pattern).
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -380,6 +558,32 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3a1. AddressBook shows an error message.
 
       Use case resumes at step 2.
+
+**Use case: Archive a contact**
+
+**MSS**
+1. User lists active contacts (`list`).
+2. AddressBook shows active list.
+3. User enters `archive INDEX`.
+4. System marks the person archived and keeps the active list visible.
+
+**Extensions**
+* 3a. Index invalid → System shows error, use case resumes at step 2.
+* 3b. Person already archived → System shows “This person is already archived.”, use case ends.
+
+---
+
+**Use case: Unarchive a contact**
+
+**MSS**
+1. User switches to archived list (`list archive`).
+2. AddressBook shows archived list.
+3. User enters `unarchive INDEX`.
+4. System marks the person active and switches back to the active list.
+
+**Extensions**
+* 3a. Index invalid → System shows error, use case resumes at step 2.
+* 3b. Person is not archived → System shows “This person is not archived.”, use case ends.
 
 **Use case: View my contacts and schedule in one platform**
 
@@ -850,6 +1054,26 @@ testers are expected to do more *exploratory* testing.
       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
+
+### Archiving a person
+
+1. Prerequisites: Show active list with `list`. Ensure at least one person exists.
+2. Test case: `archive 1`  
+   Expected: “Archived: <name>”. Person disappears from active list.
+3. Test case: `archive 1` again  
+   Expected: Error “This person is already archived.”
+4. Test case: `archive 0`, `archive x` (x > list size)  
+   Expected: Invalid index error.
+
+### Unarchiving a person
+
+1. Prerequisites: Switch to archived list with `list archive`. Ensure it is non-empty (archive someone first).
+2. Test case: `unarchive 1`  
+   Expected: “Unarchived: <name>”. View switches back to active list and the person is visible there.
+3. Test case: `unarchive 1` again (from active list)  
+   Expected: Error “This person is not archived.”
+4. Test case: `unarchive 0`, `unarchive x`  
+   Expected: Invalid index error.
 
 ### Saving data
 

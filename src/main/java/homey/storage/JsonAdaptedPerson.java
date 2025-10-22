@@ -17,6 +17,7 @@ import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
+import homey.model.person.Remark;
 import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
@@ -36,15 +37,19 @@ class JsonAdaptedPerson {
     private final String stage;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final String meeting;
+    private final Boolean isArchived;
+    private final String remark;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
+     * Now also accepts {@code isArchived} to persist the archive status.
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("relation") String relation, @JsonProperty("stage") String stage,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags, @JsonProperty("meeting") String meeting) {
+            @JsonProperty("remark") String remark, @JsonProperty("tags") List<JsonAdaptedTag> tags,
+            @JsonProperty("meeting") String meeting, @JsonProperty("isArchived") Boolean isArchived) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -55,18 +60,21 @@ class JsonAdaptedPerson {
             this.tags.addAll(tags);
         }
         this.meeting = meeting;
+        this.remark = remark;
+        this.isArchived = isArchived;
     }
 
     /**
      * Overloaded constructor
      */
     public JsonAdaptedPerson(String name, String phone, String email, String address,
-                             String relation, String stage, List<JsonAdaptedTag> tags) {
-        this(name, phone, email, address, relation, stage, tags, null);
+                             String relation, String stage, String remark, List<JsonAdaptedTag> tags) {
+        this(name, phone, email, address, relation, stage, remark, tags, null, null);
     }
 
     /**
      * Converts a given {@code Person} into this class for Jackson use.
+     * Now also maps {@code isArchived}.
      */
     public JsonAdaptedPerson(Person source) {
         name = source.getName().fullName;
@@ -75,14 +83,17 @@ class JsonAdaptedPerson {
         address = source.getAddress().value;
         stage = source.getStage().value;
         relation = source.getRelation().value;
+        remark = source.getRemark().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
         this.meeting = source.getMeeting().map(Meeting::toString).orElse(null);
+        this.isArchived = source.isArchived();
     }
 
     /**
      * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
+     * Archive status defaults to {@code false} if missing (backwards compatible with old saves).
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted person.
      */
@@ -147,9 +158,22 @@ class JsonAdaptedPerson {
             modelMeeting = Optional.of(new Meeting(meeting));
         }
 
+        final Remark modelRemark;
+        if (remark == null) {
+            modelRemark = new Remark("");
+        } else {
+            modelRemark = new Remark(remark);
+        }
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelRelation, modelStage, modelTags,
-                modelMeeting);
+
+        final boolean modelArchived = (isArchived != null) && isArchived;
+        Person modelPerson = new Person(modelName, modelPhone, modelEmail, modelAddress,
+                modelRelation, modelStage, modelRemark, modelTags, modelMeeting);
+        if (modelArchived) {
+            modelPerson = modelPerson.archived();
+        }
+        return modelPerson;
     }
 
 }

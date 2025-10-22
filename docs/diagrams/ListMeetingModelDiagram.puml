@@ -1,0 +1,46 @@
+@startuml
+title Model component (partial) – filtering & sorting for "list meeting"
+
+skinparam classAttributeIconSize 0
+skinparam wrapWidth 220
+skinparam maxMessageSize 80
+
+package "Model" {
+  interface Model
+  class ModelManager {
+    + updateFilteredPersonList(predicate)
+    + sortFilteredPersonListBy(comparator)
+    + clearPersonListSorting()
+    + getFilteredPersonList(): ObservableList<Person>
+  }
+
+  class AddressBook {
+    + getPersonList(): ObservableList<Person>
+  }
+
+  class Person
+}
+
+Model <|.. ModelManager
+ModelManager o-- AddressBook : owns
+AddressBook "1" o-- "*" Person : persons
+
+' Prefer quoted generics + aliases for stability
+class "FilteredList<Person>" as FilteredPersons <<JavaFX>>
+class "SortedList<Person>" as SortedPersons <<JavaFX>>
+
+' ModelManager pulls the source list and wraps it
+ModelManager --> AddressBook : getPersonList()
+ModelManager ..> FilteredPersons : wraps source\nsetPredicate(p)
+FilteredPersons --> SortedPersons : wraps filtered view
+ModelManager ..> SortedPersons : setComparator(c)\ngetFilteredPersonList()
+
+note right of ModelManager
+  For "list meeting":
+   • predicate(p): meeting isPresent ∧ !archived
+   • comparator(c):
+       1) meeting.getDateTime() ↑
+          (missing → LocalDateTime.MAX)
+       2) name ↑ (case-insensitive)
+end note
+@enduml
