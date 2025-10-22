@@ -85,7 +85,7 @@ Format: `help [topic]`
 
 * `topic` is optional and deep-links to a specific section of this guide.
 * Topic matching is case-insensitive and ignores surrounding spaces.
-* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `relation`, `transaction`, `archive`, `unarchive`, `clear` and `exit`.
+* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear` and `exit`.
 
 Examples:
 * `help` opens the User Guide home.
@@ -214,7 +214,7 @@ You can add a meeting date and time when adding a new contact.
   Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
 
 **Example:**
-add n/Jade Tan p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00
+`add n/Jade Tan p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
 
 ![Result for adding Jade Tan meeting](images/AddJadeMeeting.png)
 
@@ -236,13 +236,8 @@ Updates or removes a contact’s meeting date and time.
 * To remove a meeting, leave the `m/` field empty.
 
 **Examples:**
-edit 1 m/2025-11-10 09:30
-
-Updates the 1st contact’s meeting.
-
-edit 2 m/
-
-Clears the meeting from the 2nd contact.
+* `edit 1 m/2025-11-10 09:30` Updates the 1st contact’s meeting.
+* `edit 2 m/` Clears the meeting from the 2nd contact.
 
 ---
 
