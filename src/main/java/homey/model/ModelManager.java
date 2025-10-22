@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import homey.commons.core.GuiSettings;
 import homey.commons.core.LogsCenter;
+import homey.model.person.Meeting;
 import homey.model.person.Person;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -117,6 +118,12 @@ public class ModelManager implements Model {
     public void setPerson(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
         addressBook.setPerson(target, editedPerson);
+    }
+
+    @Override
+    public void updateMeetingOverdueStatus() {
+        addressBook.getPersonList().forEach(person ->
+                person.getMeeting().ifPresent(Meeting::updateOverdueStatus));
     }
 
     //=========== Filtered / Sorted Person List Accessors ====================================================

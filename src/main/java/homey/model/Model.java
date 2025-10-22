@@ -82,6 +82,9 @@ public interface Model {
      */
     void setPerson(Person target, Person editedPerson);
 
+    /** Updates the overdue status of all meetings in the address book */
+    void updateMeetingOverdueStatus();
+
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
 
