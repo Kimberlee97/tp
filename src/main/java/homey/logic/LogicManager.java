@@ -9,8 +9,10 @@ import homey.commons.core.GuiSettings;
 import homey.commons.core.LogsCenter;
 import homey.logic.commands.Command;
 import homey.logic.commands.CommandResult;
+import homey.logic.commands.InteractiveCommand;
 import homey.logic.commands.exceptions.CommandException;
 import homey.logic.parser.AddressBookParser;
+import homey.logic.parser.Prefix;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.Model;
 import homey.model.ReadOnlyAddressBook;
@@ -27,11 +29,15 @@ public class LogicManager implements Logic {
     public static final String FILE_OPS_PERMISSION_ERROR_FORMAT =
             "Could not save data to file %s due to insufficient permissions to write to the file or the folder.";
 
+    public static final String CANCEL_COMMAND_WORD = "cancel";
+    public static final String MESSAGE_CANCEL_COMMAND = "Command cancelled";
+
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
     private final Model model;
     private final Storage storage;
     private final AddressBookParser addressBookParser;
+    private InteractiveCommand pendingInteractiveCommand;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
@@ -47,8 +53,18 @@ public class LogicManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = addressBookParser.parseCommand(commandText);
-        commandResult = command.execute(model);
+
+        if (pendingInteractiveCommand != null) {
+            commandResult = handleInteractiveResponse(commandText);
+        } else {
+            Command command = addressBookParser.parseCommand(commandText);
+
+            if (command instanceof InteractiveCommand && ((InteractiveCommand) command).isInteractive()) {
+                pendingInteractiveCommand = (InteractiveCommand) command;
+            }
+
+            commandResult = command.execute(model);
+        }
 
         try {
             storage.saveAddressBook(model.getAddressBook());
@@ -59,6 +75,25 @@ public class LogicManager implements Logic {
         }
 
         return commandResult;
+    }
+
+    private CommandResult handleInteractiveResponse(String input) throws CommandException, ParseException {
+        if (input.equalsIgnoreCase(CANCEL_COMMAND_WORD)) {
+            pendingInteractiveCommand = null;
+            return new CommandResult(MESSAGE_CANCEL_COMMAND);
+        }
+
+        Prefix currentField = pendingInteractiveCommand.getNextMissingField();
+        pendingInteractiveCommand.updateField(currentField, input);
+
+        Command command = pendingInteractiveCommand;
+        CommandResult result = command.execute(model);
+
+        if (pendingInteractiveCommand.getMissingFields().isEmpty()) {
+            pendingInteractiveCommand = null;
+        }
+
+        return result;
     }
 
     @Override
