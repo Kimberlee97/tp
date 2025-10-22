@@ -116,54 +116,19 @@ public class AddCommandParser implements Parser<AddCommand> {
             throws ParseException {
 
         // Parse name
-        Name name;
-        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
-            name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
-        } else if (allowPlaceholders) {
-            name = PlaceholderPerson.PLACEHOLDER_NAME;
-        } else {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
+        Name name = parseName(argMultimap, allowPlaceholders);
 
         // Parse phone
-        Phone phone;
-        if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
-            phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
-        } else if (allowPlaceholders) {
-            phone = PlaceholderPerson.PLACEHOLDER_PHONE;
-        } else {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
+        Phone phone = parsePhone(argMultimap, allowPlaceholders);
 
         // Parse email
-        Email email;
-        if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
-            email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
-        } else if (allowPlaceholders) {
-            email = PlaceholderPerson.PLACEHOLDER_EMAIL;
-        } else {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
+        Email email = parseEmail(argMultimap, allowPlaceholders);
 
         // Parse address
-        Address address;
-        if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
-            address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-        } else if (allowPlaceholders) {
-            address = PlaceholderPerson.PLACEHOLDER_ADDRESS;
-        } else {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
+        Address address = parseAddress(argMultimap, allowPlaceholders);
 
         // Parse transaction stage
-        TransactionStage transaction;
-        if (argMultimap.getValue(PREFIX_TRANSACTION).isPresent()) {
-            transaction = ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get());
-        } else if (allowPlaceholders) {
-            transaction = PlaceholderPerson.PLACEHOLDER_TRANSACTION;
-        } else {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
+        TransactionStage transaction = parseStage(argMultimap, allowPlaceholders);
 
         // Parse tags
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
@@ -175,6 +140,71 @@ public class AddCommandParser implements Parser<AddCommand> {
         Relation relation = parseRelation(argMultimap);
 
         return new Person(name, phone, email, address, relation, transaction, tagList, meeting);
+    }
+
+    /**
+     * Parses the name field from the argument multimap with placeholders if missing and allowed.
+     */
+    private Name parseName(ArgumentMultimap argMultimap, boolean allowPlaceholders) throws ParseException {
+        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
+            return ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
+        } else if (allowPlaceholders) {
+            return PlaceholderPerson.PLACEHOLDER_NAME;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+    }
+
+    /**
+     * Parses the phone field from the argument multimap with placeholders if missing and allowed.
+     */
+    private Phone parsePhone(ArgumentMultimap argMultimap, boolean allowPlaceholders) throws ParseException {
+        if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
+            return ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
+        } else if (allowPlaceholders) {
+            return PlaceholderPerson.PLACEHOLDER_PHONE;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+    }
+
+    /**
+     * Parses the email field from the argument multimap with placeholders if missing and allowed.
+     */
+    private Email parseEmail(ArgumentMultimap argMultimap, boolean allowPlaceholders) throws ParseException {
+        if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
+            return ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+        } else if (allowPlaceholders) {
+            return PlaceholderPerson.PLACEHOLDER_EMAIL;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+    }
+
+    /**
+     * Parses the address field from the argument multimap with placeholders if missing and allowed.
+     */
+    private Address parseAddress(ArgumentMultimap argMultimap, boolean allowPlaceholders) throws ParseException {
+        if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
+            return ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
+        } else if (allowPlaceholders) {
+            return PlaceholderPerson.PLACEHOLDER_ADDRESS;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+    }
+
+    /**
+     * Parses the transaction stage field from the argument multimap with placeholders if missing and allowed.
+     */
+    private TransactionStage parseStage(ArgumentMultimap argMultimap, boolean allowPlaceholders) throws ParseException {
+        if (argMultimap.getValue(PREFIX_TRANSACTION).isPresent()) {
+            return ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get());
+        } else if (allowPlaceholders) {
+            return PlaceholderPerson.PLACEHOLDER_TRANSACTION;
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
     }
 
     /**
