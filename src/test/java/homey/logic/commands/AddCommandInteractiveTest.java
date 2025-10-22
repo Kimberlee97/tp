@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import homey.logic.Messages;
 import homey.logic.parser.Prefix;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.Model;
@@ -35,6 +36,8 @@ public class AddCommandInteractiveTest {
     @Test
     public void execute_interactiveMode_promptsForMissingFields() throws Exception {
         Person partialPerson = new PersonBuilder().build();
+        Person completePerson = new PersonBuilder(BOB).withTags().build();
+
         Map<Prefix, String> missingFields = new HashMap<>();
         missingFields.put(PREFIX_NAME, "");
         missingFields.put(PREFIX_PHONE, "");
@@ -81,7 +84,9 @@ public class AddCommandInteractiveTest {
         addCommand.updateField(PREFIX_TRANSACTION, VALID_TRANSACTION_PROSPECT);
         result = addCommand.execute(model);
         assertFalse(addCommand.isInteractive());
-        assertTrue(model.hasPerson(new PersonBuilder(BOB).withTags().build()));
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(completePerson)),
+                result.getFeedbackToUser());
+        assertTrue(model.hasPerson(completePerson));
     }
 
     @Test

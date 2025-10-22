@@ -1,5 +1,6 @@
 package homey.logic;
 
+import static homey.logic.LogicManager.CANCEL_COMMAND_WORD;
 import static homey.logic.LogicManager.MESSAGE_CANCEL_COMMAND;
 import static homey.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static homey.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
@@ -228,7 +229,7 @@ public class LogicManagerTest {
                 result.getFeedbackToUser());
 
         // Cancel the command
-        result = logic.execute("cancel");
+        result = logic.execute(CANCEL_COMMAND_WORD);
         assertEquals(MESSAGE_CANCEL_COMMAND, result.getFeedbackToUser());
 
         // Verify no person was added
