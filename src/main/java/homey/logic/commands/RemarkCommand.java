@@ -23,7 +23,7 @@ public class RemarkCommand extends Command {
             + ": Edits the remark of the person identified "
             + "by the index number used in the last person listing.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + PREFIX_REMARK + "[REMARK]\n"
+            + PREFIX_REMARK + "[REMARK] (must not be more than 100 characters)\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + "r/Prefers properties in the East.";
 

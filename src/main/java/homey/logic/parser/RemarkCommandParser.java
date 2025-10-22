@@ -27,22 +27,79 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_REMARK);
 
-        Index index;
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (IllegalValueException ive) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    RemarkCommand.MESSAGE_USAGE), ive);
-        }
+        Index index = parseIndex(argMultimap);
+        validatePrefix(argMultimap);
 
+        String remarkValue = parseRemarkValue(argMultimap);
+        Remark remark = new Remark(remarkValue);
+        return new RemarkCommand(index, remark);
+    }
+
+    /**
+     * Parses and validates the index.
+     */
+    private Index parseIndex(ArgumentMultimap argMultimap) throws ParseException {
+        try {
+            return ParserUtil.parseIndex(argMultimap.getPreamble());
+        } catch (IllegalValueException ive) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE), ive);
+        }
+    }
+
+    /**
+     * Ensures only one remark prefix exists.
+     */
+    private void validatePrefix(ArgumentMultimap argMultimap) throws ParseException {
+        if (argMultimap.getAllValues(PREFIX_REMARK).size() > 1) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+        }
+    }
+
+    /**
+     * Extracts and validates the remark string.
+     */
+    private String parseRemarkValue(ArgumentMultimap argMultimap) throws ParseException {
+        String remarkValue = extractRemarkValue(argMultimap);
+        validateRemarkValue(remarkValue);
+        validateRemarkLength(remarkValue);
+        return remarkValue;
+    }
+
+    /**
+     * Extracts the remark value or throws if prefix is missing.
+     */
+    private String extractRemarkValue(ArgumentMultimap argMultimap) throws ParseException {
         Optional<String> remarkArg = argMultimap.getValue(PREFIX_REMARK);
+
         if (remarkArg.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
         }
 
         String remarkValue = remarkArg.get().trim();
-        Remark remark = new Remark(remarkValue);
-        return new RemarkCommand(index, remark);
+        return remarkValue;
+    }
+
+    /**
+     * Ensures the remark value does not contain additional prefixes or malformed syntax.
+     */
+    private void validateRemarkValue(String remarkValue) throws ParseException {
+        if (remarkValue.contains("rm/")) {
+            String errorMessage = "Remark does not accept values containing the prefix `rm/`.";
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, errorMessage));
+        }
+    }
+
+    /**
+     * Ensures the remark value does not exceed 100 characters.
+     */
+    private void validateRemarkLength(String remarkValue) throws ParseException {
+        if (remarkValue.length() > 100) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    "Remark cannot exceed 100 characters."));
+        }
     }
 
 }
