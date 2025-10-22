@@ -9,6 +9,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import homey.logic.commands.FindCommand;
 import homey.logic.parser.exceptions.ParseException;
@@ -33,77 +34,32 @@ import homey.model.person.TagContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
+    private static final Set<String> VALID_RELATIONS = Set.of("client", "vendor");
+    private static final String RELATION_ERROR_MESSAGE =
+            "Invalid relation. Only 'client' or 'vendor' are allowed";
+
+
     @Override
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        final String trimmedArgs = args.trim();
+        String trimmedArgs = validateAndTrim(args);
 
-        // Blank input
-        if (trimmedArgs.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        if (trimmedArgs.startsWith(PREFIX_ADDRESS.toString())) {
+            String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_ADDRESS.toString());
+            return parseAddress(afterPrefix);
         }
 
-        // Address search: look for the address prefix (e.g., "a/")
-        final String addrPrefix = PREFIX_ADDRESS.toString();
-        if (trimmedArgs.startsWith(addrPrefix)) {
-            final String afterPrefix = trimmedArgs.substring(addrPrefix.length()).trim();
-
-            // a/ with no keywords -> show address-only usage
-            if (afterPrefix.isEmpty()) {
-                throw new ParseException(String.format(
-                        MESSAGE_INVALID_COMMAND_FORMAT, buildAddressOnlyUsage()));
-            }
-
-            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
-            return new FindCommand(new AddressContainsKeywordsPredicate(keywords));
+        if (trimmedArgs.startsWith(PREFIX_TAG.toString())) {
+            String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_TAG.toString());
+            return parseTag(afterPrefix);
         }
 
-        //Tag search: look for the tag prefix (e.g., "t/")
-        final String tagPrefix = PREFIX_TAG.toString();
-        if (trimmedArgs.startsWith(tagPrefix)) {
-            final String afterPrefix = trimmedArgs.substring(tagPrefix.length()).trim();
-
-            // t/ with no keywords -> show tag-only usage
-            if (afterPrefix.isEmpty()) {
-                throw new ParseException(String.format(
-                    MESSAGE_INVALID_COMMAND_FORMAT, buildTagOnlyUsage()));
-
-            }
-
-            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
-            return new FindCommand(new TagContainsKeywordsPredicate(keywords));
+        if (trimmedArgs.startsWith(PREFIX_RELATION.toString())) {
+            String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_RELATION.toString());
+            return parseRelation(afterPrefix);
         }
 
-        //Relation search: look for the relation prefix (e.g., "r/")
-        final String relationPrefix = PREFIX_RELATION.toString();
-        if (trimmedArgs.startsWith(relationPrefix)) {
-            final String afterPrefix = trimmedArgs.substring(relationPrefix.length()).trim();
-
-            // r/ with no keywords -> show relation-only usage
-            if (afterPrefix.isEmpty()) {
-                throw new ParseException(String.format(
-                        MESSAGE_INVALID_COMMAND_FORMAT, buildRelationOnlyUsage()));
-            }
-
-            final List<String> keywords = Arrays.asList(afterPrefix.split("\\s+"));
-            // ensure only one keyword is given
-            if (keywords.size() > 1) {
-                throw new ParseException(String.format(
-                        MESSAGE_SINGLE_KEYWORD_ONLY,
-                        "Relation",
-                        buildRelationOnlyUsage()
-                ));
-            }
-
-            String keyword = keywords.get(0).toLowerCase();
-            if (!keyword.equals("client") && !keyword.equals("vendor")) {
-                throw new ParseException("Invalid relation. Only 'client' or 'vendor' are allowed.");
-            }
-            return new FindCommand(new RelationContainsKeywordPredicate(keyword));
-        }
-
-        final List<String> nameKeywords = Arrays.asList(trimmedArgs.split("\\s+"));
-        return new FindCommand(new NameContainsKeywordsPredicate(nameKeywords));
+        return parseName(trimmedArgs);
     }
 
     /**
@@ -125,5 +81,71 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     private static String buildRelationOnlyUsage() {
         return "Relation: " + FindCommand.COMMAND_WORD + " " + PREFIX_RELATION + "KEYWORD";
+    }
+
+    private FindCommand parseAddress(String args) throws ParseException {
+        validateNotEmpty(args, buildAddressOnlyUsage());
+        List<String> keywords = extractKeywords(args);
+        return new FindCommand(new AddressContainsKeywordsPredicate(keywords));
+    }
+
+    private FindCommand parseTag(String args) throws ParseException {
+        validateNotEmpty(args, buildTagOnlyUsage());
+        List<String> keywords = extractKeywords(args);
+        return new FindCommand(new TagContainsKeywordsPredicate(keywords));
+    }
+
+    private FindCommand parseRelation(String args) throws ParseException {
+        validateNotEmpty(args, buildRelationOnlyUsage());
+        String keyword = extractSingleKeyword(args);
+        validateRelationKeyword(keyword);
+        return new FindCommand(new RelationContainsKeywordPredicate(keyword));
+    }
+
+    private FindCommand parseName(String args) throws ParseException {
+        validateNotEmpty(args, FindCommand.MESSAGE_USAGE);
+        List<String> keywords = extractKeywords(args);
+        return new FindCommand(new NameContainsKeywordsPredicate(keywords));
+    }
+
+    private String validateAndTrim(String args) throws ParseException {
+        String trimmed = args.trim();
+        if (trimmed.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
+            );
+        }
+        return trimmed;
+    }
+
+    private void validateNotEmpty(String args, String usage) throws ParseException {
+        if (args.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, usage));
+        }
+    }
+
+    private void validateRelationKeyword(String keyword) throws ParseException {
+        if (!VALID_RELATIONS.contains(keyword)) {
+            throw new ParseException(RELATION_ERROR_MESSAGE);
+        }
+    }
+
+    private String extractAfterPrefix(String trimmedArgs, String prefix) {
+        return trimmedArgs.substring(prefix.length()).trim();
+    }
+
+    private List<String> extractKeywords(String args) {
+        return Arrays.asList(args.split("\\s+"));
+    }
+
+    private String extractSingleKeyword(String args) throws ParseException {
+        List<String> keywords = extractKeywords(args);
+
+        if (keywords.size() > 1) {
+            throw new ParseException(
+                    String.format(MESSAGE_SINGLE_KEYWORD_ONLY, "Relation", buildRelationOnlyUsage())
+            );
+        }
+        return keywords.get(0).toLowerCase();
     }
 }
