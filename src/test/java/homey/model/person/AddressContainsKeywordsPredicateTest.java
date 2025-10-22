@@ -21,7 +21,9 @@ public class AddressContainsKeywordsPredicateTest {
                 new Email("alex@example.com"),
                 new Address(address),
                 new Relation("client"),
-                new TransactionStage("prospect"), new java.util.HashSet<>()); // tags
+                new TransactionStage("prospect"),
+                new Remark(""),
+                new java.util.HashSet<>()); // tags
     }
 
     @Test

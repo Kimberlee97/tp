@@ -27,6 +27,7 @@ import homey.testutil.EditPersonDescriptorBuilder;
  * Contains helper methods for testing commands.
  */
 public class CommandTestUtil {
+    public static final String DEFAULT_REMARK = "On vacation.";
 
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
@@ -36,6 +37,9 @@ public class CommandTestUtil {
     public static final String VALID_EMAIL_BOB = "bob@example.com";
     public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
+    public static final String VALID_REMARK_AMY = "Likes natural lighting.";
+    public static final String VALID_REMARK_BOB = "On vacation.";
+
     public static final String VALID_RELATION_CLIENT = "client";
     public static final String VALID_RELATION_VENDOR = "vendor";
     public static final String VALID_TRANSACTION_PROSPECT = "prospect";
@@ -76,11 +80,11 @@ public class CommandTestUtil {
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
-                .withAddress(VALID_ADDRESS_AMY).withStage(VALID_TRANSACTION_PROSPECT)
+                .withAddress(VALID_ADDRESS_AMY).withStage(VALID_TRANSACTION_PROSPECT).withRemark(DEFAULT_REMARK)
                 .withTags(VALID_TAG_FRIEND).build();
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB)
-                .withStage(VALID_TRANSACTION_PROSPECT)
+                .withStage(VALID_TRANSACTION_PROSPECT).withRemark(DEFAULT_REMARK)
                 .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
     }
 

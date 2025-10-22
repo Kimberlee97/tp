@@ -1,6 +1,7 @@
 package homey.logic.commands;
 
 import static homey.commons.util.CollectionUtil.requireAllNonNull;
+import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
@@ -10,42 +11,42 @@ import homey.logic.Messages;
 import homey.logic.commands.exceptions.CommandException;
 import homey.model.Model;
 import homey.model.person.Person;
-import homey.model.tag.Relation;
+import homey.model.person.Remark;
 
 /**
- * Changes the relation tag of an existing person in the address book.
+ * Changes the remark of an existing person.
  */
-public class RelationCommand extends Command {
-
-    public static final String COMMAND_WORD = "relation";
-
-    public static final String MESSAGE_ADD_RELATION_SUCCESS = "Added relation %1$s to Person: %2$s";
+public class RemarkCommand extends Command {
+    public static final String COMMAND_WORD = "remark";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Edits relation tag of the person identified "
-            + "by the index number used in the last person listing. "
-            + "Existing relation tag will be overwritten.\n"
+            + ": Edits the remark of the person identified "
+            + "by the index number used in the last person listing.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "[client/vendor]\n"
+            + PREFIX_REMARK + "[REMARK]\n"
             + "Example: " + COMMAND_WORD + " 1 "
-            + "client";
+            + "r/Prefers properties in the East.";
+
+    public static final String MESSAGE_ADD_REMARK_SUCCESS = "Added remark to Person: %1$s";
+    public static final String MESSAGE_DELETE_REMARK_SUCCESS = "Removed remark from Person: %1$s";
 
     private final Index index;
-    private final Relation relation;
+    private final Remark remark;
 
     /**
-     * @param index of the person in the filtered person list to edit the relation
-     * @param relation of the person to be updated to
+     * @param index of the person in the filtered person list to edit the remark
+     * @param remark of the person to be updated to
      */
-    public RelationCommand(Index index, Relation relation) {
-        requireAllNonNull(index, relation);
+    public RemarkCommand(Index index, Remark remark) {
+        requireAllNonNull(index, remark);
 
         this.index = index;
-        this.relation = relation;
+        this.remark = remark;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
+        requireAllNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
@@ -55,7 +56,7 @@ public class RelationCommand extends Command {
         Person personToEdit = lastShownList.get(index.getZeroBased());
         Person editedPerson = new Person(
                 personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), relation, personToEdit.getStage(), personToEdit.getRemark(),
+                personToEdit.getAddress(), personToEdit.getRelation(), personToEdit.getStage(), remark,
                 personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
@@ -66,10 +67,12 @@ public class RelationCommand extends Command {
 
     /**
      * Generates a command execution success message based on whether
-     * the relation added to {@code personToEdit}.
+     * the remark is added to or removed from
+     * {@code personToEdit}.
      */
     private String generateSuccessMessage(Person personToEdit) {
-        return String.format(MESSAGE_ADD_RELATION_SUCCESS, relation.value, Messages.format(personToEdit));
+        String message = !remark.value.isEmpty() ? MESSAGE_ADD_REMARK_SUCCESS : MESSAGE_DELETE_REMARK_SUCCESS;
+        return String.format(message, Messages.format(personToEdit));
     }
 
     @Override
@@ -79,12 +82,13 @@ public class RelationCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof RelationCommand)) {
+        if (!(other instanceof RemarkCommand)) {
             return false;
         }
 
-        RelationCommand e = (RelationCommand) other;
+        RemarkCommand e = (RemarkCommand) other;
         return index.equals(e.index)
-                && relation.equals(e.relation);
+                && remark.equals(e.remark);
     }
+
 }
