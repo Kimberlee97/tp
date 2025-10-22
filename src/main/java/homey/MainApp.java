@@ -3,6 +3,8 @@ package homey;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 
 import homey.commons.core.Config;
@@ -29,6 +31,7 @@ import homey.storage.UserPrefsStorage;
 import homey.ui.Ui;
 import homey.ui.UiManager;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -45,6 +48,7 @@ public class MainApp extends Application {
     protected Storage storage;
     protected Model model;
     protected Config config;
+    private Timer meetingStatusTimer;
 
     @Override
     public void init() throws Exception {
@@ -61,6 +65,7 @@ public class MainApp extends Application {
         storage = new StorageManager(addressBookStorage, userPrefsStorage);
 
         model = initModelManager(storage, userPrefs);
+        model.updateMeetingOverdueStatus();
 
         logic = new LogicManager(model, storage);
 
@@ -172,12 +177,24 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         logger.info("Starting AddressBook " + MainApp.VERSION);
         ui.start(primaryStage);
+
+        // Schedule periodic updates
+        meetingStatusTimer = new Timer(true); // daemon timer
+        meetingStatusTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> model.updateMeetingOverdueStatus());
+            }
+        }, 60000, 60000); // Check every minute
     }
 
     @Override
     public void stop() {
         logger.info("============================ [ Stopping AddressBook ] =============================");
         try {
+            if (meetingStatusTimer != null) {
+                meetingStatusTimer.cancel();
+            }
             storage.saveUserPrefs(model.getUserPrefs());
         } catch (IOException e) {
             logger.severe("Failed to save preferences " + StringUtil.getDetails(e));

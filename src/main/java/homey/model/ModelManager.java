@@ -119,6 +119,15 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
+    @Override
+    public void updateMeetingOverdueStatus() {
+        filteredPersons.forEach(person -> {
+            if (person.getMeeting().isPresent()) {
+                person.getMeeting().get().updateOverdueStatus();
+            }
+        });
+    }
+
     //=========== Filtered / Sorted Person List Accessors ====================================================
 
     /** Returns the *sorted* view (which wraps the filtered list). */

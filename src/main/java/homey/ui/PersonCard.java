@@ -2,6 +2,7 @@ package homey.ui;
 
 import java.util.Comparator;
 
+import homey.model.person.Meeting;
 import homey.model.person.Person;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -68,6 +69,9 @@ public class PersonCard extends UiPart<Region> {
                     meeting.setText("Next meeting: " + m.toDisplayString());
                     meeting.setManaged(true);
                     meeting.setVisible(true);
+                    if (Meeting.isOverdueMeeting(m)) {
+                        meeting.setStyle("-fx-text-fill: red;");
+                    }
                 }, () -> {
                     meeting.setText("");
                     meeting.setManaged(false);
