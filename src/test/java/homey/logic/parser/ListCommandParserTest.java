@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import homey.logic.commands.Command;
 import homey.logic.commands.ListArchivedCommand;
 import homey.logic.commands.ListCommand;
+import homey.logic.commands.ListMeetingCommand;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
@@ -45,5 +47,13 @@ public class ListCommandParserTest {
         assertThrows(ParseException.class, () -> parser.parse("something"));
         assertThrows(ParseException.class, () -> parser.parse("foo bar"));
         assertThrows(ParseException.class, () -> parser.parse("archivee"));
+    }
+
+    @Test
+    public void parse_meeting_returnsListMeetingCommand() throws Exception {
+        Command cmdLower = parser.parse("meeting");
+        Command cmdUpper = parser.parse("MEETING");
+        assertTrue(cmdLower instanceof ListMeetingCommand);
+        assertTrue(cmdUpper instanceof ListMeetingCommand);
     }
 }

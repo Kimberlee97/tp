@@ -57,6 +57,18 @@ public class Meeting {
         return value.format(FORMATTER);
     }
 
+    /**
+     * Returns the {@link java.time.LocalDateTime} value of this {@code Meeting}.
+     * <p>
+     * This represents the scheduled date and time of the meeting in the standard ISO-8601 format.
+     * The returned value is immutable and corresponds to the parsed form stored internally.
+     *
+     * @return The {@code LocalDateTime} representing this meeting's date and time.
+     */
+    public java.time.LocalDateTime getDateTime() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return value.format(FORMATTER);
@@ -72,4 +84,5 @@ public class Meeting {
     public int hashCode() {
         return value.hashCode();
     }
+
 }

@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.Test;
 
 class MeetingTest {
@@ -58,5 +60,12 @@ class MeetingTest {
         assertThrows(IllegalArgumentException.class, () -> new Meeting("2025-99-99 99:99"));
         assertThrows(IllegalArgumentException.class, () -> new Meeting(" "));
         assertThrows(IllegalArgumentException.class, () -> new Meeting("abc"));
+    }
+
+    @Test
+    public void getDateTime_returnsParsedLocalDateTime() {
+        Meeting mtg = new Meeting("2025-12-01 09:00");
+        LocalDateTime expected = LocalDateTime.of(2025, 12, 1, 9, 0);
+        assertEquals(expected, mtg.getDateTime());
     }
 }

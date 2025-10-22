@@ -15,11 +15,12 @@ public class ListCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Listed all persons";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists persons.\n"
-            + "Usage: list [archive]\n"
-            + "Examples: list | list archive";
+            + "Usage: list [archive | meeting]\n"
+            + "Examples: list | list archive | list meeting";
 
     @Override
     public CommandResult execute(Model model) {
+        model.clearPersonListSorting();
         requireNonNull(model);
         model.updateFilteredPersonList(PREDICATE_SHOW_ACTIVE_PERSONS);
         return new CommandResult(MESSAGE_SUCCESS);

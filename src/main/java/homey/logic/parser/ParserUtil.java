@@ -13,6 +13,7 @@ import homey.model.person.Address;
 import homey.model.person.Email;
 import homey.model.person.Name;
 import homey.model.person.Phone;
+import homey.model.person.Remark;
 import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
@@ -150,5 +151,16 @@ public class ParserUtil {
             throw new ParseException(Relation.MESSAGE_CONSTRAINTS);
         }
         return new Relation(trimmed);
+    }
+
+    /**
+     * Parses a {@code String remark} into a {@code Remark}.
+     *
+     * @throws ParseException if the given {@code} remark is invalid.
+     */
+    public static Remark parseRemark(String remark) throws ParseException {
+        requireNonNull(remark);
+        String trimmed = remark.trim();
+        return new Remark(trimmed);
     }
 }

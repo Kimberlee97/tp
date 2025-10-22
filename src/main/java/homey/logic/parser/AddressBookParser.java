@@ -19,6 +19,7 @@ import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
 import homey.logic.commands.ListCommand;
 import homey.logic.commands.RelationCommand;
+import homey.logic.commands.RemarkCommand;
 import homey.logic.commands.TransactionStageCommand;
 import homey.logic.commands.UnarchiveCommand;
 import homey.logic.parser.exceptions.ParseException;
@@ -118,6 +119,9 @@ public class AddressBookParser {
 
         case UnarchiveCommand.COMMAND_WORD:
             return new UnarchiveCommandParser().parse(arguments);
+
+        case RemarkCommand.COMMAND_WORD:
+            return new RemarkCommandParser().parse(arguments);
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
