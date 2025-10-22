@@ -122,7 +122,8 @@ public class ModelManager implements Model {
 
     @Override
     public void updateMeetingOverdueStatus() {
-        filteredPersons.forEach(person -> person.getMeeting().ifPresent(Meeting::updateOverdueStatus));
+        addressBook.getPersonList().forEach(person ->
+                person.getMeeting().ifPresent(Meeting::updateOverdueStatus));
     }
 
     //=========== Filtered / Sorted Person List Accessors ====================================================
