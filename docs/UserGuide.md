@@ -211,6 +211,7 @@ Examples:
 * `remark 32 rm/storm/cloud` Replaces the remark of the 32nd person to "storm/cloud".
   ![Result of `remark 32 rm/storm/cloud`](images/remark32v2.png)
 
+---
 
 ### Setting a meeting with date and time
 
@@ -347,6 +348,7 @@ Format: `archive INDEX`
 Examples:
 * `archive 2` archives the 2nd person in the active list.
 ![Command 'archive 2'](images/archiveCommand.png)
+* `list archived` shows the contacts that have been hidden from the active list.
 ![Result for 'archive 2'](images/archiveCommandResult.png)
 
 ### Unarchiving persons: `unarchive`
