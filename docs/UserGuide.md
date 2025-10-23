@@ -296,8 +296,8 @@ Examples:
 * `find John` returns `john` and `John Doe`
 * `find ale` returns `Alex Yeoh`
   ![result for 'find ale'](images/findAleResult.png)
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks`<br>
+  ![result for 'find john alex'](images/findJohnAlexResult.png)
 
 ### Locating persons by address: `find a/`
 
@@ -330,8 +330,41 @@ Format: `find t/KEYWORD [MORE_KEYWORDS]`
 Examples:
 * `find t/friend` returns all persons tagged with `friend`
 * `find t/fri` returns all persons with tags containing `fri` (e.g., `friend`, `Friday`)
-* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`
+* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`<br>
   ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
+
+### Locating persons by relation: `find r/`
+
+Finds persons whose relation is 'vendor' and 'client'
+
+Format: `find r/KEYWORD`
+
+* The search is case-insensitive. e.g. `client` will match `Client`
+* Only relations are searched
+* Partial matches are not supported
+* Only accepts predefined relation types: `vendor` or `client`
+
+Examples:
+* `find r/vendor` returns all persons with relation `vendor`
+* `find r/client` returns all persons with relation `client`<br>
+  ![result for 'find r/client'](images/findRelationClient.png)
+
+### Locating persons by transaction stage: `find s/`
+
+Finds persons whose transaction stage is 'prospect', 'negotiating' or 'closed'
+
+Format: `find s/KEYWORD`
+
+* The search is case-insensitive. e.g. `negotiating` will match `Negotiating`
+* Only transaction stage are searched
+* Partial matches are not supported
+* Only accepts predefined transaction stages: `prospect` or `negotiating` or `closed`
+
+Examples:
+* `find s/prospect` returns all persons with transaction stage `prospect`
+* `find s/negotiating` returns all persons with transaction stage `negotiating`
+* `find s/closed` returns all persons with transaction stage `closed`<br>
+  ![result for 'find s/closed'](images/findTransactionClosed.png)
 
 ### Archiving persons: `archive`
 
@@ -439,6 +472,8 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 | **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                            |
 | **Find a/**     | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                                                                                               |
 | **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                            |
+| **Find r/**     | `find r/KEYWORD`<br> e.g., `find r/client`                                                                                                                                                                                            |
+| **Find s/**     | `find s/KEYWORD`<br> e.g., `find s/negotiating`                                                                                                                                                                                       |
 | **List**        | `list [archive]` <br> e.g., `list`, `list archive`                                                                                                                                                                                    |
 | **Help**        | `help [topic]`<br> e.g., `help add`                                                                                                                                                                                                   |
 | **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                 |
