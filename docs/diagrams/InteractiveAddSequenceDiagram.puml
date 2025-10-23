@@ -1,0 +1,122 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":AddCommandParser" as AddCommandParser LOGIC_COLOR
+participant "c:AddCommand" as AddCommand LOGIC_COLOR
+participant "r1:CommandResult" as CommandResult1 LOGIC_COLOR
+participant "r2:CommandResult" as CommandResult2 LOGIC_COLOR
+participant "r3:CommandResult" as CommandResult3 LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("add n/Bob")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("add n/Bob")
+activate AddressBookParser
+
+create AddCommandParser
+AddressBookParser -> AddCommandParser
+activate AddCommandParser
+
+AddCommandParser --> AddressBookParser
+deactivate AddCommandParser
+
+AddressBookParser -> AddCommandParser : parse("n/Bob")
+activate AddCommandParser
+
+create AddCommand
+AddCommandParser -> AddCommand
+activate AddCommand
+
+AddCommand --> AddCommandParser :
+deactivate AddCommand
+
+AddCommandParser --> AddressBookParser : c
+deactivate AddCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+AddCommandParser -[hidden]-> AddressBookParser
+destroy AddCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> AddCommand : execute(m)
+activate AddCommand
+
+create CommandResult1
+AddCommand -> CommandResult1
+activate CommandResult1
+
+CommandResult1 --> AddCommand
+deactivate CommandResult1
+
+AddCommand --> LogicManager : r1
+deactivate AddCommand
+
+[<-- LogicManager : r1
+deactivate LogicManager
+
+[-> LogicManager : execute("91234567")
+activate LogicManager
+
+LogicManager -> AddCommand : updateField(PREFIX_PHONE, "91234567")
+activate AddCommand
+
+AddCommand --> LogicManager
+deactivate AddCommand
+
+LogicManager -> AddCommand : execute(m)
+activate AddCommand
+
+create CommandResult2
+AddCommand -> CommandResult2
+activate CommandResult2
+
+CommandResult2 --> AddCommand
+deactivate CommandResult2
+
+AddCommand --> LogicManager : r2
+deactivate AddCommand
+
+[<-- LogicManager : r2
+deactivate LogicManager
+
+note over LogicManager : Process repeats until all fields are collected
+
+[-> LogicManager : execute final
+activate LogicManager
+
+LogicManager -> AddCommand : execute(m)
+activate AddCommand
+
+AddCommand -> Model : addPerson(person)
+activate Model
+
+Model --> AddCommand
+deactivate Model
+
+create CommandResult3
+AddCommand -> CommandResult3
+activate CommandResult3
+
+CommandResult3 --> AddCommand
+deactivate CommandResult3
+
+AddCommand --> LogicManager : r3
+deactivate AddCommand
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+AddCommand -[hidden]-> LogicManager
+destroy AddCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

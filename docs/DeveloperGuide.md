@@ -124,6 +124,29 @@ Additional parsers added for this feature:
 * `UnarchiveCommandParser` – parses `unarchive INDEX`
 * `ListCommandParser` – parses `list` (active) and `list archive` (archived)
 
+#### Interactive Command Support
+
+The Logic component has been enhanced to support interactive commands that can prompt users for missing information. This is implemented through the following components:
+
+<puml src="diagrams/InteractiveLogicClassDiagram.puml" width="550"/>
+
+How interactive commands work:
+
+1. When a command with missing required fields is parsed:
+    * The parser creates a command object in interactive mode as indicated by a boolean flag `isInteractive`
+    * Missing fields are tracked in a mutable map `missingFields`
+    * Placeholder values are used for the partial object as specified by the class `PlaceholderPerson`
+
+2. During command execution:
+    * If the command is interactive, it returns a prompt for the next missing field
+    * The command stays active in LogicManager and is handled using `handleInteractiveResponse` until completed
+    * Each user response updates the command's internal state
+    * The input `cancel` will terminate any ongoing interactive command
+
+The sequence diagram below shows how an interactive add command flows through the system:
+
+<puml src="diagrams/InteractiveAddSequenceDiagram.puml" width="600"/>
+
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
