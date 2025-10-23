@@ -1,0 +1,61 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+abstract class Command {
+    +execute(Model): CommandResult
+}
+
+class FindCommand {
+    -predicate: Predicate<Person>
+    +FindCommand(Predicate<Person>)
+    +execute(Model): CommandResult
+}
+
+class FindCommandParser {
+    +parse(args: String): FindCommand
+}
+
+class "<<interface>>\nPredicate<Person>" as Predicate {
+    +test(Person): boolean
+}
+
+class "XYZContainsKeywordsPredicate" as XYZPredicate {
+    -keywords: List<String>
+    +test(Person): boolean
+}
+
+note right of XYZPredicate
+  Represents 5 predicate classes:
+  • NameContainsKeywordsPredicate
+  • AddressContainsKeywordsPredicate
+  • TagContainsKeywordsPredicate
+  • RelationContainsKeywordPredicate
+  • TransactionContainsKeywordPredicate
+end note
+
+class "<<interface>>\nModel" as Model {
+    +updateFilteredPersonList(Predicate<Person>)
+    +getFilteredPersonList()
+}
+
+class Person {
+    +getName()
+    +getAddress()
+    +getTags()
+    +getRelation()
+    +getStage()
+}
+
+Command <|-- FindCommand
+Predicate <|.. XYZPredicate
+
+FindCommandParser .> FindCommand : creates
+FindCommandParser .> XYZPredicate : creates
+
+FindCommand --> Predicate : filters with
+FindCommand ..> Model : updates
+
+XYZPredicate ..> Person : tests
+
+@enduml

@@ -205,6 +205,55 @@ Classes used by multiple components are in the `homey.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Find Feature
+
+#### Overview
+The Find feature allows users to search for contacts using various criteria including name, address, tags, relation type, and transaction stage. It supports both partial matching (for name, address, tags) and exact matching (for relation and transaction stage).
+
+#### Implementation
+
+The Find feature is implemented through the following key components:
+
+**Class Structure**
+
+<puml src="diagrams/find/FindClass.puml" width="550"/>
+
+The diagram above shows the main classes involved in the Find feature:
+* `FindCommandParser` – Parses user input and creates the appropriate predicate based on the prefix used (none for name, `a/` for address, `t/` for tags, `r/` for relation, `s/` for transaction stage)
+* `FindCommand` – Executes the find operation by applying the predicate to filter the person list
+* `XYZContainsKeywordsPredicate` – Represents the family of predicate classes that implement the actual filtering logic
+
+#### Input Validation
+The `FindCommandParser` validates input based on search type:
+* **Relation search**: Only accepts 'client' or 'vendor'
+* **Transaction stage search**: Only accepts 'prospect', 'negotiating', or 'closed'
+* **Other searches**: Accept any keywords
+
+**Execution Flow**
+
+<puml src="diagrams/find/FindSequence.puml" width="620"/>
+
+The sequence diagram above illustrates how a find command is processed:
+
+1. The user enters a find command (e.g., `find alice`)
+2. `FindCommandParser` validates and parses the input, creating the appropriate predicate
+3. A `FindCommand` is created with the predicate
+4. When executed, `FindCommand` updates the model's filtered list using the predicate
+5. The UI automatically reflects the filtered results
+
+#### Error Handling
+* Invalid relation: "Invalid relation. Only 'client' or 'vendor' are allowed"
+* Invalid transaction stage: "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed' are allowed"
+* Empty search: Shows usage message for the specific search type
+
+#### Design Pattern: Strategy Pattern
+The find command uses the Strategy Pattern where different predicate classes implement the same `Predicate<Person>` interface. This allows the `FindCommand` to work with any predicate without knowing the specific filtering logic.
+
+**Key Benefits:**
+* **Extensibility**: Easy to add new search types
+* **Maintainability**: Each predicate handles its own logic
+* **Polymorphism**: Same interface for all predicates
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
@@ -672,8 +721,29 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 1. User searches for contacts using find tag command with a tag keyword
 2. System retrieves and displays list of contacts whose tags contain the keyword/partial keyword 
+3. User views the list of contacts
 
     Use case ends.
+
+**Use case: Search for contacts by relation**
+
+**MSS**
+
+1. User searches for contacts using find relation command with a relation keyword
+2. System retrieves and displays list of contacts whose relation matches the keyword
+3. User views the list of contacts
+
+   Use case ends.
+
+**Use case: Search for contacts by transaction stage**
+
+**MSS**
+
+1. User searches for contacts using find transaction stage command with a transaction keyword
+2. System retrieves and displays list of contacts whose transaction stage matches the keyword
+3. User views the list of contacts
+
+   Use case ends.
 
 **Use case: Tag each client with their property location**
 
