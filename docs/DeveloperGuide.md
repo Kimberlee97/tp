@@ -182,6 +182,36 @@ Classes used by multiple components are in the `homey.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Find Feature
+
+#### Overview
+The Find feature allows users to search for contacts using various criteria including name, address, tags, relation type, and transaction stage. It supports both partial matching (for name, address, tags) and exact matching (for relation and transaction stage).
+
+#### Implementation
+
+The Find feature is implemented through the following key components:
+
+**Class Structure**
+
+<puml src="diagrams/find/FindClass.puml" width="550"/>
+
+The diagram above shows the main classes involved in the Find feature:
+* `FindCommandParser` – Parses user input and creates the appropriate predicate based on the prefix used (none for name, `a/` for address, `t/` for tags, `r/` for relation, `s/` for transaction stage)
+* `FindCommand` – Executes the find operation by applying the predicate to filter the person list
+* `XYZContainsKeywordsPredicate` – Represents the family of predicate classes that implement the actual filtering logic
+
+**Execution Flow**
+
+<puml src="diagrams/find/FindSequence.puml" width="620"/>
+
+The sequence diagram above illustrates how a find command is processed:
+
+1. The user enters a find command (e.g., `find alice`)
+2. `FindCommandParser` validates and parses the input, creating the appropriate predicate
+3. A `FindCommand` is created with the predicate
+4. When executed, `FindCommand` updates the model's filtered list using the predicate
+5. The UI automatically reflects the filtered results
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
