@@ -51,7 +51,7 @@ public class HelpCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         // Uses new CommandResult ctor that carries an optional helpTopic.
-        return new CommandResult(SHOWING_HELP_MESSAGE, /*showHelp=*/true, /*exit=*/false, /*helpTopic=*/topic);
+        return new CommandResult(SHOWING_HELP_MESSAGE, true, false, topic);
     }
 
     /** Two HelpCommands are equal if their topics are equal. */
