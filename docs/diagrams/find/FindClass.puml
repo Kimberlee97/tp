@@ -2,62 +2,60 @@
 hide circle
 skinparam classAttributeIconSize 0
 
-Class "{abstract}\nCommand" as Command {
-  +execute(Model): CommandResult
+abstract class Command {
+    +execute(Model): CommandResult
 }
 
-Class FindCommand {
-  +COMMAND_WORD: String
-  +MESSAGE_USAGE: String
-  -predicate: PredicatePerson
-  +execute(model: Model): CommandResult
+class FindCommand {
+    -predicate: Predicate<Person>
+    +FindCommand(Predicate<Person>)
+    +execute(Model): CommandResult
 }
 
-Class FindCommandParser {
-  +parse(args: String): FindCommand
+class FindCommandParser {
+    +parse(args: String): FindCommand
 }
 
-Class "<<interface>>\nPredicate~Person~" as PredicatePerson {
-  +test(person: Person): boolean
+class "<<interface>>\nPredicate<Person>" as Predicate {
+    +test(Person): boolean
 }
 
-Class Person
-Class "<<interface>>\nModel" as Model
-Class NameContainsKeywordsPredicate
-Class AddressContainsKeywordsPredicate
-Class RelationContainsKeywordPredicate
-Class TagContainsKeywordsPredicate
-Class TransactionContainsKeywordPredicate
-
-Class ModelManager {
-  -filteredPersons: FilteredList<Person>
-  +updateFilteredPersonList(predicate: Predicate<Person>): void
+class "XYZContainsKeywordsPredicate" as XYZPredicate {
+    -keywords: List<String>
+    +test(Person): boolean
 }
 
-ModelManager ..|> Model : implements
-ModelManager --> Person : manages
+note right of XYZPredicate
+  Represents 5 predicate classes:
+  • NameContainsKeywordsPredicate
+  • AddressContainsKeywordsPredicate
+  • TagContainsKeywordsPredicate
+  • RelationContainsKeywordPredicate
+  • TransactionContainsKeywordPredicate
+end note
 
-FindCommand -up-|> Command
-NameContainsKeywordsPredicate ..> Person : tests
-AddressContainsKeywordsPredicate ..> Person : tests
-RelationContainsKeywordPredicate ..> Person : tests
-TagContainsKeywordsPredicate ..> Person : tests
-TransactionContainsKeywordPredicate ..> Person : tests
+class "<<interface>>\nModel" as Model {
+    +updateFilteredPersonList(Predicate<Person>)
+    +getFilteredPersonList()
+}
 
-PredicatePerson <|.. NameContainsKeywordsPredicate : implements
-PredicatePerson <|.. AddressContainsKeywordsPredicate : implements
-PredicatePerson <|.. TagContainsKeywordsPredicate : implements
-PredicatePerson <|.. RelationContainsKeywordPredicate : implements
-PredicatePerson <|.. TransactionContainsKeywordPredicate : implements
+class Person {
+    +getName()
+    +getAddress()
+    +getTags()
+    +getRelation()
+    +getStage()
+}
 
-FindCommandParser ..> FindCommand : creates
-FindCommandParser ..> NameContainsKeywordsPredicate : creates
-FindCommandParser ..> AddressContainsKeywordsPredicate : creates
-FindCommandParser ..> TagContainsKeywordsPredicate : creates
-FindCommandParser ..> RelationContainsKeywordPredicate : creates
-FindCommandParser ..> TransactionContainsKeywordPredicate : creates
+Command <|-- FindCommand
+Predicate <|.. XYZPredicate
 
-FindCommand --> PredicatePerson : uses
-FindCommand ..> Model : interacts with
+FindCommandParser .> FindCommand : creates
+FindCommandParser .> XYZPredicate : creates
+
+FindCommand --> Predicate : filters with
+FindCommand ..> Model : updates
+
+XYZPredicate ..> Person : tests
 
 @enduml

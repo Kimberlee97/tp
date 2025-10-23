@@ -1,0 +1,37 @@
+@startuml
+
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+
+actor User
+participant "FindCommandParser" as Parser
+participant "FindCommand" as Command
+participant Model
+
+User -> Parser: parse("find alice")
+activate Parser
+
+Parser -> Parser: create appropriate predicate
+
+create Command
+Parser -> Command: new FindCommand(predicate)
+
+Parser --> User: findCommand
+deactivate Parser
+
+User -> Command: execute(model)
+activate Command
+
+Command -> Model: updateFilteredPersonList(predicate)
+note right of Model
+  Filters person list
+  using predicate
+end note
+
+Command -> Model: getFilteredPersonList()
+Model --> Command: filteredList
+
+Command --> User: CommandResult with count
+deactivate Command
+
+@enduml
