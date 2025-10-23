@@ -280,8 +280,8 @@ Examples:
 * `find John` returns `john` and `John Doe`
 * `find ale` returns `Alex Yeoh`
   ![result for 'find ale'](images/findAleResult.png)
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks`<br>
+  ![result for 'find john alex'](images/findJohnAlexResult.png)
 
 ### Locating persons by address: `find a/`
 
@@ -314,7 +314,7 @@ Format: `find t/KEYWORD [MORE_KEYWORDS]`
 Examples:
 * `find t/friend` returns all persons tagged with `friend`
 * `find t/fri` returns all persons with tags containing `fri` (e.g., `friend`, `Friday`)
-* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`
+* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`<br>
   ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
 
 ### Locating persons by relation: `find r/`
@@ -330,8 +330,8 @@ Format: `find r/KEYWORD`
 
 Examples:
 * `find r/vendor` returns all persons with relation `vendor`
-* `find r/client` returns all persons with relation `client`
-// insert image here 
+* `find r/client` returns all persons with relation `client`<br>
+  ![result for 'find r/client'](images/findRelationClient.png)
 
 ### Locating persons by transaction stage: `find s/`
 
@@ -347,8 +347,8 @@ Format: `find s/KEYWORD`
 Examples:
 * `find s/prospect` returns all persons with transaction stage `prospect`
 * `find s/negotiating` returns all persons with transaction stage `negotiating`
-* `find s/closed` returns all persons with transaction stage `closed`
-// insert image here 
+* `find s/closed` returns all persons with transaction stage `closed`<br>
+  ![result for 'find s/closed'](images/findTransactionClosed.png)
 
 ### Archiving persons: `archive`
 
