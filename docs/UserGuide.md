@@ -115,15 +115,16 @@ The remark field will be empty if no remark is given.
 </box>
 
 Examples:
-* `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
+* `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00 rm/Likes nature`
+![Result for adding Jade Lim](images/JadeLim.png)
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` 
   * Adds a person named John Doe whose phone number is `98765432`, email is `johnd@example.com`, address is
   `John street, block 123, #01-01`, relation is `client`, and transaction stage is `prospect`.
-  ![Result for adding John Doe](images/AddJohnDoeResult.png)
+  ![Result for adding John Doe](images/AddJohnDoe.png)
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
   * Adds a person named Betsy Crowe whose phone number is `1234567`, email is `betsycrowe@example.com`, address is
   `Newgate Prison`, relation is `client`, transaction stage is `negotiating`, and is tagged as `criminal` and `friend`.
-  ![Result for adding Betsy Crowe](images/AddBetsyCroweResult.png)
+  ![Result for adding Betsy Crowe](images/AddBetsyCrowe.png)
 * `add n/Jeremiah Loh e/jloh@example.com a/Loh Street s/prospect`
   * Prompts for phone number input and adds a person with the specified phone number named Jeremiah Loh whose 
     email is jloh@example.com, address is Loh Street, relation is client and transaction stage is prospect.
@@ -183,12 +184,12 @@ Format: `transaction INDEX s/TRANSACTION_STAGE`
 * The Transaction Stage tag cannot be removed, only replaced.
 
 Examples:
-* `transaction 1 s/prospect` Replaces the transaction stage tag of the 1st person to be `prospect`.
-![Result of `transaction 1 s/prospect`](images/TransactionStageProspectResult.png)
-* `transaction 2 s/negotiating` Replaces the transaction stage tag of the 2nd person to be `negotiating`.
-![Result of `transaction 2 s/negotiating`](images/TransactionStageNegotiatingResult.png)
-* `transaction    2     s/  closed` Replaces the transaction stage tag of the 3rd person to be `closed`.
-![Result of `transaction    2     s/  closed`](images/TransactionStageClosedResult.png)
+* `transaction 32 s/prospect` Replaces the transaction stage tag of the 32nd person to be `prospect`.
+![Result of `transaction 32 s/prospect`](images/TransactionStageProspectResult.png)
+* `transaction 32 s/negotiating` Replaces the transaction stage tag of the 32nd person to be `negotiating`.
+![Result of `transaction 32 s/negotiating`](images/TransactionStageNegotiating.png)
+* `transaction    32     s/  closed` Replaces the transaction stage tag of the 32nd person to be `closed`.
+![Result of `transaction    32     s/  closed`](images/TransactionStageClosed.png)
 
 ### Adding a remark: `remark`
 
@@ -201,8 +202,16 @@ Format: `remark INDEX rm/REMARK`
 * If `REMARK` is empty (e.g. `remark 1 rm/`), the remark of the person at `INDEX` is removed.
 
 Examples:
-* `remark 1 rm/Likes nature` Replaces the remark of the 1st person to be "Likes nature".
-* `remark 1 rm/` Removes the remark of the 1st person.
+* `remark 32 rm/Likes nature` Replaces the remark of the 32nd person to be "Likes nature".
+![Result of `remark 32 rm/Likes nature`](images/remark32Result.png)
+
+* `remark 32 rm/` Removes the remark of the 32nd person.
+![Result of `remark 32 rm/`](images/removeRemark.png)
+
+* `remark 32 rm/storm/cloud` Replaces the remark of the 32nd person to "storm/cloud".
+  ![Result of `remark 32 rm/storm/cloud`](images/remark32v2.png)
+
+---
 
 ### Setting a meeting with date and time
 
@@ -287,8 +296,8 @@ Examples:
 * `find John` returns `john` and `John Doe`
 * `find ale` returns `Alex Yeoh`
   ![result for 'find ale'](images/findAleResult.png)
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks`<br>
+  ![result for 'find john alex'](images/findJohnAlexResult.png)
 
 ### Locating persons by address: `find a/`
 
@@ -321,8 +330,41 @@ Format: `find t/KEYWORD [MORE_KEYWORDS]`
 Examples:
 * `find t/friend` returns all persons tagged with `friend`
 * `find t/fri` returns all persons with tags containing `fri` (e.g., `friend`, `Friday`)
-* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`
+* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`<br>
   ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
+
+### Locating persons by relation: `find r/`
+
+Finds persons whose relation is 'vendor' and 'client'
+
+Format: `find r/KEYWORD`
+
+* The search is case-insensitive. e.g. `client` will match `Client`
+* Only relations are searched
+* Partial matches are not supported
+* Only accepts predefined relation types: `vendor` or `client`
+
+Examples:
+* `find r/vendor` returns all persons with relation `vendor`
+* `find r/client` returns all persons with relation `client`<br>
+  ![result for 'find r/client'](images/findRelationClient.png)
+
+### Locating persons by transaction stage: `find s/`
+
+Finds persons whose transaction stage is 'prospect', 'negotiating' or 'closed'
+
+Format: `find s/KEYWORD`
+
+* The search is case-insensitive. e.g. `negotiating` will match `Negotiating`
+* Only transaction stage are searched
+* Partial matches are not supported
+* Only accepts predefined transaction stages: `prospect` or `negotiating` or `closed`
+
+Examples:
+* `find s/prospect` returns all persons with transaction stage `prospect`
+* `find s/negotiating` returns all persons with transaction stage `negotiating`
+* `find s/closed` returns all persons with transaction stage `closed`<br>
+  ![result for 'find s/closed'](images/findTransactionClosed.png)
 
 ### Archiving persons: `archive`
 
@@ -339,6 +381,7 @@ Format: `archive INDEX`
 Examples:
 * `archive 2` archives the 2nd person in the active list.
 ![Command 'archive 2'](images/archiveCommand.png)
+* `list archived` shows the contacts that have been hidden from the active list.
 ![Result for 'archive 2'](images/archiveCommandResult.png)
 
 ### Unarchiving persons: `unarchive`
@@ -423,11 +466,14 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 | **Clear**       | `clear`                                                                                                                                                                                                                               |
 | **Delete**      | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                                                                   |
 | **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [t/TAG] [m/MEETING]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                                            |
-| **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                              
-| **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                         
+| **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                              |
+| **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                         |
+| **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`
 | **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                            |
 | **Find a/**     | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                                                                                               |
 | **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                            |
+| **Find r/**     | `find r/KEYWORD`<br> e.g., `find r/client`                                                                                                                                                                                            |
+| **Find s/**     | `find s/KEYWORD`<br> e.g., `find s/negotiating`                                                                                                                                                                                       |
 | **List**        | `list [archive]` <br> e.g., `list`, `list archive`                                                                                                                                                                                    |
 | **Help**        | `help [topic]`<br> e.g., `help add`                                                                                                                                                                                                   |
 | **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                 |
