@@ -1,0 +1,30 @@
+@startuml
+autoactivate on
+hide footbox
+skinparam responseMessageBelowArrow true
+
+actor User
+participant Logic
+participant ABP as "AddressBookParser"
+participant Help as "HelpCommand"
+participant UI as "MainWindow"
+participant HW as "HelpWindow"
+participant Browser as "BrowserUtil"
+
+User -> Logic : execute("help add")
+Logic -> ABP : parseCommand("help add")
+ABP --> Logic : HelpCommand("add")
+
+Logic -> Help : execute(model)
+Help --> Logic : CommandResult(showHelp=true, helpTopic="add")
+
+Logic --> UI : CommandResult
+UI -> HW : openInBrowserOrShow("add")
+HW -> Browser : open(UserGuide#add)
+alt browser opens
+  Browser --> HW : true
+else cannot open
+  Browser --> HW : false
+  HW -> HW : show()
+end
+@enduml
