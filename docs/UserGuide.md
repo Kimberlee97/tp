@@ -317,6 +317,39 @@ Examples:
 * `find t/friend buyer` returns persons tagged with either `friend` or `buyer`
   ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
 
+### Locating persons by relation: `find r/`
+
+Finds persons whose relation is 'vendor' and 'client'
+
+Format: `find r/KEYWORD`
+
+* The search is case-insensitive. e.g. `client` will match `Client`
+* Only relations are searched
+* Partial matches are not supported
+* Only accepts predefined relation types: `vendor` or `client`
+
+Examples:
+* `find r/vendor` returns all persons with relation `vendor`
+* `find r/client` returns all persons with relation `client`
+// insert image here 
+
+### Locating persons by transaction stage: `find s/`
+
+Finds persons whose transaction stage is 'prospect', 'negotiating' or 'closed'
+
+Format: `find s/KEYWORD`
+
+* The search is case-insensitive. e.g. `negotiating` will match `Negotiating`
+* Only transaction stage are searched
+* Partial matches are not supported
+* Only accepts predefined transaction stages: `prospect` or `negotiating` or `closed`
+
+Examples:
+* `find s/prospect` returns all persons with transaction stage `prospect`
+* `find s/negotiating` returns all persons with transaction stage `negotiating`
+* `find s/closed` returns all persons with transaction stage `closed`
+// insert image here 
+
 ### Archiving persons: `archive`
 
 Moves a person from the active list to the **archived list**, hiding them from normal view.
