@@ -78,6 +78,9 @@ The `UI` component uses the JavaFx UI framework. The layout of these UI parts ar
 The `HelpWindow` in the UI component was enhanced to open the User Guide directly in the user’s browser.  
 If the browser cannot be opened (e.g., in headless environments), the fallback "Help" window remains available to copy the link manually.  
 Additionally, the "Help" command can now open the specific section of the User Guide based on the topic provided (e.g., `help add`, `help edit`).
+The sequence diagram below shows how the `HelpCommand` interacts with the UI to open the User Guide or display the fallback Help window.
+
+<puml src="diagrams/help/HelpSequence.puml" width="720" />
 
 The `UI` component,
 
