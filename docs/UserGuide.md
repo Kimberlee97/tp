@@ -99,6 +99,9 @@ Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]…​`
 
+If you forget to input any of the compulsory fields, the system will prompt you for the required inputs. 
+To abort the command during this stage, input `cancel`.
+
 <box type="tip" seamless>
 
 **Tips:** 
@@ -121,6 +124,11 @@ Examples:
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
   * Adds a person named Betsy Crowe whose phone number is `1234567`, email is `betsycrowe@example.com`, address is
   `Newgate Prison`, relation is `client`, transaction stage is `negotiating`, and is tagged as `criminal` and `friend`.
+  ![Result for adding Betsy Crowe](images/AddBetsyCroweResult.png)
+* `add n/Jeremiah Loh e/jloh@example.com a/Loh Street s/prospect`
+  * Prompts for phone number input and adds a person with the specified phone number named Jeremiah Loh whose 
+    email is jloh@example.com, address is Loh Street, relation is client and transaction stage is prospect.
+  ![Prompt for phone number input](images/promptPhone.png)
   ![Result for adding Betsy Crowe](images/AddBetsyCrowe.png)
 
 ### Listing all persons : `list`
