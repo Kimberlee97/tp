@@ -15,8 +15,11 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import homey.commons.core.GuiSettings;
+import homey.model.person.Meeting;
 import homey.model.person.NameContainsKeywordsPredicate;
+import homey.model.person.Person;
 import homey.testutil.AddressBookBuilder;
+import homey.testutil.PersonBuilder;
 
 public class ModelManagerTest {
 
@@ -86,6 +89,24 @@ public class ModelManagerTest {
     public void hasPerson_personInAddressBook_returnsTrue() {
         modelManager.addPerson(ALICE);
         assertTrue(modelManager.hasPerson(ALICE));
+    }
+
+    @Test
+    public void updateMeetingOverdueStatus_updatesAllMeetings() {
+        ModelManager modelManager = new ModelManager();
+        Person personWithPastMeeting = new PersonBuilder(ALICE)
+                .withMeeting("2023-10-20 14:00").build();
+        Person personWithFutureMeeting = new PersonBuilder(BENSON)
+                .withMeeting("3000-10-20 14:00").build();
+
+        modelManager.addPerson(personWithPastMeeting);
+        modelManager.addPerson(personWithFutureMeeting);
+        modelManager.updateMeetingOverdueStatus();
+
+        assertTrue(personWithPastMeeting.getMeeting().isPresent());
+        assertTrue(personWithFutureMeeting.getMeeting().isPresent());
+        assertTrue(Meeting.isOverdueMeeting(personWithPastMeeting.getMeeting().get()));
+        assertFalse(Meeting.isOverdueMeeting(personWithFutureMeeting.getMeeting().get()));
     }
 
     @Test

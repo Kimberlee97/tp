@@ -31,13 +31,23 @@ public class HelpWindow extends UiPart<Stage> {
      * Update this if UG headings change (copy the link icon next to a heading
      * in the UG and use the part after the '#').
      */
-    private static final Map<String, String> ANCHORS = Map.of(
-            "add", "#adding-a-person-add",
-            "edit", "#editing-a-person-edit",
-            "delete", "#deleting-a-person-delete",
-            "find", "#locating-persons-by-name-find",
-            "list", "#listing-all-persons-list",
-            "help", "#viewing-help-help-topic"
+    private static final Map<String, String> ANCHORS = Map.ofEntries(
+            Map.entry("add", "#adding-a-person-add"),
+            Map.entry("edit", "#editing-a-person-edit"),
+            Map.entry("delete", "#deleting-a-person-delete"),
+            Map.entry("find", "#locating-persons-by-name-find"),
+            Map.entry("list", "#listing-all-persons-list"),
+            Map.entry("help", "#viewing-help-help-topic"),
+            Map.entry("clear", "#clearing-all-entries-clear"),
+            Map.entry("exit", "#exiting-the-program-exit"),
+            Map.entry("find a/", "#locating-persons-by-address-find-a"),
+            Map.entry("find t/", "#locating-persons-by-tag-find-t"),
+            Map.entry("relation", "#add-relational-tag-relation"),
+            Map.entry("transaction", "#changing-the-transaction-stage"),
+            Map.entry("archive", "#archiving-persons-archive"),
+            Map.entry("unarchive", "#unarchiving-persons-unarchive"),
+            Map.entry("remark", "#adding-a-remark-remark"),
+            Map.entry("list meeting", "#listing-contacts-by-meeting-date-list-meeting")
     );
 
     @FXML

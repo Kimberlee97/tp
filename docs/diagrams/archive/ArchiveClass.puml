@@ -1,0 +1,24 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+Class "{abstract}\nCommand" as Command {
+  +execute(model: Model): CommandResult
+}
+Class ArchiveCommand {
+  +COMMAND_WORD: String
+  +MESSAGE_USAGE: String
+  +MESSAGE_SUCCESS: String
+  +MESSAGE_ALREADY_ARCHIVED: String
+  +execute(model: Model): CommandResult
+}
+Class CommandException
+Class Model
+Class CommandResult
+
+ArchiveCommand -up-|> Command
+Command ..> CommandException: throws >
+ArchiveCommand .right.> CommandException: throws >
+ArchiveCommand ..> Model
+ArchiveCommand ..> CommandResult
+@enduml

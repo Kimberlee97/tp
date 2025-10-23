@@ -33,19 +33,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label phone;
-    @FXML
-    private Label address;
-    @FXML
-    private Label email;
-    @FXML
     private FlowPane tags;
-    @FXML
-    private Label transaction;
-    @FXML
-    private Label meeting;
-    @FXML
-    private Label remark;
+
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -55,25 +44,23 @@ public class PersonCard extends UiPart<Region> {
         this.person = person;
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
-        email.setText(person.getEmail().value);
-        tags.getChildren().add(new Label(person.getRelation().value));
-        transaction.setText(person.getStage().value);
+
+        populateTags(person);
+    }
+
+    private void populateTags(Person person) {
+        tags.getChildren().clear();
+
+        addTag(person.getRelation().value);
+        addTag(person.getStage().value);
+
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
-        person.getMeeting().ifPresentOrElse(
-                m -> {
-                    meeting.setText("Next meeting: " + m.toDisplayString());
-                    meeting.setManaged(true);
-                    meeting.setVisible(true);
-                }, () -> {
-                    meeting.setText("");
-                    meeting.setManaged(false);
-                    meeting.setVisible(false);
-                }
-        );
-        remark.setText("Remarks: " + person.getRemark().value);
+                .forEach(tag -> addTag(tag.tagName));
     }
+
+    private void addTag(String tagName) {
+        tags.getChildren().add(new Label(tagName));
+    }
+
 }

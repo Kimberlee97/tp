@@ -82,6 +82,9 @@ public interface Model {
      */
     void setPerson(Person target, Person editedPerson);
 
+    /** Updates the overdue status of all meetings in the address book */
+    void updateMeetingOverdueStatus();
+
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
 
@@ -90,4 +93,23 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Sorts the currently displayed (filtered) list of persons using the given comparator.
+     * <p>
+     * The comparator defines the ordering of persons in the list, for example by name or meeting date.
+     * The sort is applied on top of the existing filtered view, and does not modify the underlying data.
+     *
+     * @param comparator Comparator used to determine the order of persons in the filtered list.
+     */
+    void sortFilteredPersonListBy(java.util.Comparator<homey.model.person.Person> comparator);
+
+    /**
+     * Clears any applied sorting on the person list, restoring the natural or insertion order.
+     * <p>
+     * This method is typically called when the user issues a {@code list} command to reset the view
+     * back to its default order after sorting has been applied (for example, after {@code list meeting}).
+     */
+    void clearPersonListSorting();
+
 }
