@@ -62,7 +62,6 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
      */
     private String parseRemarkValue(ArgumentMultimap argMultimap) throws ParseException {
         String remarkValue = extractRemarkValue(argMultimap);
-        validateRemarkValue(remarkValue);
         validateRemarkLength(remarkValue);
         return remarkValue;
     }
@@ -83,16 +82,6 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
     }
 
     /**
-     * Ensures the remark value does not contain additional prefixes or malformed syntax.
-     */
-    private void validateRemarkValue(String remarkValue) throws ParseException {
-        if (remarkValue.contains("rm/")) {
-            String errorMessage = "Remark does not accept values containing the prefix `rm/`.";
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, errorMessage));
-        }
-    }
-
-    /**
      * Ensures the remark value does not exceed 100 characters.
      */
     private void validateRemarkLength(String remarkValue) throws ParseException {
@@ -101,5 +90,4 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
                     "Remark cannot exceed 100 characters."));
         }
     }
-
 }

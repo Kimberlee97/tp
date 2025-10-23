@@ -115,11 +115,12 @@ The remark field will be empty if no remark is given.
 </box>
 
 Examples:
-* `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
+* `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00 rm/Likes nature`
+![Result for adding Jade Lim](images/JadeLim.png);
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` 
   * Adds a person named John Doe whose phone number is `98765432`, email is `johnd@example.com`, address is
   `John street, block 123, #01-01`, relation is `client`, and transaction stage is `prospect`.
-  ![Result for adding John Doe](images/AddJohnDoeResult.png)
+  ![Result for adding John Doe](images/AddJohnDoe.png)
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
   * Adds a person named Betsy Crowe whose phone number is `1234567`, email is `betsycrowe@example.com`, address is
   `Newgate Prison`, relation is `client`, transaction stage is `negotiating`, and is tagged as `criminal` and `friend`.
@@ -128,6 +129,7 @@ Examples:
   * Prompts for phone number input and adds a person with the specified phone number named Jeremiah Loh whose 
     email is jloh@example.com, address is Loh Street, relation is client and transaction stage is prospect.
   ![Prompt for phone number input](images/promptPhone.png)
+  ![Result for adding Betsy Crowe](images/AddBetsyCrowe.png)
 
 ### Listing all persons : `list`
 
@@ -183,12 +185,12 @@ Format: `transaction INDEX s/TRANSACTION_STAGE`
 * The Transaction Stage tag cannot be removed, only replaced.
 
 Examples:
-* `transaction 1 s/prospect` Replaces the transaction stage tag of the 1st person to be `prospect`.
-![Result of `transaction 1 s/prospect`](images/TransactionStageProspectResult.png)
-* `transaction 2 s/negotiating` Replaces the transaction stage tag of the 2nd person to be `negotiating`.
-![Result of `transaction 2 s/negotiating`](images/TransactionStageNegotiatingResult.png)
-* `transaction    2     s/  closed` Replaces the transaction stage tag of the 3rd person to be `closed`.
-![Result of `transaction    2     s/  closed`](images/TransactionStageClosedResult.png)
+* `transaction 32 s/prospect` Replaces the transaction stage tag of the 32nd person to be `prospect`.
+![Result of `transaction 32 s/prospect`](images/TransactionStageProspectResult.png)
+* `transaction 32 s/negotiating` Replaces the transaction stage tag of the 32nd person to be `negotiating`.
+![Result of `transaction 32 s/negotiating`](images/TransactionStageNegotiating.png)
+* `transaction    32     s/  closed` Replaces the transaction stage tag of the 32nd person to be `closed`.
+![Result of `transaction    32     s/  closed`](images/TransactionStageClosed.png)
 
 ### Adding a remark: `remark`
 
@@ -201,8 +203,15 @@ Format: `remark INDEX rm/REMARK`
 * If `REMARK` is empty (e.g. `remark 1 rm/`), the remark of the person at `INDEX` is removed.
 
 Examples:
-* `remark 1 rm/Likes nature` Replaces the remark of the 1st person to be "Likes nature".
-* `remark 1 rm/` Removes the remark of the 1st person.
+* `remark 32 rm/Likes nature` Replaces the remark of the 32nd person to be "Likes nature".
+![Result of `remark 32 rm/Likes nature`](images/remark32Result.png)
+
+* `remark 32 rm/` Removes the remark of the 32nd person.
+![Result of `remark 32 rm/`](images/removeRemark.png)
+
+* `remark 32 rm/storm/cloud` Replaces the remark of the 32nd person to "storm/cloud".
+  ![Result of `remark 32 rm/storm/cloud`](images/remark32v2.png)
+
 
 ### Setting a meeting with date and time
 
@@ -423,8 +432,9 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 | **Clear**       | `clear`                                                                                                                                                                                                                               |
 | **Delete**      | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                                                                   |
 | **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [t/TAG] [m/MEETING]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                                            |
-| **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                              
-| **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                         
+| **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                              |
+| **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                         |
+| **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`
 | **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                            |
 | **Find a/**     | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                                                                                               |
 | **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                            |
