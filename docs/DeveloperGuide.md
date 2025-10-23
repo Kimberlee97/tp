@@ -679,8 +679,29 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 1. User searches for contacts using find tag command with a tag keyword
 2. System retrieves and displays list of contacts whose tags contain the keyword/partial keyword 
+3. User views the list of contacts
 
     Use case ends.
+
+**Use case: Search for contacts by relation**
+
+**MSS**
+
+1. User searches for contacts using find relation command with a relation keyword
+2. System retrieves and displays list of contacts whose relation matches the keyword
+3. User views the list of contacts
+
+   Use case ends.
+
+**Use case: Search for contacts by transaction stage**
+
+**MSS**
+
+1. User searches for contacts using find transaction stage command with a transaction keyword
+2. System retrieves and displays list of contacts whose transaction stage matches the keyword
+3. User views the list of contacts
+
+   Use case ends.
 
 **Use case: Tag each client with their property location**
 
