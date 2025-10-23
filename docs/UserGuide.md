@@ -177,12 +177,12 @@ Format: `transaction INDEX s/TRANSACTION_STAGE`
 * The Transaction Stage tag cannot be removed, only replaced.
 
 Examples:
-* `transaction 1 s/prospect` Replaces the transaction stage tag of the 1st person to be `prospect`.
-![Result of `transaction 1 s/prospect`](images/TransactionStageProspectResult.png)
-* `transaction 2 s/negotiating` Replaces the transaction stage tag of the 2nd person to be `negotiating`.
-![Result of `transaction 2 s/negotiating`](images/TransactionStageNegotiatingResult.png)
-* `transaction    2     s/  closed` Replaces the transaction stage tag of the 3rd person to be `closed`.
-![Result of `transaction    2     s/  closed`](images/TransactionStageClosedResult.png)
+* `transaction 32 s/prospect` Replaces the transaction stage tag of the 32nd person to be `prospect`.
+![Result of `transaction 32 s/prospect`](images/TransactionStageProspectResult.png)
+* `transaction 32 s/negotiating` Replaces the transaction stage tag of the 32nd person to be `negotiating`.
+![Result of `transaction 32 s/negotiating`](images/TransactionStageNegotiating.png)
+* `transaction    32     s/  closed` Replaces the transaction stage tag of the 32nd person to be `closed`.
+![Result of `transaction    32     s/  closed`](images/TransactionStageClosed.png)
 
 ### Adding a remark: `remark`
 
