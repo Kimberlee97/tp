@@ -1,6 +1,6 @@
 @startuml
 @startuml
-hide stereotype
+hide circle
 skinparam classAttributeIconSize 0
 skinparam shadowing false
 skinparam classFontSize 13
@@ -15,13 +15,13 @@ package homey.logic.commands {
         + {static} String MESSAGE_ADD_REMARK_SUCCESS
         + {static} String MESSAGE_DELETE_REMARK_SUCCESS
         --
-        + execute(Model model) : CommandResult
-        - generateSuccessMessage(Person personToEdit) : String
-        + equals(Object other) : Boolean
+        + execute(model: Model) : CommandResult
+        - generateSuccessMessage(personToEdit: Person) : String
+        + equals(other: Object) : Boolean
     }
 
-    abstract class Command {
-        + execute(Model model) {abstract} : CommandResult
+    class "{abstract}\nCommand" as Command {
+        + {abstract} execute(model: Model) : CommandResult
     }
 
     class CommandResult {

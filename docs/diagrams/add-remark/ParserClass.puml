@@ -3,12 +3,17 @@ hide circle
 skinparam classAttributeIconSize 0
 
 Class "<<interface>>\nParser" as Parser
+
 Class RemarkCommandParser {
-  +parse(): RemarkCommand
+  +parse(args: String): RemarkCommand
 }
+
 Class ParserException
 
+Class RemarkCommand
+
 RemarkCommandParser .up.|> Parser
+RemarkCommandParser --> RemarkCommand : creates >
 Parser .right.> ParserException: throws >
 RemarkCommandParser .right.> ParserException: throws >
 @enduml
