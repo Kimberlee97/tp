@@ -116,7 +116,7 @@ The remark field will be empty if no remark is given.
 
 Examples:
 * `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00 rm/Likes nature`
-![Result for adding Jade Lim](images/JadeLim.png);
+![Result for adding Jade Lim](images/JadeLim.png)
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` 
   * Adds a person named John Doe whose phone number is `98765432`, email is `johnd@example.com`, address is
   `John street, block 123, #01-01`, relation is `client`, and transaction stage is `prospect`.
@@ -124,12 +124,11 @@ Examples:
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
   * Adds a person named Betsy Crowe whose phone number is `1234567`, email is `betsycrowe@example.com`, address is
   `Newgate Prison`, relation is `client`, transaction stage is `negotiating`, and is tagged as `criminal` and `friend`.
-  ![Result for adding Betsy Crowe](images/AddBetsyCroweResult.png)
+  ![Result for adding Betsy Crowe](images/AddBetsyCrowe.png)
 * `add n/Jeremiah Loh e/jloh@example.com a/Loh Street s/prospect`
   * Prompts for phone number input and adds a person with the specified phone number named Jeremiah Loh whose 
     email is jloh@example.com, address is Loh Street, relation is client and transaction stage is prospect.
   ![Prompt for phone number input](images/promptPhone.png)
-  ![Result for adding Betsy Crowe](images/AddBetsyCrowe.png)
 
 ### Listing all persons : `list`
 
