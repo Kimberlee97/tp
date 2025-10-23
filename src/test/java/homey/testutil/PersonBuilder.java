@@ -21,10 +21,10 @@ import homey.model.util.SampleDataUtil;
  */
 public class PersonBuilder {
 
-    public static final String DEFAULT_NAME = "Amy Bee";
-    public static final String DEFAULT_PHONE = "85355255";
-    public static final String DEFAULT_EMAIL = "amy@gmail.com";
-    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_NAME = "placeholder";
+    public static final String DEFAULT_PHONE = "00000000";
+    public static final String DEFAULT_EMAIL = "placeholder@xx.xx";
+    public static final String DEFAULT_ADDRESS = "placeholder";
     public static final String DEFAULT_RELATION = "client";
     public static final String DEFAULT_STAGE = "prospect";
     public static final String DEFAULT_REMARK = "Likes nature.";
@@ -138,7 +138,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, relation, stage, remark, tags);
+        return new Person(name, phone, email, address, relation, stage, remark, tags, meeting);
     }
 
 }

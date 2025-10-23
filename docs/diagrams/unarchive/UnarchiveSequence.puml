@@ -1,0 +1,24 @@
+@startuml
+autoactivate on
+hide footbox
+actor User
+participant "LogicManager" as L
+participant "AddressBookParser" as ABP
+participant "UnarchiveCommandParser" as UCP
+participant "UnarchiveCommand" as UC
+participant "Model" as M
+
+User -> L : execute("unarchive 2")
+L -> ABP : parseCommand("unarchive 2")
+ABP -> UCP : parse(" 2")
+UCP --> ABP : new UnarchiveCommand(Index=2)
+ABP --> L : UnarchiveCommand
+L -> UC : execute(Model)
+UC -> M : getFilteredPersonList()
+M --> UC : List<Person>
+UC -> UC : validate index & not-archived? (throws if invalid)
+UC -> M : setPerson(target, unarchivedCopy)
+UC -> M : updateFilteredPersonList(PREDICATE_SHOW_ACTIVE_PERSONS)
+UC --> L : CommandResult("Unarchived: <name>")
+L --> User : result text
+@enduml

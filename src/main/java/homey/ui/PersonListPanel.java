@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import homey.commons.core.LogsCenter;
 import homey.model.person.Person;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
@@ -44,6 +45,13 @@ public class PersonListPanel extends UiPart<Region> {
                 setGraphic(new PersonCard(person, getIndex() + 1).getRoot());
             }
         }
+    }
+
+    /**
+     * Sets a listener to be notified when the selected person changes.
+     */
+    public void setOnPersonSelected(ChangeListener<Person> listener) {
+        personListView.getSelectionModel().selectedItemProperty().addListener(listener);
     }
 
 }

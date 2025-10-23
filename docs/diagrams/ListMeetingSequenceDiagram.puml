@@ -1,0 +1,45 @@
+@startuml
+title Logic component (detailed) – "list meeting" sequence
+
+skinparam wrapWidth 220
+skinparam maxMessageSize 80
+
+actor User
+participant UI as "UI\n(PersonListPanel bound to model list)"
+participant LogicManager
+participant AddressBookParser
+participant ListCommandParser
+participant ListMeetingCommand
+participant Model as "Model\n(ModelManager)"
+
+User -> UI : type "list meeting"
+UI -> LogicManager : execute("list meeting")
+
+LogicManager -> AddressBookParser : parseCommand("list meeting")
+AddressBookParser -> ListCommandParser : parse(args)
+ListCommandParser --> ListMeetingCommand : new ListMeetingCommand()
+ListCommandParser --> AddressBookParser : return ListMeetingCommand
+AddressBookParser --> LogicManager : return ListMeetingCommand
+
+LogicManager -> ListMeetingCommand : execute(model)
+activate ListMeetingCommand
+ListMeetingCommand -> Model : updateFilteredPersonList(predicate)
+note right
+  predicate p:
+   p.getMeeting().isPresent()
+   && !p.isArchived()
+end note
+ListMeetingCommand -> Model : sortFilteredPersonListBy(comparator)
+note right
+  comparator:
+   1) meeting.getDateTime() asc
+      (missing → LocalDateTime.MAX)
+   2) name asc (case-insensitive)
+end note
+ListMeetingCommand --> LogicManager : CommandResult("Listed contacts with meetings (earliest first).")
+deactivate ListMeetingCommand
+
+LogicManager --> UI : return result
+UI -> UI : refresh bound list (auto-updates)
+
+@enduml

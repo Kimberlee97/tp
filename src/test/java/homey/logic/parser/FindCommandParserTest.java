@@ -1,8 +1,11 @@
 package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.Messages.MESSAGE_SINGLE_KEYWORD_ONLY;
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -13,8 +16,9 @@ import org.junit.jupiter.api.Test;
 import homey.logic.commands.FindCommand;
 import homey.model.person.AddressContainsKeywordsPredicate;
 import homey.model.person.NameContainsKeywordsPredicate;
+import homey.model.person.RelationContainsKeywordPredicate;
 import homey.model.person.TagContainsKeywordsPredicate;
-
+import homey.model.person.TransactionContainsKeywordPredicate;
 
 /**
  * Represents a parser that interprets user input for the {@code find} command.
@@ -134,5 +138,129 @@ public class FindCommandParserTest {
         return "Tags: " + FindCommand.COMMAND_WORD + " " + PREFIX_TAG + "KEYWORD [MORE_KEYWORDS]";
     }
 
+    // relation search tests
+    @Test
+    public void parse_relationKeywordClient_success() {
+        String input = "r/client";
+        FindCommand expected = new FindCommand(
+                new RelationContainsKeywordPredicate("client"));
+        assertParseSuccess(parser, input, expected);
+    }
 
+    @Test
+    public void parse_relationKeywordVendor_success() {
+        String input = " r/vendor";
+        FindCommand expected = new FindCommand(
+                new RelationContainsKeywordPredicate("vendor"));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_relationKeywordClientUpperCase_success() {
+        String input = " r/CLIENT";
+        FindCommand expected = new FindCommand(
+                new RelationContainsKeywordPredicate("client"));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_relationEmpty_throwsParseException() {
+        assertParseFailure(parser, " r/   ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, relationOnlyUsage()));
+    }
+
+    @Test
+    public void parse_relationPrefixOnlyWithoutSpaces_throwsParseException() {
+        assertParseFailure(parser, "r/",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, relationOnlyUsage()));
+    }
+
+    @Test
+    public void parse_relationInvalidKeyword_throwsParseException() {
+        assertParseFailure(parser, " r/supplier",
+                "Invalid relation. Only 'client' or 'vendor' are allowed");
+    }
+
+    @Test
+    public void parse_relationMultipleKeywords_throwsParseException() {
+        assertParseFailure(parser, " r/client vendor",
+                String.format(MESSAGE_SINGLE_KEYWORD_ONLY, "Relation", relationOnlyUsage()));
+    }
+
+    private static String relationOnlyUsage() {
+        return "Relation: " + FindCommand.COMMAND_WORD + " " + PREFIX_RELATION + "KEYWORD";
+    }
+    // transaction stage tests
+    @Test
+    public void parse_transactionKeywordProspect_success() {
+        String input = " s/prospect";
+        FindCommand expected = new FindCommand(
+                new TransactionContainsKeywordPredicate("prospect"));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_transactionKeywordNegotiating_success() {
+        String input = " s/negotiating";
+        FindCommand expected = new FindCommand(
+                new TransactionContainsKeywordPredicate("negotiating"));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_transactionKeywordClosed_success() {
+        String input = " s/closed";
+        FindCommand expected = new FindCommand(
+                new TransactionContainsKeywordPredicate("closed"));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_transactionKeywordUpperCase_success() {
+        String input = " s/PROSPECT";
+        FindCommand expected = new FindCommand(
+                new TransactionContainsKeywordPredicate("prospect"));
+        assertParseSuccess(parser, input, expected);
+    }
+
+    @Test
+    public void parse_transactionEmpty_throwsParseException() {
+        assertParseFailure(parser, " s/   ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, transactionOnlyUsage()));
+    }
+
+    @Test
+    public void parse_transactionPrefixOnlyWithoutSpaces_throwsParseException() {
+        assertParseFailure(parser, "s/",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, transactionOnlyUsage()));
+    }
+
+    @Test
+    public void parse_transactionInvalidKeyword_throwsParseException() {
+        assertParseFailure(parser, " s/pending",
+                "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed' are allowed");
+    }
+
+    @Test
+    public void parse_transactionMultipleKeywords_throwsParseException() {
+        assertParseFailure(parser, " s/prospect closed",
+                String.format(MESSAGE_SINGLE_KEYWORD_ONLY, "Transaction stage", transactionOnlyUsage()));
+    }
+
+    private static String transactionOnlyUsage() {
+        return "Transaction stage: " + FindCommand.COMMAND_WORD + " " + PREFIX_TRANSACTION + "KEYWORD";
+    }
+
+    // invalid prefix tests
+    @Test
+    public void parse_invalidPrefix_throwsParseException() {
+        assertParseFailure(parser, " x/keyword",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_invalidPrefixMultipleCharacters_throwsParseException() {
+        assertParseFailure(parser, " ab/keyword",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
 }

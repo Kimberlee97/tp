@@ -21,7 +21,6 @@ import static homey.logic.commands.CommandTestUtil.RELATION_DESC_CLIENT;
 import static homey.logic.commands.CommandTestUtil.RELATION_DESC_VENDOR;
 import static homey.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static homey.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
-import static homey.logic.commands.CommandTestUtil.TRANSACTION_DESC_CLOSED;
 import static homey.logic.commands.CommandTestUtil.TRANSACTION_DESC_PROSPECT;
 import static homey.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static homey.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
@@ -35,11 +34,15 @@ import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
 import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
+import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static homey.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static homey.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static homey.testutil.Assert.assertThrows;
 import static homey.testutil.TypicalPersons.AMY;
 import static homey.testutil.TypicalPersons.BOB;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -113,7 +116,8 @@ public class AddCommandParserTest {
         assertParseFailure(parser,
                 validExpectedPersonString + PHONE_DESC_AMY + EMAIL_DESC_AMY + NAME_DESC_AMY + ADDRESS_DESC_AMY
                         + TRANSACTION_DESC_PROSPECT + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME, PREFIX_ADDRESS, PREFIX_EMAIL, PREFIX_PHONE));
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME, PREFIX_ADDRESS, PREFIX_EMAIL,
+                        PREFIX_PHONE, PREFIX_TRANSACTION));
 
         // invalid value followed by valid value
 
@@ -176,33 +180,63 @@ public class AddCommandParserTest {
     }
 
     @Test
-    public void parse_compulsoryFieldMissing_failure() {
+    public void parse_compulsoryFieldMissing_returnsInteractiveCommand() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
 
         // missing name prefix
-        assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + TRANSACTION_DESC_CLOSED,
-                expectedMessage);
+        Person partialPerson1 = new PersonBuilder()
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB)
+                .withAddress(VALID_ADDRESS_BOB)
+                .withStage("prospect")
+                .build();
+        assertParseSuccess(parser, PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + TRANSACTION_DESC_PROSPECT,
+                new AddCommand(partialPerson1, true, Map.of(PREFIX_NAME, "")));
 
         // missing phone prefix
-        assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + TRANSACTION_DESC_CLOSED,
-                expectedMessage);
+        Person partialPerson2 = new PersonBuilder()
+                .withName(VALID_NAME_BOB)
+                .withEmail(VALID_EMAIL_BOB)
+                .withAddress(VALID_ADDRESS_BOB)
+                .withStage("prospect")
+                .build();
+        assertParseSuccess(parser, NAME_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                        + TRANSACTION_DESC_PROSPECT,
+                new AddCommand(partialPerson2, true, Map.of(PREFIX_PHONE, "")));
 
         // missing email prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_EMAIL_BOB + ADDRESS_DESC_BOB
-                        + TRANSACTION_DESC_CLOSED,
-                expectedMessage);
+        Person partialPerson3 = new PersonBuilder()
+                .withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withAddress(VALID_ADDRESS_BOB)
+                .withStage("prospect")
+                .build();
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB
+                        + TRANSACTION_DESC_PROSPECT,
+                new AddCommand(partialPerson3, true, Map.of(PREFIX_EMAIL, "")));
 
         // missing address prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + VALID_ADDRESS_BOB
-                        + TRANSACTION_DESC_CLOSED,
-                expectedMessage);
+        Person partialPerson4 = new PersonBuilder()
+                .withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB)
+                .withStage("prospect")
+                .build();
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
+                        + TRANSACTION_DESC_PROSPECT,
+                new AddCommand(partialPerson4, true, Map.of(PREFIX_ADDRESS, "")));
 
         // all prefixes missing
-        assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_EMAIL_BOB + VALID_ADDRESS_BOB
-                        + TRANSACTION_DESC_PROSPECT,
-                expectedMessage);
+        Person emptyPerson = new PersonBuilder().build();
+        Map<Prefix, String> allMissingFields = Map.of(
+                PREFIX_NAME, "",
+                PREFIX_PHONE, "",
+                PREFIX_EMAIL, "",
+                PREFIX_ADDRESS, ""
+        );
+        assertParseSuccess(parser, TRANSACTION_DESC_PROSPECT,
+                new AddCommand(emptyPerson, true, allMissingFields));
     }
 
     @Test
@@ -240,6 +274,45 @@ public class AddCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + TRANSACTION_DESC_PROSPECT + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_missingCompulsoryAndInvalidFields_failure() {
+        // missing address, invalid email
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + INVALID_EMAIL_DESC
+                        + TRANSACTION_DESC_PROSPECT, Email.MESSAGE_CONSTRAINTS);
+
+        // missing email, invalid name
+        assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + ADDRESS_DESC_BOB
+                + TRANSACTION_DESC_PROSPECT, Name.MESSAGE_CONSTRAINTS);
+    }
+
+    @Test
+    public void parse_onlyOptionalFields_returnsInteractiveCommand() {
+        // only relation, stage and tags provided
+        Person emptyPerson = new PersonBuilder()
+                .withRelation(VALID_RELATION_VENDOR)
+                .withTags(VALID_TAG_FRIEND)
+                .build();
+        Map<Prefix, String> missingFields = Map.of(
+                PREFIX_NAME, "",
+                PREFIX_PHONE, "",
+                PREFIX_EMAIL, "",
+                PREFIX_ADDRESS, "",
+                PREFIX_TRANSACTION, ""
+        );
+        assertParseSuccess(parser, TAG_DESC_FRIEND + RELATION_DESC_VENDOR,
+                new AddCommand(emptyPerson, true, missingFields));
+    }
+
+    @Test
+    public void updatePersonField_unknownPrefix_throwsAssertionError() {
+        Person person = new PersonBuilder().build();
+        Prefix unknownPrefix = new Prefix("unknown/");
+
+        // Test that assertion is triggered
+        assertThrows(AssertionError.class, () ->
+                AddCommandParser.updatePersonField(person, unknownPrefix, "any value"));
     }
 
     @Test

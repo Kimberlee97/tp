@@ -85,4 +85,11 @@ public abstract class UiPart<T> {
         return requireNonNull(fxmlFileUrl);
     }
 
+    /**
+     * Returns the FXMLLoader used to load this UiPart
+     */
+    protected FXMLLoader getFxmlLoader() {
+        return fxmlLoader;
+    }
+
 }

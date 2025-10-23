@@ -21,6 +21,7 @@ public class Meeting {
             .withResolverStyle(ResolverStyle.STRICT);
 
     private final LocalDateTime value;
+    private boolean isOverdue;
 
     /**
      * Creates a Meeting from a raw string in {@code yyyy-MM-dd HH:mm} format.
@@ -33,6 +34,7 @@ public class Meeting {
             throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
         }
         this.value = LocalDateTime.parse(raw.trim(), FORMATTER);
+        this.isOverdue = isOverdueMeeting(this);
     }
 
     /** Returns true if {@code test} is a valid meeting string. */
@@ -52,9 +54,32 @@ public class Meeting {
         }
     }
 
+    /** Updates the overdue status of the meeting based on current time */
+    public void updateOverdueStatus() {
+        if (LocalDateTime.now().isAfter(this.value)) {
+            this.isOverdue = true;
+        }
+    }
+
+    public static boolean isOverdueMeeting(Meeting meeting) {
+        return LocalDateTime.now().isAfter(meeting.value);
+    }
+
     /** Returns a display string */
     public String toDisplayString() {
         return value.format(FORMATTER);
+    }
+
+    /**
+     * Returns the {@link java.time.LocalDateTime} value of this {@code Meeting}.
+     * <p>
+     * This represents the scheduled date and time of the meeting in the standard ISO-8601 format.
+     * The returned value is immutable and corresponds to the parsed form stored internally.
+     *
+     * @return The {@code LocalDateTime} representing this meeting's date and time.
+     */
+    public java.time.LocalDateTime getDateTime() {
+        return value;
     }
 
     @Override
@@ -72,4 +97,5 @@ public class Meeting {
     public int hashCode() {
         return value.hashCode();
     }
+
 }
