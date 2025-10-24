@@ -78,6 +78,9 @@ The `UI` component uses the JavaFx UI framework. The layout of these UI parts ar
 The `HelpWindow` in the UI component was enhanced to open the User Guide directly in the user’s browser.  
 If the browser cannot be opened (e.g., in headless environments), the fallback "Help" window remains available to copy the link manually.  
 Additionally, the "Help" command can now open the specific section of the User Guide based on the topic provided (e.g., `help add`, `help edit`).
+The sequence diagram below shows how the `HelpCommand` interacts with the UI to open the User Guide or display the fallback Help window.
+
+<puml src="diagrams/help/HelpSequence.puml" width="720" />
 
 The `UI` component,
 
@@ -123,6 +126,29 @@ Additional parsers added for this feature:
 * `ArchiveCommandParser` – parses `archive INDEX`
 * `UnarchiveCommandParser` – parses `unarchive INDEX`
 * `ListCommandParser` – parses `list` (active) and `list archive` (archived)
+
+#### Interactive Command Support
+
+The Logic component has been enhanced to support interactive commands that can prompt users for missing information. This is implemented through the following components:
+
+<puml src="diagrams/InteractiveLogicClassDiagram.puml" width="550"/>
+
+How interactive commands work:
+
+1. When a command with missing required fields is parsed:
+    * The parser creates a command object in interactive mode as indicated by a boolean flag `isInteractive`
+    * Missing fields are tracked in a mutable map `missingFields`
+    * Placeholder values are used for the partial object as specified by the class `PlaceholderPerson`
+
+2. During command execution:
+    * If the command is interactive, it returns a prompt for the next missing field
+    * The command stays active in LogicManager and is handled using `handleInteractiveResponse` until completed
+    * Each user response updates the command's internal state
+    * The input `cancel` will terminate any ongoing interactive command
+
+The sequence diagram below shows how an interactive add command flows through the system:
+
+<puml src="diagrams/InteractiveAddSequenceDiagram.puml" width="600"/>
 
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
@@ -181,6 +207,55 @@ Classes used by multiple components are in the `homey.commons` package.
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Find Feature
+
+#### Overview
+The Find feature allows users to search for contacts using various criteria including name, address, tags, relation type, and transaction stage. It supports both partial matching (for name, address, tags) and exact matching (for relation and transaction stage).
+
+#### Implementation
+
+The Find feature is implemented through the following key components:
+
+**Class Structure**
+
+<puml src="diagrams/find/FindClass.puml" width="550"/>
+
+The diagram above shows the main classes involved in the Find feature:
+* `FindCommandParser` – Parses user input and creates the appropriate predicate based on the prefix used (none for name, `a/` for address, `t/` for tags, `r/` for relation, `s/` for transaction stage)
+* `FindCommand` – Executes the find operation by applying the predicate to filter the person list
+* `XYZContainsKeywordsPredicate` – Represents the family of predicate classes that implement the actual filtering logic
+
+#### Input Validation
+The `FindCommandParser` validates input based on search type:
+* **Relation search**: Only accepts 'client' or 'vendor'
+* **Transaction stage search**: Only accepts 'prospect', 'negotiating', or 'closed'
+* **Other searches**: Accept any keywords
+
+**Execution Flow**
+
+<puml src="diagrams/find/FindSequence.puml" width="620"/>
+
+The sequence diagram above illustrates how a find command is processed:
+
+1. The user enters a find command (e.g., `find alice`)
+2. `FindCommandParser` validates and parses the input, creating the appropriate predicate
+3. A `FindCommand` is created with the predicate
+4. When executed, `FindCommand` updates the model's filtered list using the predicate
+5. The UI automatically reflects the filtered results
+
+#### Error Handling
+* Invalid relation: "Invalid relation. Only 'client' or 'vendor' are allowed"
+* Invalid transaction stage: "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed' are allowed"
+* Empty search: Shows usage message for the specific search type
+
+#### Design Pattern: Strategy Pattern
+The find command uses the Strategy Pattern where different predicate classes implement the same `Predicate<Person>` interface. This allows the `FindCommand` to work with any predicate without knowing the specific filtering logic.
+
+**Key Benefits:**
+* **Extensibility**: Easy to add new search types
+* **Maintainability**: Each predicate handles its own logic
+* **Polymorphism**: Same interface for all predicates
 
 ### \[Proposed\] Undo/redo feature
 
@@ -649,8 +724,29 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 1. User searches for contacts using find tag command with a tag keyword
 2. System retrieves and displays list of contacts whose tags contain the keyword/partial keyword 
+3. User views the list of contacts
 
     Use case ends.
+
+**Use case: Search for contacts by relation**
+
+**MSS**
+
+1. User searches for contacts using find relation command with a relation keyword
+2. System retrieves and displays list of contacts whose relation matches the keyword
+3. User views the list of contacts
+
+   Use case ends.
+
+**Use case: Search for contacts by transaction stage**
+
+**MSS**
+
+1. User searches for contacts using find transaction stage command with a transaction keyword
+2. System retrieves and displays list of contacts whose transaction stage matches the keyword
+3. User views the list of contacts
+
+   Use case ends.
 
 **Use case: Tag each client with their property location**
 
