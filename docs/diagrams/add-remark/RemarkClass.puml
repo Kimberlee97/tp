@@ -1,19 +1,58 @@
 @startuml
 hide circle
 skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam classFontSize 13
+skinparam packageStyle rectangle
 
-Class "{abstract}\nCommand" as Command {
-  +execute(Model): CommandResult
-}
-Class RemarkCommand {
-  +COMMAND_WORD: String
-  +MESSAGE_USAGE: String
-  +MESSAGE_NOT_IMPLEMENTED_YET: String
-  +execute(Model): CommandResult
-}
-Class CommandException
+package homey.logic.commands {
+    class RemarkCommand {
+        - Index index
+        - Remark remark
+        + {static} String COMMAND_WORD
+        + {static} String MESSAGE_USAGE
+        + {static} String MESSAGE_ADD_REMARK_SUCCESS
+        + {static} String MESSAGE_DELETE_REMARK_SUCCESS
+        --
+        + execute(model: Model) : CommandResult
+        - generateSuccessMessage(personToEdit: Person) : String
+        + equals(other: Object) : Boolean
+    }
 
-RemarkCommand -up-|> Command
-Command ..> CommandException: throws >
-RemarkCommand .right.> CommandException: throws >
+    class "{abstract}\nCommand" as Command {
+        + {abstract} execute(model: Model) : CommandResult
+    }
+
+    class CommandResult {
+    }
+}
+
+package homey.core.index {
+    class Index
+}
+
+package homey.model {
+    class Model {
+    }
+
+}
+package homey.model.person {
+    class Person {
+        - remark
+    }
+
+    class Remark {
+        + value
+    }
+}
+
+' Relationships with multiplicities
+RemarkCommand --|> Command
+RemarkCommand --> "1" Index
+RemarkCommand --> "1" Remark
+RemarkCommand ..> Model
+RemarkCommand ..> CommandResult
+Command ..> CommandResult
+Model --> "1..*" Person
+Person *-- "1" Remark
 @enduml
