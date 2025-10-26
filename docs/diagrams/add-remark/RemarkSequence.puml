@@ -1,0 +1,54 @@
+@startuml
+actor User
+participant "LogicManager" as LM
+participant "RemarkCommandParser" as RCP
+participant "RemarkCommand" as RC
+participant "Model" as M
+participant "Person" as P
+
+User -> LM : execute("remark 1 rm/Likes condos.")
+activate LM
+
+LM -> RCP : parse("1 rm/Likes condos.")
+activate RCP
+
+RCP -> RCP : ArgumentTokenizer.tokenize(args, PREFIX_REMARK)
+RCP -> RCP : parseIndex(argMultimap)
+RCP -> RCP : parseRemarkValue(argMultimap)
+RCP -> RC : new RemarkCommand(index, remark)
+deactivate RCP
+
+LM <-- RC : RemarkCommand
+deactivate LM
+
+LM -> RC : execute(model)
+activate RC
+
+RC -> M : getFilteredPersonList()
+activate M
+M --> RC : List<Person>
+deactivate M
+
+RC -> RC : get personToEdit by index
+RC -> P : new Person(..., remark, ...)
+activate P
+P --> RC : editedPerson
+deactivate P
+
+RC -> M : setPerson(personToEdit, editedPerson)
+activate M
+M --> RC : void
+deactivate M
+
+RC -> M : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+activate M
+M --> RC : void
+deactivate M
+
+RC -> RC : generateSuccessMessage(editedPerson)
+RC --> LM : CommandResult("Added remark to Person: ...")
+deactivate RC
+
+LM --> User : Display result on UI
+deactivate LM
+@enduml
