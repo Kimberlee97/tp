@@ -317,6 +317,18 @@ public class AddCommandParser implements Parser<AddCommand> {
                     person.getTags(),
                     person.getMeeting()
             );
+        case "rm/":
+            return new Person(
+                    person.getName(),
+                    person.getPhone(),
+                    person.getEmail(),
+                    person.getAddress(),
+                    person.getRelation(),
+                    ParserUtil.parseStage(value),
+                    ParserUtil.parseRemark(value),
+                    person.getTags(),
+                    person.getMeeting()
+            );
         default:
             // Unknown field prefix
             assert false : "Unknown field prefix: " + prefix;
