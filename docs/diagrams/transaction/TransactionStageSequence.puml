@@ -1,0 +1,78 @@
+@startuml
+actor User
+
+participant ":LogicManager" as Logic
+participant ":AddressBookParser" as ABP
+participant ":TransactionStageCommandParser" as TSCP
+participant ":TransactionStageCommand" as TSC
+participant ":Model" as Model
+participant ":Person" as P
+participant ":CommandResult" as CR
+participant ":Storage" as Storage
+
+User -> Logic : execute("transaction 1 s/prospect")
+activate Logic
+
+Logic -> ABP : parseCommand("transaction 1 s/prospect")
+activate ABP
+
+create TSCP
+ABP -> TSCP : TransactionStageCommandParser()
+activate TSCP
+ABP -> TSCP : parse(" 1 s/prospect")
+
+create TSC
+TSCP -> TSC : TransactionStageCommand(1, "prospect")
+activate TSC
+TSC --> TSCP : transaction command
+deactivate TSC
+TSCP --> ABP : transaction command
+deactivate TSCP
+ABP --> Logic : transaction command
+deactivate ABP
+
+Logic -> TSC : execute(model)
+activate TSC
+
+TSC -> Model : getFilteredPersonList()
+activate Model
+Model --> TSC : lastShownList
+deactivate Model
+
+TSC -> P : lastShownList.get(index.getZeroBased())
+activate P
+P --> TSC : personToEdit
+deactivate P
+
+TSC -> P : new Person(..., stage, ...)
+activate P
+P --> TSC : editedPerson
+deactivate P
+
+TSC -> Model : setPerson(personToEdit, editedPerson)
+activate Model
+deactivate Model
+
+TSC -> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+activate Model
+deactivate Model
+
+TSC -> TSC : generateSuccessMessage(editedPerson)
+TSC --> TSC : success message
+
+TSC -> CR : CommandResult(success message)
+activate CR
+CR --> TSC : command result
+deactivate CR
+
+TSC --> Logic : command result
+deactivate TSC
+
+Logic -> Storage : saveAddressBook(model.getAddressBook())
+activate Storage
+deactivate Storage
+
+Logic --> User : command result
+deactivate Logic
+
+@enduml
