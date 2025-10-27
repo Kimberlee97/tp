@@ -49,7 +49,7 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         // Disallow duplicates for key prefixes (include meeting)
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_MEETING);
+                PREFIX_TRANSACTION, PREFIX_REMARK, PREFIX_MEETING);
 
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
 
