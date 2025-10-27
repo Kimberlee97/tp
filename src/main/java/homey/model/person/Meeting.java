@@ -34,7 +34,7 @@ public class Meeting {
             throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
         }
         this.value = LocalDateTime.parse(raw.trim(), FORMATTER);
-        this.isOverdue = isOverdueMeeting(this);
+        this.isOverdue = LocalDateTime.now().isAfter(this.value);
     }
 
     /** Returns true if {@code test} is a valid meeting string. */
