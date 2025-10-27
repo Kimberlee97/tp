@@ -62,7 +62,7 @@ public class Meeting {
     }
 
     public static boolean isOverdueMeeting(Meeting meeting) {
-        return LocalDateTime.now().isAfter(meeting.value);
+        return meeting.isOverdue;
     }
 
     /** Returns a display string */
