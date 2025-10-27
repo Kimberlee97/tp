@@ -1,0 +1,19 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+Class "<<interface>>\nParser" as Parser
+
+Class TransactionStageCommandParser {
+  +parse(args: String): TransactionStageCommand
+}
+
+Class ParserException
+
+Class TransactionStageCommand
+
+TransactionStageCommandParser .up.|> Parser
+TransactionStageCommandParser --> TransactionStageCommand : creates >
+Parser .right.> ParserException: throws >
+TransactionStageCommandParser .right.> ParserException: throws >
+@enduml
