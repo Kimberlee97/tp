@@ -1,54 +1,77 @@
 @startuml
 actor User
-participant "LogicManager" as LM
-participant "RemarkCommandParser" as RCP
-participant "RemarkCommand" as RC
-participant "Model" as M
-participant "Person" as P
 
-User -> LM : execute("remark 1 rm/Likes condos.")
-activate LM
+participant ":LogicManager" as Logic
+participant ":AddressBookParser" as ABP
+participant ":RemarkCommandParser" as RCP
+participant ":RemarkCommand" as RC
+participant ":Model" as Model
+participant ":CommandResult" as CR
+participant ":Storage" as Storage
+participant ":Person" as P
 
-LM -> RCP : parse("1 rm/Likes condos.")
+User -> Logic : execute("remark 1 rm/Likes dogs")
+activate Logic
+
+Logic -> ABP : parseCommand("remark 1 rm/Likes dogs")
+activate ABP
+
+create RCP
+ABP -> RCP : RemarkCommandParser()
+ABP -> RCP : parse(" 1 rm/Likes dogs")
 activate RCP
 
-RCP -> RCP : ArgumentTokenizer.tokenize(args, PREFIX_REMARK)
-RCP -> RCP : parseIndex(argMultimap)
-RCP -> RCP : parseRemarkValue(argMultimap)
-RCP -> RC : new RemarkCommand(index, remark)
+create RC
+RCP -> RC : RemarkCommand(1, "Likes dogs")
+activate RC
+RC --> RCP : remark command
+deactivate RC
+
+RCP --> ABP : remark command
 deactivate RCP
 
-LM <-- RC : RemarkCommand
-deactivate LM
+ABP --> Logic : remark command
+deactivate ABP
 
-LM -> RC : execute(model)
+Logic -> RC : execute(model)
 activate RC
 
-RC -> M : getFilteredPersonList()
-activate M
-M --> RC : List<Person>
-deactivate M
-
-RC -> RC : get personToEdit by index
+RC -> Model : getFilteredPersonList()
+activate Model
+Model --> RC : lastShownList
+RC -> P : lastShownList.get(index.getZeroBased())
+activate P
+P --> RC : personToEdit
+deactivate P
 RC -> P : new Person(..., remark, ...)
 activate P
 P --> RC : editedPerson
 deactivate P
+deactivate Model
 
-RC -> M : setPerson(personToEdit, editedPerson)
-activate M
-M --> RC : void
-deactivate M
+RC -> Model : setPerson(personToEdit, editedPerson)
+activate Model
+deactivate Model
 
-RC -> M : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
-activate M
-M --> RC : void
-deactivate M
+RC -> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+activate Model
+deactivate Model
 
-RC -> RC : generateSuccessMessage(editedPerson)
-RC --> LM : CommandResult("Added remark to Person: ...")
+RC -> RC : generateSuccesssMessage(editedPerson)
+RC --> RC : success message
+RC -> CR : CommandResult(success message)
+activate CR
+CR --> RC : command result
+deactivate CR
+
+RC --> Logic : command result
 deactivate RC
 
-LM --> User : Display result on UI
-deactivate LM
+Logic -> Storage : saveAddressBook(model.getAddressBook())
+activate Storage
+deactivate Storage
+
+Logic --> User : commandResult
+deactivate Logic
+
 @enduml
