@@ -24,6 +24,7 @@ import homey.logic.commands.ExitCommand;
 import homey.logic.commands.FindCommand;
 import homey.logic.commands.HelpCommand;
 import homey.logic.commands.ListCommand;
+import homey.logic.commands.ListMeetingCommand;
 import homey.logic.commands.RelationCommand;
 import homey.logic.commands.TransactionStageCommand;
 import homey.logic.commands.UnarchiveCommand;
@@ -101,8 +102,15 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_list() throws Exception {
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+        AddressBookParser parser = new AddressBookParser();
+
+        assertTrue(parser.parseCommand("list") instanceof ListCommand);
+        assertTrue(parser.parseCommand("list   ") instanceof ListCommand);
+
+        assertTrue(parser.parseCommand("list meeting") instanceof ListMeetingCommand);
+
+        assertThrows(ParseException.class, () -> parser.parseCommand("list 3412343"));
+        assertThrows(ParseException.class, () -> parser.parseCommand("list foo"));
     }
 
     @Test

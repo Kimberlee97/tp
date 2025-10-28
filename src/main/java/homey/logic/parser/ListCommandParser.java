@@ -35,9 +35,7 @@ public class ListCommandParser implements Parser<Command> {
             return new ListArchivedCommand();
         }
 
-        // Allow a numeric argument like "list 3"
-        // Forgive if there is extra whitespace/text after the digits
-        if (trimmed.matches("\\d+(?:\\s.*)?")) {
+        if (trimmed.isEmpty()) {
             return new ListCommand();
         }
 
