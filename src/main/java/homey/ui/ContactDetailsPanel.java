@@ -29,6 +29,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
     private static final Logger logger = LogsCenter.getLogger(ContactDetailsPanel.class);
     private static final String ZWSP = "\u200B";
     private static final double AVG_CHAR_PX = 7.0;
+    private static final double STANDARD_PADDING = 40.0;
     private Map<Label, String> originalLabelTexts;
     private List<Label> wrappableLabels;
 
@@ -79,14 +80,17 @@ public class ContactDetailsPanel extends UiPart<Region> {
     public void initialize() {
         logger.info("Initialising ContactDetailsPanel");
         clearContact();
-        double padding = 40;
+        setUpLayout();
+        setUpWrappableLabels();
+        bindTagsWrapping();
+    }
+
+    private void setUpLayout() {
         originalLabelTexts = new HashMap<>();
         wrappableLabels = new ArrayList<>();
-        getRoot().setMinWidth(0);
-        contactDetailsVBox.setMinWidth(0);
-        contactDetailsScroll.setMinWidth(0);
+    }
 
-        bindTagsWrap(padding);
+    private void setUpWrappableLabels() {
         registerWrappableLabel(contactNameLabel);
         registerWrappableLabel(addressLabel);
         registerWrappableLabel(emailLabel);
@@ -114,20 +118,15 @@ public class ContactDetailsPanel extends UiPart<Region> {
         });
     }
 
-    private void setOriginalTextForLabel(Label label, String original) {
-        originalLabelTexts.put(label, original == null ? "" : original);
-        rewrapLabel(label);
-    }
-
     private void rewrapLabel(Label label) {
         String original = originalLabelTexts.getOrDefault(label, "");
         Platform.runLater(() -> label.setText(makeWrappable(label, original)));
     }
 
-    private void bindTagsWrap(double padding) {
+    private void bindTagsWrapping() {
         tagsFlowPane.setMaxWidth(Double.MAX_VALUE);
         contactDetailsScroll.viewportBoundsProperty().addListener((obs, oldB, newB) -> {
-            double w = Math.max(0, newB.getWidth() - padding);
+            double w = Math.max(0, newB.getWidth() - STANDARD_PADDING);
             tagsFlowPane.setPrefWrapLength(w);
         });
     }
@@ -220,13 +219,24 @@ public class ContactDetailsPanel extends UiPart<Region> {
     }
 
     private void addTagElements(Set<Tag> tags) {
+        styleTagsPane();
+        List<Tag> sortedTags = getSortedTags(tags);
+        sortedTags.forEach(this::addTagLabel);
+    }
+
+    private void styleTagsPane() {
         tagsFlowPane.getStyleClass().add("contact-tags");
-        tags.stream()
+    }
+
+    private List<Tag> getSortedTags(Set<Tag> tags) {
+        return tags.stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> {
-                    Label tagLabel = new Label(tag.tagName);
-                    tagsFlowPane.getChildren().add(tagLabel);
-                });
+                .toList();
+    }
+
+    private void addTagLabel(Tag tag) {
+        Label tagLabel = new Label(tag.tagName);
+        tagsFlowPane.getChildren().add(tagLabel);
     }
 
     private void displayMeeting(Person person) {
@@ -259,12 +269,21 @@ public class ContactDetailsPanel extends UiPart<Region> {
     private void displayBasicFields(Person person) {
         Platform.runLater(() -> {
             setOriginalTextForLabel(contactNameLabel, person.getName().fullName);
-            phoneLabel.setText("Phone: " + person.getPhone().value);
+            setLabelText(phoneLabel, "Phone: " + person.getPhone().value);
             setOriginalTextForLabel(addressLabel, "Address: " + person.getAddress().value);
             setOriginalTextForLabel(emailLabel, "Email: " + person.getEmail().value);
-            relationLabel.setText("Relation: " + person.getRelation().value);
-            stageLabel.setText("Stage: " + person.getStage().value);
+            setLabelText(relationLabel, "Relation: " + person.getRelation().value);
+            setLabelText(stageLabel, "Stage: " + person.getStage().value);
         });
+    }
+
+    private void setOriginalTextForLabel(Label label, String original) {
+        originalLabelTexts.put(label, original == null ? "" : original);
+        rewrapLabel(label);
+    }
+
+    private void setLabelText(Label label, String text) {
+        label.setText(text);
     }
 
     private void clearAllBasicFields() {
@@ -289,16 +308,17 @@ public class ContactDetailsPanel extends UiPart<Region> {
         if (text == null || text.isEmpty()) {
             return "";
         }
+        int maxCharsPerLine = calculateMaxChars();
+        return insertBlankPoints(text, maxCharsPerLine);
+    }
 
-        double availableWidth = contactDetailsScroll.getViewportBounds().getWidth();
-        availableWidth -= 40;
+    private int calculateMaxChars() {
+        double currentWidth = contactDetailsScroll.getViewportBounds().getWidth();
+        currentWidth -= STANDARD_PADDING;
+        return Math.max(1, (int) Math.floor(currentWidth / AVG_CHAR_PX));
+    }
 
-        if (availableWidth <= 0) {
-            availableWidth = 200;
-        }
-
-        int maxCharsPerLine = Math.max(1, (int) Math.floor(availableWidth / AVG_CHAR_PX));
-
+    private String insertBlankPoints(String text, int maxChars) {
         StringBuilder out = new StringBuilder();
         int consecutive = 0;
         for (int i = 0; i < text.length(); i++) {
@@ -308,7 +328,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
                 consecutive = 0;
             } else {
                 consecutive++;
-                if (consecutive >= maxCharsPerLine) {
+                if (consecutive >= maxChars) {
                     out.append(ZWSP);
                     consecutive = 0;
                 }
