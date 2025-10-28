@@ -94,7 +94,36 @@ public class PersonTest {
     public void toStringMethod() {
         String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
                 + ", email=" + ALICE.getEmail() + ", address=" + ALICE.getAddress()
-                + ", transaction stage=" + ALICE.getStage() + ", tags=" + ALICE.getTags() + "}";
+                + ", transaction stage=" + ALICE.getStage() + ", tags=" + ALICE.getTags()
+                + ", meeting=<none>}";
         assertEquals(expected, ALICE.toString());
     }
+
+    @Test
+    public void equals_differsOnlyInMeeting_returnsFalse() {
+        Person base = new PersonBuilder(ALICE).build();
+        Person withMeeting = new PersonBuilder(ALICE).withMeeting("2025-11-10 09:30").build();
+        assertFalse(base.equals(withMeeting));
+        assertFalse(withMeeting.equals(base));
+    }
+
+    @Test
+    public void hashCode_differsOnlyInMeeting_hashesDiffer() {
+        Person base = new PersonBuilder(ALICE).build();
+        Person withMeeting = new PersonBuilder(ALICE).withMeeting("2025-11-10 09:30").build();
+        assertTrue(base.hashCode() != withMeeting.hashCode());
+    }
+
+    @Test
+    public void toString_includesMeeting() {
+        // no meeting -> prints "<none>"
+        Person none = new PersonBuilder(ALICE).build();
+        assertTrue(none.toString().contains("meeting=<none>"));
+
+        // with meeting -> prints formatted meeting
+        Person some = new PersonBuilder(ALICE).withMeeting("2025-11-10 09:30").build();
+        assertTrue(some.toString().contains("meeting="));
+    }
+
+
 }

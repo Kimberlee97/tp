@@ -1,5 +1,7 @@
 package homey.testutil;
 
+import static homey.logic.commands.CommandTestUtil.DEFAULT_REMARK;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -16,6 +18,7 @@ import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
 import homey.model.util.SampleDataUtil;
 
+
 /**
  * A utility class to help with building Person objects.
  */
@@ -27,7 +30,6 @@ public class PersonBuilder {
     public static final String DEFAULT_ADDRESS = "placeholder";
     public static final String DEFAULT_RELATION = "client";
     public static final String DEFAULT_STAGE = "prospect";
-    public static final String DEFAULT_REMARK = "Likes nature.";
 
     private Name name;
     private Phone phone;
