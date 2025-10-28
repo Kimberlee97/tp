@@ -15,6 +15,8 @@ import homey.model.person.Person;
  */
 public class ListMeetingCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Listed contacts with meetings (earliest first).";
+    public static final String MESSAGE_EMPTY = "No contacts with meetings found.";
+    public static final String COMMAND_WORD = "list meeting";
 
     // Only persons that have a meeting AND are not archived
     private static final Predicate<Person> HAS_MEETING_ACTIVE =
@@ -33,6 +35,9 @@ public class ListMeetingCommand extends Command {
         requireNonNull(model);
         model.updateFilteredPersonList(HAS_MEETING_ACTIVE);
         model.sortFilteredPersonListBy(BY_MEETING_ASC);
+        if (model.getFilteredPersonList().isEmpty()) {
+            return new CommandResult(MESSAGE_EMPTY);
+        }
         return new CommandResult(MESSAGE_SUCCESS);
     }
 
