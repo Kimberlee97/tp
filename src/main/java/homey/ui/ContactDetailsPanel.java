@@ -120,7 +120,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
 
     private void rewrapLabel(Label label) {
         String original = originalLabelTexts.getOrDefault(label, "");
-        Platform.runLater(() -> label.setText(makeWrappable(label, original)));
+        Platform.runLater(() -> label.setText(makeWrappable(original)));
     }
 
     private void bindTagsWrapping() {
@@ -304,7 +304,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
         getRoot().setManaged(false);
     }
 
-    private String makeWrappable(Label label, String text) {
+    private String makeWrappable(String text) {
         if (text == null || text.isEmpty()) {
             return "";
         }
