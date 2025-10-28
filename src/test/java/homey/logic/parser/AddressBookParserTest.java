@@ -104,10 +104,9 @@ public class AddressBookParserTest {
     public void parseCommand_list() throws Exception {
         AddressBookParser parser = new AddressBookParser();
 
-        assertTrue(parser.parseCommand("list") instanceof ListCommand);
-        assertTrue(parser.parseCommand("list   ") instanceof ListCommand);
-
-        assertTrue(parser.parseCommand("list meeting") instanceof ListMeetingCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " ") instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListMeetingCommand.COMMAND_WORD) instanceof ListMeetingCommand);
 
         assertThrows(ParseException.class, () -> parser.parseCommand("list 3412343"));
         assertThrows(ParseException.class, () -> parser.parseCommand("list foo"));

@@ -16,6 +16,7 @@ import homey.model.person.Person;
 public class ListMeetingCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Listed contacts with meetings (earliest first).";
     public static final String MESSAGE_EMPTY = "No contacts with meetings found.";
+    public static final String COMMAND_WORD = "list meeting";
 
     // Only persons that have a meeting AND are not archived
     private static final Predicate<Person> HAS_MEETING_ACTIVE =
