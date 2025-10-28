@@ -60,6 +60,9 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_EDIT_MEETING_SET = "Updated meeting for %1$s: %2$s";
+    public static final String MESSAGE_EDIT_MEETING_CLEARED = "Cleared meeting for %1$s.";
+    public static final String MESSAGE_EDIT_MEETING_NONE = "No meetings to clear for %1$s.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -74,6 +77,25 @@ public class EditCommand extends Command {
 
         this.index = index;
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
+    }
+
+    private String generateFeedback(Person before, Person after, EditPersonDescriptor descriptor) {
+        final String name = after.getName().toString();
+
+        if (!descriptor.isMeetingEdited()) {
+            return String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after));
+        }
+
+        if (descriptor.getMeeting().isPresent()) {
+            // edit 1 m/<datetime>  → meeting set/updated
+            String when = after.getMeeting().map(Meeting::toDisplayString).orElse("<unknown>");
+            return String.format(MESSAGE_EDIT_MEETING_SET, name, when);
+        }
+
+        // edit 1 m/  → clear meeting or nothing to clear
+        return before.getMeeting().isEmpty()
+                ? String.format(MESSAGE_EDIT_MEETING_NONE, name)
+                : String.format(MESSAGE_EDIT_MEETING_CLEARED, name);
     }
 
     @Override
@@ -93,14 +115,16 @@ public class EditCommand extends Command {
         }
 
         model.setPerson(personToEdit, editedPerson);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+
+        String feedback = generateFeedback(personToEdit, editedPerson, editPersonDescriptor);
+        return new CommandResult(feedback);
     }
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());

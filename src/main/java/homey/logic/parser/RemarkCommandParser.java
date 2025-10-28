@@ -1,6 +1,7 @@
 package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.Messages.getErrorMessageForDuplicatePrefixes;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static java.util.Objects.requireNonNull;
 
@@ -53,7 +54,7 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
     private void validatePrefix(ArgumentMultimap argMultimap) throws ParseException {
         if (argMultimap.getAllValues(PREFIX_REMARK).size() > 1) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+                    getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
         }
     }
 
