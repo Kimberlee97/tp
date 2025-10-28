@@ -35,7 +35,6 @@ public class MainWindow extends UiPart<Stage> {
     private PersonListPanel personListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
-    private NavigationPanel navigationPanel;
     private ContactDetailsPanel contactDetailsPanel;
 
     @FXML
@@ -52,9 +51,6 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane statusbarPlaceholder;
-
-    @FXML
-    private VBox navigationPanelPlaceholder;
 
     @FXML
     private VBox contactDetailsPanelPlaceholder;
@@ -134,7 +130,6 @@ public class MainWindow extends UiPart<Stage> {
         setUpResultDisplay();
         setUpStatusBar();
         setUpCommandBox();
-        setUpNavigationPanel();
         setUpContactDetailsPanel();
         setUpPersonSelectionListener();
     }
@@ -157,11 +152,6 @@ public class MainWindow extends UiPart<Stage> {
     private void setUpCommandBox() {
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
-    }
-
-    private void setUpNavigationPanel() {
-        navigationPanel = new NavigationPanel();
-        navigationPanelPlaceholder.getChildren().add(navigationPanel.getRoot());
     }
 
     private void setUpContactDetailsPanel() {
@@ -224,10 +214,6 @@ public class MainWindow extends UiPart<Stage> {
     private void closeAllWindows() {
         helpWindow.hide();
         primaryStage.hide();
-    }
-
-    public PersonListPanel getPersonListPanel() {
-        return personListPanel;
     }
 
     /**
