@@ -8,10 +8,13 @@ import homey.commons.core.LogsCenter;
 import homey.model.person.Meeting;
 import homey.model.person.Person;
 import homey.model.tag.Tag;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 /**
  * Panel that displays the details of a selected contact, including
@@ -20,6 +23,7 @@ import javafx.scene.layout.Region;
 public class ContactDetailsPanel extends UiPart<Region> {
     private static final String FXML = "ContactDetailsPanel.fxml";
     private static final Logger logger = LogsCenter.getLogger(ContactDetailsPanel.class);
+    private static final String ZWSP = "\u200B";
 
     @FXML
     private Label contactNameLabel;
@@ -48,6 +52,9 @@ public class ContactDetailsPanel extends UiPart<Region> {
     @FXML
     private Label remarkLabel;
 
+    @FXML
+    private VBox contactDetailsVBox;
+
     /**
      * Constructs a {@code ContactdetailsPanel} and loads its FXMl layout
      */
@@ -62,8 +69,21 @@ public class ContactDetailsPanel extends UiPart<Region> {
     public void initialize() {
         logger.info("Initialising ContactDetailsPanel");
         clearContact();
+        double padding = 40;
+
+        bindLabelWidth(contactNameLabel, padding);
+        bindLabelWidth(addressLabel, padding);
+        bindLabelWidth(emailLabel, padding);
+        bindLabelWidth(remarkLabel, padding);
     }
 
+    private void bindLabelWidth(Label label, double padding) {
+        label.setMinWidth(0);
+        label.setMinHeight(Region.USE_PREF_SIZE);
+        label.prefWidthProperty().bind(
+                Bindings.max(0, contactDetailsVBox.widthProperty().subtract(padding))
+        );
+    }
     /**
      * Displays the details of a given {@code Person} in the panel.
      * @param person the person whose details are to be displayed; if null, clears the panel
@@ -116,7 +136,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
     }
 
     private void addRemarkLabel(Person person) {
-        remarkLabel.setText("Remarks: " + person.getRemark().value);
+        remarkLabel.setText("Remarks: " + makeWrappable(person.getRemark().value, 25));
         setRemarkVisibility(true);
     }
 
@@ -152,10 +172,10 @@ public class ContactDetailsPanel extends UiPart<Region> {
     }
 
     private void addTagElements(Set<Tag> tags) {
+        tagsFlowPane.getStyleClass().add("contact-tags");
         tags.stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> {
-                    tagsFlowPane.getStyleClass().add("contact-tags");
                     Label tagLabel = new Label(tag.tagName);
                     tagsFlowPane.getChildren().add(tagLabel);
                 });
@@ -189,12 +209,14 @@ public class ContactDetailsPanel extends UiPart<Region> {
     }
 
     private void displayBasicFields(Person person) {
-        contactNameLabel.setText(person.getName().fullName);
-        phoneLabel.setText("Phone: " + person.getPhone().value);
-        addressLabel.setText("Address: " + person.getAddress().value);
-        emailLabel.setText("Email: " + person.getEmail().value);
-        relationLabel.setText("Relation: " + person.getRelation().value);
-        stageLabel.setText("Stage: " + person.getStage().value);
+        Platform.runLater(() -> {
+            contactNameLabel.setText(person.getName().fullName);
+            phoneLabel.setText("Phone: " + person.getPhone().value);
+            addressLabel.setText("Address: " + makeWrappable(person.getAddress().value, 25));
+            emailLabel.setText("Email: " + makeWrappable(person.getEmail().value, 25));
+            relationLabel.setText("Relation: " + person.getRelation().value);
+            stageLabel.setText("Stage: " + person.getStage().value);
+        });
     }
 
     private void clearAllBasicFields() {
@@ -213,5 +235,34 @@ public class ContactDetailsPanel extends UiPart<Region> {
     private void hidePanel() {
         getRoot().setVisible(false);
         getRoot().setManaged(false);
+    }
+
+    private String makeWrappable(String text, int maxRun) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+        String s = text
+                .replace(",", "," + ZWSP)
+                .replace("/", "/" + ZWSP)
+                .replace("-", "-" + ZWSP)
+                .replace("#", "#" + ZWSP)
+                .replace(".", "." + ZWSP);
+
+        StringBuilder out = new StringBuilder();
+        int consecutive = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            out.append(c);
+            if (Character.isWhitespace(c) || c == '\u200B') {
+                consecutive = 0;
+            } else {
+                consecutive++;
+                if (consecutive >= maxRun) {
+                    out.append(ZWSP);
+                    consecutive = 0;
+                }
+            }
+        }
+        return out.toString();
     }
 }
