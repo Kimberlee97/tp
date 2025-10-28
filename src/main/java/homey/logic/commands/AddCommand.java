@@ -89,7 +89,18 @@ public class AddCommand extends InteractiveCommand {
             }
 
             model.addPerson(toAdd);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+            String successMessage;
+            if (toAdd.getMeeting().isPresent()) {
+                successMessage = String.format(
+                        "New person added: %s\nNext meeting: %s",
+                        Messages.format(toAdd),
+                        toAdd.getMeeting().get().toDisplayString()
+                );
+            } else {
+                successMessage = String.format(MESSAGE_SUCCESS, Messages.format(toAdd));
+            }
+
+            return new CommandResult(successMessage);
         }
 
         String prompt = getPromptForField(getNextMissingField()) + "\n" + MESSAGE_INTERACTIVE;
