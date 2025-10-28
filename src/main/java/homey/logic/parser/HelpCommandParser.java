@@ -40,12 +40,11 @@ public final class HelpCommandParser implements Parser<HelpCommand> {
             return new HelpCommand();
         }
 
-        if (trimmed.equalsIgnoreCase("offline")) {
-            // for offline to be implemented later
+        String topic = normalize(trimmed);
+        if (topic.equals("offline")) {
             return new HelpCommand("offline");
         }
 
-        String topic = normalize(trimmed);
         if (!ALLOWED.contains(topic)) {
             throw new ParseException(
                     "Unknown help topic: '" + trimmed + "'. Allowed: "
