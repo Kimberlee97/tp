@@ -1,6 +1,10 @@
 package homey.ui;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -8,11 +12,13 @@ import homey.commons.core.LogsCenter;
 import homey.model.person.Meeting;
 import homey.model.person.Person;
 import homey.model.tag.Tag;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 /**
  * Panel that displays the details of a selected contact, including
@@ -21,12 +27,11 @@ import javafx.scene.layout.Region;
 public class ContactDetailsPanel extends UiPart<Region> {
     private static final String FXML = "ContactDetailsPanel.fxml";
     private static final Logger logger = LogsCenter.getLogger(ContactDetailsPanel.class);
-
-    @FXML
-    private Button editButton;
-
-    @FXML
-    private Button deleteButton;
+    private static final String ZWSP = "\u200B";
+    private static final double AVG_CHAR_PX = 7.0;
+    private static final double STANDARD_PADDING = 40.0;
+    private Map<Label, String> originalLabelTexts;
+    private List<Label> wrappableLabels;
 
     @FXML
     private Label contactNameLabel;
@@ -55,6 +60,12 @@ public class ContactDetailsPanel extends UiPart<Region> {
     @FXML
     private Label remarkLabel;
 
+    @FXML
+    private VBox contactDetailsVBox;
+
+    @FXML
+    private ScrollPane contactDetailsScroll;
+
     /**
      * Constructs a {@code ContactdetailsPanel} and loads its FXMl layout
      */
@@ -69,26 +80,56 @@ public class ContactDetailsPanel extends UiPart<Region> {
     public void initialize() {
         logger.info("Initialising ContactDetailsPanel");
         clearContact();
+        setUpLayout();
+        setUpWrappableLabels();
+        bindTagsWrapping();
     }
 
-    /**
-     * Handles the edit button click
-     */
-    @FXML
-    private void handleEdit() {
-        logger.info("Edit button clicked");
-        // to be implemented in future
+    private void setUpLayout() {
+        originalLabelTexts = new HashMap<>();
+        wrappableLabels = new ArrayList<>();
     }
 
-    /**
-     * Handles the delete button click
-     */
-    @FXML
-    private void handleDelete() {
-        logger.info("Delete button clicked");
-        // to be implemented in future
+    private void setUpWrappableLabels() {
+        registerWrappableLabel(contactNameLabel);
+        registerWrappableLabel(addressLabel);
+        registerWrappableLabel(emailLabel);
+        registerWrappableLabel(remarkLabel);
+        registerWrappableLabel(meetingLabel);
+
+        contactDetailsScroll.viewportBoundsProperty().addListener((obs, oldB, newB) -> {
+            for (Label label: wrappableLabels) {
+                rewrapLabel(label);
+            }
+        });
     }
 
+    private void registerWrappableLabel(Label label) {
+        label.setWrapText(true);
+        label.setMinWidth(0);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMinHeight(Region.USE_PREF_SIZE);
+
+        originalLabelTexts.put(label, "");
+        wrappableLabels.add(label);
+
+        label.widthProperty().addListener((obs, oldW, newW) -> {
+            rewrapLabel(label);
+        });
+    }
+
+    private void rewrapLabel(Label label) {
+        String original = originalLabelTexts.getOrDefault(label, "");
+        Platform.runLater(() -> label.setText(makeWrappable(original)));
+    }
+
+    private void bindTagsWrapping() {
+        tagsFlowPane.setMaxWidth(Double.MAX_VALUE);
+        contactDetailsScroll.viewportBoundsProperty().addListener((obs, oldB, newB) -> {
+            double w = Math.max(0, newB.getWidth() - STANDARD_PADDING);
+            tagsFlowPane.setPrefWrapLength(w);
+        });
+    }
     /**
      * Displays the details of a given {@code Person} in the panel.
      * @param person the person whose details are to be displayed; if null, clears the panel
@@ -96,12 +137,15 @@ public class ContactDetailsPanel extends UiPart<Region> {
     @FXML
     public void setContact(Person person) {
         if (person == null) {
+            logger.fine("No person selected - clearing contact details panel.");
             clearContact();
             return;
         }
 
+        logger.info("Displaying contact details for: " + person.getName().fullName);
         showPanel();
         displayBasicFields(person);
+        displayRemarks(person);
         displayTags(person);
         displayMeeting(person);
     }
@@ -116,28 +160,56 @@ public class ContactDetailsPanel extends UiPart<Region> {
      */
     @FXML
     public void clearContact() {
+        logger.fine("Clearing contact details panel.");
         clearAllBasicFields();
         clearTags();
         hideMeeting();
         hidePanel();
     }
 
+    private void displayRemarks(Person person) {
+        String remark = person.getRemark().value;
+        if (remark == null || remark.trim().isEmpty()) {
+            hideRemarkSection();
+        } else {
+            addRemarkLabel(person);
+        }
+    }
+
+    private void hideRemarkSection() {
+        remarkLabel.setText("");
+        setRemarkVisibility(false);
+    }
+
+    private void addRemarkLabel(Person person) {
+        setOriginalTextForLabel(remarkLabel, "Remarks: " + person.getRemark().value);
+        // remarkLabel.setText("Remarks: " + makeWrappable(remarkLabel, person.getRemark().value));
+        setRemarkVisibility(true);
+    }
+
+    private void setRemarkVisibility(boolean visible) {
+        remarkLabel.setManaged(visible);
+        remarkLabel.setVisible(visible);
+    }
+
     private void displayTags(Person person) {
         tagsFlowPane.getChildren().clear();
 
         if (person.getTags().isEmpty()) {
-            hideTagsSection();
+            logger.fine("No tags found for " + person.getName().fullName);
+            setTagsVisibility(false);
             return;
         }
 
+        logger.fine("Displaying " + person.getTags().size() + " tags for " + person.getName().fullName);
         addTagsLabel();
         addTagElements(person.getTags());
-        showTagsSection();
+        setTagsVisibility(true);
     }
 
-    private void hideTagsSection() {
-        tagsFlowPane.setManaged(false);
-        tagsFlowPane.setVisible(false);
+    private void setTagsVisibility(boolean visible) {
+        tagsFlowPane.setManaged(visible);
+        tagsFlowPane.setVisible(visible);
     }
 
     private void addTagsLabel() {
@@ -147,18 +219,24 @@ public class ContactDetailsPanel extends UiPart<Region> {
     }
 
     private void addTagElements(Set<Tag> tags) {
-        tags.stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> {
-                    tagsFlowPane.getStyleClass().add("contact-tags");
-                    Label tagLabel = new Label(tag.tagName);
-                    tagsFlowPane.getChildren().add(tagLabel);
-                });
+        styleTagsPane();
+        List<Tag> sortedTags = getSortedTags(tags);
+        sortedTags.forEach(this::addTagLabel);
     }
 
-    private void showTagsSection() {
-        tagsFlowPane.setManaged(true);
-        tagsFlowPane.setVisible(true);
+    private void styleTagsPane() {
+        tagsFlowPane.getStyleClass().add("contact-tags");
+    }
+
+    private List<Tag> getSortedTags(Set<Tag> tags) {
+        return tags.stream()
+                .sorted(Comparator.comparing(tag -> tag.tagName))
+                .toList();
+    }
+
+    private void addTagLabel(Tag tag) {
+        Label tagLabel = new Label(tag.tagName);
+        tagsFlowPane.getChildren().add(tagLabel);
     }
 
     private void displayMeeting(Person person) {
@@ -169,10 +247,11 @@ public class ContactDetailsPanel extends UiPart<Region> {
     }
 
     private void showMeeting(Meeting meeting) {
-        meetingLabel.setText("Next meeting: " + meeting.toDisplayString());
-        meetingLabel.setStyle("");
+        setOriginalTextForLabel(meetingLabel, "Meeting: " + meeting.toDisplayString());
         if (Meeting.isOverdueMeeting(meeting)) {
             meetingLabel.setStyle("-fx-text-fill: red;");
+        } else {
+            meetingLabel.setStyle(""); // reset style
         }
         setMeetingVisibility(true);
     }
@@ -188,13 +267,23 @@ public class ContactDetailsPanel extends UiPart<Region> {
     }
 
     private void displayBasicFields(Person person) {
-        contactNameLabel.setText(person.getName().fullName);
-        phoneLabel.setText("Phone: " + person.getPhone().value);
-        addressLabel.setText("Address: " + person.getAddress().value);
-        emailLabel.setText("Email: " + person.getEmail().value);
-        relationLabel.setText("Relation: " + person.getRelation().value);
-        stageLabel.setText("Stage: " + person.getStage().value);
-        remarkLabel.setText("Remarks: " + person.getRemark().value);
+        Platform.runLater(() -> {
+            setOriginalTextForLabel(contactNameLabel, person.getName().fullName);
+            setLabelText(phoneLabel, "Phone: " + person.getPhone().value);
+            setOriginalTextForLabel(addressLabel, "Address: " + person.getAddress().value);
+            setOriginalTextForLabel(emailLabel, "Email: " + person.getEmail().value);
+            setLabelText(relationLabel, "Relation: " + person.getRelation().value);
+            setLabelText(stageLabel, "Stage: " + person.getStage().value);
+        });
+    }
+
+    private void setOriginalTextForLabel(Label label, String original) {
+        originalLabelTexts.put(label, original == null ? "" : original);
+        rewrapLabel(label);
+    }
+
+    private void setLabelText(Label label, String text) {
+        label.setText(text);
     }
 
     private void clearAllBasicFields() {
@@ -204,7 +293,6 @@ public class ContactDetailsPanel extends UiPart<Region> {
         emailLabel.setText("");
         relationLabel.setText("");
         stageLabel.setText("");
-        remarkLabel.setText("");
     }
 
     private void clearTags() {
@@ -214,5 +302,42 @@ public class ContactDetailsPanel extends UiPart<Region> {
     private void hidePanel() {
         getRoot().setVisible(false);
         getRoot().setManaged(false);
+    }
+
+    private String makeWrappable(String text) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+        int maxCharsPerLine = calculateMaxChars();
+        return insertBlankPoints(text, maxCharsPerLine);
+    }
+
+    private int calculateMaxChars() {
+        double currentWidth = contactDetailsScroll.getViewportBounds().getWidth();
+        currentWidth -= STANDARD_PADDING;
+        return Math.max(1, (int) Math.floor(currentWidth / AVG_CHAR_PX));
+    }
+
+    private String insertBlankPoints(String text, int maxChars) {
+        StringBuilder wrappedText = new StringBuilder();
+        int charactersSinceLastBreak = 0;
+        for (char currentChar : text.toCharArray()) {
+            wrappedText.append(currentChar);
+
+            if (Character.isWhitespace(currentChar)) {
+                charactersSinceLastBreak = 0;
+            } else {
+                charactersSinceLastBreak++;
+                if (shouldInsertBreakPoint(charactersSinceLastBreak, maxChars)) {
+                    wrappedText.append(ZWSP);
+                    charactersSinceLastBreak = 0;
+                }
+            }
+        }
+        return wrappedText.toString();
+    }
+
+    private boolean shouldInsertBreakPoint(int consecutiveChars, int maxChars) {
+        return consecutiveChars >= maxChars;
     }
 }

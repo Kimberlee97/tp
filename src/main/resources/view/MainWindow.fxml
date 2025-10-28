@@ -3,17 +3,15 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Scene?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
+<?import javafx.scene.control.Button?>
 <fx:root type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-         title="Homey" minWidth="450" minHeight="600" onCloseRequest="#handleExit">
+         title="Homey" minWidth="700" minHeight="600" onCloseRequest="#handleExit">
   <icons>
     <Image url="@/images/address_book_32.png" />
   </icons>
@@ -25,40 +23,35 @@
       </stylesheets>
 
       <HBox>
-        <!-- left navigation sidebar -->
-        <VBox fx:id="navigationPanelPlaceholder" styleClass="navigation-panel" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS" />
-
         <!-- main content area -->
         <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-          <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
-            <Menu text="File">
-              <MenuItem onAction="#handleExit" text="Exit" />
-            </Menu>
-            <Menu text="Help">
-              <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
-            </Menu>
-          </MenuBar>
+          <HBox spacing="10" styleClass="menu-bar" >
+            <Button text="Exit" onAction="#handleExit" />
+            <Button text="Help" onAction="#handleHelp" />
+          </HBox>
 
           <!-- search bar -->
           <StackPane fx:id="commandBoxPlaceholder" styleClass="search-container" VBox.vgrow="NEVER" />
+
+          <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
           <!-- result display -->
           <StackPane fx:id="resultDisplayPlaceholder" VBox.vgrow="NEVER">
             <padding>
-              <Insets top="5" right="10" bottom="5" left="10" />
+              <Insets top="5" right="10" bottom="0" left="10" />
             </padding>
           </StackPane>
 
           <!-- contact list and details -->
-          <SplitPane VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
-            <!-- left column: contact list -->
-            <VBox styleClass="contacts-list-container" VBox.vgrow="ALWAYS">
-              <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS" />
-            </VBox>
+            <SplitPane>
+              <!-- left column: contact list -->
+              <VBox styleClass="contacts-list-container" VBox.vgrow="ALWAYS">
+                <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS" />
+              </VBox>
 
-            <!-- right column: contact details -->
-            <VBox fx:id="contactDetailsPanelPlaceholder" styleClass="contact-details-panel" VBox.vgrow="ALWAYS" />
+              <!-- right column: contact details -->
+              <VBox fx:id="contactDetailsPanelPlaceholder" styleClass="contact-details-panel" VBox.vgrow="ALWAYS" />
+            </SplitPane>
           </SplitPane>
-
           <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />
         </VBox>
       </HBox>

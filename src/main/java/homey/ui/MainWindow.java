@@ -8,12 +8,8 @@ import homey.logic.Logic;
 import homey.logic.commands.CommandResult;
 import homey.logic.commands.exceptions.CommandException;
 import homey.logic.parser.exceptions.ParseException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -35,14 +31,16 @@ public class MainWindow extends UiPart<Stage> {
     private PersonListPanel personListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
-    private NavigationPanel navigationPanel;
     private ContactDetailsPanel contactDetailsPanel;
 
     @FXML
     private StackPane commandBoxPlaceholder;
 
     @FXML
-    private MenuItem helpMenuItem;
+    private Button helpButton;
+
+    @FXML
+    private Button exitButton;
 
     @FXML
     private StackPane personListPanelPlaceholder;
@@ -52,9 +50,6 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane statusbarPlaceholder;
-
-    @FXML
-    private VBox navigationPanelPlaceholder;
 
     @FXML
     private VBox contactDetailsPanelPlaceholder;
@@ -72,58 +67,11 @@ public class MainWindow extends UiPart<Stage> {
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
 
-        setAccelerators();
-
         helpWindow = new HelpWindow();
     }
 
     public Stage getPrimaryStage() {
         return primaryStage;
-    }
-
-    private void setAccelerators() {
-        setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
-    }
-
-    /**
-     * Sets the accelerator of a MenuItem.
-     * @param keyCombination the KeyCombination value of the accelerator
-     */
-    private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
-        menuItem.setAccelerator(keyCombination);
-        addAcceleratorEventFilter(menuItem, keyCombination);
-    }
-
-    private void addAcceleratorEventFilter(MenuItem menuItem, KeyCombination keyCombination) {
-        /*
-         * TODO: the code below can be removed once the bug reported here
-         * https://bugs.openjdk.java.net/browse/JDK-8131666
-         * is fixed in later version of SDK.
-         *
-         * According to the bug report, TextInputControl (TextField, TextArea) will
-         * consume function-key events. Because CommandBox contains a TextField, and
-         * ResultDisplay contains a TextArea, thus some accelerators (e.g F1) will
-         * not work when the focus is in them because the key event is consumed by
-         * the TextInputControl(s).
-         *
-         * For now, we add following event filter to capture such key events and open
-         * help window purposely so to support accelerators even when focus is
-         * in CommandBox or ResultDisplay.
-         */
-        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (shouldTriggerAccelerator(event, keyCombination)) {
-                triggerMenuItem(menuItem);
-                event.consume();
-            }
-        });
-    }
-
-    private boolean shouldTriggerAccelerator(KeyEvent event, KeyCombination keyCombination) {
-        return event.getTarget() instanceof TextInputControl && keyCombination.match(event);
-    }
-
-    private void triggerMenuItem(MenuItem menuItem) {
-        menuItem.getOnAction().handle(new ActionEvent());
     }
 
     /**
@@ -134,7 +82,6 @@ public class MainWindow extends UiPart<Stage> {
         setUpResultDisplay();
         setUpStatusBar();
         setUpCommandBox();
-        setUpNavigationPanel();
         setUpContactDetailsPanel();
         setUpPersonSelectionListener();
     }
@@ -157,11 +104,6 @@ public class MainWindow extends UiPart<Stage> {
     private void setUpCommandBox() {
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
-    }
-
-    private void setUpNavigationPanel() {
-        navigationPanel = new NavigationPanel();
-        navigationPanelPlaceholder.getChildren().add(navigationPanel.getRoot());
     }
 
     private void setUpContactDetailsPanel() {
@@ -224,10 +166,6 @@ public class MainWindow extends UiPart<Stage> {
     private void closeAllWindows() {
         helpWindow.hide();
         primaryStage.hide();
-    }
-
-    public PersonListPanel getPersonListPanel() {
-        return personListPanel;
     }
 
     /**
