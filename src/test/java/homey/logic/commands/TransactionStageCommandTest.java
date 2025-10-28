@@ -55,7 +55,8 @@ public class TransactionStageCommandTest {
         Person personInFiltered = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person editedPerson = new PersonBuilder(personInFiltered).withStage("closed").build();
 
-        TransactionStageCommand txnCommand = new TransactionStageCommand(INDEX_FIRST_PERSON, new TransactionStage("closed"));
+        TransactionStageCommand txnCommand =
+            new TransactionStageCommand(INDEX_FIRST_PERSON, new TransactionStage("closed"));
 
         String expectedMessage = String.format(
                 TransactionStageCommand.MESSAGE_ADD_TRANSACTION_STAGE_SUCCESS, Messages.format(editedPerson));
