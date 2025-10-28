@@ -35,10 +35,6 @@ public class ListCommandParser implements Parser<Command> {
             return new ListArchivedCommand();
         }
 
-        if (trimmed.isEmpty()) {
-            return new ListCommand();
-        }
-
         if (COMMAND_MEETING.equalsIgnoreCase(trimmed)) {
             return new ListMeetingCommand();
         }
