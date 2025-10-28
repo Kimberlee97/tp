@@ -165,6 +165,14 @@ public class ParserUtil {
         return new Remark(trimmed);
     }
 
+    /**
+     * Converts a string into a {@code Meeting} object.
+     * Trims whitespace and checks that the format is valid.
+     *
+     * @param value Meeting date and time string to parse.
+     * @return A {@code Meeting} object with the given date and time.
+     * @throws ParseException If the string format is invalid.
+     */
     public static Meeting parseMeeting(String value) throws ParseException {
         String trimmed = value.trim();
         if (!Meeting.isValidMeeting(trimmed)) {
