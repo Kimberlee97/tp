@@ -319,21 +319,25 @@ public class ContactDetailsPanel extends UiPart<Region> {
     }
 
     private String insertBlankPoints(String text, int maxChars) {
-        StringBuilder out = new StringBuilder();
-        int consecutive = 0;
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            out.append(c);
-            if (Character.isWhitespace(c)) {
-                consecutive = 0;
+        StringBuilder wrappedText = new StringBuilder();
+        int charactersSinceLastBreak = 0;
+        for (char currentChar : text.toCharArray()) {
+            wrappedText.append(currentChar);
+
+            if (Character.isWhitespace(currentChar)) {
+                charactersSinceLastBreak = 0;
             } else {
-                consecutive++;
-                if (consecutive >= maxChars) {
-                    out.append(ZWSP);
-                    consecutive = 0;
+                charactersSinceLastBreak++;
+                if (shouldInsertBreakPoint(charactersSinceLastBreak, maxChars)) {
+                    wrappedText.append(ZWSP);
+                    charactersSinceLastBreak = 0;
                 }
             }
         }
-        return out.toString();
+        return wrappedText.toString();
+    }
+
+    private boolean shouldInsertBreakPoint(int consecutiveChars, int maxChars) {
+        return consecutiveChars >= maxChars;
     }
 }
