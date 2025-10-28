@@ -46,6 +46,20 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_personWithMeeting_addsSuccessfullyAndShowsMeetingMessage() throws Exception {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+        Person personWithMeeting = new PersonBuilder().withMeeting("2025-11-03 14:00").build();
+
+        CommandResult result = new AddCommand(personWithMeeting).execute(modelStub);
+
+        String feedback = result.getFeedbackToUser();
+        assertTrue(feedback.contains("New person added"));
+        assertTrue(feedback.contains("Next meeting"));
+        assertTrue(feedback.contains("2025-11-03 14:00"));
+        assertEquals(Arrays.asList(personWithMeeting), modelStub.personsAdded);
+    }
+
+    @Test
     public void execute_duplicatePerson_throwsCommandException() {
         Person validPerson = new PersonBuilder().build();
         AddCommand addCommand = new AddCommand(validPerson);

@@ -61,6 +61,9 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_EDIT_MEETING_SET = "Updated meeting for %1$s: %2$s";
+    public static final String MESSAGE_EDIT_MEETING_CLEARED = "Cleared meeting for %1$s.";
+    public static final String MESSAGE_EDIT_MEETING_NONE = "No meetings to clear for %1$s.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -95,7 +98,29 @@ public class EditCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+
+        String feedback;
+        if (editPersonDescriptor.isMeetingEdited()) {
+            if (editPersonDescriptor.getMeeting().isPresent()) {
+                feedback = String.format(
+                        MESSAGE_EDIT_MEETING_SET,
+                        editedPerson.getName(),
+                        editedPerson.getMeeting().get().toDisplayString()
+                );
+            } else {
+                if (personToEdit.getMeeting().isEmpty()) {
+                    // No meeting existed to clear
+                    feedback = String.format(MESSAGE_EDIT_MEETING_NONE, editedPerson.getName());
+                } else {
+                    // Meeting cleared successfully
+                    feedback = String.format(MESSAGE_EDIT_MEETING_CLEARED, editedPerson.getName());
+                }
+            }
+        } else {
+            feedback = String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        }
+
+        return new CommandResult(feedback);
     }
 
     /**
