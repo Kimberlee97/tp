@@ -302,6 +302,7 @@ public class EditCommand extends Command {
                     .add("transaction stage", stage)
                     .add("remark", remark)
                     .add("tags", tags)
+                    .add("meeting", meeting)
                     .toString();
         }
     }
