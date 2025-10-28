@@ -54,10 +54,9 @@ public class TransactionStageCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = new Person(
-                personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), personToEdit.getRelation(), stage, personToEdit.getRemark(),
-                personToEdit.getTags(), personToEdit.getMeeting());
+        EditCommand.EditPersonDescriptor descriptor = new EditCommand.EditPersonDescriptor();
+        descriptor.setStage(stage);
+        Person editedPerson = EditCommand.createEditedPerson(personToEdit, descriptor);
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
