@@ -42,11 +42,14 @@ public class HelpWindow extends UiPart<Stage> {
             Map.entry("exit", "#exiting-the-program-exit"),
             Map.entry("find a/", "#locating-persons-by-address-find-a"),
             Map.entry("find t/", "#locating-persons-by-tag-find-t"),
+            Map.entry("find r/", "#locating-persons-by-relation-find-r"),
+            Map.entry("find s/", "#locating-persons-by-transaction-stage-find-s"),
             Map.entry("relation", "#add-relational-tag-relation"),
             Map.entry("transaction", "#changing-the-transaction-stage"),
             Map.entry("archive", "#archiving-persons-archive"),
             Map.entry("unarchive", "#unarchiving-persons-unarchive"),
             Map.entry("remark", "#adding-a-remark-remark"),
+            Map.entry("meeting", "#adding-a-meeting-when-creating-a-contact-add"),
             Map.entry("list meeting", "#listing-contacts-by-meeting-date-list-meeting")
     );
 
