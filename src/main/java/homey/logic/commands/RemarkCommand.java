@@ -2,7 +2,6 @@ package homey.logic.commands;
 
 import static homey.commons.util.CollectionUtil.requireAllNonNull;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
-import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 
@@ -59,8 +58,10 @@ public class RemarkCommand extends Command {
                 personToEdit.getAddress(), personToEdit.getRelation(), personToEdit.getStage(), remark,
                 personToEdit.getTags());
 
+        if (personToEdit.isArchived()) {
+            editedPerson = editedPerson.archived();
+        }
         model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(generateSuccessMessage(editedPerson));
     }
