@@ -56,4 +56,11 @@ public class ListCommandParserTest {
         assertTrue(cmdLower instanceof ListMeetingCommand);
         assertTrue(cmdUpper instanceof ListMeetingCommand);
     }
+
+    @Test
+    public void parse_emptyArgs_returnsListCommand() throws Exception {
+        assertTrue(parser.parse("") instanceof ListCommand);
+        assertTrue(parser.parse("   ") instanceof ListCommand);
+        assertTrue(parser.parse("\n\t  ") instanceof ListCommand);
+    }
 }

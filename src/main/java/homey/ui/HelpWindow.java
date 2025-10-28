@@ -9,6 +9,7 @@ import homey.commons.util.BrowserUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.Stage;
@@ -20,6 +21,47 @@ public class HelpWindow extends UiPart<Stage> {
 
     public static final String USERGUIDE_URL = "https://ay2526s1-cs2103t-f15a-4.github.io/tp/UserGuide.html";
     public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
+
+    private static final String QUICK_REF = """
+        Commands:
+            \n1. help [topic | offline]
+                - Opens the User Guide in browser, or shows this offline summary if 'offline' is used.
+            \n2. add n/NAME p/PHONE e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK]
+            [r/RELATION] [t/TAG] [m/MEETING]...
+                - Adds a new contact. All fields except tags, remark, relation, and meeting are required.
+                - TRANSACTION_STAGE contains {prospect, negotiating, closed}. RELATION contains {client,
+                  vendor}.
+            \n3. edit INDEX [n/...][p/...][e/...][a/...][s/...][rm/...][r/...][t/...][m/...]
+                - Edits details of the contact at INDEX. Use m/ or t/ with no value to clear them.
+            \n4. delete INDEX
+                - Deletes the contact at INDEX from the list.
+            \n5. find KEYWORD... | a/KEY... | t/KEY... | r/RELATION | s/TRANSACTION_STAGE
+                - Finds contacts by name, address, tag, relation, or transaction stage.
+                - Relation accepts {client, vendor}. Stage accepts {prospect, negotiating, closed}.
+            \n6. relation INDEX r/(client | vendor)
+                - Updates the relation tag of the contact at INDEX.
+            \n7. transaction INDEX s/(prospect | negotiating | closed)
+                - Updates the transaction stage of the contact at INDEX.
+            \n8. list [meeting | archive | active]
+                - Shows all contacts.
+                - 'list meeting' – upcoming meetings sorted by date.
+                - 'list archive' – archived contacts.
+                - 'list active' – unarchived contacts.
+            \n9. remark INDEX rm/TEXT
+                - Adds or edits a remark. Leave rm/ empty to remove it.
+            \n10. archive INDEX
+                - Moves the contact at INDEX to the archived list (hidden from active view).
+            \n11. unarchive INDEX
+                - Restores an archived contact back to the active list.
+            \n12. clear
+                - Clears all contacts from the address book.
+            \n13. exit
+                - Exits the application.
+        \n\nHelp topics:
+            - add, edit, delete, find, find a/, find t/, find r/, find s/,
+              relation, transaction, list, list meeting, remark,
+              archive, unarchive, clear, exit, help
+        """;
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
@@ -42,11 +84,14 @@ public class HelpWindow extends UiPart<Stage> {
             Map.entry("exit", "#exiting-the-program-exit"),
             Map.entry("find a/", "#locating-persons-by-address-find-a"),
             Map.entry("find t/", "#locating-persons-by-tag-find-t"),
+            Map.entry("find r/", "#locating-persons-by-relation-find-r"),
+            Map.entry("find s/", "#locating-persons-by-transaction-stage-find-s"),
             Map.entry("relation", "#add-relational-tag-relation"),
             Map.entry("transaction", "#changing-the-transaction-stage"),
             Map.entry("archive", "#archiving-persons-archive"),
             Map.entry("unarchive", "#unarchiving-persons-unarchive"),
             Map.entry("remark", "#adding-a-remark-remark"),
+            Map.entry("meeting", "#adding-a-meeting-when-creating-a-contact-add"),
             Map.entry("list meeting", "#listing-contacts-by-meeting-date-list-meeting")
     );
 
@@ -56,6 +101,9 @@ public class HelpWindow extends UiPart<Stage> {
     @FXML
     private Label helpMessage;
 
+    @FXML
+    private TextArea quickRefArea;
+
     /**
      * Creates a new HelpWindow.
      *
@@ -64,6 +112,11 @@ public class HelpWindow extends UiPart<Stage> {
     public HelpWindow(Stage root) {
         super(FXML, root);
         helpMessage.setText(HELP_MESSAGE);
+
+        if (quickRefArea != null) {
+            quickRefArea.setText(QUICK_REF);
+        }
+
     }
 
     /**
@@ -95,6 +148,16 @@ public class HelpWindow extends UiPart<Stage> {
         logger.fine("Showing help page about the application.");
         getRoot().show();
         getRoot().centerOnScreen();
+    }
+
+    /**
+     * Displays the offline help window containing the quick reference guide.
+     * Brings the window to the front and focuses it if already open.
+     */
+    public void showOffline() {
+        show();
+        getRoot().toFront();
+        getRoot().requestFocus();
     }
 
     /**

@@ -1,0 +1,77 @@
+@startuml
+actor User
+
+participant ":LogicManager" as Logic
+participant ":AddressBookParser" as ABP
+participant ":RemarkCommandParser" as RCP
+participant ":RemarkCommand" as RC
+participant ":Model" as Model
+participant ":CommandResult" as CR
+participant ":Storage" as Storage
+participant ":Person" as P
+
+User -> Logic : execute("remark 1 rm/Likes dogs")
+activate Logic
+
+Logic -> ABP : parseCommand("remark 1 rm/Likes dogs")
+activate ABP
+
+create RCP
+ABP -> RCP : RemarkCommandParser()
+ABP -> RCP : parse(" 1 rm/Likes dogs")
+activate RCP
+
+create RC
+RCP -> RC : RemarkCommand(1, "Likes dogs")
+activate RC
+RC --> RCP : remark command
+deactivate RC
+
+RCP --> ABP : remark command
+deactivate RCP
+
+ABP --> Logic : remark command
+deactivate ABP
+
+Logic -> RC : execute(model)
+activate RC
+
+RC -> Model : getFilteredPersonList()
+activate Model
+Model --> RC : lastShownList
+RC -> P : lastShownList.get(index.getZeroBased())
+activate P
+P --> RC : personToEdit
+deactivate P
+RC -> P : new Person(..., remark, ...)
+activate P
+P --> RC : editedPerson
+deactivate P
+deactivate Model
+
+RC -> Model : setPerson(personToEdit, editedPerson)
+activate Model
+deactivate Model
+
+RC -> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+activate Model
+deactivate Model
+
+RC -> RC : generateSuccesssMessage(editedPerson)
+RC --> RC : success message
+RC -> CR : CommandResult(success message)
+activate CR
+CR --> RC : command result
+deactivate CR
+
+RC --> Logic : command result
+deactivate RC
+
+Logic -> Storage : saveAddressBook(model.getAddressBook())
+activate Storage
+deactivate Storage
+
+Logic --> User : commandResult
+deactivate Logic
+
+@enduml

@@ -1,6 +1,11 @@
 package homey.ui;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import homey.commons.core.LogsCenter;
@@ -284,20 +289,10 @@ public class ContactDetailsPanel extends UiPart<Region> {
         if (text == null || text.isEmpty()) {
             return "";
         }
-        /*String s = text
-                .replace(",", "," + ZWSP)
-                .replace("/", "/" + ZWSP)
-                .replace("-", "-" + ZWSP)
-                .replace("#", "#" + ZWSP)
-                .replace(".", "." + ZWSP);
-*/
+
         double availableWidth = contactDetailsScroll.getViewportBounds().getWidth();
         availableWidth -= 40;
 
-        /*double labelWidth = label.getWidth();
-        if (labelWidth <= 0 && contactDetailsScroll.getViewportBounds() != null) {
-            labelWidth = contactDetailsScroll.getViewportBounds().getWidth();
-        }*/
         if (availableWidth <= 0) {
             availableWidth = 200;
         }
@@ -309,7 +304,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
             out.append(c);
-            if (Character.isWhitespace(c) /*|| c == '\u200B'*/) {
+            if (Character.isWhitespace(c)) {
                 consecutive = 0;
             } else {
                 consecutive++;

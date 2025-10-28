@@ -270,8 +270,12 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     private void handleHelpCommand(CommandResult commandResult) {
-        commandResult.getHelpTopic().ifPresentOrElse(
-                topic -> helpWindow.openInBrowserOrShow(topic), () -> helpWindow.openInBrowserOrShow()
-        );
+        commandResult.getHelpTopic().ifPresentOrElse(topic -> {
+            if ("offline".equals(topic)) {
+                helpWindow.showOffline();
+            } else {
+                helpWindow.openInBrowserOrShow(topic);
+            }
+        }, () -> helpWindow.openInBrowserOrShow());
     }
 }

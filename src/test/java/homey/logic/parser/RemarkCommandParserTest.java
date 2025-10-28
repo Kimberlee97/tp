@@ -42,4 +42,17 @@ public class RemarkCommandParserTest {
         assertParseFailure(parser, RemarkCommand.COMMAND_WORD + " " + nonEmptyRemark, expectedMessage);
     }
 
+    @Test
+    public void parse_duplicateRemarkPrefixes_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, "1 rm/first rm/second", expectedMessage);
+    }
+
+    @Test
+    public void parse_tooLongRemark_failure() {
+        String longRemark = "a".repeat(101);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, "Remark cannot exceed 100 characters.");
+        assertParseFailure(parser, "1 rm/" + longRemark, expectedMessage);
+    }
+
 }

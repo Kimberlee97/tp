@@ -17,3 +17,31 @@
 #helpMessageContainer {
     -fx-background-color: derive(#1d1d1d, 20%);
 }
+
+/* Make the whole help root match the top bar */
+#helpRoot {
+    -fx-background-color: derive(#1d1d1d, 20%);
+}
+
+/* Label colours in this window */
+#quickRefLabel, #helpMessage {
+    -fx-text-fill: white;
+}
+
+/* TextArea: force dark background everywhere it draws */
+#quickRefArea {
+    -fx-text-fill: white;
+    -fx-control-inner-background: derive(#1d1d1d, 20%);
+    -fx-background-color: derive(#1d1d1d, 20%);
+}
+
+/* Important on Windows: the inner regions must also be styled */
+#quickRefArea .viewport,
+#quickRefArea .content {
+    -fx-background-color: derive(#1d1d1d, 20%);
+}
+
+/* Optional: keep scrollpane chrome consistent */
+#quickRefArea .scroll-pane {
+    -fx-background-color: derive(#1d1d1d, 20%);
+}
