@@ -7,7 +7,6 @@ import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
-import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collections;
@@ -116,7 +115,6 @@ public class EditCommand extends Command {
         }
 
         model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         String feedback = generateFeedback(personToEdit, editedPerson, editPersonDescriptor);
         return new CommandResult(feedback);
@@ -143,8 +141,12 @@ public class EditCommand extends Command {
                 ? editPersonDescriptor.getMeeting()
                 : personToEdit.getMeeting();
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
+        Person edited = new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
                 updatedRelation, updatedStage, updatedRemark, updatedTags, updatedMeeting);
+        if (personToEdit.isArchived()) {
+            edited = edited.archived();
+        }
+        return edited;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package homey.logic.commands;
 
 import static homey.commons.util.CollectionUtil.requireAllNonNull;
-import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 
@@ -59,8 +58,10 @@ public class TransactionStageCommand extends Command {
                 personToEdit.getAddress(), personToEdit.getRelation(), stage, personToEdit.getRemark(),
                 personToEdit.getTags(), personToEdit.getMeeting());
 
+        if (personToEdit.isArchived()) {
+            editedPerson = editedPerson.archived();
+        }
         model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(generateSuccessMessage(editedPerson));
     }
