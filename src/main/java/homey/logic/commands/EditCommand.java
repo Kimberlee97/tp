@@ -80,6 +80,25 @@ public class EditCommand extends Command {
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
     }
 
+    private String generateFeedback(Person before, Person after, EditPersonDescriptor descriptor) {
+        final String name = after.getName().toString();
+
+        if (!descriptor.isMeetingEdited()) {
+            return String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after));
+        }
+
+        if (descriptor.getMeeting().isPresent()) {
+            // edit 1 m/<datetime>  → meeting set/updated
+            String when = after.getMeeting().map(Meeting::toDisplayString).orElse("<unknown>");
+            return String.format(MESSAGE_EDIT_MEETING_SET, name, when);
+        }
+
+        // edit 1 m/  → clear meeting or nothing to clear
+        return before.getMeeting().isEmpty()
+                ? String.format(MESSAGE_EDIT_MEETING_NONE, name)
+                : String.format(MESSAGE_EDIT_MEETING_CLEARED, name);
+    }
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -99,27 +118,7 @@ public class EditCommand extends Command {
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        String feedback;
-        if (editPersonDescriptor.isMeetingEdited()) {
-            if (editPersonDescriptor.getMeeting().isPresent()) {
-                feedback = String.format(
-                        MESSAGE_EDIT_MEETING_SET,
-                        editedPerson.getName(),
-                        editedPerson.getMeeting().get().toDisplayString()
-                );
-            } else {
-                if (personToEdit.getMeeting().isEmpty()) {
-                    // No meeting existed to clear
-                    feedback = String.format(MESSAGE_EDIT_MEETING_NONE, editedPerson.getName());
-                } else {
-                    // Meeting cleared successfully
-                    feedback = String.format(MESSAGE_EDIT_MEETING_CLEARED, editedPerson.getName());
-                }
-            }
-        } else {
-            feedback = String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
-        }
-
+        String feedback = generateFeedback(personToEdit, editedPerson, editPersonDescriptor);
         return new CommandResult(feedback);
     }
 
