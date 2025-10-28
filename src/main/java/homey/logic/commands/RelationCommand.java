@@ -56,7 +56,7 @@ public class RelationCommand extends Command {
         Person editedPerson = new Person(
                 personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                 personToEdit.getAddress(), relation, personToEdit.getStage(), personToEdit.getRemark(),
-                personToEdit.getTags());
+                personToEdit.getTags(), personToEdit.getMeeting());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
