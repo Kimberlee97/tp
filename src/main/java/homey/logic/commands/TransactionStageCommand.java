@@ -24,7 +24,7 @@ public class TransactionStageCommand extends Command {
             + "by the index number used in the last person listing. "
             + "Existing transaction stage will be overwritten by the input.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "s/ [TRANSACTION STAGE]\n"
+            + "s/ TRANSACTION STAGE\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + "s/prospect";
 

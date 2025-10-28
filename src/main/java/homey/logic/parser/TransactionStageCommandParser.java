@@ -6,9 +6,11 @@ import static java.util.Objects.requireNonNull;
 
 import homey.commons.core.index.Index;
 import homey.commons.exceptions.IllegalValueException;
+import homey.logic.commands.RemarkCommand;
 import homey.logic.commands.TransactionStageCommand;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.tag.TransactionStage;
+
 
 /**
  * Parses input arguments and creates a new {@code TransactionStageCommand} object.
@@ -23,22 +25,52 @@ public class TransactionStageCommandParser implements Parser<TransactionStageCom
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_TRANSACTION);
+        validatePrefix(argMultimap);
+        Index index = parseIndex(argMultimap);
+        TransactionStage stage = parseStage(argMultimap);
+        return new TransactionStageCommand(index, stage);
+    }
 
-        Index index;
+    /**
+     * Parses and validates the index.
+     */
+    private Index parseIndex(ArgumentMultimap argMultimap) throws ParseException {
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
+            return ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (IllegalValueException ive) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    TransactionStageCommand.MESSAGE_USAGE), ive);
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE), ive);
         }
+    }
 
+    /**
+     * Ensures only one transaction prefix exists.
+     */
+    private void validatePrefix(ArgumentMultimap argMultimap) throws ParseException {
+        if (argMultimap.getAllValues(PREFIX_TRANSACTION).size() != 1) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, TransactionStageCommand.MESSAGE_USAGE));
+        }
+    }
+
+    /**
+     * Validates the input stage and returns the corresponding {@code TransactionStage} object.
+     */
+    private TransactionStage parseStage(ArgumentMultimap argMultimap) throws ParseException {
         String raw = argMultimap.getValue(PREFIX_TRANSACTION).orElseThrow(() ->
-                new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                        TransactionStageCommand.MESSAGE_USAGE))
+                new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, TransactionStageCommand.MESSAGE_USAGE)
+                )
         );
 
-        TransactionStage stage = ParserUtil.parseStage(raw);
-        return new TransactionStageCommand(index, stage);
+        String trimmed = raw.trim();
+        if (trimmed.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, "Transaction stage cannot be empty.")
+            );
+        }
+        TransactionStage stage = ParserUtil.parseStage(trimmed);
+        return stage;
     }
 }
 

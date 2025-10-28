@@ -8,7 +8,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class TransactionStage {
     public static final String MESSAGE_CONSTRAINTS = "Transaction stage should be 'prospect', 'negotiating'"
-            + "or 'closed'.";
+            + " or 'closed'.";
     public static final String[] VALID_STAGES = new String[]{"prospect", "negotiating", "closed"};
     public static final String MESSAGE_ARGUMENTS = "Index = %1$d, Stage = %2$s";
     public final String value;
