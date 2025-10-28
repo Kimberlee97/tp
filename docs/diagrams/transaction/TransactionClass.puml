@@ -13,7 +13,6 @@ class "{abstract}\nCommand" as Command {
 
 class CommandResult
 class Index
-class Person
 class TransactionStage {
   +value : String
 }
@@ -24,9 +23,6 @@ TransactionStageCommand --> "1" Index : index
 TransactionStageCommand --> "1" TransactionStage : stage
 TransactionStageCommand ..> Model : uses >
 TransactionStageCommand ..> CommandResult : returns >
-TransactionStageCommand ..> Person : uses >
 Command ..> Model : uses >
-Model --> "1..*" Person : manages >
-Person *-- TransactionStage : stage
 
 @enduml
