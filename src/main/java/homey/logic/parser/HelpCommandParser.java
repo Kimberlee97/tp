@@ -48,9 +48,10 @@ public final class HelpCommandParser implements Parser<HelpCommand> {
         String topic = normalize(trimmed);
         if (!ALLOWED.contains(topic)) {
             throw new ParseException(
-                    "Unknown help topic: '" + trimmed + "'. Allowed: " + String.join(", ", ALLOWED)
-                            + "\n\n" + HelpCommand.MESSAGE_USAGE
-            );
+                    "Unknown help topic: '" + trimmed + "'. Allowed: "
+                            + String.join(", ", new java.util.TreeSet<>(ALLOWED))
+                            + "\n\n" + HelpCommand.MESSAGE_USAGE);
+
         }
         return new HelpCommand(topic);
     }
