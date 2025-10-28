@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.Address;
 import homey.model.person.Email;
+import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Phone;
 import homey.model.tag.Tag;
@@ -192,5 +193,24 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseMeeting_valid_returnsMeeting() throws Exception {
+        Meeting m = ParserUtil.parseMeeting("2025-11-10 09:30");
+        assertEquals(new Meeting("2025-11-10 09:30"), m);
+    }
+
+    @Test
+    public void parseMeeting_trimsWhitespace_returnsMeeting() throws Exception {
+        Meeting m = ParserUtil.parseMeeting("  2025-11-10 09:30  ");
+        assertEquals(new Meeting("2025-11-10 09:30"), m);
+    }
+
+    @Test
+    public void parseMeeting_invalid_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseMeeting("10-11-2025 9:30"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseMeeting("tomorrow 9am"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseMeeting(""));
     }
 }

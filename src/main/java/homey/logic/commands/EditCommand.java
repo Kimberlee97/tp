@@ -2,6 +2,7 @@ package homey.logic.commands;
 
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
@@ -50,9 +51,12 @@ public class EditCommand extends Command {
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_TRANSACTION + "TRANSACTION STAGE] "
             + "[" + PREFIX_TAG + "TAG]...\n"
+            + "[" + PREFIX_MEETING + "MEETING_DATETIME]\n"
+            + "Tip: use " + PREFIX_MEETING + " to clear the meeting (e.g., 'm/').\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+            + PREFIX_EMAIL + "johndoe@example.com "
+            + PREFIX_MEETING + "2025-11-10 09:30";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -302,6 +306,7 @@ public class EditCommand extends Command {
                     .add("transaction stage", stage)
                     .add("remark", remark)
                     .add("tags", tags)
+                    .add("meeting", meeting)
                     .toString();
         }
     }
