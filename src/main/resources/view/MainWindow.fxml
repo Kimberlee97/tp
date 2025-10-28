@@ -25,9 +25,6 @@
       </stylesheets>
 
       <HBox>
-        <!-- left navigation sidebar -->
-        <VBox fx:id="navigationPanelPlaceholder" styleClass="navigation-panel" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS" />
-
         <!-- main content area -->
         <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
           <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
@@ -41,24 +38,26 @@
 
           <!-- search bar -->
           <StackPane fx:id="commandBoxPlaceholder" styleClass="search-container" VBox.vgrow="NEVER" />
+
+          <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
           <!-- result display -->
           <StackPane fx:id="resultDisplayPlaceholder" VBox.vgrow="NEVER">
             <padding>
-              <Insets top="5" right="10" bottom="5" left="10" />
+              <Insets top="5" right="10" bottom="0" left="10" />
             </padding>
           </StackPane>
 
           <!-- contact list and details -->
-          <SplitPane VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
-            <!-- left column: contact list -->
-            <VBox styleClass="contacts-list-container" VBox.vgrow="ALWAYS">
-              <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS" />
-            </VBox>
+            <SplitPane>
+              <!-- left column: contact list -->
+              <VBox styleClass="contacts-list-container" VBox.vgrow="ALWAYS">
+                <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS" />
+              </VBox>
 
-            <!-- right column: contact details -->
-            <VBox fx:id="contactDetailsPanelPlaceholder" styleClass="contact-details-panel" VBox.vgrow="ALWAYS" />
+              <!-- right column: contact details -->
+              <VBox fx:id="contactDetailsPanelPlaceholder" styleClass="contact-details-panel" VBox.vgrow="ALWAYS" />
+            </SplitPane>
           </SplitPane>
-
           <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />
         </VBox>
       </HBox>
