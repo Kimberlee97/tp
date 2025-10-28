@@ -9,7 +9,6 @@ import homey.model.person.Meeting;
 import homey.model.person.Person;
 import homey.model.tag.Tag;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
@@ -80,6 +79,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
         logger.info("Displaying contact details for: " + person.getName().fullName);
         showPanel();
         displayBasicFields(person);
+        displayRemarks(person);
         displayTags(person);
         displayMeeting(person);
     }
@@ -101,24 +101,48 @@ public class ContactDetailsPanel extends UiPart<Region> {
         hidePanel();
     }
 
+    private void displayRemarks(Person person) {
+        String remark = person.getRemark().value;
+        if (remark == null || remark.trim().isEmpty()) {
+            hideRemarkSection();
+        } else {
+            addRemarkLabel(person);
+        }
+    }
+
+    private void hideRemarkSection() {
+        remarkLabel.setText("");
+        setRemarkVisibility(false);
+    }
+
+    private void addRemarkLabel(Person person) {
+        remarkLabel.setText("Remarks: " + person.getRemark().value);
+        setRemarkVisibility(true);
+    }
+
+    private void setRemarkVisibility(boolean visible) {
+        remarkLabel.setManaged(visible);
+        remarkLabel.setVisible(visible);
+    }
+
     private void displayTags(Person person) {
         tagsFlowPane.getChildren().clear();
 
         if (person.getTags().isEmpty()) {
             logger.fine("No tags found for " + person.getName().fullName);
-            hideTagsSection();
+            setTagsVisibility(false);
             return;
         }
 
         logger.fine("Displaying " + person.getTags().size() + " tags for " + person.getName().fullName);
         addTagsLabel();
         addTagElements(person.getTags());
-        showTagsSection();
+        setTagsVisibility(true);
     }
 
-    private void hideTagsSection() {
-        tagsFlowPane.setManaged(false);
-        tagsFlowPane.setVisible(false);
+    private void setTagsVisibility(boolean visible) {
+        tagsFlowPane.setManaged(visible);
+        tagsFlowPane.setVisible(visible);
     }
 
     private void addTagsLabel() {
@@ -135,11 +159,6 @@ public class ContactDetailsPanel extends UiPart<Region> {
                     Label tagLabel = new Label(tag.tagName);
                     tagsFlowPane.getChildren().add(tagLabel);
                 });
-    }
-
-    private void showTagsSection() {
-        tagsFlowPane.setManaged(true);
-        tagsFlowPane.setVisible(true);
     }
 
     private void displayMeeting(Person person) {
@@ -176,7 +195,6 @@ public class ContactDetailsPanel extends UiPart<Region> {
         emailLabel.setText("Email: " + person.getEmail().value);
         relationLabel.setText("Relation: " + person.getRelation().value);
         stageLabel.setText("Stage: " + person.getStage().value);
-        remarkLabel.setText("Remarks: " + person.getRemark().value);
     }
 
     private void clearAllBasicFields() {
@@ -186,7 +204,6 @@ public class ContactDetailsPanel extends UiPart<Region> {
         emailLabel.setText("");
         relationLabel.setText("");
         stageLabel.setText("");
-        remarkLabel.setText("");
     }
 
     private void clearTags() {
