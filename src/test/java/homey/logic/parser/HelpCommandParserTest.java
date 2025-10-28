@@ -87,5 +87,7 @@ public class HelpCommandParserTest {
         assertTrue(parser.parse("offline") instanceof HelpCommand);
         assertTrue(parser.parse("OFFLINE") instanceof HelpCommand);
         assertTrue(parser.parse("OffLine") instanceof HelpCommand);
+        assertTrue(parser.parse("Offline  ") instanceof HelpCommand);
+        assertTrue(parser.parse("  oFfLine") instanceof HelpCommand);
     }
 }
