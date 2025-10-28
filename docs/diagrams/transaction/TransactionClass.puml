@@ -1,0 +1,28 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+class TransactionStageCommand {
+  +execute(model : Model) : CommandResult
+  -generateSuccessMessage(personToEdit : Person) : String
+}
+
+class "{abstract}\nCommand" as Command {
+  +execute(model : Model) : CommandResult
+}
+
+class CommandResult
+class Index
+class TransactionStage {
+  +value : String
+}
+class "<<interface>>\nModel" as Model
+
+TransactionStageCommand --|> Command
+TransactionStageCommand --> "1" Index : index
+TransactionStageCommand --> "1" TransactionStage : stage
+TransactionStageCommand ..> Model : uses >
+TransactionStageCommand ..> CommandResult : returns >
+Command ..> Model : uses >
+
+@enduml

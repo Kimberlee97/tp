@@ -1,0 +1,42 @@
+@startuml
+hide footbox
+actor User
+participant "LogicManager" as L
+participant "AddressBookParser" as ABP
+participant "TransactionStageCommandParser" as TSCP
+participant "TransactionStageCommand" as TSC
+participant "Model" as M
+
+User -> L : execute("transaction 1 s/prospect")
+activate L
+L -> ABP : parseCommand("transaction 1 s/prospect")
+activate ABP
+create TSCP
+ABP -> TSCP : TransactionStageCommandParser()
+activate TSCP
+ABP -> TSCP : parse(" 1 s/prospect")
+create TSC
+TSCP -> TSC : TransactionStageCommand(1, "prospect")
+activate TSC
+TSC --> TSCP : transaction command
+deactivate TSC
+TSCP --> ABP : transaction command
+deactivate TSCP
+ABP --> L : transaction command
+deactivate ABP
+L -> TSC : execute(Model)
+activate TSC
+TSC -> M : getFilteredPersonList()
+activate M
+M --> TSC : List<Person>
+TSC -> TSC : create editedPerson with new stage
+TSC -> M : setPerson(personToEdit, editedPerson)
+TSC -> M : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+TSC -> M : CommandResult("Added transaction stage to Person: ...")
+M --> TSC : command result
+deactivate M
+TSC --> L : command result
+deactivate TSC
+L --> User : command result
+deactivate L
+@enduml
