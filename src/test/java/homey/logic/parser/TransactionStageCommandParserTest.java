@@ -56,6 +56,10 @@ public class TransactionStageCommandParserTest {
         // invalid transaction stage
         assertParseFailure(parser, TransactionStageCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON + " "
                 + invalidTransaction, expectedMessage);
+
+        // multiple prefixes
+        assertParseFailure(parser, TransactionStageCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON + " "
+                + nonEmptyTransaction + nonEmptyTransaction, expectedMessage);
     }
 
 }
