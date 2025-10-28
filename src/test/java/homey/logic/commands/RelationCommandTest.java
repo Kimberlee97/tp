@@ -58,10 +58,12 @@ public class RelationCommandTest {
                 RelationCommand.MESSAGE_ADD_RELATION_SUCCESS, VALID_RELATION_CLIENT, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setPerson(firstPerson, editedPerson);
+        showPersonAtIndex(expectedModel, INDEX_FIRST_PERSON);
+        expectedModel.setPerson(expectedModel.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(relationCommand, model, expectedMessage, expectedModel);
     }
+
 
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
