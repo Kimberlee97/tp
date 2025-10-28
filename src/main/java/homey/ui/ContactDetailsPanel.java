@@ -172,6 +172,8 @@ public class ContactDetailsPanel extends UiPart<Region> {
         meetingLabel.setText("Next meeting: " + meeting.toDisplayString());
         if (Meeting.isOverdueMeeting(meeting)) {
             meetingLabel.setStyle("-fx-text-fill: red;");
+        } else {
+            meetingLabel.setStyle(""); // reset style
         }
         setMeetingVisibility(true);
     }

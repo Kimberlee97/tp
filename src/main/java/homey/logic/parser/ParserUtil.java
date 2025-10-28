@@ -11,6 +11,7 @@ import homey.commons.util.StringUtil;
 import homey.logic.parser.exceptions.ParseException;
 import homey.model.person.Address;
 import homey.model.person.Email;
+import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Phone;
 import homey.model.person.Remark;
@@ -163,4 +164,21 @@ public class ParserUtil {
         String trimmed = remark.trim();
         return new Remark(trimmed);
     }
+
+    /**
+     * Converts a string into a {@code Meeting} object.
+     * Trims whitespace and checks that the format is valid.
+     *
+     * @param value Meeting date and time string to parse.
+     * @return A {@code Meeting} object with the given date and time.
+     * @throws ParseException If the string format is invalid.
+     */
+    public static Meeting parseMeeting(String value) throws ParseException {
+        String trimmed = value.trim();
+        if (!Meeting.isValidMeeting(trimmed)) {
+            throw new ParseException(Meeting.MESSAGE_CONSTRAINTS);
+        }
+        return new Meeting(trimmed);
+    }
+
 }

@@ -194,13 +194,14 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && stage.equals(otherPerson.stage)
-                && tags.equals(otherPerson.tags);
+                && tags.equals(otherPerson.tags)
+                && meeting.equals(otherPerson.meeting);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, stage, remark, tags);
+        return Objects.hash(name, phone, email, address, stage, remark, tags, meeting);
     }
 
     @Override
@@ -212,6 +213,7 @@ public class Person {
                 .add("address", address)
                 .add("transaction stage", stage)
                 .add("tags", tags)
+                .add("meeting", meeting.map(Meeting::toDisplayString).orElse("<none>"))
                 .toString();
     }
 
