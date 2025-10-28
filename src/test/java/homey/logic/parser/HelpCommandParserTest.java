@@ -79,4 +79,13 @@ public class HelpCommandParserTest {
         assertThrows(ParseException.class, () -> parser.parse("a/"));
         assertThrows(ParseException.class, () -> parser.parse("add person"));
     }
+
+    @Test
+    public void parse_offline_success() throws Exception {
+        HelpCommandParser parser = new HelpCommandParser();
+
+        assertTrue(parser.parse("offline") instanceof HelpCommand);
+        assertTrue(parser.parse("OFFLINE") instanceof HelpCommand);
+        assertTrue(parser.parse("OffLine") instanceof HelpCommand);
+    }
 }
