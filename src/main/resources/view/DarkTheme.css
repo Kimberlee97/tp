@@ -376,7 +376,7 @@
     -fx-background-color: #2d2d2d;
     -fx-border-color: transparent;
     -fx-border-width: 0;
-    -fx-min-width: 400;
+    -fx-min-width: 300;
     -fx-pref-width: 500;
     -fx-padding: 40;
 }
@@ -397,27 +397,6 @@
     -fx-opacity: 1;
     -fx-padding: 8 0 8 0;
     -fx-wrap-text: true;
-}
-
-.contact-details-panel .button {
-    -fx-background-color: #2d2d2d;
-    -fx-text-fill: #cccccc;
-    -fx-font-size: 13pt;
-    -fx-font-family: "Segoe UI";
-    -fx-padding: 15 30 15 30;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-border-color: transparent;
-    -fx-border-width: 0;
-}
-
-.contact-details-panel .button:hover {
-    -fx-background-color: #3d3d3d;
-    -fx-text-fill: white;
-}
-
-.contact-details-panel .button:pressed {
-    -fx-background-color: #4d4d4d;
 }
 
 .contact-details-panel HBox {
@@ -486,5 +465,19 @@
     -fx-max-height: 200px;
     -fx-background-color: #2d2d2d;
 }
+
+.contact-details-scroll {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: transparent;
+}
+
+.contact-details-scroll > .viewport {
+    -fx-background-color: #2d2d2d;
+}
+
+.contact-details-scroll > .corner {
+    -fx-background-color: #2d2d2d;
+}
+
 
 

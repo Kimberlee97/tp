@@ -7,8 +7,9 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fitToWidth="true" fitToHeight="true" styleClass="contact-details-scroll">
+<?import javafx.scene.Group?>
+<ScrollPane fx:id="contactDetailsScroll" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fitToWidth="true" fitToHeight="true" styleClass="contact-details-scroll" hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED">
     <content>
         <VBox fx:id="contactDetailsVBox" styleClass="contact-details-panel" fillWidth="true" >
             <children>
