@@ -82,11 +82,13 @@ public class AddCommand extends InteractiveCommand {
 
         // regular command or all missing fields are filled
         if (!isInteractive || missingFields.isEmpty()) {
-            this.isInteractive = false;
-
             if (model.hasPerson(toAdd)) {
-                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+                throw new CommandException(this.isInteractive
+                        ? MESSAGE_DUPLICATE_PERSON + "\n" + MESSAGE_INTERACTIVE
+                        : MESSAGE_DUPLICATE_PERSON);
             }
+
+            this.isInteractive = false;
 
             model.addPerson(toAdd);
             String successMessage;
@@ -120,7 +122,7 @@ public class AddCommand extends InteractiveCommand {
     }
 
     @Override
-    public String getPromptForField(Prefix prefix) throws CommandException {
+    public String getPromptForField(Prefix prefix) {
         switch (prefix.toString()) {
         case "n/":
             return MESSAGE_MISSING_NAME;
@@ -133,7 +135,9 @@ public class AddCommand extends InteractiveCommand {
         case "s/":
             return MESSAGE_MISSING_STAGE;
         default:
-            throw new CommandException("Missing field error");
+            // should not reach here
+            assert false;
+            return null;
         }
     }
 

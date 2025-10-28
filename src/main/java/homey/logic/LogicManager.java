@@ -79,7 +79,7 @@ public class LogicManager implements Logic {
     }
 
     private CommandResult handleInteractiveResponse(String input) throws CommandException, ParseException {
-        if (input.equalsIgnoreCase(CANCEL_COMMAND_WORD)) {
+        if (input.trim().equalsIgnoreCase(CANCEL_COMMAND_WORD)) {
             pendingInteractiveCommand = null;
             return new CommandResult(MESSAGE_CANCEL_COMMAND);
         }
