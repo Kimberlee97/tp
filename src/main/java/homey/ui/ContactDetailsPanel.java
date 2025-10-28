@@ -23,12 +23,6 @@ public class ContactDetailsPanel extends UiPart<Region> {
     private static final Logger logger = LogsCenter.getLogger(ContactDetailsPanel.class);
 
     @FXML
-    private Button editButton;
-
-    @FXML
-    private Button deleteButton;
-
-    @FXML
     private Label contactNameLabel;
 
     @FXML
@@ -72,34 +66,18 @@ public class ContactDetailsPanel extends UiPart<Region> {
     }
 
     /**
-     * Handles the edit button click
-     */
-    @FXML
-    private void handleEdit() {
-        logger.info("Edit button clicked");
-        // to be implemented in future
-    }
-
-    /**
-     * Handles the delete button click
-     */
-    @FXML
-    private void handleDelete() {
-        logger.info("Delete button clicked");
-        // to be implemented in future
-    }
-
-    /**
      * Displays the details of a given {@code Person} in the panel.
      * @param person the person whose details are to be displayed; if null, clears the panel
      */
     @FXML
     public void setContact(Person person) {
         if (person == null) {
+            logger.fine("No person selected - clearing contact details panel.");
             clearContact();
             return;
         }
 
+        logger.info("Displaying contact details for: " + person.getName().fullName);
         showPanel();
         displayBasicFields(person);
         displayTags(person);
@@ -116,6 +94,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
      */
     @FXML
     public void clearContact() {
+        logger.fine("Clearing contact details panel.");
         clearAllBasicFields();
         clearTags();
         hideMeeting();
@@ -126,10 +105,12 @@ public class ContactDetailsPanel extends UiPart<Region> {
         tagsFlowPane.getChildren().clear();
 
         if (person.getTags().isEmpty()) {
+            logger.fine("No tags found for " + person.getName().fullName);
             hideTagsSection();
             return;
         }
 
+        logger.fine("Displaying " + person.getTags().size() + " tags for " + person.getName().fullName);
         addTagsLabel();
         addTagElements(person.getTags());
         showTagsSection();
