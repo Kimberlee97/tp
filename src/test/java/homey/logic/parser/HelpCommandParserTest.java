@@ -89,5 +89,8 @@ public class HelpCommandParserTest {
         assertTrue(parser.parse("OffLine") instanceof HelpCommand);
         assertTrue(parser.parse("Offline  ") instanceof HelpCommand);
         assertTrue(parser.parse("  oFfLine") instanceof HelpCommand);
+
+        HelpCommand cmd = parser.parse("offline");
+        assertEquals("offline", cmd.getTopic().orElse(""));
     }
 }
