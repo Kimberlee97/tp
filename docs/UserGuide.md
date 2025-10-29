@@ -455,7 +455,7 @@ After archiving, you can view all hidden contacts using the `list archived` or `
 * `list archived` shows the archived contacts.  
   <img src="images/archiveCommandResult.png" width="700" height="auto" />
 
-  &nbsp;
+&nbsp;
 
 ### Unarchiving Contacts
 
