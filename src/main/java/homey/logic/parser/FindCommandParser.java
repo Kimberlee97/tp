@@ -44,6 +44,8 @@ public class FindCommandParser implements Parser<FindCommand> {
     private static final Set<String> VALID_TRANSACTIONS = Set.of("prospect", "negotiating", "closed");
     private static final String TRANSACTION_ERROR_MESSAGE =
             "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed' are allowed";
+    private static final String TAG_ERROR_MESSAGE =
+            "Invalid keyword. Tags can only contain alphanumeric characters";
 
     private static final Set<String> VALID_PREFIXES = Set.of(
             PREFIX_ADDRESS.toString(),
@@ -118,6 +120,9 @@ public class FindCommandParser implements Parser<FindCommand> {
     private FindCommand parseTag(String args) throws ParseException {
         validateNotEmpty(args, buildTagOnlyUsage());
         List<String> keywords = extractKeywords(args);
+        for (String keyword : keywords) {
+            validateTagKeyword(keyword);
+        }
         return new FindCommand(new TagContainsKeywordsPredicate(keywords));
     }
 
@@ -174,6 +179,12 @@ public class FindCommandParser implements Parser<FindCommand> {
     private void validateTransactionKeyword(String keyword) throws ParseException {
         if (!VALID_TRANSACTIONS.contains(keyword)) {
             throw new ParseException(TRANSACTION_ERROR_MESSAGE);
+        }
+    }
+
+    private void validateTagKeyword(String keyword) throws ParseException {
+        if (!keyword.matches("[A-Za-z0-9]+")) {
+            throw new ParseException(TAG_ERROR_MESSAGE);
         }
     }
 
