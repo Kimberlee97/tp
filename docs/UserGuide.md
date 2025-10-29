@@ -11,9 +11,9 @@ Homey is a **desktop app for property agents** to manage clients, meetings, and 
 It combines the **speed of a Command Line Interface (CLI)** with the **simplicity of a Graphical User Interface (GUI)**, so you can work quickly while staying organised.
 
 With Homey, you can:
-- Categorise contacts as *clients* or *vendors*
-- Track deal progress through *transaction stages*
-- Schedule and view *meetings* directly
+* Categorise contacts as *clients* or *vendors*
+* Track deal progress through *transaction stages*
+* Schedule and view *meetings* directly
 
 Whether you're closing deals or managing follow-ups, Homey helps you stay on top of your work - faster and smarter.
 
