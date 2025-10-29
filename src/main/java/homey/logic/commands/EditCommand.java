@@ -184,6 +184,7 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Address address;
+        private Relation relation;
         private TransactionStage stage;
         private Remark remark;
         private Set<Tag> tags;
@@ -247,6 +248,14 @@ public class EditCommand extends Command {
 
         public Optional<Address> getAddress() {
             return Optional.ofNullable(address);
+        }
+
+        public void setRelation(Relation relation) {
+            this.relation = relation;
+        }
+
+        public Optional<Relation> getRelation() {
+            return Optional.ofNullable(relation);
         }
 
         public void setStage(TransactionStage stage) {
