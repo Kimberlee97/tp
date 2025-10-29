@@ -11,6 +11,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import homey.logic.commands.FindCommand;
 import homey.logic.parser.exceptions.ParseException;
@@ -59,7 +60,8 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
         String trimmedArgs = validateAndTrim(args);
-        validateNoDuplicatePrefixes(args);
+        ArgumentMultimap argMultimap = tokenizeArguments(args);
+        validatePrefixes(argMultimap);
 
         if (trimmedArgs.startsWith(PREFIX_ADDRESS.toString())) {
             String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_ADDRESS.toString());
@@ -165,11 +167,31 @@ public class FindCommandParser implements Parser<FindCommand> {
         return trimmed;
     }
 
-    private void validateNoDuplicatePrefixes(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_ADDRESS, PREFIX_TAG,
+    private ArgumentMultimap tokenizeArguments(String args) {
+        return ArgumentTokenizer.tokenize(args, PREFIX_ADDRESS, PREFIX_TAG,
                 PREFIX_RELATION, PREFIX_TRANSACTION);
+    }
+
+    private void validateNoDuplicatePrefixes(ArgumentMultimap argMultimap) throws ParseException {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_ADDRESS, PREFIX_TAG, PREFIX_RELATION, PREFIX_TRANSACTION);
     }
+
+    private void validateOnlyOneSearchType(ArgumentMultimap argMultimap) throws ParseException {
+        long prefixCount = Stream.of(PREFIX_ADDRESS, PREFIX_TAG, PREFIX_RELATION, PREFIX_TRANSACTION)
+                .filter(prefix -> !argMultimap.getAllValues(prefix).isEmpty())
+                .count();
+        if (prefixCount > 1) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
+            );
+        }
+    }
+
+    private void validatePrefixes(ArgumentMultimap argMultimap) throws ParseException {
+        validateOnlyOneSearchType(argMultimap);
+        validateNoDuplicatePrefixes(argMultimap);
+    }
+
 
     private void validateNotEmpty(String args, String usage) throws ParseException {
         if (args.isEmpty()) {
