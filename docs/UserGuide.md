@@ -96,29 +96,51 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Viewing help : `help [topic | offline]`
+### Viewing help
 
-If you are unsure of the commands, use the `help` feature to open the User Guide in your browser.
-If the browser cannot be opened (e.g. blocked by the environment), a Help Window is shown so you can copy the link manually.
-If you do not have access to the internet, you can also open this Help Window manually which contains a summary of all available commands and usage examples!
+Homey provides a built-in help feature to guide you through all available commands.  
+If you're unsure about what to do, use the `help` command to open the User Guide directly in your browser.
 
-* When you enter the `help add` command, the browser automatically opens the "Adding a person" section of the User Guide.
-<img src="images/helpAdd.png" width="700" height="auto" />
+**Generic behaviour:**
+- **Online access:** When you enter a `help [topic]` command (e.g. `help add`), the browser automatically opens the relevant section of the User Guide.
+  <img src="images/helpAdd.png" width="700" height="auto" />
 
-* If blocked, the Help window appears instead. You can also access this window using the command `help offline`.
-<img src="images/helpOffline.png" width="700" height="auto" />
+- **Offline or blocked access:**  
+  If the browser cannot be opened (e.g. blocked by the environment) or you do not have internet access, a Help window will appear instead.  
+  You can also open this window manually using the `help offline` command.  
+  This window provides a summary of all available commands and usage examples.  
+  <img src="images/helpOffline.png" width="700" height="auto" />
 
-Format: `help [topic | offline]`
+#### Help by topic: `help [TOPIC]`
 
-* `topic` is optional and deep-links to a specific section of this guide.
+**Format:** `help [TOPIC]`
+
+**How it works:**
+* `TOPIC` is optional and deep-links to a specific section of this guide.
 * Topic matching is case-insensitive and ignores surrounding spaces.
-* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `find r/`, `find s/`, `relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear` and `exit`.
+* If the browser cannot be opened (e.g. blocked by the environment), a Help window will appear instead so you can copy the link manually.
 
-Examples:
-* `help` opens the User Guide home.
-* `help add` opens the "Adding a person" section.
-* `help edit` opens the "Editing a person" section.
-* `help offline` opens the offline Help Window.
+**Supported topics:**  
+`add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `find r/`, `find s/`,  
+`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear`, and `exit`.
+
+**Examples:**
+* `help` → Opens the User Guide home.
+* `help add` → Opens the “Adding a person” section.
+* `help edit` → Opens the “Editing a person” section.
+
+#### Help offline: `help offline`
+
+**Format:** `help offline`
+
+**How it works:**  
+If you do not have internet access, you can manually open the Help window using the `help offline` command.  
+This window provides a summary of all available commands and usage examples, allowing you to continue using Homey seamlessly while offline.
+
+**Example:**
+* `help offline` → Opens the offline Help window showing command summaries.
+
+&nbsp;
 
 ### Adding a person: `add`
 
@@ -135,9 +157,9 @@ To abort the command during this stage, input `cancel`.
 * A person can have any number of tags (including 0).
 * The s/TRANSACTION_STAGE field only accepts the values `prospect`, `negotiating` or `closed`.
 * The r/RELATION field only accepts the values `client` or `vendor`.
-* The m/MEETING field is optional — use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
+* The m/MEETING field is optional - use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
 * The r/RELATION field is optional. The default relation for a new contact is client.
-* The rm/REMARK field is optional — use it to add additional details regarding the person.
+* The rm/REMARK field is optional - use it to add additional details regarding the person.
 The remark field will be empty if no remark is given.
 </box>
 
@@ -335,7 +357,7 @@ Format: `find a/KEYWORD [MORE_KEYWORDS]`
 * The search is case-insensitive. e.g. `bedok` will match `Bedok`
 * The order of the keywords does not matter. e.g. `bedok north` will match `North Bedok`
 * Only the address is searched.
-* Partial matches are supported — e.g. `bed` will match `Bedok`
+* Partial matches are supported - e.g. `bed` will match `Bedok`
 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
@@ -393,44 +415,77 @@ Examples:
 * `find s/closed` returns all persons with transaction stage `closed`<br>
   ![result for 'find s/closed'](images/findTransactionClosed.png)
 
-### Archiving persons: `archive`
-With Homey, you can move a contact from the **active list** to the **archived list**, hiding them from normal view.
-Use this when you want to temporarily remove a contact without deleting their information.
+### Archiving Contacts
 
-Format: `archive INDEX`
+Homey lets you move a contact from the **active list** to the **archived list**, keeping your workspace organised without losing any information. Use this feature when you want to temporarily hide a contact instead of deleting them.
 
-* Archives the person at the specified `INDEX` (as shown in the currently displayed list).
+**General archiving behaviour:**
+- **Hidden but retained:** Archived contacts are removed from the active list but remain stored in the system.
+- **Viewable on demand:** You can view archived contacts using the `list archived` or `list archive` command.
+- **Restoration available:** Use the `unarchive INDEX` command to move a contact back to the active list.
+
+#### Archiving a contact: `archive INDEX`
+
+You can archive a contact by specifying their index in the currently displayed list.
+
+**Format:** `archive INDEX`
+
+**How it works:**
+* Archives the person at the specified `INDEX` (as shown in the current list).
 * The index must be a positive integer - e.g. `1`, `2`, `3`, ...
-* The command only works when viewing the **active list** (i.e. after using list).
-* Archived persons can be viewed later using `list archived` or `list archive`.
+* Only works when viewing the **active list** (i.e. after using `list`).
+* Once archived, the person will no longer appear in the active contact list.
 
-Examples:
-* `archive 2` archives the 2nd person in the active list.
-
+**Examples:**
+* `archive 2` archives the 2nd person in the active list.  
   <img src="images/archiveCommand.png" width="700" height="auto" />
 
-* `list archived` shows the contacts that have been hidden from the active list.
+#### Viewing archived contacts: `list archived` / `list archive`
 
+After archiving, you can view all hidden contacts using the `list archived` or `list archive` command.
+
+**Format:** `list archived` or `list archive`
+
+**How it works:**
+* Displays all contacts that have been archived.
+* You can use `unarchive INDEX` to move them back into the active list.
+* The list view switches automatically to the archived list when the command is entered.
+
+**Examples:**
+* `list archived` shows the archived contacts.  
   <img src="images/archiveCommandResult.png" width="700" height="auto" />
 
-### Unarchiving persons: `unarchive`
+  &nbsp;
 
-You can restore a contact from the **archived list** back to the **active list**.
+### Unarchiving Contacts
 
-Format: `unarchive INDEX`
+You can restore a contact from the **archived list** back to the **active list**, allowing you to re-engage with previously hidden contacts.
 
-* Unarchives the person at the specified `INDEX` (as shown in the **archived list**).
-* The index must be a positive integer - e.g. `1`, `2`, `3`, ...
-* The command only works when viewing the **archived list** (i.e. after using `list archived`).
-* The restored person will reappear in the active list
-* Unarchived persons can be viewed later using `list active` or `list`.
+**General unarchiving behaviour:**
+- **Restores visibility:** Moves the selected contact from the archived list back to the active list.
+- **Active list only:** Once unarchived, the person immediately reappears in the active list.
+- **Archived list restricted:** The command only works when viewing the **archived list** (i.e. after using `list archived`).
+- **View restored contacts:** Use `list active` or `list` to see the restored contact in your main view.
 
-Examples:
-* `unarchive 1` unarchives the first person in the archived list.
+#### Unarchiving a contact: `unarchive INDEX`
 
-  <img src="images/unarchiveCommand.png" width="700" height="auto" />
-  
+You can unarchive a contact by specifying their index in the currently displayed archived list.
+
+**Format:** `unarchive INDEX`
+
+**How it works:**
+* Unarchives the person at the specified `INDEX` (as shown in the archived list).
+* The index must be a positive integer  e.g. `1`, `2`, `3`, ...
+* Only works when viewing the **archived list**.
+* The restored person will immediately return to the **active list**.
+
+**Examples:**
+* `unarchive 1` restores the 1st person in the archived list.
+
+  <img src="images/unarchiveCommand.png" width="700" height="auto" />  
   <img src="images/unarchiveCommandResult.png" width="700" height="auto" />
+
+&nbsp;
 
 ### Deleting a person : `delete`
 
