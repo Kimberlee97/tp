@@ -279,53 +279,63 @@ Use this command to quickly view who you are meeting next.
 
 ---
 
-### Locating persons by name: `find`
+### Finding Your Contacts
 
-Finds persons whose names contain any of the given keywords.
+Homey helps you quickly locate any contact in your property database. You can search using `find` command with different filters to match your workflow needs.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+**General search rules** (applies to name, address, and tag searches):
+- **Case-insensitive**: Uppercase and lowercase letters are treated the same - typing `john` will match `John`
+- **Partial matching**: You do not have to type the full word - typing `Han` will find `Hans`
+- **Multiple keywords**: Use spaces between words to search for multiple terms at once
+- **Order does not matter**: Keywords can be in any order - `Doe John` will match `John Doe`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Partial matches are supported - e.g. `Han` will match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+---
+
+#### Find by name: `find`
+
+You can search for contacts whose names contain keywords you specify. This is useful when you remember a contact's name but need to pull up their full details quickly.
+
+**Format:** `find KEYWORD [MORE_KEYWORDS]`
+
+**How it works:**
+* Only the contact names are searched
+* All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find ale` returns `Alex Yeoh`
+* `find ale` returns `Alex Yeoh` and `Alexandra Tan`<br>
   ![result for 'find ale'](images/findAleResult.png)
 * `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks`<br>
   ![result for 'find john alex'](images/findJohnAlexResult.png)
 
-### Locating persons by address: `find a/`
+---
 
-Finds persons whose addresses contain any of the given keywords.
+#### Find by address: `find a/`
 
-Format: `find a/KEYWORD [MORE_KEYWORDS]`
+You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planing site visits in the same area.
 
-* The search is case-insensitive. e.g. `bedok` will match `Bedok`
-* The order of the keywords does not matter. e.g. `bedok north` will match `North Bedok`
-* Only the address is searched.
-* Partial matches are supported — e.g. `bed` will match `Bedok`
+**Format:** `find a/KEYWORD [MORE_KEYWORDS]`
+
+**How it works:**
+* Only the address field is searched
+* All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
 * `find a/bed` returns all persons living in `bedok` and `Bedok` or other addresses with `bed`<br>
   ![result for 'find alex david'](images/findAddressBedok.png)
 
-### Locating persons by tag: `find t/`
+---
 
-Finds persons whose tags contain any of the given keywords.
+#### Find by tag: `find t/`
 
-Format: `find t/KEYWORD [MORE_KEYWORDS]`
+You can search for contacts with specific tags you have assigned them. Tags help you organise contacts by categories like `referral` or `first-time-buyer`.
 
-* The search is case-insensitive. e.g. `friend` will match `Friend`
-* The order of the keywords does not matter.
-* Only tags are searched.
-* Partial matches are supported - e.g. `fri` will match `friend`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
+**Format:** `find t/KEYWORD [MORE_KEYWORDS]`
+
+**How it works:**
+* Only the tag field is searched 
+* All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find t/friend` returns all persons tagged with `friend`
@@ -333,38 +343,55 @@ Examples:
 * `find t/friend buyer` returns persons tagged with either `friend` or `buyer`<br>
   ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
 
-### Locating persons by relation: `find r/`
+---
 
-Finds persons whose relation is 'vendor' and 'client'
+#### Find by relation: `find r/`
 
-Format: `find r/KEYWORD`
+You can filter your contacts by whether they are property sellers or buyers. This helps you quickly segment your contact list when you need to contact all vendors about new listings or reach out to clients looking for properties.
 
-* The search is case-insensitive. e.g. `client` will match `Client`
-* Only relations are searched
-* Partial matches are not supported
-* Only accepts predefined relation types: `vendor` or `client`
+**Format:** `find r/RELATION`
+
+**How it works:**
+* Only the relation field is searched
+* You must type the exact relation type - partial words like `ven` will not work
+* You can only search for one relation at a time
+* Case-insensitive matching applies - `VENDOR`, `Vendor` and `vendor` all work
+
+**Available relations:**
+* `vendor`
+* `client`
 
 Examples:
 * `find r/vendor` returns all persons with relation `vendor`
 * `find r/client` returns all persons with relation `client`<br>
   ![result for 'find r/client'](images/findRelationClient.png)
 
-### Locating persons by transaction stage: `find s/`
+---
 
-Finds persons whose transaction stage is 'prospect', 'negotiating' or 'closed'
+#### Find by transaction stage: `find s/`
 
-Format: `find s/KEYWORD`
+You can filter contacts based on where they are in your sales pipeline. This helps you prioritise follow-ups, whether you need to check in with active negotiations or reconnect with potential clients.
 
-* The search is case-insensitive. e.g. `negotiating` will match `Negotiating`
-* Only transaction stage are searched
-* Partial matches are not supported
-* Only accepts predefined transaction stages: `prospect` or `negotiating` or `closed`
+**Format:** `find s/STAGE`
+
+**How it works:**
+* Only the transaction field is searched
+* You must type the exact stage name - partial words like `pros` will not work
+* You can only search for one stage at a time
+* Case-insensitive matching appllies - `Prospect`, `PROSPECT` and `prospect` all work
+
+**Available stages:**
+* `prospect`
+* `negotiating`
+* `closed`
 
 Examples:
 * `find s/prospect` returns all persons with transaction stage `prospect`
 * `find s/negotiating` returns all persons with transaction stage `negotiating`
 * `find s/closed` returns all persons with transaction stage `closed`<br>
   ![result for 'find s/closed'](images/findTransactionClosed.png)
+
+---
 
 ### Archiving persons: `archive`
 
