@@ -42,7 +42,7 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
    <box type="tip" seamless>
    **Tip:**
    If your home folder is in your desktop, make sure you change directory to your desktop first as shown in the screenshot.<br>
-   for example, we change directory to the desktop first, before changing it to the folder `smoke-test` and then to `my_tp`.
+   For example, we change directory to the desktop first, before changing it to the folder `smoke-test` and then to `my_tp`.
    </box>
 
 5. Use the `java -jar homey.jar` command and press `Enter` to run the application.<br>
