@@ -22,6 +22,7 @@ public class RelationCommandParser implements Parser<RelationCommand> {
      */
     public RelationCommand parse(String args) throws ParseException {
         requireNonNull(args);
+        args = args.toLowerCase();
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CLIENT, PREFIX_VENDOR);
 
         Index index;
