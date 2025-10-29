@@ -59,6 +59,7 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
         String trimmedArgs = validateAndTrim(args);
+        validateNoDuplicatePrefixes(args);
 
         if (trimmedArgs.startsWith(PREFIX_ADDRESS.toString())) {
             String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_ADDRESS.toString());
@@ -162,6 +163,12 @@ public class FindCommandParser implements Parser<FindCommand> {
             }
         }
         return trimmed;
+    }
+
+    private void validateNoDuplicatePrefixes(String args) throws ParseException {
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_ADDRESS, PREFIX_TAG,
+                PREFIX_RELATION, PREFIX_TRANSACTION);
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_ADDRESS, PREFIX_TAG, PREFIX_RELATION, PREFIX_TRANSACTION);
     }
 
     private void validateNotEmpty(String args, String usage) throws ParseException {
