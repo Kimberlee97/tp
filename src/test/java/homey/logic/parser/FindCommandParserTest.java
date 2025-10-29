@@ -13,12 +13,15 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
+import homey.logic.Messages;
 import homey.logic.commands.FindCommand;
 import homey.model.person.AddressContainsKeywordsPredicate;
 import homey.model.person.NameContainsKeywordsPredicate;
 import homey.model.person.RelationContainsKeywordPredicate;
 import homey.model.person.TagContainsKeywordsPredicate;
 import homey.model.person.TransactionContainsKeywordPredicate;
+
+
 
 /**
  * Represents a parser that interprets user input for the {@code find} command.
@@ -124,6 +127,12 @@ public class FindCommandParserTest {
     public void parse_tagPrefixWithSpaces_throwsParseException() {
         assertParseFailure(parser, " t/   ",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, tagOnlyUsage()));
+    }
+
+    @Test
+    public void parse_tagKeywordWithNonAlphanumericCharacters_throwsParseException() {
+        assertParseFailure(parser, "t/friend_buyer",
+                String.format("Invalid keyword. Tags can only contain alphanumeric characters"));
     }
 
     @Test
@@ -261,6 +270,67 @@ public class FindCommandParserTest {
     @Test
     public void parse_invalidPrefixMultipleCharacters_throwsParseException() {
         assertParseFailure(parser, " ab/keyword",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_duplicateAddressPrefix_throwsParseException() {
+        assertParseFailure(parser, " a/bedok a/north",
+                Messages.MESSAGE_DUPLICATE_FIELDS + "a/");
+    }
+
+    @Test
+    public void parse_duplicateTagPrefix_throwsParseException() {
+        assertParseFailure(parser, " t/friend t/colleague",
+                Messages.MESSAGE_DUPLICATE_FIELDS + "t/");
+    }
+
+    @Test
+    public void parse_duplicateRelationPrefix_throwsParseException() {
+        assertParseFailure(parser, " r/client r/vendor",
+                Messages.MESSAGE_DUPLICATE_FIELDS + "r/");
+    }
+
+    @Test
+    public void parse_duplicateTransactionPrefix_throwsParseException() {
+        assertParseFailure(parser, " s/prospect s/closed s/negotiating",
+                Messages.MESSAGE_DUPLICATE_FIELDS + "s/");
+    }
+
+    @Test
+    public void parse_duplicateEmptyPrefixes_throwsParseException() {
+        assertParseFailure(parser, " t/ t/",
+                Messages.MESSAGE_DUPLICATE_FIELDS + "t/");
+    }
+
+    // multiple different prefix
+    @Test
+    public void parse_mixedAddressAndTag_throwsParseException() {
+        assertParseFailure(parser, " a/Bedok t/friend",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_mixedTagAndRelation_throwsParseException() {
+        assertParseFailure(parser, " t/client r/client",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_mixedRelationAndTransaction_throwsParseException() {
+        assertParseFailure(parser, " r/client s/prospect",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_mixedEmptyTagAndAddress_throwsParseException() {
+        assertParseFailure(parser, " t/ a/Bedok",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_mixedThreePrefixes_throwsParseException() {
+        assertParseFailure(parser, " a/bedok t/friend r/client",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 }

@@ -11,6 +11,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import homey.logic.commands.FindCommand;
 import homey.logic.parser.exceptions.ParseException;
@@ -44,6 +45,8 @@ public class FindCommandParser implements Parser<FindCommand> {
     private static final Set<String> VALID_TRANSACTIONS = Set.of("prospect", "negotiating", "closed");
     private static final String TRANSACTION_ERROR_MESSAGE =
             "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed' are allowed";
+    private static final String TAG_ERROR_MESSAGE =
+            "Invalid keyword. Tags can only contain alphanumeric characters";
 
     private static final Set<String> VALID_PREFIXES = Set.of(
             PREFIX_ADDRESS.toString(),
@@ -57,6 +60,8 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
         String trimmedArgs = validateAndTrim(args);
+        ArgumentMultimap argMultimap = tokenizeArguments(args);
+        validatePrefixes(argMultimap);
 
         if (trimmedArgs.startsWith(PREFIX_ADDRESS.toString())) {
             String afterPrefix = extractAfterPrefix(trimmedArgs, PREFIX_ADDRESS.toString());
@@ -118,6 +123,9 @@ public class FindCommandParser implements Parser<FindCommand> {
     private FindCommand parseTag(String args) throws ParseException {
         validateNotEmpty(args, buildTagOnlyUsage());
         List<String> keywords = extractKeywords(args);
+        for (String keyword : keywords) {
+            validateTagKeyword(keyword);
+        }
         return new FindCommand(new TagContainsKeywordsPredicate(keywords));
     }
 
@@ -159,6 +167,32 @@ public class FindCommandParser implements Parser<FindCommand> {
         return trimmed;
     }
 
+    private ArgumentMultimap tokenizeArguments(String args) {
+        return ArgumentTokenizer.tokenize(args, PREFIX_ADDRESS, PREFIX_TAG,
+                PREFIX_RELATION, PREFIX_TRANSACTION);
+    }
+
+    private void validateNoDuplicatePrefixes(ArgumentMultimap argMultimap) throws ParseException {
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_ADDRESS, PREFIX_TAG, PREFIX_RELATION, PREFIX_TRANSACTION);
+    }
+
+    private void validateOnlyOneSearchType(ArgumentMultimap argMultimap) throws ParseException {
+        long prefixCount = Stream.of(PREFIX_ADDRESS, PREFIX_TAG, PREFIX_RELATION, PREFIX_TRANSACTION)
+                .filter(prefix -> !argMultimap.getAllValues(prefix).isEmpty())
+                .count();
+        if (prefixCount > 1) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
+            );
+        }
+    }
+
+    private void validatePrefixes(ArgumentMultimap argMultimap) throws ParseException {
+        validateOnlyOneSearchType(argMultimap);
+        validateNoDuplicatePrefixes(argMultimap);
+    }
+
+
     private void validateNotEmpty(String args, String usage) throws ParseException {
         if (args.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, usage));
@@ -174,6 +208,12 @@ public class FindCommandParser implements Parser<FindCommand> {
     private void validateTransactionKeyword(String keyword) throws ParseException {
         if (!VALID_TRANSACTIONS.contains(keyword)) {
             throw new ParseException(TRANSACTION_ERROR_MESSAGE);
+        }
+    }
+
+    private void validateTagKeyword(String keyword) throws ParseException {
+        if (!keyword.matches("[A-Za-z0-9]+")) {
+            throw new ParseException(TAG_ERROR_MESSAGE);
         }
     }
 
