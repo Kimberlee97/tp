@@ -318,9 +318,9 @@ public class AddCommandParser implements Parser<AddCommand> {
                     person.getMeeting()
             );
         default:
-            // Unknown field prefix
-            assert false : "Unknown field prefix: " + prefix;
-            return null;
+            // Unknown prefix
+            assert false : "Unknown prefix: " + prefix;
+            throw new AssertionError("Unknown prefix: " + prefix);
         }
     }
 }
