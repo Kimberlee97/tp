@@ -5,7 +5,6 @@ import static homey.logic.parser.CliSyntax.PREFIX_CLIENT;
 import static homey.logic.parser.CliSyntax.PREFIX_VENDOR;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 import homey.MainApp;
@@ -20,9 +19,10 @@ import homey.model.tag.Relation;
  * Parses input arguments and creates a new {@code RelationCommand} object.
  */
 public class RelationCommandParser implements Parser<RelationCommand> {
+    private static final Logger logger = LogsCenter.getLogger(MainApp.class);
+
     private Index index;
     private Relation relation;
-    private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
     /**
      * Parses the given {@code String} of arguments in the context of the {@code RelationCommand}
