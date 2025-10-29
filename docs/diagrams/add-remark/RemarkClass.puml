@@ -20,18 +20,17 @@ class Index
 class "<<interface>>\nModel" as Model {
 }
 
-class Person
-
 class Remark {
     + value
 }
 
+class CommandResult
+
 ' Relationships with multiplicities
 RemarkCommand --|> Command
+RemarkCommand ..> CommandResult : returns >
 RemarkCommand --> "1" Index : index
 RemarkCommand --> "1" Remark : remark
 RemarkCommand ..> Model : uses >
 Command ...> Model : uses >
-Model --> "1..*" Person : manages >
-Person *-- "1" Remark : remark
 @enduml
