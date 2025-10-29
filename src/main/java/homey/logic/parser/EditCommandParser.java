@@ -51,6 +51,8 @@ public class EditCommandParser implements Parser<EditCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
                 PREFIX_TRANSACTION, PREFIX_REMARK, PREFIX_MEETING);
 
+        validateMeetingOnlyEdit(argMultimap);
+
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
 
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
@@ -107,5 +109,27 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
         Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
         return Optional.of(ParserUtil.parseTags(tagSet));
+    }
+
+    private void validateMeetingOnlyEdit(ArgumentMultimap argMultimap) throws ParseException {
+        boolean meetingPresent = argMultimap.getValue(PREFIX_MEETING).isPresent();
+
+        if (!meetingPresent) {
+            return;
+        }
+
+        boolean otherPresent =
+                argMultimap.getValue(PREFIX_NAME).isPresent()
+                        || argMultimap.getValue(PREFIX_PHONE).isPresent()
+                        || argMultimap.getValue(PREFIX_EMAIL).isPresent()
+                        || argMultimap.getValue(PREFIX_ADDRESS).isPresent()
+                        || argMultimap.getValue(PREFIX_TRANSACTION).isPresent()
+                        || argMultimap.getValue(PREFIX_REMARK).isPresent()
+                        || !argMultimap.getAllValues(PREFIX_TAG).isEmpty();
+
+        if (otherPresent) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    EditCommand.MESSAGE_USAGE_MEETING_ONLY));
+        }
     }
 }
