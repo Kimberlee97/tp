@@ -8,7 +8,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class TransactionStage {
     public static final String MESSAGE_CONSTRAINTS = "Transaction stage should be 'prospect', 'negotiating'"
-            + "or 'closed'.";
+            + " or 'closed'.";
     public static final String[] VALID_STAGES = new String[]{"prospect", "negotiating", "closed"};
     public static final String MESSAGE_ARGUMENTS = "Index = %1$d, Stage = %2$s";
     public final String value;
@@ -19,23 +19,25 @@ public class TransactionStage {
      */
     public TransactionStage(String stageName) {
         requireNonNull(stageName);
-        checkArgument(isValid(stageName), MESSAGE_CONSTRAINTS);
-        this.value = stageName;
+        String normalisedStage = stageName.trim().toLowerCase();
+        checkArgument(isValid(normalisedStage), MESSAGE_CONSTRAINTS);
+        this.value = normalisedStage;
     }
 
     /**
-     * Returns true if the given string is a valid stage name.
+     * Returns true if the given string is a valid stage name (case-insensitive).
      * @param test
      * @return
      */
     public static boolean isValid(String test) {
-        boolean isValid = false;
-        for (int i = 0; i < VALID_STAGES.length; i++) {
-            if (test.equals(VALID_STAGES[i])) {
-                isValid = true;
+        requireNonNull(test);
+        String normalisedStage = test.trim().toLowerCase(); // defensive normalization
+        for (String validStage : VALID_STAGES) {
+            if (normalisedStage.equals(validStage)) {
+                return true;
             }
         }
-        return isValid;
+        return false;
     }
 
     @Override
