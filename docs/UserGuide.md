@@ -6,7 +6,16 @@
 
 # Homey User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+Homey is a **desktop app for property agents** to manage clients, meetings, and transactions - all in one place.
+
+It combines the **speed of a Command Line Interface (CLI)** with the **simplicity of a Graphical User Interface (GUI)**, so you can work quickly while staying organised.
+
+With Homey, you can:
+- Categorise contacts as *clients* or *vendors*
+- Track deal progress through *transaction stages*
+- Schedule and view *meetings* directly
+
+Whether you're closing deals or managing follow-ups, Homey helps you stay on top of your work - faster and smarter.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -15,18 +24,34 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your Computer.<br>
+1. To ensure you have Java `17` or above installed in your Computer:<br>
+   * Search for Command Prompt in the Start Menu.
+     <img src="images/cmd.png" width="700" height="auto" />
+   * Enter `java -version` and press `Enter`. You should see something like this.
+     <img src="images/javaVersion.png" width="700" height="auto" />
+   * Verify that the terminal displays `java version "17"` or higher (highlighted line in screenshot above).<br>
+
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F15A-4/tp/releases/).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-   ![Ui](images/Ui.png)
+4. Open the command terminal (as in Step 1), and change directory using the command `cd` into the folder you put the jar file in.<br>
+   <img src="images/changeDirectory.png" width="700" height="auto" />
+   <box type="tip" seamless>
+   **Tip:**
+   If your home folder is in your desktop, make sure you change directory to your desktop first as shown in the screenshot.<br>
+   for example, we change directory to the desktop first, before changing it to the folder `smoke-test` and then to `my_tp`.
+   </box>
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the User Guide in your web browser (if the browser can’t be opened, a Help window will appear instead).<br>
+5. Use the `java -jar homey.jar` command and press `Enter` to run the application.<br>
+   <img src="images/runCommand.png" width="700" height="auto" />
+
+6. A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+   <img src="images/Ui.png" width="700" height="auto" />
+
+7. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the User Guide in your web browser (if the browser can’t be opened, a Help window will appear instead).<br>
    Some example commands you can try:
 
    * `list` : Lists all contacts.
@@ -39,7 +64,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `exit` : Exits the app.
 
-1. Refer to the [Features](#features) below for details of each command.
+8. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -70,27 +95,29 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Viewing help : `help [topic]`
+### Viewing help : `help [topic | offline]`
 
 Opens the User Guide in your web browser.
 If the browser cannot be opened (e.g. blocked by the environment), a Help window is shown so you can copy the link manually.
+If you do not have access to the internet, you can also open this Help Window manually which contains a summary of all available commands and usage examples!
 
-* User enters help add command. The browser automatically opens the "Adding a person" section of the User Guide.
-![help add](images/helpAdd.png)
+* User enters `help add` command. The browser automatically opens the "Adding a person" section of the User Guide.
+<img src="images/helpAdd.png" width="700" height="auto" />
 
-* Opens the User Guide in your web browser. If blocked, the Help window appears instead.
-![help message](images/helpMessage.png)
+* If blocked, the Help window appears instead. Users can also access this window using the command `help offline`.
+<img src="images/helpOffline.png" width="700" height="auto" />
 
-Format: `help [topic]`
+Format: `help [topic | offline]`
 
 * `topic` is optional and deep-links to a specific section of this guide.
 * Topic matching is case-insensitive and ignores surrounding spaces.
-* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear` and `exit`.
+* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `find r/`, `find s/`, `relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear` and `exit`.
 
 Examples:
 * `help` opens the User Guide home.
 * `help add` opens the "Adding a person" section.
 * `help edit` opens the "Editing a person" section.
+* `help offline` opens the offline Help Window.
 * You can also open help using the Help menu or by pressing F1.
 
 ### Adding a person: `add`
@@ -380,9 +407,12 @@ Format: `archive INDEX`
 
 Examples:
 * `archive 2` archives the 2nd person in the active list.
-![Command 'archive 2'](images/archiveCommand.png)
+
+  <img src="images/archiveCommand.png" width="700" height="auto" />
+
 * `list archived` shows the contacts that have been hidden from the active list.
-![Result for 'archive 2'](images/archiveCommandResult.png)
+
+  <img src="images/archiveCommandResult.png" width="700" height="auto" />
 
 ### Unarchiving persons: `unarchive`
 
@@ -398,8 +428,10 @@ Format: `unarchive INDEX`
 
 Examples:
 * `unarchive 1` unarchives the first person in the archived list.
-![Command 'unarchive 1'](images/unarchiveCommand.png)
-![Result for 'unarchive 1'](images/unarchiveCommandResult.png)
+
+  <img src="images/unarchiveCommand.png" width="700" height="auto" />
+  
+  <img src="images/unarchiveCommandResult.png" width="700" height="auto" />
 
 ### Deleting a person : `delete`
 
