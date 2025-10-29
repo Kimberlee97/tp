@@ -25,6 +25,12 @@ public class RelationCommandParser implements Parser<RelationCommand> {
         args = args.toLowerCase();
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CLIENT, PREFIX_VENDOR);
 
+        if (argMultimap.getValue(PREFIX_VENDOR).isEmpty() && argMultimap.getValue(PREFIX_CLIENT).isEmpty()
+                || argMultimap.getValue(PREFIX_VENDOR).isPresent() && argMultimap.getValue(PREFIX_CLIENT).isPresent()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    RelationCommand.MESSAGE_USAGE));
+        }
+
         Index index;
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
@@ -33,18 +39,17 @@ public class RelationCommandParser implements Parser<RelationCommand> {
                     RelationCommand.MESSAGE_USAGE), ive);
         }
 
-        String relation = "";
-        if (argMultimap.getValue(PREFIX_CLIENT).isPresent()) {
-            relation = String.valueOf(PREFIX_CLIENT);
-        } else if (argMultimap.getValue(PREFIX_VENDOR).isPresent()) {
-            relation = String.valueOf(PREFIX_VENDOR);
+        Relation relation;
+        if (argMultimap.getValue(PREFIX_CLIENT).isPresent()
+                && argMultimap.getValue(PREFIX_CLIENT).get().isEmpty()) {
+            relation = ParserUtil.parseRelation("client");
+        } else if (argMultimap.getValue(PREFIX_VENDOR).isPresent()
+                && argMultimap.getValue(PREFIX_VENDOR).get().isEmpty()) {
+            relation = ParserUtil.parseRelation("vendor");
+        } else {
+            relation = ParserUtil.parseRelation("");
         }
 
-        try {
-            return new RelationCommand(index, new Relation(relation));
-        } catch (IllegalArgumentException iae) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    RelationCommand.MESSAGE_USAGE), iae);
-        }
+        return new RelationCommand(index, relation);
     }
 }
