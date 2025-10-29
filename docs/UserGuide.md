@@ -98,7 +98,7 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
 
 ### Viewing help : `help [topic | offline]`
 
-Opens the User Guide in your web browser.
+If you are unsure of the commands, use the `help` feature to open the User Guide in your browser.
 If the browser cannot be opened (e.g. blocked by the environment), a Help Window is shown so you can copy the link manually.
 If you do not have access to the internet, you can also open this Help Window manually which contains a summary of all available commands and usage examples!
 
@@ -394,8 +394,7 @@ Examples:
   ![result for 'find s/closed'](images/findTransactionClosed.png)
 
 ### Archiving persons: `archive`
-
-Moves a person from the **active list** to the **archived list**, hiding them from normal view.
+With Homey, you can move a contact from the **active list** to the **archived list**, hiding them from normal view.
 Use this when you want to temporarily remove a contact without deleting their information.
 
 Format: `archive INDEX`
@@ -416,7 +415,7 @@ Examples:
 
 ### Unarchiving persons: `unarchive`
 
-Restores a person from the **archived list** back to the **active list**.
+You can restore a contact from the **archived list** back to the **active list**.
 
 Format: `unarchive INDEX`
 
