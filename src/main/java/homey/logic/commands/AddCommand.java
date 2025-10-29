@@ -136,8 +136,8 @@ public class AddCommand extends InteractiveCommand {
             return MESSAGE_MISSING_STAGE;
         default:
             // should not reach here
-            assert false;
-            return null;
+            assert false : "Unknown prefix: " + prefix;;
+            throw new AssertionError("Unknown prefix: " + prefix);
         }
     }
 
