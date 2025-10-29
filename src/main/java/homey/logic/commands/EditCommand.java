@@ -65,6 +65,9 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_MEETING_SET = "Updated meeting for %1$s: %2$s";
     public static final String MESSAGE_EDIT_MEETING_CLEARED = "Cleared meeting for %1$s.";
     public static final String MESSAGE_EDIT_MEETING_NONE = "No meetings to clear for %1$s.";
+    public static final String MESSAGE_USAGE_MEETING_ONLY = COMMAND_WORD + " INDEX m/DATE_TIME\n"
+                    + "or: " + COMMAND_WORD + " INDEX m/ (to clear meeting)\n"
+                    + "Note: When editing a meeting, no other fields may be provided.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -87,14 +90,10 @@ public class EditCommand extends Command {
         if (!descriptor.isMeetingEdited()) {
             return String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after));
         }
-
         if (descriptor.getMeeting().isPresent()) {
-            // edit 1 m/<datetime>  → meeting set/updated
             String when = after.getMeeting().map(Meeting::toDisplayString).orElse("<unknown>");
             return String.format(MESSAGE_EDIT_MEETING_SET, name, when);
         }
-
-        // edit 1 m/  → clear meeting or nothing to clear
         return before.getMeeting().isEmpty()
                 ? String.format(MESSAGE_EDIT_MEETING_NONE, name)
                 : String.format(MESSAGE_EDIT_MEETING_CLEARED, name);
@@ -138,7 +137,6 @@ public class EditCommand extends Command {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
 
-        // Meeting: preserve original unless user edited (m/ provided). Empty means 'clear'.
         Optional<Meeting> updatedMeeting = editPersonDescriptor.isMeetingEdited()
                 ? editPersonDescriptor.getMeeting()
                 : personToEdit.getMeeting();
