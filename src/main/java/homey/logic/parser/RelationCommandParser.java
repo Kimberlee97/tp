@@ -56,6 +56,8 @@ public class RelationCommandParser implements Parser<RelationCommand> {
             relation = ParserUtil.parseRelation("");
         }
 
+        logger.fine("Creating Relation Command: " + index.getOneBased() + " " + relation.value);
+
         return new RelationCommand(index, relation);
     }
 }
