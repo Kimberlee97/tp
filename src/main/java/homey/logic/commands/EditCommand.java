@@ -5,9 +5,9 @@ import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
+import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
-import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collections;
@@ -50,6 +50,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_TRANSACTION + "TRANSACTION STAGE] "
+            + "[" + PREFIX_REMARK + "REMARK]"
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "[" + PREFIX_MEETING + "MEETING_DATETIME]\n"
             + "Tip: use " + PREFIX_MEETING + " to clear the meeting (e.g., 'm/').\n"
@@ -61,6 +62,9 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_EDIT_MEETING_SET = "Updated meeting for %1$s: %2$s";
+    public static final String MESSAGE_EDIT_MEETING_CLEARED = "Cleared meeting for %1$s.";
+    public static final String MESSAGE_EDIT_MEETING_NONE = "No meetings to clear for %1$s.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -75,6 +79,25 @@ public class EditCommand extends Command {
 
         this.index = index;
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
+    }
+
+    private String generateFeedback(Person before, Person after, EditPersonDescriptor descriptor) {
+        final String name = after.getName().toString();
+
+        if (!descriptor.isMeetingEdited()) {
+            return String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after));
+        }
+
+        if (descriptor.getMeeting().isPresent()) {
+            // edit 1 m/<datetime>  → meeting set/updated
+            String when = after.getMeeting().map(Meeting::toDisplayString).orElse("<unknown>");
+            return String.format(MESSAGE_EDIT_MEETING_SET, name, when);
+        }
+
+        // edit 1 m/  → clear meeting or nothing to clear
+        return before.getMeeting().isEmpty()
+                ? String.format(MESSAGE_EDIT_MEETING_NONE, name)
+                : String.format(MESSAGE_EDIT_MEETING_CLEARED, name);
     }
 
     @Override
@@ -94,15 +117,16 @@ public class EditCommand extends Command {
         }
 
         model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+
+        String feedback = generateFeedback(personToEdit, editedPerson, editPersonDescriptor);
+        return new CommandResult(feedback);
     }
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -119,8 +143,12 @@ public class EditCommand extends Command {
                 ? editPersonDescriptor.getMeeting()
                 : personToEdit.getMeeting();
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
+        Person edited = new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
                 updatedRelation, updatedStage, updatedRemark, updatedTags, updatedMeeting);
+        if (personToEdit.isArchived()) {
+            edited = edited.archived();
+        }
+        return edited;
     }
 
     @Override

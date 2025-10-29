@@ -81,6 +81,11 @@
     -fx-border-color: transparent transparent transparent #4d4d4d;
 }
 
+.split-pane:vertical .split-pane-divider {
+    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-border-color: #4d4d4d transparent transparent transparent;
+}
+
 .split-pane {
     -fx-border-radius: 1;
     -fx-border-width: 1;
@@ -366,53 +371,12 @@
     -fx-border-color: rgba(255,255,255,0.08);
 }
 
-/* navigation panel */
-.navigation-panel {
-    -fx-background-color: #2d2d2d;
-    -fx-border-color: #404040;
-    -fx-border-width: 0 1 0 0;
-    -fx-min-width: 200;
-    -fx-max-width: 200;
-    -fx-padding: 20;
-}
-
-.navigation-title {
-    -fx-font-size: 14pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #999999;
-    -fx-opacity: 1;
-    -fx-padding: 0 0 20 0;
-}
-
-.navigation-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #cccccc;
-    -fx-font-size: 13pt;
-    -fx-font-family: "Segoe UI";
-    -fx-padding: 12 15 12 15;
-    -fx-alignment: center-left;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-cursor: hand;
-    -fx-border-color: transparent;
-}
-
-.navigation-button:hover {
-    -fx-background-color: #404040;
-    -fx-text-fill: white;
-}
-
-.navigation-button-selected {
-    -fx-background-color: #404040;
-    -fx-text-fill: white;
-}
-
 /* contact details panel */
 .contact-details-panel {
     -fx-background-color: #2d2d2d;
     -fx-border-color: transparent;
     -fx-border-width: 0;
-    -fx-min-width: 400;
+    -fx-min-width: 300;
     -fx-pref-width: 500;
     -fx-padding: 40;
 }
@@ -433,27 +397,6 @@
     -fx-opacity: 1;
     -fx-padding: 8 0 8 0;
     -fx-wrap-text: true;
-}
-
-.contact-details-panel .button {
-    -fx-background-color: #2d2d2d;
-    -fx-text-fill: #cccccc;
-    -fx-font-size: 13pt;
-    -fx-font-family: "Segoe UI";
-    -fx-padding: 15 30 15 30;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-border-color: transparent;
-    -fx-border-width: 0;
-}
-
-.contact-details-panel .button:hover {
-    -fx-background-color: #3d3d3d;
-    -fx-text-fill: white;
-}
-
-.contact-details-panel .button:pressed {
-    -fx-background-color: #4d4d4d;
 }
 
 .contact-details-panel HBox {
@@ -485,7 +428,7 @@
 .contact-tags {
     -fx-hgap: 7;
     -fx-vgap: 5;
-    -fx-padding: 8 0 0 0;
+    -fx-padding: 8 0 8 0;
 }
 
 .contact-tags .label {
@@ -504,7 +447,7 @@
     -fx-padding: 0;
     -fx-border-radius: 0;
     -fx-background-radius: 0;
-    -fx-text-fill: #cfd6e4;
+    -fx-text-fill: #cccccc;
 }
 
 .contacts-list-container {
@@ -519,8 +462,52 @@
 }
 
 #resultDisplayPlaceholder {
-    -fx-max-height: 130px;
+    -fx-max-height: 200px;
     -fx-background-color: #2d2d2d;
 }
+
+.contact-details-scroll {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: transparent;
+}
+
+.contact-details-scroll > .viewport {
+    -fx-background-color: #2d2d2d;
+}
+
+.contact-details-scroll > .corner {
+    -fx-background-color: #2d2d2d;
+}
+
+.menu-bar {
+    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-padding: 5 10 5 10;
+}
+
+.menu-bar .button {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: white;
+    -fx-border-color: #4d4d4d;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 8 16 8 16;
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI";
+    -fx-min-width: 80;
+    -fx-pref-width: 80;
+    -fx-max-width: 80;
+}
+
+.menu-bar .button:hover {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #6d6d6d;
+}
+
+.menu-bar .button:pressed {
+    -fx-background-color: #0f0f0f;
+    -fx-border-color: #8d8d8d;
+}
+
 
 

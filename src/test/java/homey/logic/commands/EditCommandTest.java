@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 import homey.commons.core.index.Index;
@@ -24,6 +26,7 @@ import homey.model.AddressBook;
 import homey.model.Model;
 import homey.model.ModelManager;
 import homey.model.UserPrefs;
+import homey.model.person.Meeting;
 import homey.model.person.Person;
 import homey.testutil.EditPersonDescriptorBuilder;
 import homey.testutil.PersonBuilder;
@@ -88,14 +91,14 @@ public class EditCommandTest {
 
         Person personInFilteredList = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person editedPerson = new PersonBuilder(personInFilteredList).withName(VALID_NAME_BOB).build();
-        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
-                new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
+        EditCommand editCommand = new EditCommand(
+                INDEX_FIRST_PERSON, new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
-
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
+        showPersonAtIndex(expectedModel, INDEX_FIRST_PERSON);
 
+        expectedModel.setPerson(expectedModel.getFilteredPersonList().get(0), editedPerson);
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
@@ -179,6 +182,71 @@ public class EditCommandTest {
         String expected = EditCommand.class.getCanonicalName() + "{index=" + index + ", editPersonDescriptor="
                 + editPersonDescriptor + "}";
         assertEquals(expected, editCommand.toString());
+    }
+
+    @Test
+    public void execute_clearMeeting_showsClearMessage() throws Exception {
+        Model localModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        Person original = localModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person withMeeting = new PersonBuilder(original).withMeeting("2025-11-10 09:30").build();
+        localModel.setPerson(original, withMeeting);
+
+        // Descriptor that clears meeting (m/)
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        descriptor.setMeeting(Optional.empty());
+
+        EditCommand cmd = new EditCommand(INDEX_FIRST_PERSON, descriptor);
+        CommandResult result = cmd.execute(localModel);
+
+        // Message check
+        String expectedPrefix = "Cleared meeting for " + withMeeting.getName();
+        assertTrue(result.getFeedbackToUser().startsWith(expectedPrefix));
+
+        // State check: meeting is cleared
+        Person after = localModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        assertTrue(after.getMeeting().isEmpty());
+    }
+
+    @Test
+    public void execute_setMeeting_showsUpdatedMessage() throws Exception {
+        Model localModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        // Ensure the first person starts WITHOUT a meeting (default builder has none)
+        Person original = localModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person withoutMeeting = new PersonBuilder(original).build();
+        localModel.setPerson(original, withoutMeeting);
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        descriptor.setMeeting(Optional.of(new Meeting("2025-11-11 09:30")));
+
+        EditCommand cmd = new EditCommand(INDEX_FIRST_PERSON, descriptor);
+        CommandResult result = cmd.execute(localModel);
+
+        // Message check
+        assertTrue(result.getFeedbackToUser().startsWith("Updated meeting for "));
+        assertTrue(result.getFeedbackToUser().contains("2025-11-11 09:30"));
+
+        // State check: meeting is set
+        Person after = localModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        assertTrue(after.getMeeting().isPresent());
+        assertEquals("2025-11-11 09:30", after.getMeeting().get().toDisplayString());
+    }
+
+    @Test
+    public void execute_clearMeetingWhenNone_showsNoMeetingsToClearMessage() throws Exception {
+        Model localModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Person original = localModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person withoutMeeting = new PersonBuilder(original).build();
+        localModel.setPerson(original, withoutMeeting);
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        descriptor.setMeeting(Optional.empty());
+
+        EditCommand cmd = new EditCommand(INDEX_FIRST_PERSON, descriptor);
+        CommandResult result = cmd.execute(localModel);
+
+        assertTrue(result.getFeedbackToUser().contains("No meetings to clear for"));
     }
 
 }

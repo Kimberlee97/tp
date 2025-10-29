@@ -1,7 +1,6 @@
 package homey.logic.commands;
 
 import static homey.commons.util.CollectionUtil.requireAllNonNull;
-import static homey.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class TransactionStageCommand extends Command {
             + "by the index number used in the last person listing. "
             + "Existing transaction stage will be overwritten by the input.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "s/ [TRANSACTION STAGE]\n"
+            + "s/ TRANSACTION STAGE\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + "s/prospect";
 
@@ -54,13 +53,14 @@ public class TransactionStageCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = new Person(
-                personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), personToEdit.getRelation(), stage, personToEdit.getRemark(),
-                personToEdit.getTags(), personToEdit.getMeeting());
+        EditCommand.EditPersonDescriptor descriptor = new EditCommand.EditPersonDescriptor();
+        descriptor.setStage(stage);
+        Person editedPerson = EditCommand.createEditedPerson(personToEdit, descriptor);
 
+        if (personToEdit.isArchived()) {
+            editedPerson = editedPerson.archived();
+        }
         model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(generateSuccessMessage(editedPerson));
     }

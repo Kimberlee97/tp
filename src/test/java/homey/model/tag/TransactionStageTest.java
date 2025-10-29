@@ -19,7 +19,7 @@ public class TransactionStageTest {
     }
 
     @Test
-    public void isValidStageName() {
+    public void isValid_invalidStageName_returnsFalse() {
         // null stage name throws NullPointerException
         assertThrows(NullPointerException.class, () -> TransactionStage.isValid(null));
 
@@ -28,9 +28,22 @@ public class TransactionStageTest {
         assertTrue(!TransactionStage.isValid("potential"));
         assertTrue(!TransactionStage.isValid("prospect closed negotiating"));
 
-        /* valid stage names */
+        // valid stage names
         for (int i = 0; i < TransactionStage.VALID_STAGES.length; i++) {
             assertTrue(TransactionStage.isValid(TransactionStage.VALID_STAGES[i]));
         }
+    }
+
+    @Test
+    public void isValid_validCaseInsensitiveInputs_returnsTrue() {
+        for (String valid : TransactionStage.VALID_STAGES) {
+            assertTrue(TransactionStage.isValid(valid));
+        }
+
+        // case variations (to verify case-insensitive matching)
+        assertTrue(TransactionStage.isValid("Prospect"));
+        assertTrue(TransactionStage.isValid("NEGOTIATING"));
+        assertTrue(TransactionStage.isValid("Closed"));
+        assertTrue(TransactionStage.isValid("PrOsPeCt"));
     }
 }

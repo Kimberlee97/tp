@@ -82,14 +82,27 @@ public class AddCommand extends InteractiveCommand {
 
         // regular command or all missing fields are filled
         if (!isInteractive || missingFields.isEmpty()) {
-            this.isInteractive = false;
-
             if (model.hasPerson(toAdd)) {
-                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+                throw new CommandException(this.isInteractive
+                        ? MESSAGE_DUPLICATE_PERSON + "\n" + MESSAGE_INTERACTIVE
+                        : MESSAGE_DUPLICATE_PERSON);
             }
 
+            this.isInteractive = false;
+
             model.addPerson(toAdd);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+            String successMessage;
+            if (toAdd.getMeeting().isPresent()) {
+                successMessage = String.format(
+                        "New person added: %s\nNext meeting: %s",
+                        Messages.format(toAdd),
+                        toAdd.getMeeting().get().toDisplayString()
+                );
+            } else {
+                successMessage = String.format(MESSAGE_SUCCESS, Messages.format(toAdd));
+            }
+
+            return new CommandResult(successMessage);
         }
 
         String prompt = getPromptForField(getNextMissingField()) + "\n" + MESSAGE_INTERACTIVE;
@@ -109,7 +122,7 @@ public class AddCommand extends InteractiveCommand {
     }
 
     @Override
-    public String getPromptForField(Prefix prefix) throws CommandException {
+    public String getPromptForField(Prefix prefix) {
         switch (prefix.toString()) {
         case "n/":
             return MESSAGE_MISSING_NAME;
@@ -122,7 +135,9 @@ public class AddCommand extends InteractiveCommand {
         case "s/":
             return MESSAGE_MISSING_STAGE;
         default:
-            throw new CommandException("Missing field error");
+            // should not reach here
+            assert false : "Unknown prefix: " + prefix;;
+            throw new AssertionError("Unknown prefix: " + prefix);
         }
     }
 
