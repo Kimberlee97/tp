@@ -52,10 +52,9 @@ public class RelationCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = new Person(
-                personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), relation, personToEdit.getStage(), personToEdit.getRemark(),
-                personToEdit.getTags(), personToEdit.getMeeting());
+        EditCommand.EditPersonDescriptor descriptor = new EditCommand.EditPersonDescriptor();
+        descriptor.setRelation(relation);
+        Person editedPerson = EditCommand.createEditedPerson(personToEdit, descriptor);
 
         if (personToEdit.isArchived()) {
             editedPerson = editedPerson.archived();
