@@ -25,13 +25,14 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
 ## Quick start
 
 1. To ensure you have Java `17` or above installed in your Computer:<br>
-   * Search for Command Prompt in the Start Menu.
+   * Search for Command Prompt in the Start Menu (if you are using Mac, open terminal by using Spotlight Search (Command + Space bar), then type "Terminal").
      <img src="images/cmd.png" width="700" height="auto" />
-   * Enter `java -version` and press `Enter`. You should see something like this.
+   * Enter `java -version` and press Enter. You should see something like this.
      <img src="images/javaVersion.png" width="700" height="auto" />
    * Verify that the terminal displays `java version "17"` or higher (highlighted line in screenshot above).<br>
-
-   **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+   * if Java version displayed is not Java `17` or higher:
+     * **Windows users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationWindows.html).
+     * **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
 2. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F15A-4/tp/releases/).
 
@@ -42,21 +43,21 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
    <box type="tip" seamless>
    **Tip:**
    If your home folder is in your desktop, make sure you change directory to your desktop first as shown in the screenshot.<br>
-   For example, we change directory to the desktop first, before changing it to the folder `smoke-test` and then to `my_tp`.
+   For example, we change directory to the `Desktop` first, before changing it to the folder `your_home_folder_name` where our jar file is in.
    </box>
 
-5. Use the `java -jar homey.jar` command and press `Enter` to run the application.<br>
+5. Use the `java -jar homey.jar` command and press Enter to run the application.<br>
    <img src="images/runCommand.png" width="700" height="auto" />
 
 6. A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    <img src="images/Ui.png" width="700" height="auto" />
 
-7. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the User Guide in your web browser (if the browser can’t be opened, a Help window will appear instead).<br>
+7. Type a command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the User Guide in your web browser (if the browser can’t be opened, a Help window will appear instead).<br>
    Some example commands you can try:
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` : Adds a contact named `John Doe` to the Address Book.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -98,13 +99,13 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
 ### Viewing help : `help [topic | offline]`
 
 Opens the User Guide in your web browser.
-If the browser cannot be opened (e.g. blocked by the environment), a Help window is shown so you can copy the link manually.
+If the browser cannot be opened (e.g. blocked by the environment), a Help Window is shown so you can copy the link manually.
 If you do not have access to the internet, you can also open this Help Window manually which contains a summary of all available commands and usage examples!
 
-* User enters `help add` command. The browser automatically opens the "Adding a person" section of the User Guide.
+* When you enter the `help add` command, the browser automatically opens the "Adding a person" section of the User Guide.
 <img src="images/helpAdd.png" width="700" height="auto" />
 
-* If blocked, the Help window appears instead. Users can also access this window using the command `help offline`.
+* If blocked, the Help window appears instead. You can also access this window using the command `help offline`.
 <img src="images/helpOffline.png" width="700" height="auto" />
 
 Format: `help [topic | offline]`
@@ -118,7 +119,6 @@ Examples:
 * `help add` opens the "Adding a person" section.
 * `help edit` opens the "Editing a person" section.
 * `help offline` opens the offline Help Window.
-* You can also open help using the Help menu or by pressing F1.
 
 ### Adding a person: `add`
 
@@ -395,7 +395,7 @@ Examples:
 
 ### Archiving persons: `archive`
 
-Moves a person from the active list to the **archived list**, hiding them from normal view.
+Moves a person from the **active list** to the **archived list**, hiding them from normal view.
 Use this when you want to temporarily remove a contact without deleting their information.
 
 Format: `archive INDEX`
