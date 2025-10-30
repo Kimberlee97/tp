@@ -4,7 +4,7 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# Homey Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -1419,7 +1419,7 @@ testers are expected to do more *exploratory* testing.
 
 **Team size:** 5 members. 
 
-1. 
+1. None as of v1.5
 
 --------------------------------------------------------------------------------------------------------------------
 
