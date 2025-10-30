@@ -25,6 +25,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
 <box type="info" header="Table of Contents">
 
 - [Quick start](#quick-start)
+- [Glossary](#glossary)
 - [Features](#features)
     - [Viewing Help](#viewing-help)
         - [Help by topic: `help [TOPIC]`](#help-by-topic-help-topic)
@@ -137,31 +138,68 @@ If you're already familiar, jump directly to the section relevant to your needs.
 
 --------------------------------------------------------------------------------------------------------------------
 
+## Glossary
+Before you start using Homey’s commands, here’s a list of key terms you’ll see throughout this guide.
+This glossary helps you understand the words used in commands, so you can follow the examples confidently.
+
+| **Term** | **Meaning**                                                                                                                                        |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                                |
+| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                          |
+| **Prefix** | A short label before a slash that tells Homey what the information means (e.g. `n/` for name, `p/` for phone).                                     |
+| **Placeholder** | A word written in CAPITAL LETTERS that shows the kind of information you should type (e.g. `NAME` in `n/NAME` means you should enter a real name). |
+| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                                |
+| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                           |
+| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                         |
+| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                         |
+| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                          |
+| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                    |
+| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                            |
+| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                     |
+| **Archive** | Hides a contact without deleting it.                                                                                                               |
+| **Unarchive** | Restores an archived contact to the active list.                                                                                                   |
+| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                           |
+| **Case-insensitive** | Commands work the same with uppercase or lowercase letters (e.g. `FIND John` = `find john`).                                                       |
+
+--------------------------------------------------------------------------------------------------------------------
+
 ## Features
 
 <box type="info" seamless>
 
-**Notes about the command format:**<br>
+**How to Use the Command Formats:**
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+* Words in `CAPITAL LETTERS` are parameters.
+  * These are the parts you replace with your own information. 
+  * Example: `add n/NAME` means `NAME` is a placeholder for you to type the real name.
 
-* Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
 
-* Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+* Items in square brackets [] are optional.
+  * This means you can include them or leave them out. 
+  * Example: `n/NAME [t/TAG]` means you can type `n/John Doe t/friend` or `n/John Doe`.
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
-* Extraneous parameters for commands that do not take in parameters (such as `list`, `exit` and `clear`) will be ignored.<br>
-  e.g. if the command specifies `list 123`, it will be interpreted as `list`.
+* Items with `…`​ can appear many times.
+  * If something ends with three dots `...`, you can use it as many times as you want — even zero.
+  * Example `[t/TAG]…​` means you can type nothing, one tag, or several. 
 
-* `help` accepts an optional topic to deep-link to a specific section of this guide.
-  e.g. `help add`, `help edit` and `help delete`.
 
-* If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
+* You can mix the order — for parameters only.
+  * Always type the command name (e.g. `find`, `add`, `edit`) and `INDEX` (if needed) first. 
+  * You can rearrange the parameters (e.g. `n/`, `p/`, `t/`) in any order you like. 
+  * Example: `add n/NAME p/PHONE_NUMBER` works the same as `add p/PHONE_NUMBER n/NAME`.
+
+
+* Extra inputs for simple commands are ignored.
+  * Commands like `exit` and `clear` do not take extra information. 
+  * Example: `exit 123` works the same as `exit`.
+
+
+* `help` accepts a topic for quick navigation.
+  * Example:`help add` opens that section of the User Guide directly.
+
+
+* When copying commands from this guide, ensure no spaces disappear at line breaks.
 </box>
 
 ### Viewing Help
@@ -897,3 +935,4 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 | **Help**        | `help [TOPIC]`<br> e.g., `help add`<br><br>`help offline`                                                                                                                                                                             |
 | **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                 |
 | **Unarchive**   | `unarchive INDEX`<br> e.g., `unarchive 1`                                                                                                                                                                                             |
+
