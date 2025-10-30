@@ -188,12 +188,12 @@ progress.
 You can update a partner’s deal progress by replacing their current transaction stage. This is useful when a deal moves
 forward or changes status, helping you maintain an accurate overview of your active deals.
 
-**Format:** `tranaction INDEX s/TRANSACTION STAGE`
+**Format:** `transaction INDEX s/TRANSACTION STAGE`
 
 **How it works:**
-* Replaces the transaction stage of the person at the specified `INDEX` to `TRANSACTION STAGE`.
-* The given `TRANSACTION_STAGE` must be one of the following: `prospect`, `negotiating` or `closed`.
-* `TRANSACTION_STAGE` is case-insensitive — e.g. `prOsPECT` works the same as `prospect`
+* Replaces the transaction stage of the partner at the specified `INDEX` to `TRANSACTION STAGE`.
+* The given `TRANSACTION STAGE` must be one of the following: `prospect`, `negotiating` or `closed`.
+* `TRANSACTION STAGE` is case-insensitive — e.g. `prOsPECT` works the same as `prospect`
 * Additional whitespace is accepted — e.g. `s/   closed` works the same as `s/closed`
 
 Examples:
@@ -211,7 +211,7 @@ You can use the `remark` command to add, update or remove personal notes such as
 
 **General behaviour:**
 - **Flexible usage:** You can add, edit, or delete remarks for any business partner.
-- **Instant updates:** Changes appear immediately on the partner’s card.
+- **Instant updates:** Changes appear immediately on the partner’s profile.
 - **Hidden by default:** The `remark` field only appears after a remark has been added.
 
 #### Adding or editing a remark: `remark INDEX rm/REMARK`
