@@ -1090,7 +1090,7 @@ Precondition: User is at the landing page of the app and has existing list of co
 
 * 1a. User changes the transaction stage using the `edit` command instead of `transaction`
   * Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage. 
-* 1b. User enters an invalid command format or omits required fields (e.g. `transaction     `).
+* 1b. User enters an invalid command format or omits required fields (e.g. missing index or `s\`).
   * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
 * 2a. The given index is invalid.
   * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
@@ -1105,7 +1105,7 @@ Precondition: User is at the landing page of the app and has existing list of co
 
 1. User requests to change the remark of a contact by specifying the contact's index and the new remark.
 2. Homey validates that the specified index exists and the remark length does not exceed 100 characters.
-3. Homey updates the contact's transaction stage.
+3. Homey updates the contact's remark.
 4. Homey displays a success message confirming the update.
 
    Use case ends.
@@ -1114,14 +1114,13 @@ Precondition: User is at the landing page of the app and has existing list of co
 
 * 1a. User changes the remark using the `edit` command instead of `remark`
     * Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage.
-* 1b. User enters an invalid command format or omits required fields (e.g. `transaction     `).
+* 1b. User enters an invalid command format or omits required fields (e.g. missing index or `rm/`).
     * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
 * 2a. The given index is invalid.
     * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
     * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
-* 2b. The transaction stage provided is empty or invalid (i.e. not one of `prospect`, `negotiating` or `closed`).
-    * 2b1. If the transaction stage provided is empty, Homey displays "Invalid command format! Transaction stage cannot be empty.".
-    * 2b1. If the transaction stage provided is invalid, Homey displays the list of valid stages.
+* 2b. The remark provided is invalid (i.e. more than 100 characters).
+    * 2b1. 
 
 ### Non-Functional Requirements
 
