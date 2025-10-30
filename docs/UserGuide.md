@@ -14,7 +14,7 @@ With Homey, you can:
 * Categorise contacts as *clients* or *vendors*
 * Track deal progress through *transaction stages*
 * Schedule and view *meetings* directly
-* Hide contacts by **archiving** to keep your list organised without losing information
+* Hide contacts by *archiving* to keep your list organised without losing information
 
 Whether you're closing deals or managing follow-ups, Homey helps you stay on top of your work - faster and smarter.<br>
 
@@ -23,7 +23,44 @@ If you're already familiar, jump directly to the section relevant to your needs.
 
 <!-- Web Table of Contents -->
 <box type="info" header="Table of Contents">
-  <toc></toc>
+
+- [Quick start](#quick-start)
+- [Features](#features)
+    - [Viewing Help](#viewing-help)
+        - [Help by topic: `help [TOPIC]`](#help-by-topic-help-topic)
+        - [Help offline: `help offline`](#help-offline-help-offline)
+    - [Adding A Person: `add`](#adding-a-person-add)
+        - [Adding a meeting while creating a contact: `add`](#adding-a-meeting-while-creating-a-contact-add)
+    - [Listing Your Contacts](#listing-your-contacts)
+        - [List all contacts: `list`](#list-all-contacts-list)
+        - [Listing contacts by meeting date : `list meeting`](#listing-contacts-by-meeting-date--list-meeting)
+        - [Listing archived contacts: `list archived` / `list archive`](#listing-archived-contacts-list-archived--list-archive)
+        - [Listing active contacts: `list` / `list active`](#listing-active-contacts-list--list-active)
+    - [Editing Your Contacts](#editing-your-contacts)
+        - [Editing a contact: `edit`](#editing-a-contact-edit)
+        - [Editing or removing a contact’s meeting : `edit INDEX m/`](#editing-or-removing-a-contacts-meeting--edit-index-m)
+    - [Add relational tag : `relation`](#add-relational-tag--relation)
+    - [Tracking Deal Progress](#tracking-deal-progress)
+        - [Updating the transaction stage: `transaction INDEX s/TRANSACTION_STAGE`](#updating-the-transaction-stage-transaction-index-stransaction_stage)
+    - [Adding Remarks](#adding-remarks)
+        - [Adding or editing a remark: `remark INDEX rm/REMARK`](#adding-or-editing-a-remark-remark-index-rmremark)
+    - [Finding Your Contacts](#finding-your-contacts)
+        - [Find by name: `find`](#find-by-name-find)
+        - [Find by address: `find a/`](#find-by-address-find-a)
+        - [Find by tag: `find t/`](#find-by-tag-find-t)
+        - [Find by relation: `find r/`](#find-by-relation-find-r)
+        - [Find by transaction stage: `find s/`](#find-by-transaction-stage-find-s)
+    - [Archiving Your Contacts: `archive`](#archiving-your-contacts-archive)
+    - [Unarchiving Your Contacts: `unarchive`](#unarchiving-your-contacts-unarchive)
+    - [Deleting a person : `delete`](#deleting-a-person--delete)
+    - [Clearing all entries : `clear`](#clearing-all-entries--clear)
+    - [Exiting the program : `exit`](#exiting-the-program--exit)
+    - [Saving the data](#saving-the-data)
+    - [Editing the data file](#editing-the-data-file)
+- [FAQ](#faq)
+- [Known issues](#known-issues)
+- [Command summary](#command-summary)
+
 </box>
 
 <!-- * Table of Contents -->
@@ -127,7 +164,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Viewing help
+### Viewing Help
 
 Homey provides a built-in help feature to guide you through all available commands.  
 If you're unsure about what to do, use the `help` command to open the User Guide directly in your browser.
@@ -182,7 +219,7 @@ This window provides a summary of all available commands and usage examples, all
 
 &nbsp;
 
-### Adding a person: `add`
+### Adding A Person: `add`
 
 This is the core functionality of Homey that allows it to be your one-stop manager assistant, adding contacts.  
 Use this feature whenever you want to add new contacts into Homey.
@@ -276,7 +313,7 @@ You can include a meeting date and time when adding a new contact. This allows y
 </div>
 &nbsp;
 
-## Listing available contacts
+## Listing your contacts
 
 Homey lets you view all current contacts and get a clear overview of who you’re working with.
 
@@ -292,8 +329,12 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 ### Listing all contacts : `list`
 
-Displays all active contacts currently in your address book.
-Use this command when you want to return to the full contact view after performing filters or searches.
+Displays all active contacts currently in your address book. Use this command when you want to return to the full contact view after performing filters or searches.
+
+**General behaviour:**
+- **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `mEeTIng` will match `meeting` (does not apply to the command `list`).
+
+#### List all contacts: `list`
 
 Format: `list`
 
@@ -336,6 +377,45 @@ This command help you to display all contacts with meetings, sorted by the **ear
   <img src="images/ListMeeting.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Listed contacts with meeting</i></p>
 </div>
+
+#### Listing archived contacts: `list archived` / `list archive`
+
+After archiving, you can view all hidden contacts using the `list archived` or `list archive` command.
+
+**Format:** `list archived` or `list archive`
+
+**How it works:**
+* Displays all contacts that have been archived.
+* You can use `unarchive INDEX` to move them back into the active list.
+* The list view switches automatically to the archived list when the command is entered.
+
+**Example:**
+* `list archived` shows the archived contacts.
+  &nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/archiveCommandResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Alexandra's contact is moved to the archive list</i></p>
+</div>
+
+#### Listing active contacts: `list` / `list active`
+
+After archiving, you can view all active contacts using the `list` or `list active` command.
+
+**Format:** `list` or `list active`
+
+**How it works:**
+* Displays all contacts that are active (not archived).
+* The list view switches automatically to the active list when the command is entered.
+
+**Example:**
+* `list active` shows the active contacts.
+  &nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/listActive.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Shows the active list of contacts</i></p>
+</div>
+&nbsp;
+
 &nbsp;
 
 ## Editing A Person's Information
@@ -383,7 +463,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAG
 </div>
 &nbsp;
 
-#### Editing or removing a contact’s meeting : `edit m/MEETING_DATETIME`
+#### Editing or removing a contact’s meeting : `edit INDEX m/`
 
 You can update or remove a contact’s meeting date and time to reschedule appointments or clear meetings that are no longer needed.
 
@@ -649,7 +729,7 @@ Examples:
 
 &nbsp;
 
-### Archiving Contacts
+### Archiving Your Contacts: `archive`
 
 Homey lets you move a contact from the **active list** to the **archived list**, keeping your workspace organised without losing any information. Use this feature when you want to temporarily hide a contact instead of deleting them.
 
@@ -657,8 +737,6 @@ Homey lets you move a contact from the **active list** to the **archived list**,
 - **Hidden but retained:** Archived contacts are removed from the active list but remain stored in the system.
 - **Viewable on demand:** You can view archived contacts using the `list archived` or `list archive` command.
 - **Restoration available:** Use the `unarchive INDEX` command to move a contact back to the active list.
-
-#### Archiving a contact: `archive INDEX`
 
 You can archive a contact by specifying their index in the currently displayed list.
 
@@ -677,30 +755,11 @@ You can archive a contact by specifying their index in the currently displayed l
   <img src="images/archiveCommand.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Archived Alexandra's contact</i></p>
 </div>
-
-#### Viewing archived contacts: `list archived` / `list archive`
-
-After archiving, you can view all hidden contacts using the `list archived` or `list archive` command.
-
-**Format:** `list archived` or `list archive`
-
-**How it works:**
-* Displays all contacts that have been archived.
-* You can use `unarchive INDEX` to move them back into the active list.
-* The list view switches automatically to the archived list when the command is entered.
-
-**Example:**
-* `list archived` shows the archived contacts.
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/archiveCommandResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Alexandra's contact is moved to the archive list</i></p>
-</div>
 &nbsp;
 
 &nbsp;
 
-### Unarchiving Contacts
+### Unarchiving Your Contacts: `unarchive`
 
 You can restore a contact from the **archived list** back to the **active list**, allowing you to re-engage with previously hidden contacts.
 
@@ -709,8 +768,6 @@ You can restore a contact from the **archived list** back to the **active list**
 - **Active list only:** Once unarchived, the person immediately reappears in the active list.
 - **Archived list restricted:** The command only works when viewing the **archived list** (i.e. after using `list archived`).
 - **View restored contacts:** Use `list active` or `list` to see the restored contact in your main view.
-
-#### Unarchiving a contact: `unarchive INDEX`
 
 You can unarchive a contact by specifying their index in the currently displayed archived list.
 
