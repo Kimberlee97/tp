@@ -324,11 +324,11 @@ Examples:
 
 ### Tracking Deal Progress
 
-Homey helps you easily track a partner's deal progress.
+Homey helps you easily track a contact's deal progress.
 You can use the `transaction` command to mark where each deal currently stands, from early lead to closed sale.
 
 **General behaviour:**
-- **Stage-based tracking:** Each business partner has a single transaction stage tag that shows their current deal 
+- **Stage-based tracking:** Each contact has a single transaction stage tag that shows their current deal 
 progress.
 - **Always present:** You cannot remove a transaction stage tag — a partner must always have one.
 - **Defined stages:** Valid stages are `prospect`, `negotiating`, and `closed`.
@@ -336,59 +336,75 @@ progress.
 
 #### Updating the transaction stage: `transaction INDEX s/TRANSACTION_STAGE`
 
-You can update a partner’s deal progress by replacing their current transaction stage. This is useful when a deal moves
+You can update a contact’s deal progress by replacing their current transaction stage. This is useful when a deal moves
 forward or changes status, helping you maintain an accurate overview of your active deals.
 
 **Format:** `transaction INDEX s/TRANSACTION STAGE`
 
 **How it works:**
-* Replaces the transaction stage of the partner at the specified `INDEX` to `TRANSACTION STAGE`.
+* Replaces the transaction stage of the contact at the specified `INDEX` to `TRANSACTION STAGE`.
 * The given `TRANSACTION STAGE` must be one of the following: `prospect`, `negotiating` or `closed`.
 * `TRANSACTION STAGE` is case-insensitive — e.g. `prOsPECT` works the same as `prospect`
 * Additional whitespace is accepted — e.g. `s/   closed` works the same as `s/closed`
 
 Examples:
-* `transaction 32 s/prospect` Replaces the transaction stage tag of the 32nd person to be `prospect`.
-![Result of `transaction 32 s/prospect`](images/TransactionStageProspectResult.png)
-* `transaction 32 s/negotiating` Replaces the transaction stage tag of the 32nd person to be `negotiating`.
-![Result of `transaction 32 s/negotiating`](images/TransactionStageNegotiating.png)
-* `transaction 32 s/closed` Replaces the transaction stage tag of the 32nd person to be `closed`.
-![Result of `transaction 32 s/closed`](images/TransactionStageClosed.png)
+* `transaction 1 s/prospect`
+  * Replaces the transaction stage tag of the 1st contact to be `prospect`.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/TransactionStageProspectResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Result of "transaction 1 s/prospect"</i></p>
+</div>
+
+* `transaction 1 s/NEGOTIATING` 
+  * Replaces the transaction stage tag of the 1st contact to be `negotiating`.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/TransactionStageNegotiating.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Result of "transaction 1 s/NEGOTIATING"</i></p>
+</div>
+&nbsp;
 
 ### Adding Remarks 
 
-Homey lets you effortlessly record notes about each business partner for quick reference.
+Homey lets you effortlessly record notes about each contact for quick reference.
 You can use the `remark` command to add, update or remove personal notes such as preferences, reminders or follow-ups.
 
 **General behaviour:**
-- **Flexible usage:** You can add, edit, or delete remarks for any business partner.
+- **Flexible usage:** You can add, edit, or delete remarks for any contact.
 - **Instant updates:** Changes appear immediately on the partner’s profile.
 - **Hidden by default:** The `remark` field only appears after a remark has been added.
 
 #### Adding or editing a remark: `remark INDEX rm/REMARK`
 
-You can add a new remark or update an existing one for the selected business partner to capture important details and
+You can add a new remark or update an existing one for the selected contact to capture important details and
 stay organized.
 
 **Format:** `remark INDEX rm/REMARK`
 
 **How it works:**
-* You can replace the existing remark of the business partner at the specified `INDEX` with the given `REMARK`.
+* You can replace the existing remark of the contact at the specified `INDEX` with the given `REMARK`.
 * If the partner at `INDEX` does not have a remark, the new `REMARK` will be added.
 * If you leave `REMARK` empty (e.g. `remark 1 rm/`), the remark will be removed.
 * Extra spaces around `rm/` are ignored — e.g. `rm/   Has pets` works the same as `rm/Has pets`
 
 Examples:
-* `remark 32 rm/Likes nature` Replaces the remark of the 32nd person to be "Likes nature".
-![Result of `remark 32 rm/Likes nature`](images/remark32Result.png)
+* `remark 1 rm/Likes nature` 
+  * Replaces the remark of the 1st contact to be "Likes nature".
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/remark32Result.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Result of "remark 1 rm/Likes nature"</i></p>
+</div>
 
-* `remark 32 rm/` Removes the remark of the 32nd person.
-![Result of `remark 32 rm/`](images/removeRemark.png)
-
-* `remark 32 rm/storm/cloud` Replaces the remark of the 32nd person to "storm/cloud".
-  ![Result of `remark 32 rm/storm/cloud`](images/remark32v2.png)
-
-
+* `remark 1 rm/` 
+  * Removes the remark of the 1st person.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/removeRemark.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Result of "remark 1 rm/"</i></p>
+</div>
+&nbsp;
 
 ### Locating persons by name: `find`
 
