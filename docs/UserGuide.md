@@ -41,17 +41,17 @@ If you're already familiar, jump directly to the section relevant to your needs.
   <p style="text-align: center; margin-top: 4px;"><i>Search for command prompt in Start Menu</i></p>
 </div>
 
-   * Enter `java -version` and press Enter. You should see something like this.
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/javaVersion.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Check Java version</i></p>
-</div>
+   * Type `java -version` and press Enter. You should see an output similar to below.
 
-   * Verify that the terminal displays `java version "17"` or higher (highlighted line in screenshot above).<br>
-   * if Java version displayed is not Java `17` or higher:
-     * **Windows users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationWindows.html).
-     * **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+   ```
+    java version "17.0.16" 2025-07-15 LTS
+    Java(TM) SE Runtime Environment (build 17.0.16+12-LTS-247)
+    Java HotSpot(TM) 64-Bit Server VM (build 17.0.16+12-LTS-247, mixed mode, sharing)
+   ```
+  * Verify that the terminal displays `java version "17"` or higher (highlighted line in screenshot above).<br>
+  * if Java version displayed is not Java `17` or higher:
+    * **Windows users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationWindows.html).
+    * **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
 2. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F15A-4/tp/releases/).
 
@@ -73,7 +73,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/runCommand.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Changing directory to home folder</i></p>
+  <p style="text-align: center; margin-top: 4px;"><i>Command to run the app</i></p>
 </div>
 
 6. A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
@@ -184,11 +184,27 @@ This window provides a summary of all available commands and usage examples, all
 
 ### Adding a person: `add`
 
-Adds a person to the address book.
+This is the core functionality of Homey that allows it to be your one-stop manager assistant, adding contacts.  
+Use this feature whenever you want to add new contacts into Homey.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]…​`
+**Format:** `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]…​`
 
-If you forget to input any of the compulsory fields, the system will prompt you for the required inputs. 
+**How it works:**  
+Each contact will contain the following details:
+* Name
+* Phone number
+* Email
+* Address
+* Relation: client or vendor
+* Transaction stage: prospect, negotiating or closed
+* [optional] Remark
+* [optional] Tags
+* [optional] Next meeting date & time in **YYYY-MM-DD HH:mm** `24-HOUR` format.
+
+The relation and transaction stage fields help you as a property agent better manage and categorise your contacts.  
+The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
+
+If you forget to input any of the compulsory fields, the system will prompt you for the required inputs.  
 To abort the command during this stage, input `cancel`.
 
 <box type="tip" seamless>
@@ -203,27 +219,110 @@ To abort the command during this stage, input `cancel`.
 The remark field will be empty if no remark is given.
 </box>
 
-Examples:
-* `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00 rm/Likes nature`
-![Result for adding Jade Lim](images/JadeLim.png)
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` 
-  * Adds a person named John Doe whose phone number is `98765432`, email is `johnd@example.com`, address is
-  `John street, block 123, #01-01`, relation is `client`, and transaction stage is `prospect`.
-  ![Result for adding John Doe](images/AddJohnDoe.png)
+**Examples:**
+* `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00 rm/Likes nature`  
+  &nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/JadeLim.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Added Jade Lim as contact</i></p>
+</div>
+&nbsp;
+
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect`
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/AddJohnDoe.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Added John Doe as contact</i></p>
+</div>
+&nbsp;
+
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
-  * Adds a person named Betsy Crowe whose phone number is `1234567`, email is `betsycrowe@example.com`, address is
-  `Newgate Prison`, relation is `client`, transaction stage is `negotiating`, and is tagged as `criminal` and `friend`.
-  ![Result for adding Betsy Crowe](images/AddBetsyCrowe.png)
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/AddBetsyCrowe.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Added Betsy Crowe as contact</i></p>
+</div>
+&nbsp;
+
 * `add n/Jeremiah Loh e/jloh@example.com a/Loh Street s/prospect`
-  * Prompts for phone number input and adds a person with the specified phone number named Jeremiah Loh whose 
-    email is jloh@example.com, address is Loh Street, relation is client and transaction stage is prospect.
-  ![Prompt for phone number input](images/promptPhone.png)
+  * Prompts for phone number input  
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/promptPhone.png" width="auto" height="100" />
+  <p style="text-align: center; margin-top: 4px;"><i>Prompt for phone number</i></p>
+</div>
+&nbsp;
 
-### Listing all persons : `list`
+#### Adding a meeting while creating a contact: `add`
 
-Shows a list of all persons in the address book.
+You can include a meeting date and time when adding a new contact. This allows you to log client appointments, property viewings, or consultations right from the start — helping you stay organised and save time.
+
+**Format:** `add n/NAME p/PHONE e/EMAIL a/ADDRESS s/STAGE m/MEETING_DATETIME`
+
+**How it works:**
+* Adds a new contact together with a scheduled meeting.
+* `MEETING_DATETIME` must follow **YYYY-MM-DD HH:mm** in `24-HOUR` format.  
+  Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
+* You can omit the `m/` prefix if the contact does not have a scheduled meeting.
+* Click on the contact after adding to reveal the contact card with full information on the right panel.
+
+**Example:**
+* `add n/Kevin Tan p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
+  * Adds a new contact with a scheduled meeting on `3 Nov 2025, 2:00 PM`.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/AddKevinMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Added a contact Kevin with a scheduled meeting</i></p>
+</div>
+&nbsp;
+
+### Listing all contacts : `list`
+
+Displays all active contacts currently in your address book.
+Use this command when you want to return to the full contact view after performing filters or searches.
 
 Format: `list`
+
+**How it works:** 
+* Shows all active (non-archived) contacts stored in Homey.
+* Ignores any extra spaces but not additional parameters unless specified in other commands.
+* Contacts are displayed in the order they were added.
+* Resets any previous filters, searches, or meeting-based listings.
+
+**Example:**
+* `list` 
+  * Shows all contacts in homey.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/ListContacts.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Listed all contacts</i></p>
+</div>
+&nbsp;
+
+### Listing contacts by meeting date : `list meeting`
+
+This command help you to display all contacts with meetings, sorted by the **earliest meeting first**.
+
+**Format:**  
+`list meeting`
+
+**How it works:**
+* Displays only contacts with meetings, arranged from the nearest to the latest meeting.
+* `meeting` is case-insensitive. e.g `Meeting` will match `meeting` and both will work.
+* Contacts without meetings or that are archived will not be shown.
+* If date and time are equal, it will sort by name in `alphabetical order`.
+* If no contacts have meetings, Homey will display a clear message: `No contacts with meetings found.`
+* Click on the contact to reveal the contact card with full information on the right panel.
+
+**Example:**
+* `list meeting` 
+  * Shows all contacts with meetings in `ascending order` of date and time.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/ListMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Listed contacts with meeting</i></p>
+</div>
+&nbsp;
 
 ### Editing a person : `edit`
 
@@ -237,7 +336,6 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAG
 * When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
-* To clear an existing meeting, type m/ with no value after it.
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
@@ -245,19 +343,63 @@ Examples:
 *  `edit 5 m/2025-11-10 09:30` Updates the 5th person’s next meeting to `10 Nov 2025 at 9:30 AM.`
 *  `edit 5 m/` Clears the meeting time for the 5th person.
 
+&nbsp;
+
+#### Editing or removing a contact’s meeting : `edit`
+
+You can update or remove a contact’s meeting date and time to reschedule appointments or clear meetings that are no longer needed.
+
+**Format:**  
+`edit INDEX m/MEETING_DATETIME`
+
+**How it works:**
+* Use the contact’s `index` as shown in the contact list.
+* `MEETING_DATETIME` must follow **YYYY-MM-DD HH:mm** in `24-HOUR` format.
+* To remove a meeting, leave the `m/` field empty.
+* When a meeting is edited, Homey immediately updates the meeting time in both the contact card and meeting list.
+* When a meeting is removed, Homey will clear it and show a confirmation message `Meeting cleared for Kevin Tan`
+* This command can only modify the meeting field — other fields like name or transaction stage must be edited separately.
+* Click on the contact to reveal the contact card with full information on the right panel.
+
+**Examples:**
+* `edit 1 m/2025-11-10 09:30` 
+  * Updates the `1st` contact’s meeting to the specified date and time.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/EditKevinMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Updated Kevin's Meeting</i></p>
+</div>
+
+* `edit 2 m/` 
+  * Clears the meeting for the `2nd` contact.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/ClearMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Cleared a meeting for Poppy Lim</i></p>
+</div>
+&nbsp;
+
 ### Add relational tag : `relation`
 
-Adds a relational tag to an existing person in the address book.
+Adds a relational tag to an existing contact in the address book. Use this command to edit the relation of a existing contact.
 
-Format: `relation INDEX RELATION`
+**Format:**
+`relation INDEX RELATION`
 
+**How it works:**
 * Adds the specified relational tag to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The specified `RELATION` must be a valid relation: 'client' or 'vendor'.
 * Existing values will be updated to the input values.
 
-Examples:
+**Examples:**
 *  `relation 2 client` Edits the relational tag of the 2nd person to be `client`.
-   ![Result of `relation 2 client`](images/relationClient.png)
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/relationClient.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Updated Bernice's relation</i></p>
+</div>
+&nbsp;
+
 *  `relation 1 vendor` Edits the relational tag of the 1st person to be `vendor`.
 
 ### Changing the transaction stage : `transaction`
@@ -299,161 +441,134 @@ Examples:
 
 * `remark 32 rm/storm/cloud` Replaces the remark of the 32nd person to "storm/cloud".
   ![Result of `remark 32 rm/storm/cloud`](images/remark32v2.png)
-
----
-
-### Setting a meeting with date and time
-
-This feature helps property agents schedule, update, and view upcoming client meetings directly within Homey.
-
----
-
-### Adding a meeting when creating a contact : `add`
-
-You can add a meeting date and time when adding a new contact.
-
-**Format:**  
-`add n/NAME p/PHONE e/EMAIL a/ADDRESS s/STAGE m/MEETING_DATETIME`
-
-* `MEETING_DATETIME` must follow **YYYY-MM-DD HH:mm** format.  
-  Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
-
-**Example:**
-`add n/Jade Tan p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
-
-![Result for adding Jade Tan meeting](images/AddJadeMeeting.png)
+&nbsp;
 
 &nbsp;
-<box type="tip" seamless>
-You can omit the `m/` prefix if the contact does not have a scheduled meeting.
-</box>
 
----
+### Finding Your Contacts
 
-### Editing a contact’s meeting : `edit`
+Homey helps you quickly locate any contact in your property database. You can search using `find` command with different filters to match your workflow needs.
 
-Updates or removes a contact’s meeting date and time.
+**General search rules** (applies to name, address, and tag searches):
+- **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `john` will match `John`
+- **Partial matching:** You do not have to type the full word - typing `Han` will find `Hans`
+- **Multiple keywords:** Use spaces between words to search for multiple terms at once
+- **Order does not matter:** Keywords can be in any order - `Doe John` will match `John Doe`
 
-**Format:**  
-`edit INDEX m/MEETING_DATETIME`
+#### Find by name: `find`
 
-* Use the contact’s index as shown in the contact list.
-* To remove a meeting, leave the `m/` field empty.
+You can search for contacts whose names contain keywords you specify. This is useful when you remember a contact's name but need to pull up their full details quickly.
 
-**Examples:**
-* `edit 1 m/2025-11-10 09:30` Updates the 1st contact’s meeting.
-* `edit 2 m/` Clears the meeting from the 2nd contact.
+**Format:** `find KEYWORD [MORE_KEYWORDS]`
 
----
-
-### Listing contacts by meeting date : `list meeting`
-
-Displays all contacts with meetings, sorted by the **earliest meeting first**.  
-Contacts without meetings or that are archived will not be shown.
-
-**Format:**  
-`list meeting`
-
-**Examples:**
-list meeting
-
-![Result for listing meeting](images/ListMeeting.png)
-
-&nbsp;
-Shows all contacts with meetings in ascending order of date and time.
-
-<box type="tip" seamless>
-Use this command to quickly view who you are meeting next.
-</box>
-
----
-
-### Locating persons by name: `find`
-
-Finds persons whose names contain any of the given keywords.
-
-Format: `find KEYWORD [MORE_KEYWORDS]`
-
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Partial matches are supported - e.g. `Han` will match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+**How it works:**
+* Only the contact names are searched
+* All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find ale` returns `Alex Yeoh`
-  ![result for 'find ale'](images/findAleResult.png)
-* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks`<br>
-  ![result for 'find john alex'](images/findJohnAlexResult.png)
+* `find ale` returns `Alex Yeoh` and `Alexandra Tan`<br>
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findAleResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'ale'</i></p>
+</div>
 
-### Locating persons by address: `find a/`
+* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks` <br>
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findJohnAlexResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'john' or 'alex'</i></p>
+</div>
 
-Finds persons whose addresses contain any of the given keywords.
+#### Find by address: `find a/`
 
-Format: `find a/KEYWORD [MORE_KEYWORDS]`
+You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planing site visits in the same area.
 
-* The search is case-insensitive. e.g. `bedok` will match `Bedok`
-* The order of the keywords does not matter. e.g. `bedok north` will match `North Bedok`
-* Only the address is searched.
-* Partial matches are supported - e.g. `bed` will match `Bedok`
+**Format:** `find a/KEYWORD [MORE_KEYWORDS]`
+
+**How it works:**
+* Only the address field is searched
+* All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
-* `find a/bed` returns all persons living in `bedok` and `Bedok` or other addresses with `bed`<br>
-  ![result for 'find alex david'](images/findAddressBedok.png)
+* `find a/hou` returns all persons living in `hougang` and `Hougang` <br>
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findAddressHougang.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose addresses contain Hougang</i></p>
+</div>
 
-### Locating persons by tag: `find t/`
+#### Find by tag: `find t/`
 
-Finds persons whose tags contain any of the given keywords.
+You can search for contacts with specific tags you have assigned them. Tags help you organise contacts by categories like `referral`, `firsttimebuyer` or `investor` and many more.
 
-Format: `find t/KEYWORD [MORE_KEYWORDS]`
+**Format:** `find t/KEYWORD [MORE_KEYWORDS]`
 
-* The search is case-insensitive. e.g. `friend` will match `Friend`
-* The order of the keywords does not matter.
-* Only tags are searched.
-* Partial matches are supported - e.g. `fri` will match `friend`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
+**How it works:**
+* Only the tag field is searched 
+* All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
-* `find t/friend` returns all persons tagged with `friend`
-* `find t/fri` returns all persons with tags containing `fri` (e.g., `friend`, `Friday`)
-* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`<br>
-  ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
+* `find t/condo` returns all persons tagged with `condo`
+* `find t/bu` returns all persons with tags containing `bu` (e.g., `firsttimebuyer`, `budget`)
+* `find t/buyer budget` returns persons tagged with either `buyer` or `budget`<br>
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findTagBu.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose tags contain 'bu'</i></p>
+</div>
 
-### Locating persons by relation: `find r/`
+#### Find by relation: `find r/`
 
-Finds persons whose relation is 'vendor' and 'client'
+You can filter your contacts by whether they are property sellers or buyers. This helps you quickly segment your contact list when you need to contact all vendors about new listings or reach out to clients looking for properties.
 
-Format: `find r/KEYWORD`
+**Format:** `find r/RELATION`
 
-* The search is case-insensitive. e.g. `client` will match `Client`
-* Only relations are searched
-* Partial matches are not supported
-* Only accepts predefined relation types: `vendor` or `client`
+**How it works:**
+* Only the relation field is searched
+* You must type the exact relation type - partial words like `ven` will not work
+* You can only search for one relation at a time
+* Case-insensitive matching applies - `VENDOR`, `Vendor` and `vendor` all work
+
+**Available relations:**
+* `vendor`
+* `client`
 
 Examples:
 * `find r/vendor` returns all persons with relation `vendor`
 * `find r/client` returns all persons with relation `client`<br>
-  ![result for 'find r/client'](images/findRelationClient.png)
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findRelationClient.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose relation is client</i></p>
+</div>
 
-### Locating persons by transaction stage: `find s/`
+#### Find by transaction stage: `find s/`
 
-Finds persons whose transaction stage is 'prospect', 'negotiating' or 'closed'
+You can filter contacts based on where they are in your sales pipeline. This helps you prioritise follow-ups, whether you need to check in with active negotiations or reconnect with potential clients.
 
-Format: `find s/KEYWORD`
+**Format:** `find s/STAGE`
 
-* The search is case-insensitive. e.g. `negotiating` will match `Negotiating`
-* Only transaction stage are searched
-* Partial matches are not supported
-* Only accepts predefined transaction stages: `prospect` or `negotiating` or `closed`
+**How it works:**
+* Only the transaction field is searched
+* You must type the exact stage name - partial words like `pros` will not work
+* You can only search for one stage at a time
+* Case-insensitive matching applies - `Prospect`, `PROSPECT` and `prospect` all work
+
+**Available stages:**
+* `prospect`
+* `negotiating`
+* `closed`
 
 Examples:
 * `find s/prospect` returns all persons with transaction stage `prospect`
 * `find s/negotiating` returns all persons with transaction stage `negotiating`
 * `find s/closed` returns all persons with transaction stage `closed`<br>
-  ![result for 'find s/closed'](images/findTransactionClosed.png)
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findTransactionClosed.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose transaction stage is closed</i></p>
+</div>
+
+&nbsp;
+
+&nbsp;
 
 ### Archiving Contacts
 
@@ -476,8 +591,8 @@ You can archive a contact by specifying their index in the currently displayed l
 * Only works when viewing the **active list** (i.e. after using `list`).
 * Once archived, the person will no longer appear in the active contact list.
 
-**Examples:**
-* `archive 2` archives the second person in the active list.
+**Example:**
+* `archive 2` archives the 2nd person in the active list.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/archiveCommand.png" width="auto" height="300" />
@@ -536,6 +651,7 @@ You can unarchive a contact by specifying their index in the currently displayed
   <p style="text-align: center; margin-top: 4px;"><i>Unarchived first contact in the archive list</i></p>
 </div>
 &nbsp;
+
 <div style="display: inline-block; text-align: center;">
   <img src="images/unarchiveCommandResult.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Contact returns to the active list</i></p>
@@ -546,29 +662,52 @@ You can unarchive a contact by specifying their index in the currently displayed
 
 ### Deleting a person : `delete`
 
-Deletes the specified person from the address book.
+You can remove a contact from Homey permanently. This is useful when you no longer need to maintain a record of a particular client or vendor.
 
-Format: `delete INDEX`
+**Format:** `delete INDEX`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+**How it works:**
+* You must specify the index number shown in the displayed contact list
+* The index must be a positive integer: 1,2,3, and so on
+* The contact at the specified index will be permanently deleted
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find James` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+<div style="display: inline-block; text-align: center;">
+  <img src="images/deleteJamesResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>James Ho is deleted from Homey</i></p>
+</div>
+&nbsp;
+
+&nbsp;
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+You can remove all contacts from Homey at once. This is useful when you want to start fresh with a completely empty contact list.
 
-Format: `clear`
+**Format:** `clear`
+
+**How it works:**
+* All contacts in your address book will be permanently deleted
+* This removes all contacts, not just the ones currently shown on your screen
+&nbsp;
+
+&nbsp;
 
 ### Exiting the program : `exit`
 
-Exits the program.
+You can close the Homey application safely. All your information is automatically saved before the program exits.
 
-Format: `exit`
+**Format:** `exit`
+
+**How it works:**
+* The application window will close
+* All changes you made during your session are saved automatically
+* You can reopen Homey anytime to access your saved contacts
+&nbsp;
+
+&nbsp;
 
 ### Saving the data
 
@@ -617,7 +756,7 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 | **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                            |
 | **Find r/**     | `find r/KEYWORD`<br> e.g., `find r/client`                                                                                                                                                                                            |
 | **Find s/**     | `find s/KEYWORD`<br> e.g., `find s/negotiating`                                                                                                                                                                                       |
-| **List**        | `list [archive]` <br> e.g., `list`, `list archive`                                                                                                                                                                                    |
-| **Help**        | `help [TOPIC]`<br> e.g., `help add`<br><br>`help offline`                                                                                                                                                                            |
+| **List**        | `list [archive] [meeting]` <br> e.g., `list`, `list archive`, `list meeting`                                                                                                                                                           |
+| **Help**        | `help [topic]`<br> e.g., `help add`<br><br>`help offline`                                                                                                                                                                                                       |
 | **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                 |
 | **Unarchive**   | `unarchive INDEX`<br> e.g., `unarchive 1`                                                                                                                                                                                             |
