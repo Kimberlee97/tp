@@ -171,35 +171,61 @@ Examples:
    ![Result of `relation 2 client`](images/relationClient.png)
 *  `relation 1 vendor` Edits the relational tag of the 1st person to be `vendor`.
 
-### Changing the transaction stage : `transaction`
+### Tracking Deal Progress
 
-Replaces the transaction stage tag of an existing person to the given stage.
+Homey helps you easily track a partner's deal progress.
+You can use the `transaction` command to mark where each deal currently stands, from early lead to closed sale.
 
-Format: `transaction INDEX s/TRANSACTION_STAGE`
+**General behaviour:**
+- **Stage-based tracking:** Each business partner has a single transaction stage tag that shows their current deal 
+progress.
+- **Always present:** You cannot remove a transaction stage tag — a partner must always have one.
+- **Defined stages:** Valid stages are `prospect`, `negotiating`, and `closed`.
+- **Instant updates:** When you change the stage, the partner's tag updates immediately.
 
-* Replaces the transaction stage of the person at the specified `INDEX`.
+#### Updating the transaction stage: `transaction INDEX s/TRANSACTION_STAGE`
+
+You can update a partner’s deal progress by replacing their current transaction stage. This is useful when a deal moves
+forward or changes status, helping you maintain an accurate overview of your active deals.
+
+**Format:** `tranaction INDEX s/TRANSACTION STAGE`
+
+**How it works:**
+* Replaces the transaction stage of the person at the specified `INDEX` to `TRANSACTION STAGE`.
 * The given `TRANSACTION_STAGE` must be one of the following: `prospect`, `negotiating` or `closed`.
-* Additional whitespace is accepted.
-* `TRANSACTION_STAGE` is case-sensitive.
-* The Transaction Stage tag cannot be removed, only replaced.
+* `TRANSACTION_STAGE` is case-insensitive — e.g. `prOsPECT` works the same as `prospect`
+* Additional whitespace is accepted — e.g. `s/   closed` works the same as `s/closed`
 
 Examples:
 * `transaction 32 s/prospect` Replaces the transaction stage tag of the 32nd person to be `prospect`.
 ![Result of `transaction 32 s/prospect`](images/TransactionStageProspectResult.png)
 * `transaction 32 s/negotiating` Replaces the transaction stage tag of the 32nd person to be `negotiating`.
 ![Result of `transaction 32 s/negotiating`](images/TransactionStageNegotiating.png)
-* `transaction    32     s/  closed` Replaces the transaction stage tag of the 32nd person to be `closed`.
-![Result of `transaction    32     s/  closed`](images/TransactionStageClosed.png)
+* `transaction 32 s/closed` Replaces the transaction stage tag of the 32nd person to be `closed`.
+![Result of `transaction 32 s/closed`](images/TransactionStageClosed.png)
 
-### Adding a remark: `remark`
+### Adding Remarks 
 
-Edits the remark of an existing person.
+Homey lets you effortlessly record notes about each business partner for quick reference.
+You can use the `remark` command to add, update or remove personal notes such as preferences, reminders or follow-ups.
 
-Format: `remark INDEX rm/REMARK`
+**General behaviour:**
+- **Flexible usage:** You can add, edit, or delete remarks for any business partner.
+- **Instant updates:** Changes appear immediately on the partner’s card.
+- **Hidden by default:** The `remark` field only appears after a remark has been added.
 
-* The remark of the person at `INDEX` is replaced with the given `REMARK`.
-* If the person at `INDEX` does not have a remark, the given `REMARK` is added.
-* If `REMARK` is empty (e.g. `remark 1 rm/`), the remark of the person at `INDEX` is removed.
+#### Adding or editing a remark: `remark INDEX rm/REMARK`
+
+You can add a new remark or update an existing one for the selected business partner to capture important details and
+stay organized.
+
+**Format:** `remark INDEX rm/REMARK`
+
+**How it works:**
+* You can replace the existing remark of the business partner at the specified `INDEX` with the given `REMARK`.
+* If the partner at `INDEX` does not have a remark, the new `REMARK` will be added.
+* If you leave `REMARK` empty (e.g. `remark 1 rm/`), the remark will be removed.
+* Extra spaces around `rm/` are ignored — e.g. `rm/   Has pets` works the same as `rm/Has pets`
 
 Examples:
 * `remark 32 rm/Likes nature` Replaces the remark of the 32nd person to be "Likes nature".
@@ -211,7 +237,7 @@ Examples:
 * `remark 32 rm/storm/cloud` Replaces the remark of the 32nd person to "storm/cloud".
   ![Result of `remark 32 rm/storm/cloud`](images/remark32v2.png)
 
----
+
 
 ### Setting a meeting with date and time
 
