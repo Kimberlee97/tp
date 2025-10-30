@@ -17,21 +17,10 @@ _{ list here sources of all reused/adapted ideas, code, documentation, and third
 * The `Add Meeting` feature was inspired by the add command in [AB3](https://github.com/nus-cs2103-AY2526S1/tp).
 While the parsing and model integration logic were adapted from AB3’s `AddCommand` and `AddCommandParser`, the meeting-related components 
 such as the Meeting class, meeting validation logic, and enhanced success feedback were independently designed.
-* The `Edit Meeting` functionality builds upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp) `EditCommand` and `EditCommandParser`.
-Our implementation extends this by introducing the m/ prefix, date–time validation, and logic to handle meeting clearing, conflict prevention, and customized feedback messages. 
-These components were conceptualized and implemented independently to support appointment management for property agents.
-* The `List Meeting`, although inspired by [AB3](https://github.com/nus-cs2103-AY2526S1/tp) original `list` command structure
-, we extended it with custom filtering logic and a new `ListMeetingCommand` class to retrieve and sort contacts with upcoming meetings. 
-* The `Find by Name` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but the parsing and filtering logic were adapted to match partial names and ensure case-insensitive matching.
-* The `Find by Tag` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support tag-based searching with the `t/` prefix.
-The parsing and filtering logic were adapted to match partial tag keywords, ensuring case-insensitive matching, and validate alphanumeric-only characters.
-* The `Find by Relation` feature was build upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support relation-based searching with the `r/` prefix.
-The parsing and validation logic were adapted to enforce exact-match keywords ('client' or 'vendor'), ensure case-insensitive matching, and ensure single-keyword constraints.
-* The `Find by Transaction Stage` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support transaction stage searching with the `s/` prefix.
-The parsing and validation logic were adapted to enforce exact-match keywords ('propsect', 'negotiating' or 'closed'), ensure case-insensitive matching, and ensure single-keyword constraints.
-* The `Find by Address` feature was build upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support searching by address instead of just names. 
-The parsing and filtering logic were adapted to match partial address keywords and ensure case-insensitive matching.
 
+* Parts of the Javadoc documentation for the features Help, Archive, Unarchive, ListMeeting, Meeting, FindByAddress, and EditMeeting,
+as well as their related files, were written with assistance from [ChatGPT (OpenAI)](https://chat.openai.com).
+The generated content was reviewed and adapted by our team to ensure accuracy and consistency with the project’s coding and documentation standards.
 
 --------------------------------------------------------------------------------------------------------------------
 
