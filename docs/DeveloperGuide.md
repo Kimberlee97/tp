@@ -596,11 +596,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | Property agent                                         | Attach notes to each contact                                           | I can remember important details                                                 |
 | `*`      | Property agent that travels a lot                      | Group my clients and deals by area                                     | I can easily plan out meetings by proximity                                      |
 | `* *`    | Property agent                                         | Set recurring reminders like weekly check-in calls                     | I can maintain consistent follow-ups                                             |
-| `* *`    | Property Agent juggling multiple stakeholders          | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                                                 |
+| `* *`    | Property Agent                                         | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                            |
 | `* *`    | Property agent                                         | Tag contacts by transaction stage like prospect, negotiating, closed   | I can track progress easily                                                      |
 | `* *`    | User that prefers visual information                   | Colour code my tags and events                                         | I can easily identify the type of contacts and events                            |
 | `* *`    | Property Agent                                         | Set overdue tasks or meetings highlighted                              | I can prioritise catching up quickly                                             |
-| `* *`    | Property agent managing multiple stakeholders          | Add date and time for meeting                                          | I can keep track of important events or meetings and attend them                 |
+| `* *`    | Property agent                                         | Add dates for meetings                                                 | I can keep track of important events and attend them                             |
 | `* *`    | Property agent that wants to track their current deals | Sort contacts by earliest meeting                                      | I can prioritise deals or meetings that have been delayed or are taking too long |
 | `* *`    | Forgetful property agent                               | Search for contacts using partial names                                | I can find their contact information despite not remembering their full name     |
 | `*`      | Property agent                                         | Input details for a new contact in one line                            | It is convenient                                                                 |
@@ -927,7 +927,7 @@ Precondition: User has launched the app.
 * 1a. System detects no matching client
 * 1b. System shows “No client found” and suggests adding new contact
 
-**Use case: View upcoming meeting with nearest deadline**
+**Use case: View upcoming meeting with nearest deadline first**
 
 **MSS**
 
@@ -1356,8 +1356,12 @@ testers are expected to do more *exploratory* testing.
   * Moderate to high
 * **Challenges faced**
   * Ensuring meeting commands interacted correctly with existing features without breaking core functionality
+  * Designing command logic that allows flexible `remark` editing while maintaining input validation rules (e.g. length limit and empty `remark` handling).
+  * Ensuring the `transaction` command correctly validates and updates only valid stages without affecting unrelated data.
 * **Effort required:**
   * Implemented new logic for `Meeting` class and integrated it with `AddCommand`, `EditCommand`, and `ListMeetingCommand`.
+  * Implemented RemarkCommand, RemarkCommandParser, and Remark to support adding, editing, and deleting remarks with instant UI updates. Added 100-character validation and error handling, with tests (RemarkTest, RemarkCommandParserTest) for edge cases.
+  * Implemented Transaction, TransactionCommand and TransactionCommandParser to handle stage updates with validation and real-time UI reflection. Added tests (TransactionCommandParserTest) to ensure correct error handling for invalid inputs.
 * **Achievements of project:**
   * Successfully extended into a property-agent focused app supporting meeting scheduling, editing, and listing.
 
