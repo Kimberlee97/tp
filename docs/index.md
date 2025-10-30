@@ -8,7 +8,7 @@
 [![CI Status](https://github.com/se-edu/addressbook-level3/workflows/Java%20CI/badge.svg)](https://github.com/se-edu/addressbook-level3/actions)
 [![codecov](https://codecov.io/gh/se-edu/addressbook-level3/branch/master/graph/badge.svg)](https://codecov.io/gh/se-edu/addressbook-level3)
 
-![Ui](images/landingPage.png)
+![Ui](images/Ui.png)
 
 Homey is a **desktop app for property agents** to manage clients, meetings, and transactions - all in one place. It combines the **speed of a Command Line Interface (CLI)** with the **simplicity of a Graphical User Interface (GUI)**, so you can work quickly while staying organised.
 
