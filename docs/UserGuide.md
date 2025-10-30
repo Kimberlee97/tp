@@ -934,16 +934,16 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Homey home folder.
 
-**Q**: Can Homey be used offline?
+**Q**: Can Homey be used offline?<br>
 **A**: Yes! Homey is designed to run locally on your computer seamlessly, so it will work even without internet access.
 
-**Q**: What happens if I accidentally delete all contacts?
+**Q**: What happens if I accidentally delete all contacts?<br>
 **A**: If you run clear, all contacts are permanently removed from the active list. To avoid data loss, regularly backup the homey.json data file (location: [JAR file location]/data/homey.json). If you still have a backup, you can restore it by exiting the app, replacing the data file with your backup, then restarting.
 
-**Q**: Can I undo a deletion of a contact?
+**Q**: Can I undo a deletion of a contact?<br>
 **A**: Once you use `delete INDEX`, the contact is permanently removed. If you intend to hide a contact temporarily, use the `archive INDEX` command instead. Archived contacts can be restored with `unarchive INDEX`.
 
-**Q**: Can I customise or add new transaction stages beyond `prospect`, `negotiating`, `closed`?
+**Q**: Can I customise or add new transaction stages beyond `prospect`, `negotiating`, `closed`?<br>
 **A**: At present, the allowed stages are limited to `prospect`, `negotiating`, or `closed`. You can add a custom tag instead to supplement the given stages.
 
 --------------------------------------------------------------------------------------------------------------------
