@@ -14,8 +14,17 @@ With Homey, you can:
 * Categorise contacts as *clients* or *vendors*
 * Track deal progress through *transaction stages*
 * Schedule and view *meetings* directly
+* Hide contacts by **archiving** to keep your list organised without losing information
 
-Whether you're closing deals or managing follow-ups, Homey helps you stay on top of your work - faster and smarter.
+Whether you're closing deals or managing follow-ups, Homey helps you stay on top of your work - faster and smarter.<br>
+
+If you're a new user, start with the Quick Start section to set up Homey.
+If you're already familiar, jump directly to the section relevant to your needs.<br>
+
+<!-- Web Table of Contents -->
+<box type="info" header="Table of Contents">
+  <toc></toc>
+</box>
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -25,9 +34,14 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
 ## Quick start
 
 1. To ensure you have Java `17` or above installed in your Computer:<br>
-   * Search for Command Prompt in the Start Menu and launch it. If you are using macOS, open terminal by using Spotlight Search (Command + Space bar), then type "Terminal").  
-     <img src="images/cmd.png" width="auto" height="300" />
-   * Enter `java -version` and press Enter. You should see an output similar to below.
+   * Search for Command Prompt in the Start Menu (if you are using Mac, open terminal by using Spotlight Search (Command + Space bar), then type "Terminal").
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/cmd.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Search for command prompt in Start Menu</i></p>
+</div>
+
+   * Type `java -version` and press Enter. You should see an output similar to below.
 
    ```
     java version "17.0.16" 2025-07-15 LTS
@@ -44,19 +58,30 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
 3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
 4. Open the command terminal (as in Step 1), and change directory using the command `cd` into the folder you put the jar file in.<br>
-   <img src="images/changeDirectory.png" width="auto" height="150" />
    <box type="tip" seamless>
-
-   **Tip:**
+   **Tip:**<br>
    If your home folder is in your desktop, make sure you change directory to your desktop first as shown in the screenshot.<br>
    For example, we change directory to the `Desktop` first, before changing it to the folder `your_home_folder_name` where our jar file is in.
    </box>
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/changeDirectory.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Changing directory to home folder</i></p>
+</div>
 
 5. Use the `java -jar homey.jar` command and press Enter to run the application.<br>
-   <img src="images/runCommand.png" width="auto" height="100" />
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/runCommand.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Command to run the app</i></p>
+</div>
 
 6. A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-   <img src="images/Ui.png" width="auto" height="300" />
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/appLaunch.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>App launch landing page</i></p>
+</div>
 
 7. Type a command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the User Guide in your web browser (if the browser can’t be opened, a Help window will appear instead).<br>
    Some example commands you can try:
@@ -108,14 +133,22 @@ Homey provides a built-in help feature to guide you through all available comman
 If you're unsure about what to do, use the `help` command to open the User Guide directly in your browser.
 
 **Generic behaviour:**
-- **Online access:** When you enter a `help [topic]` command (e.g. `help add`), the browser automatically opens the relevant section of the User Guide.
-  <img src="images/helpAdd.png" width="700" height="auto" />
+- **Online access:** When you enter a `help [TOPIC]` command (e.g. `help add`), the browser automatically opens the relevant section of the User Guide.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/helpAdd.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>User Guide opens to "Adding Contacts" section</i></p>
+</div>
 
 - **Offline or blocked access:**  
   If the browser cannot be opened (e.g. blocked by the environment) or you do not have internet access, a Help window will appear instead.  
   You can also open this window manually using the `help offline` command.  
   This window provides a summary of all available commands and usage examples.  
-  <img src="images/helpOffline.png" width="auto" height="200" />
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/helpOffline.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Offline Help window</i></p>
+</div>
 
 #### Help by topic: `help [TOPIC]`
 
@@ -145,6 +178,7 @@ This window provides a summary of all available commands and usage examples, all
 
 **Example:**
 * `help offline` → Opens the offline Help window showing command summaries.
+&nbsp;
 
 &nbsp;
 
@@ -599,8 +633,12 @@ You can archive a contact by specifying their index in the currently displayed l
 * Once archived, the person will no longer appear in the active contact list.
 
 **Example:**
-* `archive 2` archives the 2nd person in the active list.  
-  <img src="images/archiveCommand.png" width="700" height="auto" />
+* `archive 2` archives the 2nd person in the active list.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/archiveCommand.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Archived Alexandra's contact</i></p>
+</div>
 
 #### Viewing archived contacts: `list archived` / `list archive`
 
@@ -614,8 +652,13 @@ After archiving, you can view all hidden contacts using the `list archived` or `
 * The list view switches automatically to the archived list when the command is entered.
 
 **Example:**
-* `list archived` shows the archived contacts.  
-  <img src="images/archiveCommandResult.png" width="700" height="auto" />
+* `list archived` shows the archived contacts.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/archiveCommandResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Alexandra's contact is moved to the archive list</i></p>
+</div>
+&nbsp;
 
 &nbsp;
 
@@ -641,11 +684,19 @@ You can unarchive a contact by specifying their index in the currently displayed
 * Only works when viewing the **archived list**.
 * The restored person will immediately return to the **active list**.
 
-**Example:**
+**Examples:**
 * `unarchive 1` restores the 1st person in the archived list.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/unarchiveCommand.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Unarchived 1st contact in the archive list</i></p>
+</div>
+&nbsp;
 
-  <img src="images/unarchiveCommand.png" width="700" height="auto" />  
-  <img src="images/unarchiveCommandResult.png" width="700" height="auto" />
+<div style="display: inline-block; text-align: center;">
+  <img src="images/unarchiveCommandResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Contact returns to the active list</i></p>
+</div>
 &nbsp;
 
 &nbsp;
@@ -701,17 +752,17 @@ You can close the Homey application safely. All your information is automaticall
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+Homey data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+Homey data are saved automatically as a JSON file `[JAR file location]/data/homey.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, Homey will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -744,9 +795,9 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 | **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                            |
 | **Find a/**     | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                                                                                               |
 | **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                            |
-| **Find r/**     | `find r/KEYWORD`<br> e.g., `find r/client`                                                                                                                                                                                            |
-| **Find s/**     | `find s/KEYWORD`<br> e.g., `find s/negotiating`                                                                                                                                                                                       |
-| **List**        | `list [archive] [meeting]` <br> e.g., `list`, `list archive`, `list meeting`                                                                                                                                                           |
-| **Help**        | `help [topic]`<br> e.g., `help add`                                                                                                                                                                                                   |
+| **Find r/**     | `find r/RELATION`<br> e.g., `find r/client`                                                                                                                                                                                           |
+| **Find s/**     | `find s/TRANSACTION_STAGE`<br> e.g., `find s/negotiating`                                                                                                                                                                             |
+| **List**        | `list [archive]` <br> e.g., `list`, `list archive`, `list meeting`                                                                                                                                                                                   |
+| **Help**        | `help [TOPIC]`<br> e.g., `help add`<br><br>`help offline`                                                                                                                                                                             |
 | **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                 |
 | **Unarchive**   | `unarchive INDEX`<br> e.g., `unarchive 1`                                                                                                                                                                                             |
