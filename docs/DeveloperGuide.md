@@ -523,6 +523,15 @@ Alternative 1 was chosen as it offers clear separation of concerns, testability,
 * [Configuration guide](Configuration.md)
 * [DevOps guide](DevOps.md)
 
+**DevOps Rationale:**  
+The DevOps setup follows the AB3 baseline with adaptations for the Homey project.  
+Continuous Integration (CI) is managed via GitHub Actions, which runs tests and style checks on every push and pull request.  
+This ensures consistent build quality across team members.  
+The application is packaged as a single runnable JAR for portability and simplicity, following AB3’s Gradle setup.  
+All tests can be executed via `gradlew check`.  
+Log files are written to the local directory to support offline debugging.  
+Configuration and data storage remain in JSON to preserve human-editability.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Requirements**
@@ -645,8 +654,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Extensions**
 * 3a. Index invalid → System shows error, use case resumes at step 2.
 * 3b. Person already archived → System shows “This person is already archived.”, use case ends.
-
----
 
 **Use case: Unarchive a contact**
 
@@ -1134,22 +1141,37 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
-### Deleting a person
+### Viewing Help
 
-1. Deleting a person while all persons are being shown
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+### Interactive add
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+### Adding relational tag
+
+
+
+### Changing transaction stage
+
+
+
+### Adding a remark
+
+
+
+### Editing a contact's meeting
+
+
+
+### Listing contacts by meeting date
+
+
+
+### Finding contacts (include all find commands here)
+
+
 
 ### Archiving a person
 
@@ -1171,10 +1193,26 @@ testers are expected to do more *exploratory* testing.
 4. Test case: `unarchive 0`, `unarchive x`  
    Expected: Invalid index error.
 
-### Saving data
+--------------------------------------------------------------------------------------------------------------------
 
-1. Dealing with missing/corrupted data files
+## **Appendix: Effort**
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+* **Difficulty level**
+  * 
+* **Challenges faced**
+  * 
+* **Effort required:**
+  * 
+* **Achievements of project:**
+  * 
 
-1. _{ more test cases …​ }_
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+**Team size:** 5 members. 
+
+1. 
+
+--------------------------------------------------------------------------------------------------------------------
+

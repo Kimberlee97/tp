@@ -162,7 +162,11 @@ public class ParserUtil {
     public static Remark parseRemark(String remark) throws ParseException {
         requireNonNull(remark);
         String trimmed = remark.trim();
-        return new Remark(trimmed);
+        try {
+            return new Remark(trimmed);
+        } catch (IllegalArgumentException e) {
+            throw new ParseException(e.getMessage());
+        }
     }
 
     /**
