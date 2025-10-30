@@ -22,6 +22,13 @@ Our implementation extends this by introducing the m/ prefix, date–time valida
 These components were conceptualized and implemented independently to support appointment management for property agents.
 * The `List Meeting`, although inspired by [AB3](https://github.com/nus-cs2103-AY2526S1/tp) original `list` command structure
 , we extended it with custom filtering logic and a new `ListMeetingCommand` class to retrieve and sort contacts with upcoming meetings. 
+* The `Find by Name` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but the parsing and filtering logic were adapted to match partial names and ensure case-insensitive matching.
+* The `Find by Tag` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support tag-based searching with the `t/` prefix.
+The parsing and filtering logic were adapted to match partial tag keywords, ensuring case-insensitive matching, and validate alphanumeric-only characters.
+* The `Find by Relation` feature was build upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support relation-based searching with the `r/` prefix.
+The parsing and validation logic were adapted to enforce exact-match keywords ('client' or 'vendor'), ensure case-insensitive matching, and ensure single-keyword constraints.
+* The `Find by Transaction Stage` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support transaction stage searching with the `s/` prefix.
+The parsing and validation logic were adapted to enforce exact-match keywords ('propsect', 'negotiating' or 'closed'), ensure case-insensitive matching, and ensure single-keyword constraints.
 
 
 --------------------------------------------------------------------------------------------------------------------
