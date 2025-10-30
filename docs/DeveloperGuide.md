@@ -1096,7 +1096,7 @@ Precondition: User is at the landing page of the app and has existing list of co
   * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
   * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
 * 2b. The transaction stage provided is empty or invalid (i.e. not one of `prospect`, `negotiating` or `closed`).
-  * 2b1. If the transaction stage provided is empty, Homey displays "Invalid command format! Transaction stage cannot be empty.".
+  * 2b1. If the transaction stage provided is empty, Homey displays "Invalid command format! Transaction stage cannot be empty."
   * 2b1. If the transaction stage provided is invalid, Homey displays the list of valid stages.
 
 **Use case: Editing a remark**
@@ -1113,14 +1113,15 @@ Precondition: User is at the landing page of the app and has existing list of co
 **Extensions**
 
 * 1a. User changes the remark using the `edit` command instead of `remark`
-    * Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage.
+  * 1a1. Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage.
+  * 1a2. If the remark exceeds 100 characters, Homey displays "Remark cannot exceed 100 characters."
 * 1b. User enters an invalid command format or omits required fields (e.g. missing index or `rm/`).
-    * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
+  * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
 * 2a. The given index is invalid.
-    * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
-    * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
+  * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
+  * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
 * 2b. The remark provided is invalid (i.e. more than 100 characters).
-    * 2b1. 
+  * Homey displays "Invalid command format! Remark cannot exceed 100 characters."
 
 ### Non-Functional Requirements
 
@@ -1202,9 +1203,28 @@ testers are expected to do more *exploratory* testing.
 
 ### Changing transaction stage
 
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `transaction 1 s/closed`
+    Expected: "Added transaction stage to Person: ...; Transaction: [closed]; ..."
+    The person's transaction stage tag displays `closed`.
+3. Test case: `transaction 1 s/invalidstage`
+    Expected: Error "Transaction stage should be 'prospect', 'negotiating' or 'closed'."
+4. Test case: `transaction x s/closed` (x <= 0 or x > list size) 
+    Expected: Invalid index error.
 
 
 ### Adding a remark
+
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `remark 1 rm/Likes nature`
+   Expected: "Added remark to Person: ...; Remarks: Likes nature; ..."
+   The person's remark field displays "Likes nature".
+3. Test case: `remark 1 rm/`
+   Expected: "Removed remark from Person: ...; Remarks:;" The person's remark field is no longer displayed.
+4. Test case: `remark 1 s/<STRING>` where `STRING` has more than 100 characters.
+   Expected: Error "Invalid command format! Remark cannot exceed 100 characters"
+5. Test case: `transaction x s/closed` (x <= 0 or x > list size)
+   Expected: Invalid index error.
 
 
 
