@@ -1,7 +1,6 @@
 package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static homey.logic.Messages.getErrorMessageForDuplicatePrefixes;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
 import static java.util.Objects.requireNonNull;
 
@@ -47,10 +46,8 @@ public class TransactionStageCommandParser implements Parser<TransactionStageCom
      * Ensures only one transaction prefix exists.
      */
     private void validatePrefix(ArgumentMultimap argMultimap) throws ParseException {
-        if (argMultimap.getAllValues(PREFIX_TRANSACTION).size() > 1) {
-            throw new ParseException(
-                    getErrorMessageForDuplicatePrefixes(PREFIX_TRANSACTION));
-        } else if (argMultimap.getAllValues(PREFIX_TRANSACTION).isEmpty()) {
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TRANSACTION);
+        if (argMultimap.getAllValues(PREFIX_TRANSACTION).isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, TransactionStageCommand.MESSAGE_USAGE));
         }

@@ -6,7 +6,16 @@
 
 # Homey User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+Homey is a **desktop app for property agents** to manage clients, meetings, and transactions - all in one place.
+
+It combines the **speed of a Command Line Interface (CLI)** with the **simplicity of a Graphical User Interface (GUI)**, so you can work quickly while staying organised.
+
+With Homey, you can:
+* Categorise contacts as *clients* or *vendors*
+* Track deal progress through *transaction stages*
+* Schedule and view *meetings* directly
+
+Whether you're closing deals or managing follow-ups, Homey helps you stay on top of your work - faster and smarter.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -15,23 +24,40 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your Computer.<br>
-   **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+1. To ensure you have Java `17` or above installed in your Computer:<br>
+   * Search for Command Prompt in the Start Menu (if you are using Mac, open terminal by using Spotlight Search (Command + Space bar), then type "Terminal").
+     <img src="images/cmd.png" width="700" height="auto" />
+   * Enter `java -version` and press Enter. You should see something like this.
+     <img src="images/javaVersion.png" width="700" height="auto" />
+   * Verify that the terminal displays `java version "17"` or higher (highlighted line in screenshot above).<br>
+   * if Java version displayed is not Java `17` or higher:
+     * **Windows users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationWindows.html).
+     * **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F15A-4/tp/releases/).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-   ![Ui](images/Ui.png)
+4. Open the command terminal (as in Step 1), and change directory using the command `cd` into the folder you put the jar file in.<br>
+   <img src="images/changeDirectory.png" width="700" height="auto" />
+   <box type="tip" seamless>
+   **Tip:**
+   If your home folder is in your desktop, make sure you change directory to your desktop first as shown in the screenshot.<br>
+   For example, we change directory to the `Desktop` first, before changing it to the folder `your_home_folder_name` where our jar file is in.
+   </box>
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the User Guide in your web browser (if the browser can’t be opened, a Help window will appear instead).<br>
+5. Use the `java -jar homey.jar` command and press Enter to run the application.<br>
+   <img src="images/runCommand.png" width="700" height="auto" />
+
+6. A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+   <img src="images/Ui.png" width="700" height="auto" />
+
+7. Type a command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the User Guide in your web browser (if the browser can’t be opened, a Help window will appear instead).<br>
    Some example commands you can try:
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` : Adds a contact named `John Doe` to the Address Book.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -39,7 +65,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `exit` : Exits the app.
 
-1. Refer to the [Features](#features) below for details of each command.
+8. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -70,28 +96,51 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Viewing help : `help [topic]`
+### Viewing help
 
-Opens the User Guide in your web browser.
-If the browser cannot be opened (e.g. blocked by the environment), a Help window is shown so you can copy the link manually.
+Homey provides a built-in help feature to guide you through all available commands.  
+If you're unsure about what to do, use the `help` command to open the User Guide directly in your browser.
 
-* User enters help add command. The browser automatically opens the "Adding a person" section of the User Guide.
-![help add](images/helpAdd.png)
+**Generic behaviour:**
+- **Online access:** When you enter a `help [topic]` command (e.g. `help add`), the browser automatically opens the relevant section of the User Guide.
+  <img src="images/helpAdd.png" width="700" height="auto" />
 
-* Opens the User Guide in your web browser. If blocked, the Help window appears instead.
-![help message](images/helpMessage.png)
+- **Offline or blocked access:**  
+  If the browser cannot be opened (e.g. blocked by the environment) or you do not have internet access, a Help window will appear instead.  
+  You can also open this window manually using the `help offline` command.  
+  This window provides a summary of all available commands and usage examples.  
+  <img src="images/helpOffline.png" width="700" height="auto" />
 
-Format: `help [topic]`
+#### Help by topic: `help [TOPIC]`
 
-* `topic` is optional and deep-links to a specific section of this guide.
+**Format:** `help [TOPIC]`
+
+**How it works:**
+* `TOPIC` is optional and deep-links to a specific section of this guide.
 * Topic matching is case-insensitive and ignores surrounding spaces.
-* Supported topics: `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear` and `exit`.
+* If the browser cannot be opened (e.g. blocked by the environment), a Help window will appear instead so you can copy the link manually.
 
-Examples:
-* `help` opens the User Guide home.
-* `help add` opens the "Adding a person" section.
-* `help edit` opens the "Editing a person" section.
-* You can also open help using the Help menu or by pressing F1.
+**Supported topics:**  
+`add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `find r/`, `find s/`,  
+`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear`, and `exit`.
+
+**Examples:**
+* `help` → Opens the User Guide home.
+* `help add` → Opens the “Adding a person” section.
+* `help edit` → Opens the “Editing a person” section.
+
+#### Help offline: `help offline`
+
+**Format:** `help offline`
+
+**How it works:**  
+If you do not have internet access, you can manually open the Help window using the `help offline` command.  
+This window provides a summary of all available commands and usage examples, allowing you to continue using Homey seamlessly while offline.
+
+**Example:**
+* `help offline` → Opens the offline Help window showing command summaries.
+
+&nbsp;
 
 ### Adding a person: `add`
 
@@ -108,9 +157,9 @@ To abort the command during this stage, input `cancel`.
 * A person can have any number of tags (including 0).
 * The s/TRANSACTION_STAGE field only accepts the values `prospect`, `negotiating` or `closed`.
 * The r/RELATION field only accepts the values `client` or `vendor`.
-* The m/MEETING field is optional — use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
+* The m/MEETING field is optional - use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
 * The r/RELATION field is optional. The default relation for a new contact is client.
-* The rm/REMARK field is optional — use it to add additional details regarding the person.
+* The rm/REMARK field is optional - use it to add additional details regarding the person.
 The remark field will be empty if no remark is given.
 </box>
 
@@ -145,7 +194,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAG
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
+* When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
 * To clear an existing meeting, type m/ with no value after it.
@@ -308,7 +357,7 @@ Format: `find a/KEYWORD [MORE_KEYWORDS]`
 * The search is case-insensitive. e.g. `bedok` will match `Bedok`
 * The order of the keywords does not matter. e.g. `bedok north` will match `North Bedok`
 * Only the address is searched.
-* Partial matches are supported — e.g. `bed` will match `Bedok`
+* Partial matches are supported - e.g. `bed` will match `Bedok`
 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
@@ -366,40 +415,77 @@ Examples:
 * `find s/closed` returns all persons with transaction stage `closed`<br>
   ![result for 'find s/closed'](images/findTransactionClosed.png)
 
-### Archiving persons: `archive`
+### Archiving Contacts
 
-Moves a person from the active list to the **archived list**, hiding them from normal view.
-Use this when you want to temporarily remove a contact without deleting their information.
+Homey lets you move a contact from the **active list** to the **archived list**, keeping your workspace organised without losing any information. Use this feature when you want to temporarily hide a contact instead of deleting them.
 
-Format: `archive INDEX`
+**General archiving behaviour:**
+- **Hidden but retained:** Archived contacts are removed from the active list but remain stored in the system.
+- **Viewable on demand:** You can view archived contacts using the `list archived` or `list archive` command.
+- **Restoration available:** Use the `unarchive INDEX` command to move a contact back to the active list.
 
-* Archives the person at the specified `INDEX` (as shown in the currently displayed list).
+#### Archiving a contact: `archive INDEX`
+
+You can archive a contact by specifying their index in the currently displayed list.
+
+**Format:** `archive INDEX`
+
+**How it works:**
+* Archives the person at the specified `INDEX` (as shown in the current list).
 * The index must be a positive integer - e.g. `1`, `2`, `3`, ...
-* The command only works when viewing the **active list** (i.e. after using list).
-* Archived persons can be viewed later using `list archived` or `list archive`.
+* Only works when viewing the **active list** (i.e. after using `list`).
+* Once archived, the person will no longer appear in the active contact list.
 
-Examples:
-* `archive 2` archives the 2nd person in the active list.
-![Command 'archive 2'](images/archiveCommand.png)
-* `list archived` shows the contacts that have been hidden from the active list.
-![Result for 'archive 2'](images/archiveCommandResult.png)
+**Examples:**
+* `archive 2` archives the 2nd person in the active list.  
+  <img src="images/archiveCommand.png" width="700" height="auto" />
 
-### Unarchiving persons: `unarchive`
+#### Viewing archived contacts: `list archived` / `list archive`
 
-Restores a person from the **archived list** back to the **active list**.
+After archiving, you can view all hidden contacts using the `list archived` or `list archive` command.
 
-Format: `unarchive INDEX`
+**Format:** `list archived` or `list archive`
 
-* Unarchives the person at the specified `INDEX` (as shown in the **archived list**).
-* The index must be a positive integer - e.g. `1`, `2`, `3`, ...
-* The command only works when viewing the **archived list** (i.e. after using `list archived`).
-* The restored person will reappear in the active list
-* Unarchived persons can be viewed later using `list active` or `list`.
+**How it works:**
+* Displays all contacts that have been archived.
+* You can use `unarchive INDEX` to move them back into the active list.
+* The list view switches automatically to the archived list when the command is entered.
 
-Examples:
-* `unarchive 1` unarchives the first person in the archived list.
-![Command 'unarchive 1'](images/unarchiveCommand.png)
-![Result for 'unarchive 1'](images/unarchiveCommandResult.png)
+**Examples:**
+* `list archived` shows the archived contacts.  
+  <img src="images/archiveCommandResult.png" width="700" height="auto" />
+
+&nbsp;
+
+### Unarchiving Contacts
+
+You can restore a contact from the **archived list** back to the **active list**, allowing you to re-engage with previously hidden contacts.
+
+**General unarchiving behaviour:**
+- **Restores visibility:** Moves the selected contact from the archived list back to the active list.
+- **Active list only:** Once unarchived, the person immediately reappears in the active list.
+- **Archived list restricted:** The command only works when viewing the **archived list** (i.e. after using `list archived`).
+- **View restored contacts:** Use `list active` or `list` to see the restored contact in your main view.
+
+#### Unarchiving a contact: `unarchive INDEX`
+
+You can unarchive a contact by specifying their index in the currently displayed archived list.
+
+**Format:** `unarchive INDEX`
+
+**How it works:**
+* Unarchives the person at the specified `INDEX` (as shown in the archived list).
+* The index must be a positive integer  e.g. `1`, `2`, `3`, ...
+* Only works when viewing the **archived list**.
+* The restored person will immediately return to the **active list**.
+
+**Examples:**
+* `unarchive 1` restores the 1st person in the archived list.
+
+  <img src="images/unarchiveCommand.png" width="700" height="auto" />  
+  <img src="images/unarchiveCommandResult.png" width="700" height="auto" />
+
+&nbsp;
 
 ### Deleting a person : `delete`
 
