@@ -84,19 +84,31 @@ public class EditCommand extends Command {
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
     }
 
-    private String generateFeedback(Person before, Person after, EditPersonDescriptor descriptor) {
-        final String name = after.getName().toString();
+    private String composeFeedback(Person before, Person after, EditPersonDescriptor d) {
+        StringBuilder fb = new StringBuilder();
 
-        if (!descriptor.isMeetingEdited()) {
-            return String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after));
+        if (d.hasNonMeetingEdits()) {
+            fb.append(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after)));
         }
-        if (descriptor.getMeeting().isPresent()) {
-            String when = after.getMeeting().map(Meeting::toDisplayString).orElse("<unknown>");
-            return String.format(MESSAGE_EDIT_MEETING_SET, name, when);
+
+        if (d.isMeetingEdited()) {
+            if (fb.length() > 0) {
+                fb.append(System.lineSeparator());
+            }
+            final String name = after.getName().toString();
+            if (d.getMeeting().isPresent()) {
+                String when = after.getMeeting().map(Meeting::toDisplayString).orElse("<unknown>");
+                fb.append(String.format(MESSAGE_EDIT_MEETING_SET, name, when));
+            } else {
+                fb.append(before.getMeeting().isEmpty()
+                        ? String.format(MESSAGE_EDIT_MEETING_NONE, name)
+                        : String.format(MESSAGE_EDIT_MEETING_CLEARED, name));
+            }
         }
-        return before.getMeeting().isEmpty()
-                ? String.format(MESSAGE_EDIT_MEETING_NONE, name)
-                : String.format(MESSAGE_EDIT_MEETING_CLEARED, name);
+
+        return (fb.length() == 0)
+                ? String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after))
+                : fb.toString();
     }
 
     @Override
@@ -117,7 +129,7 @@ public class EditCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson);
 
-        String feedback = generateFeedback(personToEdit, editedPerson, editPersonDescriptor);
+        String feedback = composeFeedback(personToEdit, editedPerson, editPersonDescriptor);
         return new CommandResult(feedback);
     }
 
@@ -214,6 +226,11 @@ public class EditCommand extends Command {
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(name, phone, email, address, stage, remark, tags)
                     || meetingEdited; // include meeting edits
+        }
+
+        /** True if any non-meeting field is edited. */
+        public boolean hasNonMeetingEdits() {
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, stage, remark, tags);
         }
 
         public void setName(Name name) {
