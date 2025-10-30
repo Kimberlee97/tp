@@ -16,7 +16,11 @@ public class Remark {
      */
     public Remark(String remark) {
         requireNonNull(remark);
-        value = remark;
+        String trimmed = remark.trim();
+        if (trimmed.length() > 100) {
+            throw new IllegalArgumentException("Remark cannot exceed 100 characters.");
+        }
+        value = trimmed;
     }
 
     @Override

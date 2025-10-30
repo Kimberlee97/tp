@@ -47,7 +47,7 @@ public class Meeting {
             return false;
         }
         try {
-            LocalDateTime.parse(s, FORMATTER); // STRICT: validates month/day/hour/min ranges
+            LocalDateTime.parse(s, FORMATTER);
             return true;
         } catch (DateTimeParseException ex) {
             return false;
