@@ -361,95 +361,134 @@ Examples:
 
 * `remark 32 rm/storm/cloud` Replaces the remark of the 32nd person to "storm/cloud".
   ![Result of `remark 32 rm/storm/cloud`](images/remark32v2.png)
+&nbsp;
 
----
+&nbsp;
 
-### Locating persons by name: `find`
+### Finding Your Contacts
 
-Finds persons whose names contain any of the given keywords.
+Homey helps you quickly locate any contact in your property database. You can search using `find` command with different filters to match your workflow needs.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+**General search rules** (applies to name, address, and tag searches):
+- **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `john` will match `John`
+- **Partial matching:** You do not have to type the full word - typing `Han` will find `Hans`
+- **Multiple keywords:** Use spaces between words to search for multiple terms at once
+- **Order does not matter:** Keywords can be in any order - `Doe John` will match `John Doe`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Partial matches are supported - e.g. `Han` will match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+#### Find by name: `find`
+
+You can search for contacts whose names contain keywords you specify. This is useful when you remember a contact's name but need to pull up their full details quickly.
+
+**Format:** `find KEYWORD [MORE_KEYWORDS]`
+
+**How it works:**
+* Only the contact names are searched
+* All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find ale` returns `Alex Yeoh`
-  ![result for 'find ale'](images/findAleResult.png)
-* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks`<br>
-  ![result for 'find john alex'](images/findJohnAlexResult.png)
+* `find ale` returns `Alex Yeoh` and `Alexandra Tan`<br>
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findAleResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'ale'</i></p>
+</div>
 
-### Locating persons by address: `find a/`
+* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks` <br>
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findJohnAlexResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'john' or 'alex'</i></p>
+</div>
 
-Finds persons whose addresses contain any of the given keywords.
+#### Find by address: `find a/`
 
-Format: `find a/KEYWORD [MORE_KEYWORDS]`
+You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planing site visits in the same area.
 
-* The search is case-insensitive. e.g. `bedok` will match `Bedok`
-* The order of the keywords does not matter. e.g. `bedok north` will match `North Bedok`
-* Only the address is searched.
-* Partial matches are supported - e.g. `bed` will match `Bedok`
+**Format:** `find a/KEYWORD [MORE_KEYWORDS]`
+
+**How it works:**
+* Only the address field is searched
+* All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
-* `find a/bed` returns all persons living in `bedok` and `Bedok` or other addresses with `bed`<br>
-  ![result for 'find alex david'](images/findAddressBedok.png)
+* `find a/hou` returns all persons living in `hougang` and `Hougang` <br>
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findAddressHougang.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose addresses contain Hougang</i></p>
+</div>
 
-### Locating persons by tag: `find t/`
+#### Find by tag: `find t/`
 
-Finds persons whose tags contain any of the given keywords.
+You can search for contacts with specific tags you have assigned them. Tags help you organise contacts by categories like `referral`, `firsttimebuyer` or `investor` and many more.
 
-Format: `find t/KEYWORD [MORE_KEYWORDS]`
+**Format:** `find t/KEYWORD [MORE_KEYWORDS]`
 
-* The search is case-insensitive. e.g. `friend` will match `Friend`
-* The order of the keywords does not matter.
-* Only tags are searched.
-* Partial matches are supported - e.g. `fri` will match `friend`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
+**How it works:**
+* Only the tag field is searched 
+* All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
-* `find t/friend` returns all persons tagged with `friend`
-* `find t/fri` returns all persons with tags containing `fri` (e.g., `friend`, `Friday`)
-* `find t/friend buyer` returns persons tagged with either `friend` or `buyer`<br>
-  ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
+* `find t/condo` returns all persons tagged with `condo`
+* `find t/bu` returns all persons with tags containing `bu` (e.g., `firsttimebuyer`, `budget`)
+* `find t/buyer budget` returns persons tagged with either `buyer` or `budget`<br>
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findTagBu.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose tags contain 'bu'</i></p>
+</div>
 
-### Locating persons by relation: `find r/`
+#### Find by relation: `find r/`
 
-Finds persons whose relation is 'vendor' and 'client'
+You can filter your contacts by whether they are property sellers or buyers. This helps you quickly segment your contact list when you need to contact all vendors about new listings or reach out to clients looking for properties.
 
-Format: `find r/KEYWORD`
+**Format:** `find r/RELATION`
 
-* The search is case-insensitive. e.g. `client` will match `Client`
-* Only relations are searched
-* Partial matches are not supported
-* Only accepts predefined relation types: `vendor` or `client`
+**How it works:**
+* Only the relation field is searched
+* You must type the exact relation type - partial words like `ven` will not work
+* You can only search for one relation at a time
+* Case-insensitive matching applies - `VENDOR`, `Vendor` and `vendor` all work
+
+**Available relations:**
+* `vendor`
+* `client`
 
 Examples:
 * `find r/vendor` returns all persons with relation `vendor`
 * `find r/client` returns all persons with relation `client`<br>
-  ![result for 'find r/client'](images/findRelationClient.png)
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findRelationClient.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose relation is client</i></p>
+</div>
 
-### Locating persons by transaction stage: `find s/`
+#### Find by transaction stage: `find s/`
 
-Finds persons whose transaction stage is 'prospect', 'negotiating' or 'closed'
+You can filter contacts based on where they are in your sales pipeline. This helps you prioritise follow-ups, whether you need to check in with active negotiations or reconnect with potential clients.
 
-Format: `find s/KEYWORD`
+**Format:** `find s/STAGE`
 
-* The search is case-insensitive. e.g. `negotiating` will match `Negotiating`
-* Only transaction stage are searched
-* Partial matches are not supported
-* Only accepts predefined transaction stages: `prospect` or `negotiating` or `closed`
+**How it works:**
+* Only the transaction field is searched
+* You must type the exact stage name - partial words like `pros` will not work
+* You can only search for one stage at a time
+* Case-insensitive matching applies - `Prospect`, `PROSPECT` and `prospect` all work
+
+**Available stages:**
+* `prospect`
+* `negotiating`
+* `closed`
 
 Examples:
 * `find s/prospect` returns all persons with transaction stage `prospect`
 * `find s/negotiating` returns all persons with transaction stage `negotiating`
 * `find s/closed` returns all persons with transaction stage `closed`<br>
-  ![result for 'find s/closed'](images/findTransactionClosed.png)
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findTransactionClosed.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose transaction stage is closed</i></p>
+</div>
+
+&nbsp;
+
+&nbsp;
 
 ### Archiving Contacts
 
@@ -472,7 +511,7 @@ You can archive a contact by specifying their index in the currently displayed l
 * Only works when viewing the **active list** (i.e. after using `list`).
 * Once archived, the person will no longer appear in the active contact list.
 
-**Examples:**
+**Example:**
 * `archive 2` archives the 2nd person in the active list.  
   <img src="images/archiveCommand.png" width="700" height="auto" />
 
@@ -487,7 +526,7 @@ After archiving, you can view all hidden contacts using the `list archived` or `
 * You can use `unarchive INDEX` to move them back into the active list.
 * The list view switches automatically to the archived list when the command is entered.
 
-**Examples:**
+**Example:**
 * `list archived` shows the archived contacts.  
   <img src="images/archiveCommandResult.png" width="700" height="auto" />
 
@@ -515,39 +554,63 @@ You can unarchive a contact by specifying their index in the currently displayed
 * Only works when viewing the **archived list**.
 * The restored person will immediately return to the **active list**.
 
-**Examples:**
+**Example:**
 * `unarchive 1` restores the 1st person in the archived list.
 
   <img src="images/unarchiveCommand.png" width="700" height="auto" />  
   <img src="images/unarchiveCommandResult.png" width="700" height="auto" />
+&nbsp;
 
 &nbsp;
 
 ### Deleting a person : `delete`
 
-Deletes the specified person from the address book.
+You can remove a contact from Homey permanently. This is useful when you no longer need to maintain a record of a particular client or vendor.
 
-Format: `delete INDEX`
+**Format:** `delete INDEX`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+**How it works:**
+* You must specify the index number shown in the displayed contact list
+* The index must be a positive integer: 1,2,3, and so on
+* The contact at the specified index will be permanently deleted
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find James` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+<div style="display: inline-block; text-align: center;">
+  <img src="images/deleteJamesResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>James Ho is deleted from Homey</i></p>
+</div>
+&nbsp;
+
+&nbsp;
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+You can remove all contacts from Homey at once. This is useful when you want to start fresh with a completely empty contact list.
 
-Format: `clear`
+**Format:** `clear`
+
+**How it works:**
+* All contacts in your address book will be permanently deleted
+* This removes all contacts, not just the ones currently shown on your screen
+&nbsp;
+
+&nbsp;
 
 ### Exiting the program : `exit`
 
-Exits the program.
+You can close the Homey application safely. All your information is automatically saved before the program exits.
 
-Format: `exit`
+**Format:** `exit`
+
+**How it works:**
+* The application window will close
+* All changes you made during your session are saved automatically
+* You can reopen Homey anytime to access your saved contacts
+&nbsp;
+
+&nbsp;
 
 ### Saving the data
 
