@@ -313,7 +313,7 @@ You can include a meeting date and time when adding a new contact. This allows y
 </div>
 &nbsp;
 
-## Listing your contacts
+## Listing Your Contacts
 
 Homey lets you view all current contacts and get a clear overview of who you’re working with.
 
@@ -418,7 +418,7 @@ After archiving, you can view all active contacts using the `list` or `list acti
 
 &nbsp;
 
-## Editing A Person's Information
+## Editing Your Contacts
 
 Homey lets you update existing contact details such as phone number, address, transaction stage, relation, remark, or meeting — all in one simple command.
 
