@@ -19,6 +19,7 @@ import homey.model.person.Email;
 import homey.model.person.Meeting;
 import homey.model.person.Name;
 import homey.model.person.Phone;
+import homey.model.person.Remark;
 import homey.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -193,6 +194,19 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseRemark_validRemark_success() throws Exception {
+        String remarkText = "Valid remark under 100 characters.";
+        Remark result = ParserUtil.parseRemark(remarkText);
+        assertEquals(new Remark("Valid remark under 100 characters."), result);
+    }
+
+    @Test
+    public void parseRemark_tooLongRemark_throwsParseException() {
+        String longRemark = "a".repeat(101);
+        assertThrows(ParseException.class, () -> ParserUtil.parseRemark(longRemark));
     }
 
     @Test

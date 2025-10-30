@@ -28,4 +28,10 @@ public class RemarkTest {
     public void hashCode_equalRemarks_sameHash() {
         assertEquals(new Remark("Hi").hashCode(), new Remark("Hi").hashCode());
     }
+
+    @Test
+    public void tooLongRemark_throwsIllegalArgumentException() {
+        String longRemark = "a".repeat(101);
+        assertThrows(IllegalArgumentException.class, () -> new Remark(longRemark));
+    }
 }
