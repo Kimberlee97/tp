@@ -325,6 +325,7 @@ Shows all contacts with meetings in ascending order of date and time.
 <box type="tip" seamless>
 Use this command to quickly view who you are meeting next.
 </box>
+&nbsp;
 
 &nbsp;
 
@@ -351,9 +352,16 @@ You can search for contacts whose names contain keywords you specify. This is us
 Examples:
 * `find John` returns `john` and `John Doe`
 * `find ale` returns `Alex Yeoh` and `Alexandra Tan`<br>
-  <img src="images/findAleResult.png" width="700" height="auto"/>
-* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks`<br>
-  ![result for 'find john alex'](images/findJohnAlexResult.png)
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findAleResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'ale'</i></p>
+</div>
+
+* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks` <br>
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findJohnAlexResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'john' or 'alex'</i></p>
+</div>
 
 #### Find by address: `find a/`
 
@@ -368,7 +376,10 @@ You can search for contacts based on their address. This is particularly useful 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
 * `find a/hou` returns all persons living in `hougang` and `Hougang` <br>
-  ![result for 'find alex david'](images/findAddressBedok.png)
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findAddressHougang.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose addresses contain Hougang</i></p>
+</div>
 
 #### Find by tag: `find t/`
 
@@ -384,7 +395,10 @@ Examples:
 * `find t/condo` returns all persons tagged with `condo`
 * `find t/bu` returns all persons with tags containing `bu` (e.g., `firsttimebuyer`, `budget`)
 * `find t/buyer budget` returns persons tagged with either `buyer` or `budget`<br>
-  ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findTagBu.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose tags contain 'bu'</i></p>
+</div>
 
 #### Find by relation: `find r/`
 
@@ -405,7 +419,10 @@ You can filter your contacts by whether they are property sellers or buyers. Thi
 Examples:
 * `find r/vendor` returns all persons with relation `vendor`
 * `find r/client` returns all persons with relation `client`<br>
-  ![result for 'find r/client'](images/findRelationClient.png)
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findRelationClient.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose relation is client</i></p>
+</div>
 
 #### Find by transaction stage: `find s/`
 
@@ -428,7 +445,12 @@ Examples:
 * `find s/prospect` returns all persons with transaction stage `prospect`
 * `find s/negotiating` returns all persons with transaction stage `negotiating`
 * `find s/closed` returns all persons with transaction stage `closed`<br>
-  ![result for 'find s/closed'](images/findTransactionClosed.png)
+<div style="display: inline-block; text-align: center;">
+  <img src="images/findTransactionClosed.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose transaction stage is closed</i></p>
+</div>
+
+&nbsp;
 
 &nbsp;
 
@@ -501,34 +523,58 @@ You can unarchive a contact by specifying their index in the currently displayed
 
   <img src="images/unarchiveCommand.png" width="700" height="auto" />  
   <img src="images/unarchiveCommandResult.png" width="700" height="auto" />
+&nbsp;
 
 &nbsp;
 
 ### Deleting a person : `delete`
 
-Deletes the specified person from the address book.
+You can remove a contact from Homey permanently. This is useful when you no longer need to maintain a record of a particular client or vendor.
 
-Format: `delete INDEX`
+**Format:** `delete INDEX`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+**How it works:**
+* You must specify the index number shown in the displayed contact list
+* The index must be a positive integer: 1,2,3, and so on
+* The contact at the specified index will be permanently deleted
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find James` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+<div style="display: inline-block; text-align: center;">
+  <img src="images/deleteJamesResult.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>James Ho is deleted from Homey</i></p>
+</div>
+&nbsp;
+
+&nbsp;
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+You can remove all contacts from Homey at once. This is useful when you want to start fresh with a completely empty contact list.
 
-Format: `clear`
+**Format:** `clear`
+
+**How it works:**
+* All contacts in your address book will be permanently deleted
+* This removes all contacts, not just the ones currently shown on your screen
+&nbsp;
+
+&nbsp;
 
 ### Exiting the program : `exit`
 
-Exits the program.
+You can close the Homey application safely. All your information is automatically saved before the program exits.
 
-Format: `exit`
+**Format:** `exit`
+
+**How it works:**
+* The application window will close
+* All changes you made during your session are saved automatically
+* You can reopen Homey anytime to access your saved contacts
+&nbsp;
+
+&nbsp;
 
 ### Saving the data
 
