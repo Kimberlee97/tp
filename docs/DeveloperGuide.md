@@ -1146,6 +1146,54 @@ Precondition: User is at the landing page of the app and has existing list of co
     * 8a1. System displays message: “No meetings to clear for [contact name].”
     * Use case ends.
 
+**Use case: Change the transaction stage of a contact**
+
+**MSS**
+
+1. User requests to change the transaction stage of a contact by specifying the contact's index and the new transaction stage.
+2. Homey validates that the specified index exists and the transaction stage is valid.
+3. Homey updates the contact's transaction stage.
+4. Homey displays a success message confirming the update.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User changes the transaction stage using the `edit` command instead of `transaction`
+  * Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage. 
+* 1b. User enters an invalid command format or omits required fields (e.g. missing index or `s\`).
+  * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
+* 2a. The given index is invalid.
+  * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
+  * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
+* 2b. The transaction stage provided is empty or invalid (i.e. not one of `prospect`, `negotiating` or `closed`).
+  * 2b1. If the transaction stage provided is empty, Homey displays "Invalid command format! Transaction stage cannot be empty."
+  * 2b1. If the transaction stage provided is invalid, Homey displays the list of valid stages.
+
+**Use case: Editing a remark**
+
+**MSS**
+
+1. User requests to change the remark of a contact by specifying the contact's index and the new remark.
+2. Homey validates that the specified index exists and the remark length does not exceed 100 characters.
+3. Homey updates the contact's remark.
+4. Homey displays a success message confirming the update.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. User changes the remark using the `edit` command instead of `remark`
+  * 1a1. Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage.
+  * 1a2. If the remark exceeds 100 characters, Homey displays "Remark cannot exceed 100 characters."
+* 1b. User enters an invalid command format or omits required fields (e.g. missing index or `rm/`).
+  * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
+* 2a. The given index is invalid.
+  * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
+  * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
+* 2b. The remark provided is invalid (i.e. more than 100 characters).
+  * Homey displays "Invalid command format! Remark cannot exceed 100 characters."
+
 ### Non-Functional Requirements
 
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
@@ -1226,9 +1274,28 @@ testers are expected to do more *exploratory* testing.
 
 ### Changing transaction stage
 
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `transaction 1 s/closed`
+    Expected: "Added transaction stage to Person: ...; Transaction: [closed]; ..."
+    The person's transaction stage tag displays `closed`.
+3. Test case: `transaction 1 s/invalidstage`
+    Expected: Error "Transaction stage should be 'prospect', 'negotiating' or 'closed'."
+4. Test case: `transaction x s/closed` (x <= 0 or x > list size) 
+    Expected: Invalid index error.
 
 
 ### Adding a remark
+
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `remark 1 rm/Likes nature`
+   Expected: "Added remark to Person: ...; Remarks: Likes nature; ..."
+   The person's remark field displays "Likes nature".
+3. Test case: `remark 1 rm/`
+   Expected: "Removed remark from Person: ...; Remarks:;" The person's remark field is no longer displayed.
+4. Test case: `remark 1 s/<STRING>` where `STRING` has more than 100 characters.
+   Expected: Error "Invalid command format! Remark cannot exceed 100 characters"
+5. Test case: `transaction x s/closed` (x <= 0 or x > list size)
+   Expected: Invalid index error.
 
 
 
