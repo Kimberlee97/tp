@@ -1180,8 +1180,53 @@ testers are expected to do more *exploratory* testing.
 
 ### Finding contacts (include all find commands here)
 
+#### Find by name
+1. Prerequisites: List all persons with `list`. Multiple persons should be visible.
+2. Test case: `find john`
+   Expected: Shows contacts with names containing "john". Status displays count found.
+3. Test case: `find john alex`
+   Expected: Shows contacts containing "john" OR "alex" in their names.
+4. Test case: `find` or `find    `
+   Expected: Error "Invalid command format!" with usage instructions.
+5. Other test cases to try: partial matches like `find ale`, non-existent names.
 
+#### Find by address
+1. Prerequisites: Ensure contacts have different addresses.
+2. Test case: `find a/bedok`
+   Expected: Shows all contacts with addresses containing "bedok".
+3. Test case: `find a/`
+   Expected: Error with address-specific usage message.
+4. Other test cases to try: multiple keywords like `find a/bedok north`
 
+#### Find by tag
+1. Prerequisites: Ensure contacts have various tags.
+2. Test case: `find t/friend`
+   Expected: Shows all contacts tagged with "friend".
+3. Test case: `find t/`
+   Expected: Error with tag-specific usage message.
+4. Test case: `find t/friend_buyer`
+   Expected: Error "Invalid keyword. Tags can only contain alphanumeric characters".
+5. Other test cases to try: multiple keywords, partial matches, mixed case.
+
+#### Find by relation
+1. Prerequisites: Ensure you have both vendors and clients in the list.
+2. Test case: `find r/client`
+   Expected: Shows all contacts with relation "client".
+3. Test case: `find r/supplier`
+   Expected: Error "Invalid relation. Only 'client' or 'vendor' are allowed".
+4. Test case: `find r/client vendor`
+   Expected: Error "Relation search only accepts one keyword"
+5. Other test cases to try: uppercase keywords, empty prefix.
+
+#### Find by transaction stage 
+1. Prerequisites: Ensure contacts have different transaction stages.
+2. Test case: `find s/prospect`
+   Expected: Shows all contacts with transaction stage "prospect".
+3. Test case: `find s/pending`
+   Expected: Error "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed; are allowed".
+4. Test case: `find s/prospect closed`
+   Expected: Error "Transaction stage search only accepts one keyword"
+5. Other test cases to try: uppercase keywords, other valid stages (negotiating, closed).
 ### Archiving a person
 
 1. Prerequisites: Show active list with `list`. Ensure at least one person exists.
