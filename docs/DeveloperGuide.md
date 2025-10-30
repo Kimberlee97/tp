@@ -1267,9 +1267,11 @@ testers are expected to do more *exploratory* testing.
 * **Difficulty level**
   * 
 * **Challenges faced**
-  * 
+  * Designing command logic that allows flexible `remark` editing while maintaining input validation rules (e.g. length limit and empty `remark` handling).
+  * Ensuring the `transaction` command correctly validates and updates only valid stages without affecting unrelated data.
 * **Effort required:**
-  * 
+  * Implemented RemarkCommand, RemarkCommandParser, and Remark to support adding, editing, and deleting remarks with instant UI updates. Added 100-character validation and error handling, with tests (RemarkTest, RemarkCommandParserTest) for edge cases.
+  * Implemented Transaction, TransactionCommand and TransactionCommandParser to handle stage updates with validation and real-time UI reflection. Added tests (TransactionCommandParserTest) to ensure correct error handling for invalid inputs.
 * **Achievements of project:**
   * 
 
