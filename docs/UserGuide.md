@@ -14,7 +14,7 @@ With Homey, you can:
 * Categorise contacts as *clients* or *vendors*
 * Track deal progress through *transaction stages*
 * Schedule and view *meetings* directly
-* Hide contacts by **archiving** to keep your list organised without losing information
+* Hide contacts by *archiving* to keep your list organised without losing information
 
 Whether you're closing deals or managing follow-ups, Homey helps you stay on top of your work - faster and smarter.<br>
 
