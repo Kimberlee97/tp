@@ -664,17 +664,21 @@ You can search for contacts whose names contain keywords you specify. This is us
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find ale` returns `Alex Yeoh` and `Alexandra Tan`<br>
+* `find ale` returns `Alex Yeoh` and `Alexandra Tan`
+&nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/findAleResult.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'ale'</i></p>
 </div>
+&nbsp;
 
-* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks` <br>
+* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks` 
+&nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/findJohnAlexResult.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'john' or 'alex'</i></p>
 </div>
+&nbsp;
 
 #### Find by address: `find a/`
 
@@ -688,11 +692,13 @@ You can search for contacts based on their address. This is particularly useful 
 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
-* `find a/hou` returns all persons living in `hougang` and `Hougang` <br>
+* `find a/hou` returns all persons living in `hougang` and `Hougang` 
+&nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/findAddressHougang.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose addresses contain Hougang</i></p>
 </div>
+&nbsp;
 
 #### Find by tag: `find t/`
 
@@ -707,11 +713,13 @@ You can search for contacts with specific tags you have assigned them. Tags help
 Examples:
 * `find t/condo` returns all persons tagged with `condo`
 * `find t/bu` returns all persons with tags containing `bu` (e.g., `firsttimebuyer`, `budget`)
-* `find t/buyer budget` returns persons tagged with either `buyer` or `budget`<br>
+* `find t/buyer budget` returns persons tagged with either `buyer` or `budget`
+&nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/findTagBu.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose tags contain 'bu'</i></p>
 </div>
+&nbsp;
 
 #### Find by relation: `find r/`
 
@@ -731,17 +739,19 @@ You can filter your contacts by whether they are property sellers or buyers. Thi
 
 Examples:
 * `find r/vendor` returns all persons with relation `vendor`
-* `find r/client` returns all persons with relation `client`<br>
+* `find r/client` returns all persons with relation `client`
+&nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/findRelationClient.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose relation is client</i></p>
 </div>
+&nbsp;
 
 #### Find by transaction stage: `find s/`
 
 You can filter contacts based on where they are in your sales pipeline. This helps you prioritise follow-ups, whether you need to check in with active negotiations or reconnect with potential clients.
 
-**Format:** `find s/STAGE`
+**Format:** `find s/TRANSACTION_STAGE`
 
 **How it works:**
 * Only the transaction field is searched
@@ -757,11 +767,13 @@ You can filter contacts based on where they are in your sales pipeline. This hel
 Examples:
 * `find s/prospect` returns all persons with transaction stage `prospect`
 * `find s/negotiating` returns all persons with transaction stage `negotiating`
-* `find s/closed` returns all persons with transaction stage `closed`<br>
+* `find s/closed` returns all persons with transaction stage `closed`
+&nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/findTransactionClosed.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose transaction stage is closed</i></p>
 </div>
+&nbsp;
 
 &nbsp;
 
@@ -848,10 +860,13 @@ You can remove a contact from Homey permanently. This is useful when you no long
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find James` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+&nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/deleteJamesResult.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>James Ho is deleted from Homey</i></p>
 </div>
+&nbsp;
+
 &nbsp;
 
 &nbsp;

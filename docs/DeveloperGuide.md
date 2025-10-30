@@ -17,7 +17,18 @@ _{ list here sources of all reused/adapted ideas, code, documentation, and third
 * The `Add Meeting` feature was inspired by the add command in [AB3](https://github.com/nus-cs2103-AY2526S1/tp).
 While the parsing and model integration logic were adapted from AB3’s `AddCommand` and `AddCommandParser`, the meeting-related components 
 such as the Meeting class, meeting validation logic, and enhanced success feedback were independently designed.
-
+* The `Edit Meeting` functionality builds upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp) `EditCommand` and `EditCommandParser`.
+Our implementation extends this by introducing the m/ prefix, date–time validation, and logic to handle meeting clearing, conflict prevention, and customized feedback messages. 
+These components were conceptualized and implemented independently to support appointment management for property agents.
+* The `List Meeting`, although inspired by [AB3](https://github.com/nus-cs2103-AY2526S1/tp) original `list` command structure
+, we extended it with custom filtering logic and a new `ListMeetingCommand` class to retrieve and sort contacts with upcoming meetings. 
+* The `Find by Name` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but the parsing and filtering logic were adapted to match partial names and ensure case-insensitive matching.
+* The `Find by Tag` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support tag-based searching with the `t/` prefix.
+The parsing and filtering logic were adapted to match partial tag keywords, ensuring case-insensitive matching, and validate alphanumeric-only characters.
+* The `Find by Relation` feature was build upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support relation-based searching with the `r/` prefix.
+The parsing and validation logic were adapted to enforce exact-match keywords ('client' or 'vendor'), ensure case-insensitive matching, and ensure single-keyword constraints.
+* The `Find by Transaction Stage` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support transaction stage searching with the `s/` prefix.
+The parsing and validation logic were adapted to enforce exact-match keywords ('propsect', 'negotiating' or 'closed'), ensure case-insensitive matching, and ensure single-keyword constraints.
 * The `Find by Address` feature was build upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support searching by address instead of just names. 
 The parsing and filtering logic were adapted to match partial address keywords and ensure case-insensitive matching.
 * The `delete` and `clear` commands are reused from [AB3](https://github.com/nus-cs2103-AY2526S1/tp).
@@ -596,11 +607,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | Property agent                                         | Attach notes to each contact                                           | I can remember important details                                                 |
 | `*`      | Property agent that travels a lot                      | Group my clients and deals by area                                     | I can easily plan out meetings by proximity                                      |
 | `* *`    | Property agent                                         | Set recurring reminders like weekly check-in calls                     | I can maintain consistent follow-ups                                             |
-| `* *`    | Property Agent juggling multiple stakeholders          | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                                                 |
+| `* *`    | Property Agent                                         | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                            |
 | `* *`    | Property agent                                         | Tag contacts by transaction stage like prospect, negotiating, closed   | I can track progress easily                                                      |
 | `* *`    | User that prefers visual information                   | Colour code my tags and events                                         | I can easily identify the type of contacts and events                            |
 | `* *`    | Property Agent                                         | Set overdue tasks or meetings highlighted                              | I can prioritise catching up quickly                                             |
-| `* *`    | Property agent managing multiple stakeholders          | Add date and time for meeting                                          | I can keep track of important events or meetings and attend them                 |
+| `* *`    | Property agent                                         | Add dates for meetings                                                 | I can keep track of important events and attend them                             |
 | `* *`    | Property agent that wants to track their current deals | Sort contacts by earliest meeting                                      | I can prioritise deals or meetings that have been delayed or are taking too long |
 | `* *`    | Forgetful property agent                               | Search for contacts using partial names                                | I can find their contact information despite not remembering their full name     |
 | `*`      | Property agent                                         | Input details for a new contact in one line                            | It is convenient                                                                 |
@@ -927,7 +938,7 @@ Precondition: User has launched the app.
 * 1a. System detects no matching client
 * 1b. System shows “No client found” and suggests adding new contact
 
-**Use case: View upcoming meeting with nearest deadline**
+**Use case: View upcoming meeting with nearest deadline first**
 
 **MSS**
 
@@ -1330,7 +1341,48 @@ testers are expected to do more *exploratory* testing.
 
 ### Finding contacts (include all find commands here)
 
+#### Find by name
+1. Prerequisites: List all persons with `list`. Multiple persons should be visible.
+2. Test case: `find john`
+   Expected: Shows contacts with names containing "john". 
+3. Test case: `find john alex`
+   Expected: Shows contacts containing "john" OR "alex" in their names.
+4. Test case: `find` or `find    `
+   Expected: Error "Invalid command format!" with usage instructions.
 
+#### Find by address
+1. Prerequisites: Ensure contacts have different addresses.
+2. Test case: `find a/bedok`
+   Expected: Shows all contacts with addresses containing "bedok".
+3. Test case: `find a/`
+   Expected: Error with address-specific usage message.
+
+#### Find by tag
+1. Prerequisites: Ensure contacts have various tags.
+2. Test case: `find t/friend`
+   Expected: Shows all contacts tagged with "friend".
+3. Test case: `find t/`
+   Expected: Error with tag-specific usage message.
+4. Test case: `find t/friend_buyer`
+   Expected: Error "Invalid keyword. Tags can only contain alphanumeric characters".
+
+#### Find by relation
+1. Prerequisites: Ensure you have both vendors and clients in the list.
+2. Test case: `find r/client`
+   Expected: Shows all contacts with relation "client".
+3. Test case: `find r/supplier`
+   Expected: Error "Invalid relation. Only 'client' or 'vendor' are allowed".
+4. Test case: `find r/client vendor`
+   Expected: Error "Relation search only accepts one keyword"
+
+#### Find by transaction stage 
+1. Prerequisites: Ensure contacts have different transaction stages.
+2. Test case: `find s/prospect`
+   Expected: Shows all contacts with transaction stage "prospect".
+3. Test case: `find s/pending`
+   Expected: Error "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed; are allowed".
+4. Test case: `find s/prospect closed`
+   Expected: Error "Transaction stage search only accepts one keyword"
 
 ### Archiving a person
 
@@ -1361,10 +1413,14 @@ testers are expected to do more *exploratory* testing.
 * **Challenges faced**
   * Ensuring meeting commands interacted correctly with existing features without breaking core functionality
   * Ensuring interactive commands did not break functionality for other commands and could work seamlessly with multiple steps
+  * Designing command logic that allows flexible `remark` editing while maintaining input validation rules (e.g. length limit and empty `remark` handling).
+  * Ensuring the `transaction` command correctly validates and updates only valid stages without affecting unrelated data.
 * **Effort required:**
   * Implemented new logic for `Meeting` class and integrated it with `AddCommand`, `EditCommand`, and `ListMeetingCommand`.
   * Implemented new logic for `InteractiveCommand` and adapted `LogicManager` for interactive add command.
   * Features `relation`, `transaction` and `remark` are adapted from AB3's [add command tutorial](https://se-education.org/guides/tutorials/ab3AddRemark.html) and enhanced with improved code quality
+  * Implemented RemarkCommand, RemarkCommandParser, and Remark to support adding, editing, and deleting remarks with instant UI updates. Added 100-character validation and error handling, with tests (RemarkTest, RemarkCommandParserTest) for edge cases.
+  * Implemented Transaction, TransactionCommand and TransactionCommandParser to handle stage updates with validation and real-time UI reflection. Added tests (TransactionCommandParserTest) to ensure correct error handling for invalid inputs.
 * **Achievements of project:**
   * Successfully extended into a property-agent focused app supporting meeting scheduling, editing, and listing.
 
