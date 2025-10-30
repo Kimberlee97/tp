@@ -25,6 +25,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
 <box type="info" header="Table of Contents">
 
 - [Quick start](#quick-start)
+- [Glossary](#glossary)
 - [Features](#features)
     - [Viewing Help](#viewing-help)
         - [Help by topic: `help [TOPIC]`](#help-by-topic-help-topic)
