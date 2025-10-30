@@ -277,19 +277,17 @@ Shows all contacts with meetings in ascending order of date and time.
 Use this command to quickly view who you are meeting next.
 </box>
 
----
+&nbsp;
 
 ### Finding Your Contacts
 
 Homey helps you quickly locate any contact in your property database. You can search using `find` command with different filters to match your workflow needs.
 
 **General search rules** (applies to name, address, and tag searches):
-- **Case-insensitive**: Uppercase and lowercase letters are treated the same - typing `john` will match `John`
-- **Partial matching**: You do not have to type the full word - typing `Han` will find `Hans`
-- **Multiple keywords**: Use spaces between words to search for multiple terms at once
-- **Order does not matter**: Keywords can be in any order - `Doe John` will match `John Doe`
-
----
+- **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `john` will match `John`
+- **Partial matching:** You do not have to type the full word - typing `Han` will find `Hans`
+- **Multiple keywords:** Use spaces between words to search for multiple terms at once
+- **Order does not matter:** Keywords can be in any order - `Doe John` will match `John Doe`
 
 #### Find by name: `find`
 
@@ -304,11 +302,9 @@ You can search for contacts whose names contain keywords you specify. This is us
 Examples:
 * `find John` returns `john` and `John Doe`
 * `find ale` returns `Alex Yeoh` and `Alexandra Tan`<br>
-  ![result for 'find ale'](images/findAleResult.png)
+  <img src="images/findAleResult.png" width="700" height="auto"/>
 * `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks`<br>
   ![result for 'find john alex'](images/findJohnAlexResult.png)
-
----
 
 #### Find by address: `find a/`
 
@@ -325,8 +321,6 @@ Examples:
 * `find a/bed` returns all persons living in `bedok` and `Bedok` or other addresses with `bed`<br>
   ![result for 'find alex david'](images/findAddressBedok.png)
 
----
-
 #### Find by tag: `find t/`
 
 You can search for contacts with specific tags you have assigned them. Tags help you organise contacts by categories like `referral` or `first-time-buyer`.
@@ -342,8 +336,6 @@ Examples:
 * `find t/fri` returns all persons with tags containing `fri` (e.g., `friend`, `Friday`)
 * `find t/friend buyer` returns persons tagged with either `friend` or `buyer`<br>
   ![result for 'find t/friend buyer'](images/findTagFriendBuyer.png)
-
----
 
 #### Find by relation: `find r/`
 
@@ -365,8 +357,6 @@ Examples:
 * `find r/vendor` returns all persons with relation `vendor`
 * `find r/client` returns all persons with relation `client`<br>
   ![result for 'find r/client'](images/findRelationClient.png)
-
----
 
 #### Find by transaction stage: `find s/`
 
