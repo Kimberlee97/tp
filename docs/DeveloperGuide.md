@@ -29,6 +29,8 @@ The parsing and filtering logic were adapted to match partial tag keywords, ensu
 The parsing and validation logic were adapted to enforce exact-match keywords ('client' or 'vendor'), ensure case-insensitive matching, and ensure single-keyword constraints.
 * The `Find by Transaction Stage` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support transaction stage searching with the `s/` prefix.
 The parsing and validation logic were adapted to enforce exact-match keywords ('propsect', 'negotiating' or 'closed'), ensure case-insensitive matching, and ensure single-keyword constraints.
+* The `Find by Address` feature was build upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support searching by address instead of just names. 
+The parsing and filtering logic were adapted to match partial address keywords and ensure case-insensitive matching.
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -605,11 +607,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | Property agent                                         | Attach notes to each contact                                           | I can remember important details                                                 |
 | `*`      | Property agent that travels a lot                      | Group my clients and deals by area                                     | I can easily plan out meetings by proximity                                      |
 | `* *`    | Property agent                                         | Set recurring reminders like weekly check-in calls                     | I can maintain consistent follow-ups                                             |
-| `* *`    | Property Agent                                         | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                            |
+| `* *`    | Property Agent juggling multiple stakeholders          | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                                                 |
 | `* *`    | Property agent                                         | Tag contacts by transaction stage like prospect, negotiating, closed   | I can track progress easily                                                      |
 | `* *`    | User that prefers visual information                   | Colour code my tags and events                                         | I can easily identify the type of contacts and events                            |
 | `* *`    | Property Agent                                         | Set overdue tasks or meetings highlighted                              | I can prioritise catching up quickly                                             |
-| `* *`    | Property agent                                         | Add dates for meetings                                                 | I can keep track of important events and attend them                             |
+| `* *`    | Property agent managing multiple stakeholders          | Add date and time for meeting                                          | I can keep track of important events or meetings and attend them                 |
 | `* *`    | Property agent that wants to track their current deals | Sort contacts by earliest meeting                                      | I can prioritise deals or meetings that have been delayed or are taking too long |
 | `* *`    | Forgetful property agent                               | Search for contacts using partial names                                | I can find their contact information despite not remembering their full name     |
 | `*`      | Property agent                                         | Input details for a new contact in one line                            | It is convenient                                                                 |
@@ -631,6 +633,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | Property agent                                         | List all my contact entries                                            | I can see my contact list in case I forget their names                           |
 | `* * *`  | New user                                               | Learn all the commands available                                       | I know how to use the address book                                               |
 | `* * *`  | Property agent                                         | Find contacts by address                                               | Easily locate contacts that stay in that area                                    |
+| `* *`    | Property Agent juggling multiple stakeholders          | Edit or delete a meeting                                               | Quickly update or remove meeting                                                                                 |
 
 ### Use cases
 
@@ -644,7 +647,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2.  AddressBook shows a list of persons
 3.  User requests to delete a specific person in the list
 4.  AddressBook deletes the person
-
+                          
     Use case ends.
 
 **Extensions**
@@ -721,16 +724,33 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-**Use case: Add dates for meetings **
+**Use case: Add date and time for meetings**
 
 **MSS**
 
-1. User searches for a certain contact
-2. System displays details associated with contact including meetings
-3. User adds meeting date using command line
-4. System displays success message and meeting details
+1. User opens the application.
+2. User adds a contact with a meeting date and time.
+3. System validates the meeting input format (`YYYY-MM-DD HH:mm`).
+4. System updates the contact with the new meeting date and time.
+5. System displays a success message confirming the scheduled meeting.
 
-    Use case ends.
+   Use case ends.
+
+**Extensions**
+
+* **3a.** User enters an invalid meeting format.
+    * 3a1. System displays an error message with the correct format (e.g., “Meetings must follow the format YYYY-MM-DD HH:mm”).
+    * 3a2. User re-enters the correct date and time.
+        * Use case resumes at step 6.
+
+* **4a.** User specifies other fields together with `m/` (e.g., `s/closed`).
+    * 4a1. System displays error: “When editing a meeting, no other fields may be provided.”
+    * 4a2. User corrects the command and retries.
+        * Use case resumes at step 4.
+
+* **64b.** User tries to add a meeting for a non-existent contact index.
+    * 6b1. System displays “Invalid person index.”
+    * Use case ends.
 
 **Use case: Search for contacts using partial names**
 
@@ -819,7 +839,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
    Use case ends.
 
-**Use case: Link meeting to multiple contacts**
+**Use case: Link a meeting to multiple contacts**
 
 **MSS**
 
@@ -918,22 +938,34 @@ Precondition: User has launched the app.
 * 1a. System detects no matching client
 * 1b. System shows “No client found” and suggests adding new contact
 
-**Use case: View upcoming meeting with nearest deadline first**
+**Use case: View upcoming meeting with nearest deadline**
 
 **MSS**
 
-Precondition: User has meetings scheduled and is at the landing page of the app.
+**Precondition:** User has at least one contact with a scheduled meeting.
 
-1. User selects “Sort by → Meeting Date”
-2. System rearranges client list by meeting times, with nearest deadline at the top
-3. User views the first item to check details (time, location, client notes, etc)
+1. User enters the command `list meeting`.
+2. System filters all contacts with scheduled meetings.
+3. System sorts the contacts by meeting date and time in ascending order (earliest first).
+4. If two meetings share the same date and time, the contacts are sorted alphabetically by name.
+5. System displays the list of contacts with meetings, showing the nearest upcoming meeting first.
+6. User selects a contact to view full meeting and contact details in the right panel.
 
    Use case ends.
 
 **Extensions**
 
-* 2a. No meetings scheduled.
-    * 2a1. System shows “No meetings scheduled” and suggests adding a meeting
+* **1a.** User enters the command in a different case (e.g., `list Meeting` or `LIST MEETING`).
+    * 1a1. System recognises the command and performs the same action.
+    * Use case resumes at step 2.
+
+* **2a.** No contacts have meetings scheduled.
+    * 2a1. System displays a clear message: “No contacts with meetings found.”
+    * Use case ends.
+
+* **3a.** User is currently viewing the archived list.
+    * 3a1. System only considers active contacts and excludes archived ones.
+    * Use case resumes at step 5.
 
 
 **Use case: Sort contacts by dates added**
@@ -1073,23 +1105,105 @@ Precondition: User is at the landing page of the app and has existing list of co
 
 **MSS**
 
-1. User requests to find contacts by specifying an address keyword.
-
-2. AddressBook filters and displays all contacts whose address contains the specified keyword.
-
-3. User views the list of matched contacts.
+1. User enters a command to find contacts by specifying one or more address keywords (e.g., `find a/Bedok`).
+2. System filters and displays all contacts whose addresses contain any of the specified keywords.
+3. User views the list of matched contacts, displayed in the main window.
 
    Use case ends.
 
 **Extensions**
 
-* 2a. No contact’s address matches the given keyword.
+* **1a.** User enters an empty or invalid address keyword.
+    * 1a1. System displays an error message prompting the user to enter at least one valid keyword.
+    * Use case ends.
 
-    * 2a1. AddressBook shows a message indicating that no contacts were found.
+* **2a.** No contact’s address matches the given keyword(s).
+    * 2a1. System displays a message indicating that no contacts were found.
+    * Use case ends.
 
-* 1a. User enters an invalid or empty address keyword.
+* **2b.** User provides multiple keywords (e.g., `find a/bedok north`).
+    * 2b1. System returns all contacts whose addresses contain **any** of the given keywords, regardless of order or case.
+    * Use case resumes at step 3.
 
-    * 1a1. AddressBook displays an error message prompting the user to provide a valid keyword.
+### Use case: Edit or remove meetings
+
+**MSS**
+
+1. User opens the application.
+2. User views the contact list.
+3. User selects a contact to edit.
+4. User requests to edit the meeting details for that contact.
+5. System prompts for meeting input.
+6. User provides the new meeting date/time or leaves it blank to clear the meeting.
+7. System validates the meeting format (if provided).
+8. System updates or removes the meeting for the selected contact.
+9. System displays a success message confirming the update or removal.
+
+   Use case ends.
+
+**Extensions**
+
+* **6a.** User enters an invalid meeting format.
+    * 6a1. System displays an error message with the correct format (e.g., “YYYY-MM-DD HH:mm”).
+    * 6a2. User re-enters the meeting details.
+        * Use case resumes at step 7.
+
+* **7a.** User attempts to edit a meeting while specifying other fields (e.g., `s/closed`).
+    * 7a1. System displays error: “When editing a meeting, no other fields may be provided.”
+    * 7a2. User corrects the input or cancels the operation.
+        * Use case resumes at step 5 or ends.
+
+* **8a.** User tries to clear a meeting that does not exist.
+    * 8a1. System displays message: “No meetings to clear for [contact name].”
+    * Use case ends.
+
+**Use case: Change the transaction stage of a contact**
+
+**MSS**
+
+1. User requests to change the transaction stage of a contact by specifying the contact's index and the new transaction stage.
+2. Homey validates that the specified index exists and the transaction stage is valid.
+3. Homey updates the contact's transaction stage.
+4. Homey displays a success message confirming the update.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User changes the transaction stage using the `edit` command instead of `transaction`
+  * Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage. 
+* 1b. User enters an invalid command format or omits required fields (e.g. missing index or `s\`).
+  * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
+* 2a. The given index is invalid.
+  * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
+  * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
+* 2b. The transaction stage provided is empty or invalid (i.e. not one of `prospect`, `negotiating` or `closed`).
+  * 2b1. If the transaction stage provided is empty, Homey displays "Invalid command format! Transaction stage cannot be empty."
+  * 2b1. If the transaction stage provided is invalid, Homey displays the list of valid stages.
+
+**Use case: Editing a remark**
+
+**MSS**
+
+1. User requests to change the remark of a contact by specifying the contact's index and the new remark.
+2. Homey validates that the specified index exists and the remark length does not exceed 100 characters.
+3. Homey updates the contact's remark.
+4. Homey displays a success message confirming the update.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. User changes the remark using the `edit` command instead of `remark`
+  * 1a1. Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage.
+  * 1a2. If the remark exceeds 100 characters, Homey displays "Remark cannot exceed 100 characters."
+* 1b. User enters an invalid command format or omits required fields (e.g. missing index or `rm/`).
+  * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
+* 2a. The given index is invalid.
+  * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
+  * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
+* 2b. The remark provided is invalid (i.e. more than 100 characters).
+  * Homey displays "Invalid command format! Remark cannot exceed 100 characters."
 
 ### Non-Functional Requirements
 
@@ -1171,19 +1285,55 @@ testers are expected to do more *exploratory* testing.
 
 ### Changing transaction stage
 
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `transaction 1 s/closed`
+    Expected: "Added transaction stage to Person: ...; Transaction: [closed]; ..."
+    The person's transaction stage tag displays `closed`.
+3. Test case: `transaction 1 s/invalidstage`
+    Expected: Error "Transaction stage should be 'prospect', 'negotiating' or 'closed'."
+4. Test case: `transaction x s/closed` (x <= 0 or x > list size) 
+    Expected: Invalid index error.
 
 
 ### Adding a remark
 
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `remark 1 rm/Likes nature`
+   Expected: "Added remark to Person: ...; Remarks: Likes nature; ..."
+   The person's remark field displays "Likes nature".
+3. Test case: `remark 1 rm/`
+   Expected: "Removed remark from Person: ...; Remarks:;" The person's remark field is no longer displayed.
+4. Test case: `remark 1 s/<STRING>` where `STRING` has more than 100 characters.
+   Expected: Error "Invalid command format! Remark cannot exceed 100 characters"
+5. Test case: `transaction x s/closed` (x <= 0 or x > list size)
+   Expected: Invalid index error.
+
 
 
 ### Editing a contact's meeting
+1. Prerequisites: Ensure at least one contact exists by using `list`.
+* You may add one with: `add n/Kevin Tan p/87438807 e/kevin@ex.com a/Blk 30 s/prospect`
 
+2. Test case: edit 1 m/2025-11-03 14:00
+   Expected: “Updated meeting for Kevin Tan: 2025-11-03 14:00” Meeting field is added to contact card
 
+3. Test case: edit 1 m/
+   Expected: “Cleared meeting for Kevin Tan.” Meeting field is removed from the contact card.
+
+4. Test case: edit 1 m/invalid-date
+   Expected: Error “Meeting must be in yyyy-MM-dd HH:mm (24h) format and be a real date/time, e.g. 2025-11-03 14:00.”
 
 ### Listing contacts by meeting date
+1. Prerequisites: Ensure at least two contacts have meetings set using `list meeting`.
 
+2. Test case: list meeting
+   Expected: Displays only contacts with meetings, sorted by earliest meeting first.
 
+3. Test case: Run list meeting when no contacts have meetings.
+   Expected: Empty list message such as “No contacts with meetings found.”
+
+4. Test case: list Meeting or list MEETING
+   Expected: "Updated meeting for Kevin Tan: 2025-11-11 09:30" (Will still work)
 
 ### Finding contacts (include all find commands here)
 
@@ -1255,13 +1405,13 @@ testers are expected to do more *exploratory* testing.
 ## **Appendix: Effort**
 
 * **Difficulty level**
-  * 
+  * Moderate to high
 * **Challenges faced**
-  * 
+  * Ensuring meeting commands interacted correctly with existing features without breaking core functionality
 * **Effort required:**
-  * 
+  * Implemented new logic for `Meeting` class and integrated it with `AddCommand`, `EditCommand`, and `ListMeetingCommand`.
 * **Achievements of project:**
-  * 
+  * Successfully extended into a property-agent focused app supporting meeting scheduling, editing, and listing.
 
 --------------------------------------------------------------------------------------------------------------------
 
