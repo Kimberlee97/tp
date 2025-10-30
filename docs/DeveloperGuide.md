@@ -17,7 +17,18 @@ _{ list here sources of all reused/adapted ideas, code, documentation, and third
 * The `Add Meeting` feature was inspired by the add command in [AB3](https://github.com/nus-cs2103-AY2526S1/tp).
 While the parsing and model integration logic were adapted from AB3’s `AddCommand` and `AddCommandParser`, the meeting-related components 
 such as the Meeting class, meeting validation logic, and enhanced success feedback were independently designed.
-
+* The `Edit Meeting` functionality builds upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp) `EditCommand` and `EditCommandParser`.
+Our implementation extends this by introducing the m/ prefix, date–time validation, and logic to handle meeting clearing, conflict prevention, and customized feedback messages. 
+These components were conceptualized and implemented independently to support appointment management for property agents.
+* The `List Meeting`, although inspired by [AB3](https://github.com/nus-cs2103-AY2526S1/tp) original `list` command structure
+, we extended it with custom filtering logic and a new `ListMeetingCommand` class to retrieve and sort contacts with upcoming meetings. 
+* The `Find by Name` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but the parsing and filtering logic were adapted to match partial names and ensure case-insensitive matching.
+* The `Find by Tag` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support tag-based searching with the `t/` prefix.
+The parsing and filtering logic were adapted to match partial tag keywords, ensuring case-insensitive matching, and validate alphanumeric-only characters.
+* The `Find by Relation` feature was build upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support relation-based searching with the `r/` prefix.
+The parsing and validation logic were adapted to enforce exact-match keywords ('client' or 'vendor'), ensure case-insensitive matching, and ensure single-keyword constraints.
+* The `Find by Transaction Stage` feature was built upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support transaction stage searching with the `s/` prefix.
+The parsing and validation logic were adapted to enforce exact-match keywords ('propsect', 'negotiating' or 'closed'), ensure case-insensitive matching, and ensure single-keyword constraints.
 * The `Find by Address` feature was build upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support searching by address instead of just names. 
 The parsing and filtering logic were adapted to match partial address keywords and ensure case-insensitive matching.
 
@@ -1326,7 +1337,48 @@ testers are expected to do more *exploratory* testing.
 
 ### Finding contacts (include all find commands here)
 
+#### Find by name
+1. Prerequisites: List all persons with `list`. Multiple persons should be visible.
+2. Test case: `find john`
+   Expected: Shows contacts with names containing "john". 
+3. Test case: `find john alex`
+   Expected: Shows contacts containing "john" OR "alex" in their names.
+4. Test case: `find` or `find    `
+   Expected: Error "Invalid command format!" with usage instructions.
 
+#### Find by address
+1. Prerequisites: Ensure contacts have different addresses.
+2. Test case: `find a/bedok`
+   Expected: Shows all contacts with addresses containing "bedok".
+3. Test case: `find a/`
+   Expected: Error with address-specific usage message.
+
+#### Find by tag
+1. Prerequisites: Ensure contacts have various tags.
+2. Test case: `find t/friend`
+   Expected: Shows all contacts tagged with "friend".
+3. Test case: `find t/`
+   Expected: Error with tag-specific usage message.
+4. Test case: `find t/friend_buyer`
+   Expected: Error "Invalid keyword. Tags can only contain alphanumeric characters".
+
+#### Find by relation
+1. Prerequisites: Ensure you have both vendors and clients in the list.
+2. Test case: `find r/client`
+   Expected: Shows all contacts with relation "client".
+3. Test case: `find r/supplier`
+   Expected: Error "Invalid relation. Only 'client' or 'vendor' are allowed".
+4. Test case: `find r/client vendor`
+   Expected: Error "Relation search only accepts one keyword"
+
+#### Find by transaction stage 
+1. Prerequisites: Ensure contacts have different transaction stages.
+2. Test case: `find s/prospect`
+   Expected: Shows all contacts with transaction stage "prospect".
+3. Test case: `find s/pending`
+   Expected: Error "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed; are allowed".
+4. Test case: `find s/prospect closed`
+   Expected: Error "Transaction stage search only accepts one keyword"
 
 ### Archiving a person
 
