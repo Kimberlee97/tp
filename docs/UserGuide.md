@@ -21,50 +21,13 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
 If you're a new user, start with the Quick Start section to set up Homey.
 If you're already familiar, jump directly to the section relevant to your needs.<br>
 
-<!-- Web Table of Contents (visible only on web) -->
-<div class="no-print d-print-none">
-  <box type="info" header="Table of Contents">
-
-- [Quick start](#quick-start)
-- [Glossary](#glossary)
-- [Features](#features)
-    - [Viewing Help](#viewing-help)
-        - [Help by topic: `help [TOPIC]`](#help-by-topic-help-topic)
-        - [Help offline: `help offline`](#help-offline-help-offline)
-    - [Adding A Person: `add`](#adding-a-person-add)
-        - [Adding a meeting while creating a contact: `add`](#adding-a-meeting-while-creating-a-contact-add)
-    - [Listing Your Contacts](#listing-your-contacts)
-        - [List all contacts: `list`](#list-all-contacts-list)
-        - [Listing contacts by meeting date : `list meeting`](#listing-contacts-by-meeting-date--list-meeting)
-        - [Listing archived contacts: `list archived` / `list archive`](#listing-archived-contacts-list-archived--list-archive)
-        - [Listing active contacts: `list` / `list active`](#listing-active-contacts-list--list-active)
-    - [Editing Your Contacts](#editing-your-contacts)
-        - [Editing a contact: `edit`](#editing-a-contact-edit)
-        - [Editing or removing a contact’s meeting : `edit INDEX m/`](#editing-or-removing-a-contacts-meeting--edit-index-m)
-    - [Add relational tag : `relation`](#add-relational-tag--relation)
-    - [Tracking Deal Progress](#tracking-deal-progress)
-        - [Updating the transaction stage: `transaction INDEX s/TRANSACTION_STAGE`](#updating-the-transaction-stage-transaction-index-stransaction_stage)
-    - [Adding Remarks](#adding-remarks)
-        - [Adding or editing a remark: `remark INDEX rm/REMARK`](#adding-or-editing-a-remark-remark-index-rmremark)
-    - [Finding Your Contacts](#finding-your-contacts)
-        - [Find by name: `find`](#find-by-name-find)
-        - [Find by address: `find a/`](#find-by-address-find-a)
-        - [Find by tag: `find t/`](#find-by-tag-find-t)
-        - [Find by relation: `find r/`](#find-by-relation-find-r)
-        - [Find by transaction stage: `find s/`](#find-by-transaction-stage-find-s)
-    - [Archiving Your Contacts: `archive`](#archiving-your-contacts-archive)
-    - [Unarchiving Your Contacts: `unarchive`](#unarchiving-your-contacts-unarchive)
-    - [Deleting a person : `delete`](#deleting-a-person--delete)
-    - [Clearing all entries : `clear`](#clearing-all-entries--clear)
-    - [Exiting the program : `exit`](#exiting-the-program--exit)
-    - [Saving the data](#saving-the-data)
-    - [Editing the data file](#editing-the-data-file)
-- [FAQ](#faq)
-- [Known issues](#known-issues)
-- [Command summary](#command-summary)
-
-  </box>
-</div>
+<style>
+@media screen {
+  .page-nav-print {
+    display: block !important;
+  }
+}
+</style>
 
 <!-- * Table of Contents -->
 <page-nav-print />
