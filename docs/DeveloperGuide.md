@@ -20,7 +20,7 @@ such as the Meeting class, meeting validation logic, and enhanced success feedba
 
 * The `Find by Address` feature was build upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp), but extended to support searching by address instead of just names. 
 The parsing and filtering logic were adapted to match partial address keywords and ensure case-insensitive matching.
-
+* The `delete` and `clear` commands are reused from [AB3](https://github.com/nus-cs2103-AY2526S1/tp).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1265,63 +1265,67 @@ testers are expected to do more *exploratory* testing.
 
 
 ### Interactive add
+1. Test case: `add`  
+   Expected: Prompts for name, phone, email, address and transaction stage fields. Adds corresponding person based on your inputs.
+2. Test case: `add rm/This is a test. m/2025-12-01 00:00`  
+   Expected: Prompts for name, phone, email, address and transaction stage fields. Adds corresponding person with the given remark and meeting.
+3. Test case: `add`, then `cancel`  
+   Expected: Prompts for name, then aborts command.
 
 
-
-### Adding relational tag
-
+### Changing relational tag
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `relation 1 vendor`  
+   Expected: "Added relation vendor to Person: ...". Changes relation of first contact to be vendor.
+2. Test case: `relation 0 client`  
+   Expected: Error "Invalid command format!"
+3. Test case: `relation 1 friend`  
+   Expected: Error "Relation should be 'client' or 'vendor'."
 
 
 ### Changing transaction stage
 
 1. Prerequisites: Ensure at least one person exists in the displayed list.
-2. Test case: `transaction 1 s/closed`
-    Expected: "Added transaction stage to Person: ...; Transaction: [closed]; ..."
+2. Test case: `transaction 1 s/closed`  
+    Expected: "Added transaction stage to Person: ...; Transaction: [closed]; ..."  
     The person's transaction stage tag displays `closed`.
-3. Test case: `transaction 1 s/invalidstage`
+3. Test case: `transaction 1 s/invalidstage`  
     Expected: Error "Transaction stage should be 'prospect', 'negotiating' or 'closed'."
-4. Test case: `transaction x s/closed` (x <= 0 or x > list size) 
+4. Test case: `transaction x s/closed` (x <= 0 or x > list size)  
     Expected: Invalid index error.
 
 
 ### Adding a remark
 
 1. Prerequisites: Ensure at least one person exists in the displayed list.
-2. Test case: `remark 1 rm/Likes nature`
+2. Test case: `remark 1 rm/Likes nature`  
    Expected: "Added remark to Person: ...; Remarks: Likes nature; ..."
    The person's remark field displays "Likes nature".
-3. Test case: `remark 1 rm/`
+3. Test case: `remark 1 rm/`  
    Expected: "Removed remark from Person: ...; Remarks:;" The person's remark field is no longer displayed.
-4. Test case: `remark 1 s/<STRING>` where `STRING` has more than 100 characters.
+4. Test case: `remark 1 s/<STRING>` where `STRING` has more than 100 characters.  
    Expected: Error "Invalid command format! Remark cannot exceed 100 characters"
-5. Test case: `transaction x s/closed` (x <= 0 or x > list size)
+5. Test case: `transaction x s/closed` (x <= 0 or x > list size)  
    Expected: Invalid index error.
 
 
 
 ### Editing a contact's meeting
 1. Prerequisites: Ensure at least one contact exists by using `list`.
-* You may add one with: `add n/Kevin Tan p/87438807 e/kevin@ex.com a/Blk 30 s/prospect`
-
-2. Test case: edit 1 m/2025-11-03 14:00
+2. Test case: edit 1 m/2025-11-03 14:00  
    Expected: “Updated meeting for Kevin Tan: 2025-11-03 14:00” Meeting field is added to contact card
-
-3. Test case: edit 1 m/
+3. Test case: edit 1 m/  
    Expected: “Cleared meeting for Kevin Tan.” Meeting field is removed from the contact card.
-
-4. Test case: edit 1 m/invalid-date
+4. Test case: edit 1 m/invalid-date  
    Expected: Error “Meeting must be in yyyy-MM-dd HH:mm (24h) format and be a real date/time, e.g. 2025-11-03 14:00.”
 
 ### Listing contacts by meeting date
 1. Prerequisites: Ensure at least two contacts have meetings set using `list meeting`.
-
-2. Test case: list meeting
+2. Test case: list meeting  
    Expected: Displays only contacts with meetings, sorted by earliest meeting first.
-
-3. Test case: Run list meeting when no contacts have meetings.
+3. Test case: Run list meeting when no contacts have meetings.  
    Expected: Empty list message such as “No contacts with meetings found.”
-
-4. Test case: list Meeting or list MEETING
+4. Test case: list Meeting or list MEETING  
    Expected: "Updated meeting for Kevin Tan: 2025-11-11 09:30" (Will still work)
 
 ### Finding contacts (include all find commands here)
@@ -1356,8 +1360,11 @@ testers are expected to do more *exploratory* testing.
   * Moderate to high
 * **Challenges faced**
   * Ensuring meeting commands interacted correctly with existing features without breaking core functionality
+  * Ensuring interactive commands did not break functionality for other commands and could work seamlessly with multiple steps
 * **Effort required:**
   * Implemented new logic for `Meeting` class and integrated it with `AddCommand`, `EditCommand`, and `ListMeetingCommand`.
+  * Implemented new logic for `InteractiveCommand` and adapted `LogicManager` for interactive add command.
+  * Features `relation`, `transaction` and `remark` are adapted from AB3's [add command tutorial](https://se-education.org/guides/tutorials/ab3AddRemark.html) and enhanced with improved code quality
 * **Achievements of project:**
   * Successfully extended into a property-agent focused app supporting meeting scheduling, editing, and listing.
 
