@@ -204,6 +204,20 @@ You can include a meeting date and time when adding a new contact. This allows y
 </div>
 &nbsp;
 
+## Listing available contacts
+
+Homey lets you view all current contacts and get a clear overview of who you’re working with.
+
+**General list behaviour:**
+
+* **Active list view:** Only shows contacts that are not archived.
+
+* **Reset view:** Clears any filters or search results (e.g., find, list meeting) and returns to the main contact list.
+
+* **Instant update:** Any recent additions, edits, or deletions are immediately reflected in the displayed list.
+
+* **Contact interaction:** Clicking on a contact opens its detailed information card on the right panel.
+
 ### Listing all contacts : `list`
 
 Displays all active contacts currently in your address book.
@@ -227,7 +241,7 @@ Format: `list`
 </div>
 &nbsp;
 
-### Listing contacts by meeting date : `list meeting`
+#### Listing contacts by meeting date : `list meeting`
 
 This command help you to display all contacts with meetings, sorted by the **earliest meeting first**.
 
@@ -252,9 +266,21 @@ This command help you to display all contacts with meetings, sorted by the **ear
 </div>
 &nbsp;
 
-### Editing a person : `edit`
+## Editing A Person's Information
 
-Edits an existing person in the address book.
+Homey lets you update existing contact details such as phone number, address, transaction stage, relation, remark, or meeting — all in one simple command.
+
+**General editing behaviours:**
+
+* **Automatic data validation:** Homey checks every edited field for valid format (e.g. phone, email, meeting date/time) before applying changes.
+
+* **Partial updates:** You can edit one or multiple fields at once. Unspecified fields remain unchanged.
+
+* **Conflict prevention:** Duplicate contacts are not allowed — Homey ensures edited entries do not match existing records.
+
+### Editing a person: `edit`
+
+Keeps your contact information up to date by editing an existing person’s details.
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG] [m/MEETING]…​`
 
@@ -264,16 +290,28 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAG
 * When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
+* You can remove all the person’s remarks by typing `rm/` without
+  specifying any remarks after it.
 
-Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
-*  `edit 5 m/2025-11-10 09:30` Updates the 5th person’s next meeting to `10 Nov 2025 at 9:30 AM.`
-*  `edit 5 m/` Clears the meeting time for the 5th person.
+**Examples:**
+* `edit 1 p/91234567 e/johndoe@example.com`
+  * Edits the phone number and email address of the `1st` person to be `91234567` and `johndoe@example.com` respectively.
+  &nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/EditPhoneEmail.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Edited the first person's phone number and email address</i></p>
+</div>
 
+* `edit 2 n/Betsy Crower t/`
+  * Edits the name of the `2nd` person to be `Betsy Crower` and clears all existing tags.
+  &nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/EditNameTag.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Edited the second person's name and clear all tags</i></p>
+</div>
 &nbsp;
 
-#### Editing or removing a contact’s meeting : `edit`
+#### Editing or removing a contact’s meeting : `edit m/MEETING_DATETIME`
 
 You can update or remove a contact’s meeting date and time to reschedule appointments or clear meetings that are no longer needed.
 
@@ -295,7 +333,7 @@ You can update or remove a contact’s meeting date and time to reschedule appoi
 &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/EditKevinMeeting.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Updated Kevin's Meeting</i></p>
+  <p style="text-align: center; margin-top: 4px;"><i>Updated Kevin's meeting</i></p>
 </div>
 
 * `edit 2 m/` 
@@ -551,7 +589,8 @@ Format: `exit`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+Homey automatically saves all contact data (including meetings, remarks, relations, and transaction stages) to your hard disk after every command that changes the data.  
+There is no need to save manually — your latest updates are always preserved.
 
 ### Editing the data file
 
