@@ -393,21 +393,21 @@ forward or changes status, helping you maintain an accurate overview of your act
 * `TRANSACTION STAGE` is case-insensitive — e.g. `prOsPECT` works the same as `prospect`
 * Additional whitespace is accepted — e.g. `s/   closed` works the same as `s/closed`
 
-Examples:
+**Examples:**
 * `transaction 1 s/prospect`
   * Replaces the transaction stage tag of the 1st contact to be `prospect`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/TransactionStageProspectResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Result of "transaction 1 s/prospect"</i></p>
+  <img src="images/transactionProspect.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Changed John's transaction stage to "prospect"</i></p>
 </div>
 
 * `transaction 1 s/NEGOTIATING` 
   * Replaces the transaction stage tag of the 1st contact to be `negotiating`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/TransactionStageNegotiating.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Result of "transaction 1 s/NEGOTIATING"</i></p>
+  <img src="images/transactionNegotiating.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Changed John's transaction stage to "negotiating"</i></p>
 </div>
 &nbsp;
 
@@ -434,19 +434,22 @@ stay organized.
 * If you leave `REMARK` empty (e.g. `remark 1 rm/`), the remark will be removed.
 * Extra spaces around `rm/` are ignored — e.g. `rm/   Has pets` works the same as `rm/Has pets`
 
-Examples:
+**Examples:**
 * `remark 1 rm/Likes nature` 
   * Replaces the remark of the 1st contact to be "Likes nature".
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/remark32Result.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Result of "remark 1 rm/Likes nature"</i></p>
+  <img src="images/remarkAdd.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Updated John's remark</i></p>
 </div>
 
-* `remark 32 rm/storm/cloud` Replaces the remark of the 32nd person to "storm/cloud".
-  ![Result of `remark 32 rm/storm/cloud`](images/remark32v2.png)
-&nbsp;
-
+* `remark 1 rm/` 
+  * Removes the remark of the 1st contact.
+    &nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/removeRemark.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Removed John's remark</i></p>
+</div>
 &nbsp;
 
 ### Finding Your Contacts
