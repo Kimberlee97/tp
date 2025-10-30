@@ -751,7 +751,7 @@ Examples:
 
 You can filter contacts based on where they are in your sales pipeline. This helps you prioritise follow-ups, whether you need to check in with active negotiations or reconnect with potential clients.
 
-**Format:** `find s/STAGE`
+**Format:** `find s/TRANSACTION_STAGE`
 
 **How it works:**
 * Only the transaction field is searched
