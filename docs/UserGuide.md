@@ -21,10 +21,6 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
 If you're a new user, start with the Quick Start section to set up Homey.
 If you're already familiar, jump directly to the section relevant to your needs.<br>
 
-<!-- Web Table of Contents (visible only on web) -->
-<div class="no-print d-print-none">
-  <box type="info" header="Table of Contents">
-
 <style>
 @media screen {
   .page-nav-print {
