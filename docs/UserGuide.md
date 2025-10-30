@@ -25,7 +25,7 @@ Whether you're closing deals or managing follow-ups, Homey helps you stay on top
 ## Quick start
 
 1. To ensure you have Java `17` or above installed in your Computer:<br>
-   * Search for Command Prompt in the Start Menu and launch it. If you are using macOS, open terminal by using Spotlight Search (Command + Space bar), then type "Terminal").
+   * Search for Command Prompt in the Start Menu and launch it. If you are using macOS, open terminal by using Spotlight Search (Command + Space bar), then type "Terminal").  
      <img src="images/cmd.png" width="auto" height="300" />
    * Enter `java -version` and press Enter. You should see an output similar to below.
 
@@ -150,11 +150,27 @@ This window provides a summary of all available commands and usage examples, all
 
 ### Adding a person: `add`
 
-Adds a person to the address book.
+This is the core functionality of Homey that allows it to be your one-stop manager assistant, adding contacts.  
+Use this feature whenever you want to add new contacts into Homey.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]…​`
+**Format:** `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]…​`
 
-If you forget to input any of the compulsory fields, the system will prompt you for the required inputs. 
+**How it works:**  
+Each contact will contain the following details:
+* Name
+* Phone number
+* Email
+* Address
+* Relation: client or vendor
+* Transaction stage: prospect, negotiating or closed
+* [optional] Remark
+* [optional] Tags
+* [optional] Next meeting date & time in **YYYY-MM-DD HH:mm** `24-HOUR` format.
+
+The relation and transaction stage fields help you as a property agent better manage and categorise your contacts.  
+The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
+
+If you forget to input any of the compulsory fields, the system will prompt you for the required inputs.  
 To abort the command during this stage, input `cancel`.
 
 <box type="tip" seamless>
@@ -169,22 +185,38 @@ To abort the command during this stage, input `cancel`.
 The remark field will be empty if no remark is given.
 </box>
 
-Examples:
+**Examples:**
 * `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00 rm/Likes nature`  
+  &nbsp;
+<div style="display: inline-block; text-align: center;">
   <img src="images/JadeLim.png" width="auto" height="300" />
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` 
-  * Adds a person named John Doe whose phone number is `98765432`, email is `johnd@example.com`, address is
-  `John street, block 123, #01-01`, relation is `client`, and transaction stage is `prospect`.  
-  <img src="images/AddJohnDoe.png" width="auto" height="300" />
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
-  * Adds a person named Betsy Crowe whose phone number is `1234567`, email is `betsycrowe@example.com`, address is
-  `Newgate Prison`, relation is `client`, transaction stage is `negotiating`, and is tagged as `criminal` and `friend`.  
-  <img src="images/AddBetsyCrowe.png" width="auto" height="300" />
-* `add n/Jeremiah Loh e/jloh@example.com a/Loh Street s/prospect`
-  * Prompts for phone number input and adds a person with the specified phone number named Jeremiah Loh whose 
-    email is `jloh@example.com`, address is `Loh Street`, relation is `client` and transaction stage is `prospect`.  
-  <img src="images/promptPhone.png" width="auto" height="100" />
+  <p style="text-align: center; margin-top: 4px;"><i>Added Jade Lim as contact</i></p>
+</div>
+&nbsp;
 
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect`
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/AddJohnDoe.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Added John Doe as contact</i></p>
+</div>
+&nbsp;
+
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/AddBetsyCrowe.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Added Betsy Crowe as contact</i></p>
+</div>
+&nbsp;
+
+* `add n/Jeremiah Loh e/jloh@example.com a/Loh Street s/prospect`
+  * Prompts for phone number input  
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/promptPhone.png" width="auto" height="100" />
+  <p style="text-align: center; margin-top: 4px;"><i>Prompt for phone number</i></p>
+</div>
 &nbsp;
 
 #### Adding a meeting while creating a contact: `add`
@@ -315,17 +347,25 @@ You can update or remove a contact’s meeting date and time to reschedule appoi
 
 ### Add relational tag : `relation`
 
-Adds a relational tag to an existing person in the address book.
+Adds a relational tag to an existing contact in the address book. Use this command to edit the relation of a existing contact.
 
-Format: `relation INDEX RELATION`
+**Format:**
+`relation INDEX RELATION`
 
+**How it works:**
 * Adds the specified relational tag to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The specified `RELATION` must be a valid relation: 'client' or 'vendor'.
 * Existing values will be updated to the input values.
 
-Examples:
+**Examples:**
 *  `relation 2 client` Edits the relational tag of the 2nd person to be `client`.
-   ![Result of `relation 2 client`](images/relationClient.png)
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/relationClient.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Updated Bernice's relation</i></p>
+</div>
+&nbsp;
+
 *  `relation 1 vendor` Edits the relational tag of the 1st person to be `vendor`.
 
 ### Changing the transaction stage : `transaction`
