@@ -179,11 +179,78 @@ Examples:
     email is jloh@example.com, address is Loh Street, relation is client and transaction stage is prospect.
   ![Prompt for phone number input](images/promptPhone.png)
 
-### Listing all persons : `list`
+&nbsp;
 
-Shows a list of all persons in the address book.
+#### Adding a meeting while creating a contact: `add`
+
+You can include a meeting date and time when adding a new contact. This allows you to log client appointments, property viewings, or consultations right from the start — helping you stay organised and save time.
+
+**Format:** `add n/NAME p/PHONE e/EMAIL a/ADDRESS s/STAGE m/MEETING_DATETIME`
+
+**How it works:**
+* Adds a new contact together with a scheduled meeting.
+* `MEETING_DATETIME` must follow **YYYY-MM-DD HH:mm** in `24-HOUR` format.  
+  Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
+* You can omit the `m/` prefix if the contact does not have a scheduled meeting.
+* Click on the contact after adding to reveal the contact card with full information on the right panel.
+
+**Example:**
+* `add n/Kevin Tan p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
+  * Adds a new contact with a scheduled meeting on `3 Nov 2025, 2:00 PM`.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/AddKevinMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Added a contact Kevin with a scheduled meeting</i></p>
+</div>
+&nbsp;
+
+### Listing all contacts : `list`
+
+Displays all active contacts currently in your address book.
+Use this command when you want to return to the full contact view after performing filters or searches.
 
 Format: `list`
+
+**How it works:** 
+* Shows all active (non-archived) contacts stored in Homey.
+* Ignores any extra spaces but not additional parameters unless specified in other commands.
+* Contacts are displayed in the order they were added.
+* Resets any previous filters, searches, or meeting-based listings.
+
+**Example:**
+* `list` 
+  * Shows all contacts in homey.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/ListContacts.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Listed all contacts</i></p>
+</div>
+&nbsp;
+
+### Listing contacts by meeting date : `list meeting`
+
+This command help you to display all contacts with meetings, sorted by the **earliest meeting first**.
+
+**Format:**  
+`list meeting`
+
+**How it works:**
+* Displays only contacts with meetings, arranged from the nearest to the latest meeting.
+* `meeting` is case-insensitive. e.g `Meeting` will match `meeting` and both will work.
+* Contacts without meetings or that are archived will not be shown.
+* If date and time are equal, it will sort by name in `alphabetical order`.
+* If no contacts have meetings, Homey will display a clear message: `No contacts with meetings found.`
+* Click on the contact to reveal the contact card with full information on the right panel.
+
+**Example:**
+* `list meeting` 
+  * Shows all contacts with meetings in `ascending order` of date and time.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/ListMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Listed contacts with meeting</i></p>
+</div>
+&nbsp;
 
 ### Editing a person : `edit`
 
@@ -197,13 +264,48 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAG
 * When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
-* To clear an existing meeting, type m/ with no value after it.
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 *  `edit 5 m/2025-11-10 09:30` Updates the 5th person’s next meeting to `10 Nov 2025 at 9:30 AM.`
 *  `edit 5 m/` Clears the meeting time for the 5th person.
+
+&nbsp;
+
+#### Editing or removing a contact’s meeting : `edit`
+
+You can update or remove a contact’s meeting date and time to reschedule appointments or clear meetings that are no longer needed.
+
+**Format:**  
+`edit INDEX m/MEETING_DATETIME`
+
+**How it works:**
+* Use the contact’s `index` as shown in the contact list.
+* `MEETING_DATETIME` must follow **YYYY-MM-DD HH:mm** in `24-HOUR` format.
+* To remove a meeting, leave the `m/` field empty.
+* When a meeting is edited, Homey immediately updates the meeting time in both the contact card and meeting list.
+* When a meeting is removed, Homey will clear it and show a confirmation message `Meeting cleared for Kevin Tan`
+* This command can only modify the meeting field — other fields like name or transaction stage must be edited separately.
+* Click on the contact to reveal the contact card with full information on the right panel.
+
+**Examples:**
+* `edit 1 m/2025-11-10 09:30` 
+  * Updates the `1st` contact’s meeting to the specified date and time.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/EditKevinMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Updated Kevin's Meeting</i></p>
+</div>
+
+* `edit 2 m/` 
+  * Clears the meeting for the `2nd` contact.
+&nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/ClearMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Cleared a meeting for Poppy Lim</i></p>
+</div>
+&nbsp;
 
 ### Add relational tag : `relation`
 
@@ -259,72 +361,6 @@ Examples:
 
 * `remark 32 rm/storm/cloud` Replaces the remark of the 32nd person to "storm/cloud".
   ![Result of `remark 32 rm/storm/cloud`](images/remark32v2.png)
-
----
-
-### Setting a meeting with date and time
-
-This feature helps property agents schedule, update, and view upcoming client meetings directly within Homey.
-
----
-
-### Adding a meeting when creating a contact : `add`
-
-You can add a meeting date and time when adding a new contact.
-
-**Format:**  
-`add n/NAME p/PHONE e/EMAIL a/ADDRESS s/STAGE m/MEETING_DATETIME`
-
-* `MEETING_DATETIME` must follow **YYYY-MM-DD HH:mm** format.  
-  Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
-
-**Example:**
-`add n/Jade Tan p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
-
-![Result for adding Jade Tan meeting](images/AddJadeMeeting.png)
-
-&nbsp;
-<box type="tip" seamless>
-You can omit the `m/` prefix if the contact does not have a scheduled meeting.
-</box>
-
----
-
-### Editing a contact’s meeting : `edit`
-
-Updates or removes a contact’s meeting date and time.
-
-**Format:**  
-`edit INDEX m/MEETING_DATETIME`
-
-* Use the contact’s index as shown in the contact list.
-* To remove a meeting, leave the `m/` field empty.
-
-**Examples:**
-* `edit 1 m/2025-11-10 09:30` Updates the 1st contact’s meeting.
-* `edit 2 m/` Clears the meeting from the 2nd contact.
-
----
-
-### Listing contacts by meeting date : `list meeting`
-
-Displays all contacts with meetings, sorted by the **earliest meeting first**.  
-Contacts without meetings or that are archived will not be shown.
-
-**Format:**  
-`list meeting`
-
-**Examples:**
-list meeting
-
-![Result for listing meeting](images/ListMeeting.png)
-
-&nbsp;
-Shows all contacts with meetings in ascending order of date and time.
-
-<box type="tip" seamless>
-Use this command to quickly view who you are meeting next.
-</box>
 
 ---
 
@@ -554,13 +590,13 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 | **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [t/TAG] [m/MEETING]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                                            |
 | **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                              |
 | **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                         |
-| **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`
+| **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`                                                                                                                                                                        
 | **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                            |
 | **Find a/**     | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Bedok`                                                                                                                                                                               |
 | **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                            |
 | **Find r/**     | `find r/KEYWORD`<br> e.g., `find r/client`                                                                                                                                                                                            |
 | **Find s/**     | `find s/KEYWORD`<br> e.g., `find s/negotiating`                                                                                                                                                                                       |
-| **List**        | `list [archive]` <br> e.g., `list`, `list archive`                                                                                                                                                                                    |
+| **List**        | `list [archive] [meeting]` <br> e.g., `list`, `list archive`, `list meeting`                                                                                                                                                           |
 | **Help**        | `help [topic]`<br> e.g., `help add`                                                                                                                                                                                                   |
 | **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                 |
 | **Unarchive**   | `unarchive INDEX`<br> e.g., `unarchive 1`                                                                                                                                                                                             |
