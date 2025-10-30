@@ -292,7 +292,7 @@ This command help you to display all contacts with meetings, sorted by the **ear
 
 ### Editing a person : `edit`
 
-Edits an existing person in the address book.
+Has your contact updated their details? Edits an existing person in the address book.
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG] [m/MEETING]…​`
 
@@ -601,13 +601,26 @@ AddressBook data are saved in the hard disk automatically after any command that
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+Data for Homey is saved automatically as a JSON file `[JAR file location]/data/homey.json`. If you are familiar with JSON syntax, you are welcome to update data directly by editing that data file.  
+When editing the file, ensure that the data complies with the respective constraints:
+* Phone number: must be a number, at least 3 digits long
+* Email: must be of the format `local-part@domain`
+  1. The local-part should only contain alphanumeric characters and these special characters, excluding the parentheses, (+_.-). The local-part may not start or end with any special characters.
+  2. This is followed by a '@' and then a domain name. The domain name is made up of domain labels separated by periods.
+     The domain name must:
+      - end with a domain label at least 2 characters long
+      - have each domain label start and end with alphanumeric characters
+      - have each domain label consist of alphanumeric characters, separated only by hyphens, if any.
+* Relation: must be `client` or `vendor`
+* Transaction Stage: must be `prospect`, `negotiating` or `closed`
+* Tag: must be alphanumeric
+* Meeting: must be of the format `YYYY-MM-DD HH:mm` in `24-HOUR` format
 
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, Homey will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -615,7 +628,19 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Homey home folder.
+
+**Q**: Can Homey be used offline?
+**A**: Yes! Homey is designed to run locally on your computer seamlessly, so it will work even without internet access.
+
+**Q**: What happens if I accidentally delete all contacts?
+**A**: If you run clear, all contacts are permanently removed from the active list. To avoid data loss, regularly backup the homey.json data file (location: [JAR file location]/data/homey.json). If you still have a backup, you can restore it by exiting the app, replacing the data file with your backup, then restarting.
+
+**Q**: Can I undo a deletion of a contact?
+**A**: Once you use `delete INDEX`, the contact is permanently removed. If you intend to hide a contact temporarily, use the `archive INDEX` command instead. Archived contacts can be restored with `unarchive INDEX`.
+
+**Q**: Can I customise or add new transaction stages beyond `prospect`, `negotiating`, `closed`?
+**A**: At present, the allowed stages are limited to `prospect`, `negotiating`, or `closed`. You can add a custom tag instead to supplement the given stages.
 
 --------------------------------------------------------------------------------------------------------------------
 
