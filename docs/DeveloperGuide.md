@@ -13,7 +13,16 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }
+* The `Add Meeting` feature was inspired by the add command in [AB3](https://github.com/nus-cs2103-AY2526S1/tp).
+While the parsing and model integration logic were adapted from AB3’s `AddCommand` and `AddCommandParser`, the meeting-related components 
+such as the Meeting class, meeting validation logic, and enhanced success feedback were independently designed.
+* The `Edit Meeting` functionality builds upon [AB3](https://github.com/nus-cs2103-AY2526S1/tp) `EditCommand` and `EditCommandParser`.
+Our implementation extends this by introducing the m/ prefix, date–time validation, and logic to handle meeting clearing, conflict prevention, and customized feedback messages. 
+These components were conceptualized and implemented independently to support appointment management for property agents.
+* The `List Meeting`, although inspired by [AB3](https://github.com/nus-cs2103-AY2526S1/tp) original `list` command structure
+, we extended it with custom filtering logic and a new `ListMeetingCommand` class to retrieve and sort contacts with upcoming meetings. 
+
 
 --------------------------------------------------------------------------------------------------------------------
 
