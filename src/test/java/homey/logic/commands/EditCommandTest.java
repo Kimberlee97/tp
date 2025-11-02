@@ -13,6 +13,7 @@ import static homey.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static homey.testutil.TypicalPersons.getTypicalAddressBook;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import homey.commons.core.index.Index;
 import homey.logic.Messages;
 import homey.logic.commands.EditCommand.EditPersonDescriptor;
+import homey.logic.commands.exceptions.CommandException;
 import homey.model.AddressBook;
 import homey.model.Model;
 import homey.model.ModelManager;
@@ -247,6 +249,22 @@ public class EditCommandTest {
         CommandResult result = cmd.execute(localModel);
 
         assertTrue(result.getFeedbackToUser().contains("No meetings to clear for"));
+    }
+
+    @Test
+    public void execute_archivedTarget_throwsCommandException() {
+        Model model = new ModelManager();
+        Person archivedBob = new PersonBuilder().withName("Bob Ong").build().archived();
+        model.addPerson(archivedBob);
+        model.updateFilteredPersonList(Model.PREDICATE_SHOW_ARCHIVED_PERSONS);
+        EditPersonDescriptor desc = new EditPersonDescriptorBuilder()
+                .withPhone("99999999")
+                .build();
+
+        EditCommand cmd = new EditCommand(Index.fromOneBased(1), desc);
+
+        CommandException ex = assertThrows(CommandException.class, () -> cmd.execute(model));
+        assertEquals(Messages.MESSAGE_CANNOT_EDIT_ARCHIVED, ex.getMessage());
     }
 
 }
