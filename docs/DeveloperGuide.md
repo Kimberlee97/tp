@@ -626,7 +626,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is `Homey` and the **Actor** is the `user`, unless specified otherwise)
 
 **Use case: Delete contacts that I no longer require**
 
@@ -775,17 +775,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
    Use case ends.
 
-**Use case: Tag each client with their property location**
-
-**MSS**
-
-1. User lists all contacts or searches for client
-2. System retrieves and displays list of contacts
-3. User inputs command for tagging client location based on displayed index
-4. System displays success message and location details
-
-    Use case ends.
-
 **Use case: Sort clients and agents by type**
 
 **MSS**
@@ -806,22 +795,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1b. No contacts match the selected type.
     * 1b1. System shows “No contacts found.”
-
-**Use case: Set recurring reminders for contacts**
-
-**MSS**
-
-1. User opens application
-2. User types client’s name into the search bar
-3. System retrieves and displays contact
-4. User requests to set a recurring reminder
-5. System prompts for reminder details
-6. User enters reminder details
-7. System validates reminder details
-8. System saves the recurring reminder and confirms creation
-9. User views the reminder linked to the contact
-
-   Use case ends.
 
 **Use case: Link a meeting to multiple contacts**
 
@@ -950,40 +923,6 @@ Precondition: User has launched the app.
 * **3a.** User is currently viewing the archived list.
     * 3a1. System only considers active contacts and excludes archived ones.
     * Use case resumes at step 5.
-
-
-**Use case: Sort contacts by dates added**
-
-**MSS**
-
-Precondition: User is at the landing page of the app and has existing list of contacts.
-
-1. User selects “Sort by → Date Added”
-2. System rearranges contacts chronologically, with oldest client on top to prioritise loyal customers
-
-   Use case ends.
-
-**Extensions**
-
-* 1a. No contacts in list
-* 1b. System displays “Contact list empty”
-
-**Use case: Sort contacts by alphabetical order**
-
-**MSS**
-
-1. User opens the app
-2. User selects “Sort by → Alphabetical Order”
-3. System rearranges all contacts in A–Z order
-
-   Use case ends.
-
-**Extensions**
-
-* 1a. No contacts in list
-    * 1a1. System displays “Contact list empty”
-* 1b. Duplicate names exist
-    * 1b1. System sorts by secondary field (e.g., phone number or email)
 
 **Use case: Edit contacts to add new information about them**
 
@@ -1260,6 +1199,7 @@ testers are expected to do more *exploratory* testing.
 
 
 ### Interactive add
+
 1. Test case: `add`  
    Expected: Prompts for name, phone, email, address and transaction stage fields. Adds corresponding person based on your inputs.
 2. Test case: `add rm/This is a test. m/2025-12-01 00:00`  
@@ -1269,6 +1209,7 @@ testers are expected to do more *exploratory* testing.
 
 
 ### Changing relational tag
+
 1. Prerequisites: Ensure at least one person exists in the displayed list.
 2. Test case: `relation 1 vendor`  
    Expected: "Added relation vendor to Person: ...". Changes relation of first contact to be vendor.
@@ -1306,6 +1247,7 @@ testers are expected to do more *exploratory* testing.
 
 
 ### Editing a contact's meeting
+
 1. Prerequisites: Ensure at least one contact exists by using `list`.
 2. Test case: edit 1 m/2025-11-03 14:00  
    Expected: “Updated meeting for Kevin Tan: 2025-11-03 14:00” Meeting field is added to contact card
@@ -1315,6 +1257,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error “Meeting must be in yyyy-MM-dd HH:mm (24h) format and be a real date/time, e.g. 2025-11-03 14:00.”
 
 ### Listing contacts by meeting date
+
 1. Prerequisites: Ensure at least two contacts have meetings set using `list meeting`.
 2. Test case: list meeting  
    Expected: Displays only contacts with meetings, sorted by earliest meeting first.
@@ -1323,9 +1266,10 @@ testers are expected to do more *exploratory* testing.
 4. Test case: list Meeting or list MEETING  
    Expected: "Updated meeting for Kevin Tan: 2025-11-11 09:30" (Will still work)
 
-### Finding contacts (include all find commands here)
+### Finding contacts
 
 #### Find by name
+
 1. Prerequisites: List all persons with `list`. Multiple persons should be visible.
 2. Test case: `find john`
    Expected: Shows contacts with names containing "john". 
@@ -1335,6 +1279,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error "Invalid command format!" with usage instructions.
 
 #### Find by address
+
 1. Prerequisites: Ensure contacts have different addresses.
 2. Test case: `find a/bedok`
    Expected: Shows all contacts with addresses containing "bedok".
@@ -1342,6 +1287,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error with address-specific usage message.
 
 #### Find by tag
+
 1. Prerequisites: Ensure contacts have various tags.
 2. Test case: `find t/friend`
    Expected: Shows all contacts tagged with "friend".
@@ -1351,6 +1297,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error "Invalid keyword. Tags can only contain alphanumeric characters".
 
 #### Find by relation
+
 1. Prerequisites: Ensure you have both vendors and clients in the list.
 2. Test case: `find r/client`
    Expected: Shows all contacts with relation "client".
@@ -1360,6 +1307,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error "Relation search only accepts one keyword"
 
 #### Find by transaction stage 
+
 1. Prerequisites: Ensure contacts have different transaction stages.
 2. Test case: `find s/prospect`
    Expected: Shows all contacts with transaction stage "prospect".

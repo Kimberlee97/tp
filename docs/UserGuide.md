@@ -201,7 +201,7 @@ If you're unsure about what to do, use the `help` command to open the User Guide
 
 **Supported topics:**  
 `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `find r/`, `find s/`,  
-`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear`, and `exit`.
+`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `edit meeting`, `clear`, and `exit`.
 
 **Examples:**
 * `help` → Opens the User Guide home.
