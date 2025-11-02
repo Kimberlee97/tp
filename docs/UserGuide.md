@@ -125,6 +125,7 @@ This glossary helps you understand the words used in commands, so you can follow
 | **Unarchive** | Restores an archived contact to the active list.                                                                                                   |
 | **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                           |
 | **Case-insensitive** | Commands work the same with uppercase or lowercase letters (e.g. `FIND John` = `find john`).                                                       |
+| **Duplicate Contacts** | A contact that has the same name (case-insensitive) as an existing contact, even if other details differ. Homey prevents adding duplicates. |
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -246,6 +247,8 @@ The meeting field allows you to log client appointments, property viewings, or c
 
 If you forget to input any of the compulsory fields, the system will prompt you for the required inputs.  
 To abort the command during this stage, input `cancel`.
+ 
+Homey prevents adding contacts with duplicate names.
 
 <box type="tip" seamless>
 
