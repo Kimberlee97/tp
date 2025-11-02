@@ -431,7 +431,7 @@ This ensures that the user can easily see which meetings are coming up first, pr
 
 The following class diagram illustrates how `ListMeetingCommand` integrates with the existing `Logic` component:
 
-<puml src="diagrams/ListMeetingClassDiagram.puml" alt="ListMeetingClassDiagram" />
+<puml src="diagrams/meeting/ListMeetingClassDiagram.puml" width="420" />
 
 #### Example Usage
 
@@ -450,7 +450,7 @@ Step&nbsp;5. The UI (`PersonListPanel`) automatically refreshes to display only 
 
 The following sequence diagram shows how the `list meeting` command flows through the `Logic` component:
 
-<puml src="diagrams/ListMeetingSequenceDiagram-Logic.puml" alt="ListMeetingSequenceDiagram-Logic" />
+<puml src="diagrams/meeting/ListMeetingSequenceDiagram.puml" width="420" />
 
 <box type="info" seamless>
 
@@ -468,7 +468,7 @@ The `ModelManager` exposes a sorted view layered on top of the filtered view:
 * `clearPersonListSorting()` removes any comparator, restoring the original order.
 * `getFilteredPersonList()` returns the `SortedList<Person>` that the UI binds to.
 
-<puml src="diagrams/ListMeetingModelDiagram.puml" alt="ListMeetingModelDiagram" />
+<puml src="diagrams/meeting/ListMeetingModelDiagram.puml" width="420" />
 
 #### Error handling (user-visible)
 
