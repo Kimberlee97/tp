@@ -357,7 +357,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
-### \[Proposed\] Data archiving / unarchiving
+### Data archiving / unarchiving
 
 #### Goal
 Allow users to hide completed/irrelevant contacts from the default list while keeping them retrievable.
@@ -412,9 +412,9 @@ Allow users to hide completed/irrelevant contacts from the default list while ke
 * **Why a boolean on `Person`?** Simple, stable, and cheap to persist/filter.
 * **Why predicates not a field on `Model` state?** Keeps UI binding unchanged; only the predicate changes.
 
-### [Proposed] List contacts by meeting date and time
+### List contacts by meeting date and time
 
-#### Proposed Implementation
+#### Implementation
 
 The proposed `list meeting` command enhances the `Logic` component by allowing users to view all contacts that have an upcoming meeting scheduled, ordered from the earliest to latest meeting date.
 
@@ -731,11 +731,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3a1. System displays an error message with the correct format (e.g., “Meetings must follow the format YYYY-MM-DD HH:mm”).
     * 3a2. User re-enters the correct date and time.
         * Use case resumes at step 6.
-
-* **4a.** User specifies other fields together with `m/` (e.g., `s/closed`).
-    * 4a1. System displays error: “When editing a meeting, no other fields may be provided.”
-    * 4a2. User corrects the command and retries.
-        * Use case resumes at step 4.
 
 * **64b.** User tries to add a meeting for a non-existent contact index.
     * 6b1. System displays “Invalid person index.”
@@ -1114,7 +1109,7 @@ Precondition: User is at the landing page of the app and has existing list of co
     * 2b1. System returns all contacts whose addresses contain **any** of the given keywords, regardless of order or case.
     * Use case resumes at step 3.
 
-### Use case: Edit or remove meetings
+**Use case: Edit or remove meetings**
 
 **MSS**
 

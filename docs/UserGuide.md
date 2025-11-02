@@ -227,7 +227,7 @@ This window provides a summary of all available commands and usage examples, all
 This is the core functionality of Homey that allows it to be your one-stop manager assistant, adding contacts.  
 Use this feature whenever you want to add new contacts into Homey.
 
-**Format:** `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]…​`
+**Format:** `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]​`
 
 **How it works:**  
 Each contact will contain the following details:
@@ -239,7 +239,7 @@ Each contact will contain the following details:
 * Transaction stage: prospect, negotiating or closed
 * [optional] Remark
 * [optional] Tags
-* [optional] Next meeting date & time in **YYYY-MM-DD HH:mm** `24-HOUR` format.
+* [optional] Next meeting date & time in **yyyy-MM-dd HH:mm** `24-hour` format.
 
 The relation and transaction stage fields help you as a property agent better manage and categorise your contacts.  
 The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
@@ -254,9 +254,13 @@ To abort the command during this stage, input `cancel`.
 * The s/TRANSACTION_STAGE field only accepts the values `prospect`, `negotiating` or `closed`.
 * The r/RELATION field only accepts the values `client` or `vendor`.
 * The m/MEETING field is optional - use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
+* `MEETING` must follow **yyyy-MM-dd HH:mm** in (`24-hour` format).  
+  Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
 * The r/RELATION field is optional. The default relation for a new contact is client.
 * The rm/REMARK field is optional - use it to add additional details regarding the person.
 The remark field will be empty if no remark is given.
+* Click on the contact after adding to reveal the contact card with full information on the right panel.
+
 </box>
 
 **Examples:**
@@ -293,20 +297,6 @@ The remark field will be empty if no remark is given.
 </div>
 &nbsp;
 
-#### Adding a meeting while creating a contact: `add`
-
-You can include a meeting date and time when adding a new contact. This allows you to log client appointments, property viewings, or consultations right from the start — helping you stay organised and save time.
-
-**Format:** `add n/NAME p/PHONE e/EMAIL a/ADDRESS s/STAGE m/MEETING_DATETIME`
-
-**How it works:**
-* Adds a new contact together with a scheduled meeting.
-* `MEETING_DATETIME` must follow **YYYY-MM-DD HH:mm** in `24-HOUR` format.  
-  Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
-* You can omit the `m/` prefix if the contact does not have a scheduled meeting.
-* Click on the contact after adding to reveal the contact card with full information on the right panel.
-
-**Example:**
 * `add n/Kevin Tan p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
   * Adds a new contact with a scheduled meeting on `3 Nov 2025, 2:00 PM`.
 &nbsp;
@@ -437,16 +427,21 @@ Homey lets you update existing contact details such as phone number, address, tr
 
 Keeps your contact information up to date by editing an existing person’s details.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG] [m/MEETING]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG] [m/MEETING] ​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
+* `MEETING` must follow **yyyy-MM-dd HH:mm** (`24-hour` format).
 * You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+  specifying any tags after it.
 * You can remove all the person’s remarks by typing `rm/` without
   specifying any remarks after it.
+* You can remove the person's meeting by typing `m/` without 
+  specifying any meetings after it.
+* Multiple editing can be supported in a single command e.g. (`edit m/ rm/`)
+* Click on the contact to reveal the contact card with full information on the right panel.
 
 **Examples:**
 * `edit 1 p/91234567 e/johndoe@example.com`
@@ -464,25 +459,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAG
   <img src="images/EditNameTag.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Edited the second person's name and clear all tags</i></p>
 </div>
-&nbsp;
 
-#### Editing or removing a contact’s meeting : `edit INDEX m/`
-
-You can update or remove a contact’s meeting date and time to reschedule appointments or clear meetings that are no longer needed.
-
-**Format:**  
-`edit INDEX m/MEETING_DATETIME`
-
-**How it works:**
-* Use the contact’s `index` as shown in the contact list.
-* `MEETING_DATETIME` must follow **YYYY-MM-DD HH:mm** in `24-HOUR` format.
-* To remove a meeting, leave the `m/` field empty.
-* When a meeting is edited, Homey immediately updates the meeting time in both the contact card and meeting list.
-* When a meeting is removed, Homey will clear it and show a confirmation message `Meeting cleared for Kevin Tan`
-* This command can only modify the meeting field — other fields like name or transaction stage must be edited separately.
-* Click on the contact to reveal the contact card with full information on the right panel.
-
-**Examples:**
 * `edit 1 m/2025-11-10 09:30` 
   * Updates the `1st` contact’s meeting to the specified date and time.
 &nbsp;
@@ -883,7 +860,7 @@ When editing the file, ensure that the data complies with the respective constra
 * Relation: must be `client` or `vendor`
 * Transaction Stage: must be `prospect`, `negotiating` or `closed`
 * Tag: must be alphanumeric
-* Meeting: must be of the format `YYYY-MM-DD HH:mm` in `24-HOUR` format
+* Meeting: must be of the format `yyyy-MM-dd HH:mm` in `24-hour` format
 
 <box type="warning" seamless>
 
@@ -924,10 +901,10 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 
 | Action          | Format, Examples                                                                                                                                                                                                                      |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Add**         | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [r/RELATION] [t/TAG] [m/MEETING]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague m/2025-10-10 09:30` |
+| **Add**         | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [r/RELATION] [t/TAG] [m/MEETING] ​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague m/2025-10-10 09:30` |
 | **Clear**       | `clear`                                                                                                                                                                                                                               |
 | **Delete**      | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                                                                   |
-| **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [t/TAG] [m/MEETING]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                                            |
+| **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [t/TAG] [m/MEETING] ​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                                            |
 | **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                              |
 | **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                         |
 | **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`                                                                                                                                                                        
@@ -936,7 +913,7 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 | **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                            |
 | **Find r/**     | `find r/RELATION`<br> e.g., `find r/client`                                                                                                                                                                                           |
 | **Find s/**     | `find s/TRANSACTION_STAGE`<br> e.g., `find s/negotiating`                                                                                                                                                                             |
-| **List**        | `list [archive]` <br> e.g., `list`, `list archive`, `list meeting`                                                                                                                                                                                   |
+| **List**        | `list [archive]` <br> e.g., `list`, `list archive`, `list meeting`                                                                                                                                                                    |
 | **Help**        | `help [TOPIC]`<br> e.g., `help add`<br><br>`help offline`                                                                                                                                                                             |
 | **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                 |
 | **Unarchive**   | `unarchive INDEX`<br> e.g., `unarchive 1`                                                                                                                                                                                             |
