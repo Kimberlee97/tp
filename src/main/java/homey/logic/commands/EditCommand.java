@@ -5,6 +5,7 @@ import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
+import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
@@ -49,6 +50,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_RELATION + "RELATION] "
             + "[" + PREFIX_TRANSACTION + "TRANSACTION STAGE] "
             + "[" + PREFIX_REMARK + "REMARK]"
             + "[" + PREFIX_TAG + "TAG]...\n"
@@ -225,13 +227,13 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, stage, remark, tags)
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, relation, stage, remark, tags)
                     || meetingEdited; // include meeting edits
         }
 
         /** True if any non-meeting field is edited. */
         public boolean hasNonMeetingEdits() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, stage, remark, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, relation, stage, remark, tags);
         }
 
         public void setName(Name name) {
