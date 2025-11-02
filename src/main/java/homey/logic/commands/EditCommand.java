@@ -145,7 +145,7 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         TransactionStage updatedStage = editPersonDescriptor.getStage().orElse(personToEdit.getStage());
-        Relation updatedRelation = personToEdit.getRelation(); // edit command does not allow editing relation tags
+        Relation updatedRelation = editPersonDescriptor.getRelation().orElse(personToEdit.getRelation());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
 
@@ -213,6 +213,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
+            setRelation(toCopy.relation);
             setStage(toCopy.stage);
             setRemark(toCopy.remark);
             setTags(toCopy.tags);
@@ -341,6 +342,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && Objects.equals(relation, otherEditPersonDescriptor.relation)
                     && Objects.equals(stage, otherEditPersonDescriptor.stage)
                     && Objects.equals(remark, otherEditPersonDescriptor.remark)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags)
@@ -355,6 +357,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("address", address)
+                    .add("relation", relation)
                     .add("transaction stage", stage)
                     .add("remark", remark)
                     .add("tags", tags)
