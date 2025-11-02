@@ -248,7 +248,7 @@ The meeting field allows you to log client appointments, property viewings, or c
 If you forget to input any of the compulsory fields, the system will prompt you for the required inputs.  
 To abort the command during this stage, input `cancel`.
  
-Homey prevents adding contacts with duplicate names.
+Homey prevents adding duplicate contacts.
 
 <box type="tip" seamless>
 
