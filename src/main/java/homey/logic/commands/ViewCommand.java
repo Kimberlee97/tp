@@ -14,8 +14,8 @@ import homey.model.person.Person;
 public class ViewCommand extends Command {
     public static final String COMMAND_WORD = "view";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Displays contact information of person at given index\n"
-            + "Format: " + COMMAND_WORD + " INDEX";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Displays contact information of person at given "
+            + "index\n" + "Format: " + COMMAND_WORD + " INDEX";
     public static final String MESSAGE_SUCCESS = "Displaying %1$s";
 
     private final Index targetIndex;

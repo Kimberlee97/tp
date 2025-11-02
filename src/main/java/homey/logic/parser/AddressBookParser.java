@@ -21,8 +21,8 @@ import homey.logic.commands.ListCommand;
 import homey.logic.commands.RelationCommand;
 import homey.logic.commands.RemarkCommand;
 import homey.logic.commands.TransactionStageCommand;
-import homey.logic.commands.ViewCommand;
 import homey.logic.commands.UnarchiveCommand;
+import homey.logic.commands.ViewCommand;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
