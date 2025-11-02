@@ -107,25 +107,25 @@ If you're already familiar, jump directly to the section relevant to your needs.
 Before you start using Homey’s commands, here’s a list of key terms you’ll see throughout this guide.
 This glossary helps you understand the words used in commands, so you can follow the examples confidently.
 
-| **Term** | **Meaning**                                                                                                                                        |
-|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                                |
-| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                          |
-| **Prefix** | A short label before a slash that tells Homey what the information means (e.g. `n/` for name, `p/` for phone).                                     |
+| **Term** | **Meaning**                                                                                                                                      |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                              |
+| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                        |
+| **Prefix** | A short label before a slash that tells Homey what the information means (e.g. `n/` for name, `p/` for phone).                                   |
 | **Placeholder** | A word written in CAPITAL LETTERS that shows the kind of information you should type (e.g. `NAME` in `n/NAME` means you should enter a real name). |
-| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                                |
-| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                           |
-| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                         |
-| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                         |
-| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                          |
-| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                    |
-| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                            |
-| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                     |
-| **Archive** | Hides a contact without deleting it.                                                                                                               |
-| **Unarchive** | Restores an archived contact to the active list.                                                                                                   |
-| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                           |
-| **Case-insensitive** | Commands work the same with uppercase or lowercase letters (e.g. `FIND John` = `find john`).                                                       |
-| **Duplicate Contacts** | A contact that has the same name (case-insensitive) as an existing contact, even if other details differ. Homey prevents adding duplicates. |
+| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                              |
+| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                         |
+| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                       |
+| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                       |
+| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                        |
+| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                  |
+| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                          |
+| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                   |
+| **Archive** | Hides a contact without deleting it.                                                                                                             |
+| **Unarchive** | Restores an archived contact to the active list.                                                                                                 |
+| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                         |
+| **Case-insensitive** | Some commands and fields ignore letter casing (e.g. `find John` = `find JOHN`)                                                                   |
+| **Duplicate Contacts** | A contact that has the same name as an existing contact, even if other details differ.        |
 
 --------------------------------------------------------------------------------------------------------------------
 
