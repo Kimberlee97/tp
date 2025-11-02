@@ -592,6 +592,7 @@ Homey helps you quickly locate any contact in your property database. You can se
 - **Partial matching:** You do not have to type the full word - typing `Han` will find `Hans`
 - **Multiple keywords:** Use spaces between words to search for multiple terms at once
 - **Order does not matter:** Keywords can be in any order - `Doe John` will match `John Doe`
+- **Single search type only:** You can only use one prefix at a time (e.g., combining `find a/Hougang t/condo` is not supported)
 
 #### Find by name: `find`
 
@@ -623,7 +624,7 @@ Examples:
 
 #### Find by address: `find a/`
 
-You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planing site visits in the same area.
+You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planning site visits in the same area.
 
 **Format:** `find a/KEYWORD [MORE_KEYWORDS]`
 
@@ -649,6 +650,7 @@ You can search for contacts with specific tags you have assigned them. Tags help
 
 **How it works:**
 * Only the tag field is searched 
+* Only contacts with at least one tag are searched - contacts without any tags will not appear in results
 * All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
