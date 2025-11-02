@@ -547,37 +547,43 @@ Configuration and data storage remain in JSON to preserve human-editability.
 
 **Target user profile**: Property Agent
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* Manages a large number of client and stakeholder contacts
+* Prefers desktop applications over mobile alternatives
+* Has a fast typing sped
+* Prefers keyboard input to mouse interaction
+* Is comfortable using Command-Line Interface (CLI) applications
 
 **Value proposition**: 
 
-**What problem does the product solve?**
-Difficult to organise contacts and tasks on a singular centralised platform
-Easy to forget meetings when they’re tracked on separate apps
-Hard to navigate
-Grouping stakeholders by location/transaction
+**Problem Statement**
+Property agents often struggle to manage contacts, meetings, and transactions across multiple, 
+unconnected platforms. Meetings tracked in separate applications are easily forgotten, 
+while contact lists become difficult to organise and navigate.
+Furthermore, grouping stakeholders by location or transaction stage is often tedious and time-consuming.
 
-**How does it make the user's life easier?**
-Centralised platform for property agents to use to track, sort and schedule contacts in order for them to work more efficiently and stay organised
-Calendar reminders to keep the user on track with their schedule
-Able to be used on the go
+**Solution**
+Homey provides a centralized platform that enables property agents to efficiently track, organize, and schedule contacts. 
+It consolidates essential functions such as meeting visibility, contact tagging, and transaction tracking within a single interface.
 
-**What is the boundary beyond which the app will not help?**
-Unable to track legal/financial processing
-Not CRM replacement
-No marketing/listing management
+**Scope and Limitations**
+Homey focuses on contact and meeting management for property agents. It does not provide:
+* Legal or financial tracking functionalities
+* Full-fledged Customer Relationship Management (CRM) features
+* Marketing, listing, or property advertisement management tools
 
-**Persona:**
-Working adult, graduate already
-popular so a lot of clients
-generally independent but collaborates with other agents
-On the go since need to travel a lot to different property, so need something convenient
-Prefers typing to mouse usage
-Slightly forgetful due to large number of clients, hard to track
+**User Persona**:
+
+**Profile**
+A working professional and university graduate managing a large client base. 
+They are experienced, independent, and often collaborate with fellow agents. 
+Due to frequent travel between properties, 
+they require a lightweight and convenient solution that keeps their workflow synchronised across devices.
+
+**Behavioural Traits**
+* Prefers typing commands over using a mouse
+* Appreciates structured data organization and quick search capabilities
+* Occasionally forgetful due to a heavy client load and overlapping meetings
+* Values efficiency and minimal disruption while managing clients on the move
 
 ### User stories
 
