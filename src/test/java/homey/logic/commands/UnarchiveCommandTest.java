@@ -47,7 +47,7 @@ public class UnarchiveCommandTest {
         UnarchiveCommand command = new UnarchiveCommand(INDEX_FIRST_PERSON);
         command.execute(model);
 
-        // Assert (1): we are STILL on archived view; person is gone from this list
+        // Assert (1): still on archived view; person is gone from this list
         assertFalse(model.getFilteredPersonList().stream()
                 .anyMatch(p -> p.getName().equals(original.getName())));
 
