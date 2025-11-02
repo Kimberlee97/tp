@@ -58,7 +58,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
 
 2. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F15A-4/tp/releases/).
 
-3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for Homey.
 
 4. Open the command terminal (as in Step 1), and change directory using the command `cd` into the folder you put the jar file in.<br>
    <box type="tip" seamless>
@@ -91,7 +91,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` : Adds a contact named `John Doe` to Homey.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -325,7 +325,7 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 ### Listing all contacts : `list`
 
-Displays all active contacts currently in your address book. Use this command when you want to return to the full contact view after performing filters or searches.
+Displays all active contacts currently in Homey. Use this command when you want to return to the full contact view after performing filters or searches.
 
 **General behaviour:**
 - **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `mEeTIng` will match `meeting` (does not apply to the command `list`).
@@ -481,7 +481,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAG
 
 ### Add relational tag : `relation`
 
-Adds a relational tag to an existing contact in the address book. Use this command to edit the relation of a existing contact.
+Adds a relational tag to an existing contact in Homey. Use this command to edit the relation of a existing contact.
 
 **Format:**
 `relation INDEX RELATION`
@@ -802,7 +802,7 @@ You can remove a contact from Homey permanently. This is useful when you no long
 * The contact at the specified index will be permanently deleted
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
+* `list` followed by `delete 2` deletes the 2nd person in Homey.
 * `find James` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
@@ -822,7 +822,7 @@ You can remove all contacts from Homey at once. This is useful when you want to 
 **Format:** `clear`
 
 **How it works:**
-* All contacts in your address book will be permanently deleted
+* All contacts in Homey will be permanently deleted
 * This removes all contacts, not just the ones currently shown on your screen
 &nbsp;
 
