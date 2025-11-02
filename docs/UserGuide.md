@@ -843,12 +843,14 @@ You can close the Homey application safely. All your information is automaticall
 
 ### Saving the data
 
-Homey automatically saves all contact data (including meetings, remarks, relations, and transaction stages) to your hard disk after every command that changes the data.  
-There is no need to save manually — your latest updates are always preserved.
+Homey automatically saves all contact data to your hard disk after every command that changes the data. There is no need to save manually.
+If Homey cannot save (e.g., disk is full or lacks file permissions), an error message will appear and your changes won't be kept. 
+Free up storage or check file permissions, then try again.
 
 ### Editing the data file
 
 Data for Homey is saved automatically as a JSON file `[JAR file location]/data/homey.json`. If you are familiar with JSON syntax, you are welcome to update data directly by editing that data file.  
+
 When editing the file, ensure that the data complies with the respective constraints:
 * Phone number: must be a number, at least 3 digits long
 * Email: must be of the format `local-part@domain`
