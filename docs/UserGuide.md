@@ -204,7 +204,7 @@ If you're unsure about what to do, use the `help` command to open the User Guide
   This window provides a summary of all available commands and usage examples.  
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/helpOffline.png" width="auto" height="300" />
+  <img src="images/helpOffline2.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Offline Help window</i></p>
 </div>
 
@@ -292,29 +292,17 @@ The remark field will be empty if no remark is given.
 </box>
 
 **Examples:**
-* `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00 rm/Likes nature`  
+* `add n/Jane Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-07 14:00 rm/Likes nature`  
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/JadeLim.png" width="auto" height="300" />
+  <img src="images/JaneLim.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Added Jade Lim as contact</i></p>
 </div>
 &nbsp;
 
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect`
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/AddJohnDoe.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Added John Doe as contact</i></p>
-</div>
-&nbsp;
 
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/AddBetsyCrowe.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Added Betsy Crowe as contact</i></p>
-</div>
-&nbsp;
 
 * `add n/Jeremiah Loh e/jloh@example.com a/Loh Street s/prospect`
   * Prompts for phone number input  
@@ -418,7 +406,7 @@ Displays all archived contacts. Use this command to view hidden contacts after a
   &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/archiveCommandResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Alexandra's contact is moved to the archive list</i></p>
+  <p style="text-align: center; margin-top: 4px;"><i>Listed archived contacts</i></p>
 </div>
 &nbsp;
 
@@ -456,8 +444,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 * Click on the contact to reveal the contact card with full information on the right panel.
 
 **Examples:**
-* `edit 1 p/91234567 e/johndoe@example.com`
-  * Edits the phone number and email address of the `1st` person to be `91234567` and `johndoe@example.com` respectively.
+* `edit 1 p/91234567 e/john@example.com`
+  * Edits the phone number and email address of the `1st` person to be `91234567` and `john@example.com` respectively.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/EditPhoneEmail.png" width="auto" height="300" />
@@ -465,19 +453,13 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 </div>
 
 * `edit 2 n/Betsy Crower t/`
-  * Edits the name of the `2nd` person to be `Betsy Crower` and clears all existing tags.
-  &nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/EditNameTag.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Edited the second person's name and clear all tags</i></p>
-</div>
 
 * `edit 1 m/2025-11-10 09:30` 
   * Updates the `1st` contact’s meeting to the specified date and time.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/EditKevinMeeting.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Updated Kevin's meeting</i></p>
+  <img src="images/JohnMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Updated John's meeting</i></p>
 </div>
 
 * `edit 2 m/` 
@@ -485,7 +467,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/ClearMeeting.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Cleared a meeting for Poppy Lim</i></p>
+  <p style="text-align: center; margin-top: 4px;"><i>Cleared a meeting for Jane Lim</i></p>
 </div>
 &nbsp;
 
@@ -508,8 +490,8 @@ Adds a relation to an existing contact in Homey. Use this command to edit the re
 *  `relation 2 client` Edits the relational tag of the 2nd person to be `client`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/relationClient.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Updated Bernice's relation</i></p>
+  <img src="images/relationClient2.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Updated Jane's relation</i></p>
 </div>
 &nbsp;
 
@@ -544,20 +526,12 @@ forward or changes status, helping you maintain an accurate overview of your act
 * Additional whitespace is accepted (e.g. `s/   closed` works the same as `s/closed`)
 
 **Examples:**
-* `transaction 1 s/prospect`
-  * Replaces the transaction stage tag of the 1st contact to be `prospect`.
+* `transaction 1 s/closed`
+  * Replaces the transaction stage tag of the 1st contact to be `closed`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/transactionProspect.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Changed John's transaction stage to "prospect"</i></p>
-</div>
-
-* `transaction 1 s/NEGOTIATING` 
-  * Replaces the transaction stage tag of the 1st contact to be `negotiating`.
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/transactionNegotiating.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Changed John's transaction stage to "negotiating"</i></p>
+  <img src="images/transactionClosed.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Changed John's transaction stage to "closed"</i></p>
 </div>
 &nbsp;
 
@@ -587,11 +561,11 @@ stay organized.
 * Extra spaces around `rm/` are ignored — e.g. `rm/   Has pets` works the same as `rm/Has pets`
 
 **Examples:**
-* `remark 1 rm/Likes nature` 
-  * Replaces the remark of the 1st contact to be "Likes nature".
+* `remark 1 rm/Likes windows` 
+  * Replaces the remark of the 1st contact to be "Likes windows".
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/remarkAdd.png" width="auto" height="300" />
+  <img src="images/remarkAdd2.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Updated John's remark</i></p>
 </div>
 
@@ -599,7 +573,7 @@ stay organized.
   * Removes the remark of the 1st contact.
     &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/removeRemark.png" width="auto" height="300" />
+  <img src="images/remarkRemove2.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Removed John's remark</i></p>
 </div>
 &nbsp;
@@ -630,18 +604,11 @@ You can search for contacts whose names contain keywords you specify. This is us
 Examples:
 * `find John` returns `john` and `John Doe`
 * `find ale` returns `Alex Yeoh` and `Alexandra Tan`
+* `find john ja` returns `John Tan`, `Jane Lim`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findAleResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'ale'</i></p>
-</div>
-&nbsp;
-
-* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks` 
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/findJohnAlexResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'john' or 'alex'</i></p>
+  <img src="images/find.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'john' or 'ja'</i></p>
 </div>
 &nbsp;
 
@@ -659,11 +626,11 @@ You can search for contacts based on their address. This is particularly useful 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
 * `find a/"bedok north"` returns only contacts whose address includes the exact phrase `bedok north`
-* `find a/hou` returns all persons living in `hougang` and `Hougang` 
+* `find a/30` returns all persons living in `Blk 30`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findAddressHougang.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose addresses contain Hougang</i></p>
+  <img src="images/findAddress.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose addresses contain "30"</i></p>
 </div>
 &nbsp;
 
@@ -680,8 +647,8 @@ You can search for contacts with specific tags you have assigned them. Tags help
 
 Examples:
 * `find t/condo` returns all persons tagged with `condo`
-* `find t/bu` returns all persons with tags containing `bu` (e.g., `firsttimebuyer`, `budget`)
 * `find t/buyer budget` returns persons tagged with either `buyer` or `budget`
+* `find t/bu` returns all persons with tags containing `bu` (e.g., `firsttimebuyer`, `budget`)
 &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/findTagBu.png" width="auto" height="300" />
@@ -706,12 +673,12 @@ You can filter your contacts by whether they are property sellers or buyers. Thi
 * `client`
 
 Examples:
-* `find r/vendor` returns all persons with relation `vendor`
 * `find r/client` returns all persons with relation `client`
+* `find r/vendor` returns all persons with relation `vendor`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findRelationClient.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose relation is client</i></p>
+  <img src="images/findRelationVendor.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose relation is vendor</i></p>
 </div>
 &nbsp;
 
@@ -738,7 +705,7 @@ Examples:
 * `find s/closed` returns all persons with transaction stage `closed`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findTransactionClosed.png" width="auto" height="300" />
+  <img src="images/findClosed.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose transaction stage is closed</i></p>
 </div>
 &nbsp;
@@ -772,8 +739,8 @@ Example:
 * `archive 2` archives the 2nd person in the active list.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/archiveCommand.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Archived Alexandra's contact</i></p>
+  <img src="images/archive2.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Archived John's contact</i></p>
 </div>
 &nbsp;
 
@@ -794,15 +761,34 @@ Examples:
 * `unarchive 1` restores the 1st person in the archived list.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/unarchiveCommand.png" width="auto" height="300" />
+  <img src="images/unarchive.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Unarchived 1st contact in the archive list</i></p>
 </div>
 &nbsp;
 
 <div style="display: inline-block; text-align: center;">
-  <img src="images/unarchiveCommandResult.png" width="auto" height="300" />
+  <img src="images/listUnarchive.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Contact returns to the active list</i></p>
 </div>
+&nbsp;
+
+&nbsp;
+
+### Viewing contact details: `view`
+
+You can open the detailed information card of a specific contact directly without clicking on them. This is useful when you want to quickly access a contact's full details using just the keyboard.
+
+**Format:** `view INDEX`
+
+**How it works:**
+* Opens the detailed contact card on the right panel for the person at the specified `INDEX`
+* The index refers to the index number shown in the displayed contact list
+* The index must be a positive integer: 1,2,3, and so on
+* Works with any currently displayed list (active, archived, filtered results)
+
+Examples:
+* `view 1` opens the detailed information card for the 1st person in the current list.
+* `find john` followed by `view 1`
 &nbsp;
 
 &nbsp;
@@ -820,14 +806,17 @@ You can remove a contact from Homey permanently. This is useful when you no long
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in Homey.
-* `find James` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find John` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/deleteJamesResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>James Ho is deleted from Homey</i></p>
+  <img src="images/findJohn.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Only the contacts containing "John" are listed</i></p>
 </div>
 &nbsp;
-
+<div style="display: inline-block; text-align: center;">
+  <img src="images/delete1.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>John is deleted from Homey</i></p>
+</div>
 &nbsp;
 
 ### Clearing all entries : `clear`
