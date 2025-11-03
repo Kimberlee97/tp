@@ -146,7 +146,7 @@ This glossary helps you understand the words used in commands, so you can follow
 
 
 * Items with `…`​ can appear many times.
-  * If something ends with three dots `...`, you can use it as many times as you want — even zero.
+  * If something ends with three dots `…​`, you can use it as many times as you want — even zero.
   * Example `[t/TAG]…​` means you can type nothing, one tag, or several. 
 
 
@@ -228,7 +228,7 @@ This window provides a summary of all available commands and usage examples, all
 This is the core functionality of Homey that allows it to be your one-stop manager assistant, adding contacts.  
 Use this feature whenever you want to add new contacts into Homey.
 
-**Format:** `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]​`
+**Format:** `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG]…​ [m/MEETING]​`
 
 **How it works:**  
 Each contact will contain the following details:
@@ -246,7 +246,7 @@ The relation and transaction stage fields help you as a property agent better ma
 The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
 
 If you forget to input any of the compulsory fields, the system will prompt you for the required inputs.  
-To abort the command during this stage, input `cancel`.
+To abort the command during this stage, input `cancel`. The value `cancel` cannot be a valid input for any field at this stage.
  
 Homey prevents adding duplicate contacts.
 
@@ -430,7 +430,7 @@ Homey lets you update existing contact details such as phone number, address, tr
 
 Keeps your contact information up to date by editing an existing person’s details.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG] [m/MEETING] ​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG]…​ [m/MEETING] ​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
@@ -479,9 +479,9 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAG
 </div>
 &nbsp;
 
-### Add relational tag : `relation`
+### Add relation : `relation`
 
-Adds a relational tag to an existing contact in Homey. Use this command to edit the relation of a existing contact.
+Adds a relation to an existing contact in the address book. Use this command to edit the relation of a existing contact.
 
 **Format:**
 `relation INDEX RELATION`
@@ -907,10 +907,10 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 
 | Action          | Format, Examples                                                                                                                                                                                                                                  |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Add**         | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING] ​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague m/2025-10-10 09:30` |
+| **Add**         | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG]…​ [m/MEETING] ​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague m/2025-10-10 09:30` |
 | **Clear**       | `clear`                                                                                                                                                                                                                                           |
 | **Delete**      | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                                                                               |
-| **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG] [m/MEETING] ​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                                            |
+| **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG]…​ [m/MEETING] ​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                                            |
 | **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                                          |
 | **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                                     |
 | **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`                                                                                                                                                                                    
