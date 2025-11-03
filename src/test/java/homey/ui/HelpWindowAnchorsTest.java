@@ -22,7 +22,7 @@ public class HelpWindowAnchorsTest {
         assertEquals("#finding-your-contacts", anchors.get("find"));
         assertEquals("#listing-your-contacts", anchors.get("list"));
         assertEquals("#viewing-help", anchors.get("help"));
-        assertEquals("#add-relational-tag-relation", anchors.get("relation"));
+        assertEquals("#add-relation-relation", anchors.get("relation"));
         assertEquals("#tracking-deal-progress", anchors.get("transaction"));
         assertEquals("#find-by-tag-find-t", anchors.get("find t/"));
         assertEquals("#find-by-address-find-a", anchors.get("find a/"));
