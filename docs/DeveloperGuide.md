@@ -1149,7 +1149,7 @@ Precondition: User has launched the app.
 
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2. Works fully offline
-3. Should be able to hold up to `1000` persons without a noticeable sluggishness in performance for typical usage.
+3. With a data file of 1000 contacts, all CRUD operations and search commands should execute and render results in under 500ms on typical hardware.
 4. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 5. All user data should be persistent and survives app restarts and OS reboots.
 6. Backups are stored locally
@@ -1157,7 +1157,7 @@ Precondition: User has launched the app.
 8. Runs without installer, double-clickable JAR.
 9. Usable at `1280×720` (`150%` scale) and higher, optimised for `1920×1080` and higher (`100/125%` scale).
 10. All commands operable via typing/shortcuts (keyboard first)
-11. Support partial matches and case-insensitive search
+11. Search operations must be flexible, supporting partial word matches and case-insensitive queries for improved user experience.
 12. Product ≤ `100MB`, PDFs ≤ `15MB`, no unnecessary assets
 13. Dataset size tested up to `2000` contacts
 14. Clear separation of UI/Logic/Model/Storage
@@ -1180,6 +1180,7 @@ Precondition: User has launched the app.
 * **Human Editable Text Storage**: Data stored in plain text format (e.g. JSON, TXT) so users can open and manually edit it outside the app if needed
 * **Double-clickable JAR**: A Java Archive file packaged so that the application can be run directly by double-clicking, without needing an installer
 * **Partial Match Search**: A search feature that allows results to be found even if the user types only part of a name, address or tag. The search is case-insensitive and returns all matching entries containing the keyword substring.
+* **CRUD**: The four basic data operations - Create (add), Read (list/find), Update (edit/remark/transaction), and Delete (delete/clear)
 
 --------------------------------------------------------------------------------------------------------------------
 
