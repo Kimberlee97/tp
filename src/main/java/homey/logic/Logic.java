@@ -44,8 +44,6 @@ public interface Logic {
      */
     GuiSettings getGuiSettings();
 
-    Model getModel();
-
     /**
      * Set the user prefs' GUI settings.
      */
