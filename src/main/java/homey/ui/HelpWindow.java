@@ -86,7 +86,7 @@ public class HelpWindow extends UiPart<Stage> {
             Map.entry("find t/", "#find-by-tag-find-t"),
             Map.entry("find r/", "#find-by-relation-find-r"),
             Map.entry("find s/", "#find-by-transaction-stage-find-s"),
-            Map.entry("relation", "#add-relational-tag-relation"),
+            Map.entry("relation", "#add-relation-relation"),
             Map.entry("transaction", "#tracking-deal-progress"),
             Map.entry("archive", "#archiving-your-contacts-archive"),
             Map.entry("unarchive", "#unarchiving-your-contacts-unarchive"),
