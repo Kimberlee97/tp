@@ -119,28 +119,24 @@ If you're already familiar, jump directly to the section relevant to your needs.
 Before you start using Homey’s commands, here’s a list of key terms you’ll see throughout this guide.
 This glossary helps you understand the words used in commands, so you can follow the examples confidently.
 
-| **Term** | **Meaning**                                                                                                                                      |
-|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                              |
-| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                        |
-| **Prefix** | A short label before a slash that tells Homey what the information means (e.g. `n/` for name, `p/` for phone).                                   |
-| **Placeholder** | A word written in CAPITAL LETTERS that shows the kind of information you should type (e.g. `NAME` in `n/NAME` means you should enter a real name). |
-| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                              |
-| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                         |
-| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                       |
-| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                       |
-| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                        |
-| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                  |
-| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                          |
-| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                   |
-| **Archive** | Hides a contact without deleting it.                                                                                                             |
-| **Unarchive** | Restores an archived contact to the active list.                                                                                                 |
-| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                         |
-| **Case-insensitive** | Some commands and fields ignore letter casing (e.g. `find John` = `find JOHN`)                                                                   |
-| **Duplicate Contacts** | A contact that has the same name as an existing contact, even if other details differ.        |
-&nbsp;
-
-&nbsp;
+| **Term** | **Meaning**                                                                                                                                                                                  |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                                                                          |
+| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                                                                    |
+| **Prefix** | A short label before a slash that identifies a type of information (e.g. `n/` for name, `p/` for phone). Must be separated from other text by a space (e.g. `edit 1 n/John`, not `edit 1n/John`) |
+| **Placeholder** | A word written in CAPITAL LETTERS that shows the kind of information you should type (e.g. `NAME` in `n/NAME` means you should enter a real name).                                           |
+| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                                                                          |
+| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                                                                     |
+| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                                                                   |
+| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                                                                   |
+| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                                                                    |
+| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                                                              |
+| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                                                                      |
+| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                                                               |
+| **Archive** | Hides a contact without deleting it.                                                                                                                                                         |
+| **Unarchive** | Restores an archived contact to the active list.                                                                                                                                             |
+| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                                                                     |
+| **Duplicate Contacts** | A contact that has the same name as an existing contact, even if other details differ.                                                                                                       |
 
 --------------------------------------------------------------------------------------------------------------------
 &nbsp;
@@ -168,9 +164,9 @@ This glossary helps you understand the words used in commands, so you can follow
   * Example `[t/TAG]…​` means you can type nothing, one tag, or several. 
 
 
-* You can mix the order — for parameters only.
+* You can mix the order — for fields (prefix and parameter pairs) only.
   * Always type the command name (e.g. `find`, `add`, `edit`) and `INDEX` (if needed) first. 
-  * You can rearrange the parameters (e.g. `n/`, `p/`, `t/`) in any order you like. 
+  * You can rearrange the fields (e.g. `n/NAME`, `t/TAG`) in any order you like. 
   * Example: `add n/NAME p/PHONE_NUMBER` works the same as `add p/PHONE_NUMBER n/NAME`.
 
 
@@ -263,6 +259,12 @@ Each contact will contain the following details:
 * [optional] Tags
 * [optional] Meeting date & time in **yyyy-MM-dd HH:mm** `24-hour` format.
 
+**Note about names:** Homey accepts letters (A-Z, a-z), digits (0-9), and spaces. Some punctuation characters (for example apostrophes in "Conan O'Brian" or hyphens in "Jean-Luc") are not accepted by the validation logic and will be rejected.
+
+**Workarounds:**
+- **Remove the punctuation:** Conan O'Brian -> ConanOBrian
+- **Replace the punctuation with a space:** Jean-Luc Picard -> Jean Lun Picard
+
 The relation and transaction stage fields help you as a property agent better manage and categorise your contacts.  
 The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
 
@@ -340,55 +342,57 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 **General list behaviour:**
 
-* **Active list view:** Only shows contacts that are **not archived**.
+* **Active list view:** By default, shows only contacts that are **not archived**.
 
-* **Reset view:** Clears any filters or search results (e.g., find, list meeting) and returns to the main contact list.
+* **Automatic view switching:** The displayed list automatically switches between active, archived, and meeting views depending on the command entered.
+
+* **Reset view:** Clears any filters or search results (e.g., `find`, `list meeting`) and returns to the main contact list.
 
 * **Instant update:** Any recent additions, edits, or deletions are immediately reflected in the displayed list.
 
 * **Contact interaction:** Clicking on a contact opens its detailed information card on the right panel.
 
-### Listing all contacts : `list`
+* **Case sensitivity:**
+  * The base command `list` is case-sensitive. It must be typed exactly as `list`.
+  * Parameters such as `active`, `archived`, `archive`, and `meeting` are case-insensitive (e.g., `list MEETING`, `list Archived`).
 
 Displays all **active contacts** currently in Homey. Use this command when you want to return to the full contact view after performing filters or searches.
 
-**General behaviour:**
-- **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `mEeTIng` will match `meeting` (does not apply to the command `list`).
+### Listing all (active) contacts : `list` / `list active`
 
-#### List all contacts: `list`
+Displays all active (non-archived) contacts in Homey. 
+Use this to return to the full contact view after performing filters, searches, or archiving.
 
-Format: `list`
+Format: `list` / `list active`
 
 **How it works:** 
-* Shows all active (non-archived) contacts stored in Homey.
-* Ignores any extra spaces but not additional parameters unless specified in other commands.
+* Displays only active contacts.
+* Ignores extra spaces but not additional parameters unless specified in other commands.
 * Contacts are displayed in the order they were added.
-* Resets any previous filters, searches, or meeting-based listings.
+* Resets any previous filters or search results.
 
 **Example:**
-* `list` 
-  * Shows all contacts in homey.
-&nbsp;
+
+* `list active`
+    &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/ListContacts.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Listed all contacts</i></p>
+  <img src="images/listActive.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Shows the active list of contacts</i></p>
 </div>
 &nbsp;
 
 #### Listing contacts by meeting date : `list meeting`
 
-This command help you to display all contacts with meetings, sorted by the **earliest meeting first**.
+Displays all contacts with meetings, sorted by the **earliest meeting first**.
 
 **Format:**  
 `list meeting`
 
 **How it works:**
 * Displays only contacts with meetings, arranged from the nearest to the latest meeting.
-* `meeting` is case-insensitive. e.g `Meeting` will match `meeting` and both will work.
 * Contacts without meetings or that are archived will not be shown.
-* If date and time are equal, it will sort by name in `alphabetical order`.
-* If no contacts have meetings, Homey will display a clear message: `No contacts with meetings found.`
-* Click on the contact to reveal the contact card with full information on the right panel.
+* If date and time are equal, contacts are sorted by name in `alphabetical order`.
+* If no contacts have meetings, Homey displays message: `No contacts with meetings found.`
 
 **Example:**
 * `list meeting` 
@@ -401,14 +405,13 @@ This command help you to display all contacts with meetings, sorted by the **ear
 
 #### Listing archived contacts: `list archived` / `list archive`
 
-After archiving, you can view all hidden contacts using the `list archived` or `list archive` command.
+Displays all archived contacts. Use this command to view hidden contacts after archiving.
 
 **Format:** `list archived` or `list archive`
 
 **How it works:**
-* Displays all contacts that have been archived.
-* You can use `unarchive INDEX` to move them back into the active list.
-* The list view switches automatically to the archived list when the command is entered.
+* Displays all archived contacts.
+* You can use `unarchive INDEX` to move archived contacts back to the active list.
 
 **Example:**
 * `list archived` shows the archived contacts.
@@ -417,26 +420,6 @@ After archiving, you can view all hidden contacts using the `list archived` or `
   <img src="images/archiveCommandResult.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Alexandra's contact is moved to the archive list</i></p>
 </div>
-
-#### Listing active contacts: `list` / `list active`
-
-After archiving, you can view all active contacts using the `list` or `list active` command.
-
-**Format:** `list` or `list active`
-
-**How it works:**
-* Displays all contacts that are active (not archived).
-* The list view switches automatically to the active list when the command is entered.
-
-**Example:**
-* `list active` shows the active contacts.
-  &nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/listActive.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Shows the active list of contacts</i></p>
-</div>
-&nbsp;
-
 &nbsp;
 
 ## Editing Your Contacts
@@ -518,6 +501,7 @@ Adds a relation to an existing contact in Homey. Use this command to edit the re
 **How it works:**
 * Adds the specified relational tag to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The specified `RELATION` must be a valid relation: 'client' or 'vendor'.
+* The `RELATION` is case-insensitive (e.g., `Client`, `CLIENT` and `client` are treated the same).
 * Existing values will be updated to the input values.
 
 **Examples:**
@@ -556,8 +540,8 @@ forward or changes status, helping you maintain an accurate overview of your act
 **How it works:**
 * Replaces the transaction stage of the contact at the specified `INDEX` to `TRANSACTION STAGE`.
 * The given `TRANSACTION STAGE` must be one of the following: `prospect`, `negotiating` or `closed`.
-* `TRANSACTION STAGE` is case-insensitive — e.g. `prOsPECT` works the same as `prospect`
-* Additional whitespace is accepted — e.g. `s/   closed` works the same as `s/closed`
+* `TRANSACTION STAGE` is case-insensitive (e.g. `prOsPECT` works the same as `prospect`)
+* Additional whitespace is accepted (e.g. `s/   closed` works the same as `s/closed`)
 
 **Examples:**
 * `transaction 1 s/prospect`
@@ -855,6 +839,13 @@ You can remove all contacts from Homey at once. This is useful when you want to 
 **How it works:**
 * All contacts in Homey will be permanently deleted
 * This removes all contacts, not just the ones currently shown on your screen
+
+<box type="warning" seamless>
+
+**Caution:**
+**Running `clear` will delete all contacts immediately without asking for confirmation.** You cannot undo this action.
+Back up your data first.
+</box>
 &nbsp;
 
 &nbsp;
