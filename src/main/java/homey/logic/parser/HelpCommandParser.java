@@ -23,7 +23,8 @@ public final class HelpCommandParser implements Parser<HelpCommand> {
     // Whitelist topics actually support
     private static final Set<String> ALLOWED = Set.of(
             "add", "edit", "delete", "find", "find a/", "find t/", "find r/", "find s/", "relation", "list",
-            "list meeting", "clear", "transaction", "help", "remark", "archive", "unarchive", "exit", "meeting"
+            "list meeting", "clear", "transaction", "help", "remark", "archive", "unarchive", "exit", "list archived",
+            "list active"
     );
 
     /** Trim, lowercase, and collapse internal whitespace to a single space. */

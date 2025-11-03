@@ -59,7 +59,7 @@ public class HelpWindow extends UiPart<Stage> {
                 - Exits the application.
         \n\nHelp topics:
             - add, edit, delete, find, find a/, find t/, find r/, find s/,
-              relation, transaction, list, list meeting, remark,
+              relation, transaction, list, list meeting, list archive, list active, remark,
               archive, unarchive, clear, exit, help
         """;
 
@@ -91,7 +91,8 @@ public class HelpWindow extends UiPart<Stage> {
             Map.entry("archive", "#archiving-your-contacts-archive"),
             Map.entry("unarchive", "#unarchiving-your-contacts-unarchive"),
             Map.entry("remark", "#adding-remarks"),
-            Map.entry("meeting", "#adding-a-meeting-while-creating-a-contact-add"),
+            Map.entry("list archived", "#listing-archived-contacts-list-archived-list-archive"),
+            Map.entry("list active", "#listing-active-contacts-list-list-active"),
             Map.entry("list meeting", "#listing-contacts-by-meeting-date-list-meeting")
     );
 
