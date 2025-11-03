@@ -22,6 +22,7 @@ import homey.logic.commands.RelationCommand;
 import homey.logic.commands.RemarkCommand;
 import homey.logic.commands.TransactionStageCommand;
 import homey.logic.commands.UnarchiveCommand;
+import homey.logic.commands.ViewCommand;
 import homey.logic.parser.exceptions.ParseException;
 
 /**
@@ -102,6 +103,9 @@ public class AddressBookParser {
 
         case UnarchiveCommand.COMMAND_WORD:
             return new UnarchiveCommandParser().parse(arguments);
+
+        case ViewCommand.COMMAND_WORD:
+            return new ViewCommandParser().parse(arguments);
 
         case RemarkCommand.COMMAND_WORD:
             return new RemarkCommandParser().parse(arguments);

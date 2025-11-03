@@ -1,6 +1,7 @@
 package homey.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import homey.commons.core.GuiSettings;
@@ -81,6 +82,13 @@ public interface Model {
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
     void setPerson(Person target, Person editedPerson);
+
+    /**
+     * Sets the selected person. UI listens to this property to show the contact card.
+     */
+    void setSelectedPerson(Person person);
+
+    Optional<Person> getSelectedPerson();
 
     /** Updates the overdue status of all meetings in the address book */
     void updateMeetingOverdueStatus();
