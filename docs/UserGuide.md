@@ -202,7 +202,7 @@ If you're unsure about what to do, use the `help` command to open the User Guide
 
 **Supported topics:**  
 `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `find r/`, `find s/`,  
-`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear`, and `exit`.
+`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `edit meeting`, `clear`, and `exit`.
 
 **Examples:**
 * `help` → Opens the User Guide home.
@@ -595,6 +595,7 @@ Homey helps you quickly locate any contact in your property database. You can se
 - **Partial matching:** You do not have to type the full word - typing `Han` will find `Hans`
 - **Multiple keywords:** Use spaces between words to search for multiple terms at once
 - **Order does not matter:** Keywords can be in any order - `Doe John` will match `John Doe`
+- **Single search type only:** You can only use one prefix at a time (e.g., combining `find a/Hougang t/condo` is not supported)
 
 #### Find by name: `find`
 
@@ -626,7 +627,7 @@ Examples:
 
 #### Find by address: `find a/`
 
-You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planing site visits in the same area.
+You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planning site visits in the same area.
 
 **Format:** `find a/KEYWORD [MORE_KEYWORDS]`
 
@@ -652,6 +653,7 @@ You can search for contacts with specific tags you have assigned them. Tags help
 
 **How it works:**
 * Only the tag field is searched 
+* Only contacts with at least one tag are searched - contacts without any tags will not appear in results
 * All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
@@ -844,12 +846,14 @@ You can close the Homey application safely. All your information is automaticall
 
 ### Saving the data
 
-Homey automatically saves all contact data (including meetings, remarks, relations, and transaction stages) to your hard disk after every command that changes the data.  
-There is no need to save manually — your latest updates are always preserved.
+Homey automatically saves all contact data to your hard disk after every command that changes the data. There is no need to save manually.
+If Homey cannot save (e.g., disk is full or lacks file permissions), an error message will appear and your changes won't be kept. 
+Free up storage or check file permissions, then try again.
 
 ### Editing the data file
 
 Data for Homey is saved automatically as a JSON file `[JAR file location]/data/homey.json`. If you are familiar with JSON syntax, you are welcome to update data directly by editing that data file.  
+
 When editing the file, ensure that the data complies with the respective constraints:
 * Phone number: must be a number, at least 3 digits long
 * Email: must be of the format `local-part@domain`
