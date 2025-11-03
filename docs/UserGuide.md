@@ -58,7 +58,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
 
 2. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103T-F15A-4/tp/releases/).
 
-3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for Homey.
 
 4. Open the command terminal (as in Step 1), and change directory using the command `cd` into the folder you put the jar file in.<br>
    <box type="tip" seamless>
@@ -91,7 +91,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect` : Adds a contact named `John Doe` to Homey.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -107,24 +107,25 @@ If you're already familiar, jump directly to the section relevant to your needs.
 Before you start using Homey’s commands, here’s a list of key terms you’ll see throughout this guide.
 This glossary helps you understand the words used in commands, so you can follow the examples confidently.
 
-| **Term** | **Meaning**                                                                                                                                        |
-|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                                |
-| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                          |
-| **Prefix** | A short label before a slash that tells Homey what the information means (e.g. `n/` for name, `p/` for phone).                                     |
+| **Term** | **Meaning**                                                                                                                                      |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                              |
+| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                        |
+| **Prefix** | A short label before a slash that tells Homey what the information means (e.g. `n/` for name, `p/` for phone).                                   |
 | **Placeholder** | A word written in CAPITAL LETTERS that shows the kind of information you should type (e.g. `NAME` in `n/NAME` means you should enter a real name). |
-| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                                |
-| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                           |
-| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                         |
-| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                         |
-| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                          |
-| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                    |
-| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                            |
-| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                     |
-| **Archive** | Hides a contact without deleting it.                                                                                                               |
-| **Unarchive** | Restores an archived contact to the active list.                                                                                                   |
-| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                           |
-| **Case-insensitive** | Commands work the same with uppercase or lowercase letters (e.g. `FIND John` = `find john`).                                                       |
+| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                              |
+| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                         |
+| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                       |
+| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                       |
+| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                        |
+| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                  |
+| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                          |
+| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                   |
+| **Archive** | Hides a contact without deleting it.                                                                                                             |
+| **Unarchive** | Restores an archived contact to the active list.                                                                                                 |
+| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                         |
+| **Case-insensitive** | Some commands and fields ignore letter casing (e.g. `find John` = `find JOHN`)                                                                   |
+| **Duplicate Contacts** | A contact that has the same name as an existing contact, even if other details differ.        |
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -145,7 +146,7 @@ This glossary helps you understand the words used in commands, so you can follow
 
 
 * Items with `…`​ can appear many times.
-  * If something ends with three dots `...`, you can use it as many times as you want — even zero.
+  * If something ends with three dots `…​`, you can use it as many times as you want — even zero.
   * Example `[t/TAG]…​` means you can type nothing, one tag, or several. 
 
 
@@ -201,12 +202,12 @@ If you're unsure about what to do, use the `help` command to open the User Guide
 
 **Supported topics:**  
 `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `find r/`, `find s/`,  
-`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `clear`, and `exit`.
+`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `list archived`, `list active`, `clear`, and `exit`.
 
 **Examples:**
 * `help` → Opens the User Guide home.
-* `help add` → Opens the “Adding a person” section.
-* `help edit` → Opens the “Editing a person” section.
+* `help add` → Opens the “Adding a Person” section.
+* `help edit` → Opens the “Editing Your Contacts” section.
 
 #### Help offline: `help offline`
 
@@ -227,7 +228,7 @@ This window provides a summary of all available commands and usage examples, all
 This is the core functionality of Homey that allows it to be your one-stop manager assistant, adding contacts.  
 Use this feature whenever you want to add new contacts into Homey.
 
-**Format:** `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING]​`
+**Format:** `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG]…​ [m/MEETING]​`
 
 **How it works:**  
 Each contact will contain the following details:
@@ -239,13 +240,15 @@ Each contact will contain the following details:
 * Transaction stage: prospect, negotiating or closed
 * [optional] Remark
 * [optional] Tags
-* [optional] Next meeting date & time in **yyyy-MM-dd HH:mm** `24-hour` format.
+* [optional] Meeting date & time in **yyyy-MM-dd HH:mm** `24-hour` format.
 
 The relation and transaction stage fields help you as a property agent better manage and categorise your contacts.  
 The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
 
 If you forget to input any of the compulsory fields, the system will prompt you for the required inputs.  
-To abort the command during this stage, input `cancel`.
+To abort the command during this stage, input `cancel`. The value `cancel` cannot be a valid input for any field at this stage.
+ 
+Homey prevents adding duplicate contacts.
 
 <box type="tip" seamless>
 
@@ -256,6 +259,8 @@ To abort the command during this stage, input `cancel`.
 * The m/MEETING field is optional - use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
 * `MEETING` must follow **yyyy-MM-dd HH:mm** in (`24-hour` format).  
   Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
+* `MEETING` can be in the past but will be highlighted red in the contact card.
+* Multiple contacts can have the same `MEETING`.
 * The r/RELATION field is optional. The default relation for a new contact is client.
 * The rm/REMARK field is optional - use it to add additional details regarding the person.
 The remark field will be empty if no remark is given.
@@ -322,7 +327,7 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 ### Listing all contacts : `list`
 
-Displays all active contacts currently in your address book. Use this command when you want to return to the full contact view after performing filters or searches.
+Displays all active contacts currently in Homey. Use this command when you want to return to the full contact view after performing filters or searches.
 
 **General behaviour:**
 - **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `mEeTIng` will match `meeting` (does not apply to the command `list`).
@@ -427,13 +432,15 @@ Homey lets you update existing contact details such as phone number, address, tr
 
 Keeps your contact information up to date by editing an existing person’s details.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG] [m/MEETING] ​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG]…​ [m/MEETING] ​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * `MEETING` must follow **yyyy-MM-dd HH:mm** (`24-hour` format).
+* `MEETING` can be in the past but will be highlighted red in the contact card. 
+* Multiple contacts can have the same `MEETING`.
 * You can remove all the person’s tags by typing `t/` without
   specifying any tags after it.
 * You can remove all the person’s remarks by typing `rm/` without
@@ -476,9 +483,9 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAG
 </div>
 &nbsp;
 
-### Add relational tag : `relation`
+### Add relation : `relation`
 
-Adds a relational tag to an existing contact in the address book. Use this command to edit the relation of a existing contact.
+Adds a relation to an existing contact in Homey. Use this command to edit the relation of an existing contact.
 
 **Format:**
 `relation INDEX RELATION`
@@ -592,6 +599,7 @@ Homey helps you quickly locate any contact in your property database. You can se
 - **Partial matching:** You do not have to type the full word - typing `Han` will find `Hans`
 - **Multiple keywords:** Use spaces between words to search for multiple terms at once
 - **Order does not matter:** Keywords can be in any order - `Doe John` will match `John Doe`
+- **Single search type only:** You can only use one prefix at a time (e.g., combining `find a/Hougang t/condo` is not supported)
 
 #### Find by name: `find`
 
@@ -623,16 +631,18 @@ Examples:
 
 #### Find by address: `find a/`
 
-You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planing site visits in the same area.
+You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planning site visits in the same area.
 
-**Format:** `find a/KEYWORD [MORE_KEYWORDS]`
+**Format:** `find a/KEYWORD [MORE_KEYWORDS]` or `find a/"PHRASE"`
 
 **How it works:**
 * Only the address field is searched
+* To match an exact phrase, wrap it in quotation marks (" "). Homey will then return only addresses containing that contiguous phrase.
 * All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
+* `find a/"bedok north"` returns only contacts whose address includes the exact phrase `bedok north`
 * `find a/hou` returns all persons living in `hougang` and `Hougang` 
 &nbsp;
 <div style="display: inline-block; text-align: center;">
@@ -649,6 +659,7 @@ You can search for contacts with specific tags you have assigned them. Tags help
 
 **How it works:**
 * Only the tag field is searched 
+* Only contacts with at least one tag are searched - contacts without any tags will not appear in results
 * All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
@@ -799,7 +810,7 @@ You can remove a contact from Homey permanently. This is useful when you no long
 * The contact at the specified index will be permanently deleted
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
+* `list` followed by `delete 2` deletes the 2nd person in Homey.
 * `find James` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
@@ -819,7 +830,7 @@ You can remove all contacts from Homey at once. This is useful when you want to 
 **Format:** `clear`
 
 **How it works:**
-* All contacts in your address book will be permanently deleted
+* All contacts in Homey will be permanently deleted
 * This removes all contacts, not just the ones currently shown on your screen
 &nbsp;
 
@@ -841,12 +852,14 @@ You can close the Homey application safely. All your information is automaticall
 
 ### Saving the data
 
-Homey automatically saves all contact data (including meetings, remarks, relations, and transaction stages) to your hard disk after every command that changes the data.  
-There is no need to save manually — your latest updates are always preserved.
+Homey automatically saves all contact data to your hard disk after every command that changes the data. There is no need to save manually.
+If Homey cannot save (e.g., disk is full or lacks file permissions), an error message will appear and your changes won't be kept. 
+Free up storage or check file permissions, then try again.
 
 ### Editing the data file
 
 Data for Homey is saved automatically as a JSON file `[JAR file location]/data/homey.json`. If you are familiar with JSON syntax, you are welcome to update data directly by editing that data file.  
+
 When editing the file, ensure that the data complies with the respective constraints:
 * Phone number: must be a number, at least 3 digits long
 * Email: must be of the format `local-part@domain`
@@ -887,6 +900,9 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 **Q**: Can I customise or add new transaction stages beyond `prospect`, `negotiating`, `closed`?<br>
 **A**: At present, the allowed stages are limited to `prospect`, `negotiating`, or `closed`. You can add a custom tag instead to supplement the given stages.
 
+**Q**: Does Homey block overlapping meetings?
+**A**: No because there can be a group meeting scheduled with multiple contacts.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Known issues
@@ -898,22 +914,22 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 
 ## Command summary
 
-| Action          | Format, Examples                                                                                                                                                                                                                                  |
-|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Add**         | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG] [m/MEETING] ​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague m/2025-10-10 09:30` |
-| **Clear**       | `clear`                                                                                                                                                                                                                                           |
-| **Delete**      | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                                                                               |
-| **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG] [m/MEETING] ​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                                            |
-| **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                                          |
-| **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                                     |
-| **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`                                                                                                                                                                                    
-| **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                                        |
-| **Find a/**     | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find a/Bedok`                                                                                                                                                                                         |
-| **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                                        |
-| **Find r/**     | `find r/RELATION`<br> e.g., `find r/client`                                                                                                                                                                                                       |
-| **Find s/**     | `find s/TRANSACTION_STAGE`<br> e.g., `find s/negotiating`                                                                                                                                                                                         |
-| **List**        | `list [archive]` <br> e.g., `list`, `list archive`, `list meeting`                                                                                                                                                                                |
-| **Help**        | `help [TOPIC]`<br> e.g., `help add`<br><br>`help offline`                                                                                                                                                                                         |
-| **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                             |
-| **Unarchive**   | `unarchive INDEX`<br> e.g., `unarchive 1`                                                                                                                                                                                                         |
+| Action          | Format, Examples                                                                                                                                                                                                                                    |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Add**         | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS s/TRANSACTION_STAGE [rm/REMARK] [r/RELATION] [t/TAG]…​ [m/MEETING] ​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague m/2025-10-10 09:30` |
+| **Clear**       | `clear`                                                                                                                                                                                                                                             |
+| **Delete**      | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                                                                                 |
+| **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG]…​ [m/MEETING] ​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                               |
+| **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                                            |
+| **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                                       |
+| **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`                                                                                                                                                                                      
+| **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                                          |
+| **Find a/**     | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find a/Bedok`                                                                                                                                                                                           |
+| **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                                          |
+| **Find r/**     | `find r/RELATION`<br> e.g., `find r/client`                                                                                                                                                                                                         |
+| **Find s/**     | `find s/TRANSACTION_STAGE`<br> e.g., `find s/negotiating`                                                                                                                                                                                           |
+| **List**        | `list [archive]` <br> e.g., `list`, `list archive`, `list meeting`                                                                                                                                                                                  |
+| **Help**        | `help [TOPIC]`<br> e.g., `help add`<br><br>`help offline`                                                                                                                                                                                           |
+| **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                               |
+| **Unarchive**   | `unarchive INDEX`<br> e.g., `unarchive 1`                                                                                                                                                                                                           |
 

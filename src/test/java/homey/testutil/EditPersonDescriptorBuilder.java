@@ -13,6 +13,7 @@ import homey.model.person.Name;
 import homey.model.person.Person;
 import homey.model.person.Phone;
 import homey.model.person.Remark;
+import homey.model.tag.Relation;
 import homey.model.tag.Tag;
 import homey.model.tag.TransactionStage;
 
@@ -73,6 +74,14 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withAddress(String address) {
         descriptor.setAddress(new Address(address));
+        return this;
+    }
+
+    /**
+     * Sets the {@code Relation} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withRelation(String relation) {
+        descriptor.setRelation(new Relation(relation));
         return this;
     }
 

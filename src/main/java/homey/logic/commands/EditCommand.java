@@ -5,6 +5,7 @@ import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
+import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
@@ -49,6 +50,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_RELATION + "RELATION] "
             + "[" + PREFIX_TRANSACTION + "TRANSACTION STAGE] "
             + "[" + PREFIX_REMARK + "REMARK]"
             + "[" + PREFIX_TAG + "TAG]...\n"
@@ -121,6 +123,9 @@ public class EditCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
+        if (personToEdit.isArchived()) {
+            throw new CommandException(Messages.MESSAGE_CANNOT_EDIT_ARCHIVED);
+        }
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
@@ -145,7 +150,7 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         TransactionStage updatedStage = editPersonDescriptor.getStage().orElse(personToEdit.getStage());
-        Relation updatedRelation = personToEdit.getRelation(); // edit command does not allow editing relation tags
+        Relation updatedRelation = editPersonDescriptor.getRelation().orElse(personToEdit.getRelation());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
 
@@ -213,6 +218,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
+            setRelation(toCopy.relation);
             setStage(toCopy.stage);
             setRemark(toCopy.remark);
             setTags(toCopy.tags);
@@ -224,13 +230,13 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, stage, remark, tags)
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, relation, stage, remark, tags)
                     || meetingEdited; // include meeting edits
         }
 
         /** True if any non-meeting field is edited. */
         public boolean hasNonMeetingEdits() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, stage, remark, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, relation, stage, remark, tags);
         }
 
         public void setName(Name name) {
@@ -341,6 +347,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && Objects.equals(relation, otherEditPersonDescriptor.relation)
                     && Objects.equals(stage, otherEditPersonDescriptor.stage)
                     && Objects.equals(remark, otherEditPersonDescriptor.remark)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags)
@@ -355,6 +362,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("address", address)
+                    .add("relation", relation)
                     .add("transaction stage", stage)
                     .add("remark", remark)
                     .add("tags", tags)

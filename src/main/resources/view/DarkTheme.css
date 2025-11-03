@@ -390,6 +390,12 @@
     -fx-padding: 0 0 30 0;
 }
 
+.contact-meeting {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI";
+    -fx-text-fill: #c4cad3;
+}
+
 .contact-details-panel .label {
     -fx-font-size: 14pt;
     -fx-font-family: "Segoe UI";

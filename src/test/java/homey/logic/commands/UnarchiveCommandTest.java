@@ -2,7 +2,9 @@ package homey.logic.commands;
 
 import static homey.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static homey.testutil.TypicalPersons.getTypicalAddressBook;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,18 +39,25 @@ public class UnarchiveCommandTest {
 
         // Show archived list so INDEX_FIRST_PERSON points to an archived person
         model.updateFilteredPersonList(Model.PREDICATE_SHOW_ARCHIVED_PERSONS);
+        // sanity: original is visible in archived list
+        assertTrue(model.getFilteredPersonList().stream()
+                .anyMatch(p -> p.getName().equals(original.getName())));
 
         // Act
         UnarchiveCommand command = new UnarchiveCommand(INDEX_FIRST_PERSON);
         command.execute(model);
 
-        // After execute(), UnarchiveCommand switches filter back to active
-        // Assert: the person is no longer archived
+        // Assert (1): still on archived view; person is gone from this list
+        assertFalse(model.getFilteredPersonList().stream()
+                .anyMatch(p -> p.getName().equals(original.getName())));
+
+        // Assert (2): switch to active view and confirm person is now active
+        model.updateFilteredPersonList(Model.PREDICATE_SHOW_ACTIVE_PERSONS);
         Person nowActive = model.getFilteredPersonList().stream()
                 .filter(p -> p.getName().equals(original.getName()))
                 .findFirst()
-                .orElseThrow();
-        assert !nowActive.isArchived();
+                .orElseThrow(() -> new AssertionError("Unarchived person not found in active list"));
+        assertFalse(nowActive.isArchived());
     }
 
     /**
