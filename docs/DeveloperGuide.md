@@ -1146,7 +1146,7 @@ Precondition: User has launched the app.
 
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2. Works fully offline
-3. Should be able to hold up to `1000` persons without a noticeable sluggishness in performance for typical usage.
+3. With a data file of 1000 contacts, all CRUD operations and search commands should execute and render results in under 500ms on typical hardware.
 4. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 5. All user data should be persistent and survives app restarts and OS reboots.
 6. Backups are stored locally
@@ -1154,7 +1154,7 @@ Precondition: User has launched the app.
 8. Runs without installer, double-clickable JAR.
 9. Usable at `1280×720` (`150%` scale) and higher, optimised for `1920×1080` and higher (`100/125%` scale).
 10. All commands operable via typing/shortcuts (keyboard first)
-11. Support partial matches and case-insensitive search
+11. Search operations must be flexible, supporting partial word matches and case-insensitive queries for improved user experience.
 12. Product ≤ `100MB`, PDFs ≤ `15MB`, no unnecessary assets
 13. Dataset size tested up to `2000` contacts
 14. Clear separation of UI/Logic/Model/Storage
@@ -1177,6 +1177,7 @@ Precondition: User has launched the app.
 * **Human Editable Text Storage**: Data stored in plain text format (e.g. JSON, TXT) so users can open and manually edit it outside the app if needed
 * **Double-clickable JAR**: A Java Archive file packaged so that the application can be run directly by double-clicking, without needing an installer
 * **Partial Match Search**: A search feature that allows results to be found even if the user types only part of a name, address or tag. The search is case-insensitive and returns all matching entries containing the keyword substring.
+* **CRUD**: The four basic data operations - Create (add), Read (list/find), Update (edit/remark/transaction), and Delete (delete/clear)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1361,12 +1362,21 @@ testers are expected to do more *exploratory* testing.
   * Ensuring interactive commands did not break functionality for other commands and could work seamlessly with multiple steps
   * Designing command logic that allows flexible `remark` editing while maintaining input validation rules (e.g. length limit and empty `remark` handling).
   * Ensuring the `transaction` command correctly validates and updates only valid stages without affecting unrelated data.
+  * Extending the find command to support multiple search types (name, address, tag, relation, transaction stage) with proper validation and error handling for each type.
+  * Completely redesigning the GUI from AB3's basic list view to a modern two-panel layout with detailed contact preview, requiring significant restructuring of UI components and styling.
 * **Effort required:**
   * Implemented new logic for `Meeting` class and integrated it with `AddCommand`, `EditCommand`, and `ListMeetingCommand`.
   * Implemented new logic for `InteractiveCommand` and adapted `LogicManager` for interactive add command.
   * Features `relation`, `transaction` and `remark` are adapted from AB3's [add command tutorial](https://se-education.org/guides/tutorials/ab3AddRemark.html) and enhanced with improved code quality
   * Implemented RemarkCommand, RemarkCommandParser, and Remark to support adding, editing, and deleting remarks with instant UI updates. Added 100-character validation and error handling, with tests (RemarkTest, RemarkCommandParserTest) for edge cases.
   * Implemented Transaction, TransactionCommand and TransactionCommandParser to handle stage updates with validation and real-time UI reflection. Added tests (TransactionCommandParserTest) to ensure correct error handling for invalid inputs.
+  * Extended AB3's basic find command to support searching across multiple fields with prefix-based syntax. Extended FindCommandParser with field-specific validation, single/multiple keyword support, and comprehensive error messages to prevent invalid search combinations.
+  * Redesigned the GUI from AB3's original layout into a modern interface with:
+    * Two-panel split view (contact list + detailed preview)
+    * Enhanced contact cards displaying relation and transaction stage badges, with meeting information integrated directly into each card
+    * Dynamic color-coding system that turns meeting information red when the scheduled time has passed
+    * Detailed contact preview panel showing all information in a structured, readable format
+    * Better visual hierarchy and information organisation
 * **Achievements of project:**
   * Successfully extended into a property-agent focused app supporting meeting scheduling, editing, and listing.
 

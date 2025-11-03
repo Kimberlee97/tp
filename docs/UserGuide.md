@@ -241,6 +241,12 @@ Each contact will contain the following details:
 * [optional] Tags
 * [optional] Meeting date & time in **yyyy-MM-dd HH:mm** `24-hour` format.
 
+**Note about names:** Homey accepts letters (A-Z, a-z), digits (0-9), and spaces. Some punctuation characters (for example apostrophes in "Conan O'Brian" or hyphens in "Jean-Luc") are not accepted by the validation logic and will be rejected.
+
+**Workarounds:**
+- **Remove the punctuation:** Conan O'Brian -> ConanOBrian
+- **Replace the punctuation with a space:** Jean-Luc Picard -> Jean Lun Picard
+
 The relation and transaction stage fields help you as a property agent better manage and categorise your contacts.  
 The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
 
@@ -813,6 +819,13 @@ You can remove all contacts from Homey at once. This is useful when you want to 
 **How it works:**
 * All contacts in Homey will be permanently deleted
 * This removes all contacts, not just the ones currently shown on your screen
+
+<box type="warning" seamless>
+
+**Caution:**
+**Running `clear` will delete all contacts immediately without asking for confirmation.** You cannot undo this action.
+Back up your data first.
+</box>
 &nbsp;
 
 &nbsp;
