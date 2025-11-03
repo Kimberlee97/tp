@@ -21,6 +21,8 @@ public class Messages {
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_SINGLE_KEYWORD_ONLY = "%s search only accepts one keyword. \n%s";
+    public static final String MESSAGE_DUPLICATE_IN_ARCHIVED =
+            "This contact already exists in Archived. Use 'unarchive' to restore it.";
     public static final String MESSAGE_CANNOT_EDIT_ARCHIVED =
             "This contact is archived. Unarchive it before editing.";
 

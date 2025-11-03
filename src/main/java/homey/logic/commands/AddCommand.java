@@ -82,6 +82,13 @@ public class AddCommand extends InteractiveCommand {
 
         // regular command or all missing fields are filled
         if (!isInteractive || missingFields.isEmpty()) {
+            boolean duplicateInArchived = model.getAddressBook().getPersonList().stream()
+                    .anyMatch(p -> p.isArchived() && p.isSamePerson(toAdd));
+            if (duplicateInArchived) {
+                throw new CommandException(this.isInteractive
+                        ? Messages.MESSAGE_DUPLICATE_IN_ARCHIVED + "\n" + MESSAGE_INTERACTIVE
+                        : Messages.MESSAGE_DUPLICATE_IN_ARCHIVED);
+            }
             if (model.hasPerson(toAdd)) {
                 throw new CommandException(this.isInteractive
                         ? MESSAGE_DUPLICATE_PERSON + "\n" + MESSAGE_INTERACTIVE
