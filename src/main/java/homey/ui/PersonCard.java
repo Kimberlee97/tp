@@ -2,6 +2,7 @@ package homey.ui;
 
 import java.util.Comparator;
 
+import homey.model.person.Meeting;
 import homey.model.person.Person;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -34,6 +35,8 @@ public class PersonCard extends UiPart<Region> {
     private Label id;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label meeting;
 
 
     /**
@@ -46,6 +49,7 @@ public class PersonCard extends UiPart<Region> {
         name.setText(person.getName().fullName);
 
         populateTags(person);
+        displayMeeting(person);
     }
 
     private void populateTags(Person person) {
@@ -61,6 +65,20 @@ public class PersonCard extends UiPart<Region> {
 
     private void addTag(String tagName) {
         tags.getChildren().add(new Label(tagName));
+    }
+
+    private void displayMeeting(Person person) {
+        person.getMeeting().ifPresentOrElse(m -> {
+            meeting.setText("Meeting: " + m.toDisplayString());
+            if (Meeting.isOverdueMeeting(m)) {
+                meeting.setStyle("-fx-text-fill: red;");
+            }
+            meeting.setManaged(true);
+            meeting.setVisible(true);
+        }, () -> {
+            meeting.setManaged(false);
+            meeting.setVisible(false);
+        });
     }
 
 }

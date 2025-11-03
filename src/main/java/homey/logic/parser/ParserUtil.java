@@ -147,7 +147,7 @@ public class ParserUtil {
      */
     public static Relation parseRelation(String relation) throws ParseException {
         requireNonNull(relation);
-        String trimmed = relation.trim();
+        String trimmed = relation.trim().toLowerCase();
         if (trimmed.isEmpty() || !Relation.isValidRelation(trimmed)) {
             throw new ParseException(Relation.MESSAGE_CONSTRAINTS);
         }
@@ -162,7 +162,11 @@ public class ParserUtil {
     public static Remark parseRemark(String remark) throws ParseException {
         requireNonNull(remark);
         String trimmed = remark.trim();
-        return new Remark(trimmed);
+        try {
+            return new Remark(trimmed);
+        } catch (IllegalArgumentException e) {
+            throw new ParseException(e.getMessage());
+        }
     }
 
     /**

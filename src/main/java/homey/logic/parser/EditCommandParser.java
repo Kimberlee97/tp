@@ -6,6 +6,7 @@ import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
+import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
@@ -38,7 +39,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_TRANSACTION, PREFIX_REMARK, PREFIX_TAG, PREFIX_MEETING);
+                        PREFIX_RELATION, PREFIX_TRANSACTION, PREFIX_REMARK, PREFIX_TAG, PREFIX_MEETING);
 
         Index index;
         try {
@@ -49,7 +50,7 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         // Disallow duplicates for key prefixes (include meeting)
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                PREFIX_TRANSACTION, PREFIX_REMARK, PREFIX_MEETING);
+                PREFIX_RELATION, PREFIX_TRANSACTION, PREFIX_REMARK, PREFIX_MEETING);
 
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
 
@@ -65,6 +66,9 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
         }
+        if (argMultimap.getValue(PREFIX_RELATION).isPresent()) {
+            editPersonDescriptor.setRelation(ParserUtil.parseRelation(argMultimap.getValue(PREFIX_RELATION).get()));
+        }
         if (argMultimap.getValue(PREFIX_TRANSACTION).isPresent()) {
             editPersonDescriptor.setStage(ParserUtil.parseStage(argMultimap.getValue(PREFIX_TRANSACTION).get()));
         }
@@ -74,7 +78,6 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 
-        // Meeting (optional). Empty value => clear meeting.
         if (argMultimap.getValue(PREFIX_MEETING).isPresent()) {
             String meetingValue = argMultimap.getValue(PREFIX_MEETING).get().trim();
             if (meetingValue.isEmpty()) {
@@ -108,4 +111,5 @@ public class EditCommandParser implements Parser<EditCommand> {
         Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
         return Optional.of(ParserUtil.parseTags(tagSet));
     }
+
 }

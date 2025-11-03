@@ -4,7 +4,7 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# Homey Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -13,7 +13,14 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }
+* The `Add Meeting` feature was inspired by the add command in [AB3](https://github.com/nus-cs2103-AY2526S1/tp).
+While the parsing and model integration logic were adapted from AB3’s `AddCommand` and `AddCommandParser`, the meeting-related components 
+such as the Meeting class, meeting validation logic, and enhanced success feedback were independently designed.
+
+* Parts of the Javadoc documentation for the features Help, Archive, Unarchive, ListMeeting, Meeting, FindByAddress, and EditMeeting,
+as well as their related files, were written with assistance from [ChatGPT (OpenAI)](https://chat.openai.com).
+The generated content was reviewed and adapted by our team to ensure accuracy and consistency with the project’s coding and documentation standards.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +42,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** is the core component responsible for launching and shutting down the application.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -158,7 +165,7 @@ The sequence diagram below shows how an interactive add command flows through th
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
+* stores Homey's data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
@@ -189,7 +196,7 @@ field `archived`. Two predicates are exposed via `Model`:
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
 The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
+* can save both Homey's data and user preference data in JSON format, and read them back into corresponding objects.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
@@ -263,40 +270,40 @@ The find command uses the Strategy Pattern where different predicate classes imp
 
 The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+* `VersionedAddressBook#commit()` — Saves the current Homey state in its history.
+* `VersionedAddressBook#undo()` — Restores the previous Homey state from its history.
+* `VersionedAddressBook#redo()` — Restores a previously undone Homey state from its history.
 
 These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
 
 Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial Homey state, and the `currentStatePointer` pointing to that single Homey state.
 
 <puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 2. The user executes `delete 5` command to delete the 5th person in Homey. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of Homey after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted Homey state.
 
 <puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />
 
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified Homey state to be saved into the `addressBookStateList`.
 
 <puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />
 
 <box type="info" seamless>
 
-**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the Homey state will not be saved into the `addressBookStateList`.
 
 </box>
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous Homey state, and restores Homey to that state.
 
 <puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
 
 
 <box type="info" seamless>
 
-**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
+**Note:** If the `currentStatePointer` is at index 0, pointing to the initial Homey state, then there are no previous Homey states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
 than attempting to perform the undo.
 
 </box>
@@ -315,19 +322,19 @@ Similarly, how an undo operation goes through the `Model` component is shown bel
 
 <puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores Homey to that state.
 
 <box type="info" seamless>
 
-**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest Homey state, then there are no undone Homey states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
 
 </box>
 
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+Step 5. The user then decides to execute the command `list`. Commands that do not modify Homey, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
 
 <puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all Homey states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
 
 <puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />
 
@@ -339,7 +346,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 **Aspect: How undo & redo executes:**
 
-* **Alternative 1 (current choice):** Saves the entire address book.
+* **Alternative 1 (current choice):** Saves the entire Homey data state.
   * Pros: Easy to implement.
   * Cons: May have performance issues in terms of memory usage.
 
@@ -350,7 +357,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
-### \[Proposed\] Data archiving / unarchiving
+### Data archiving / unarchiving
 
 #### Goal
 Allow users to hide completed/irrelevant contacts from the default list while keeping them retrievable.
@@ -405,9 +412,9 @@ Allow users to hide completed/irrelevant contacts from the default list while ke
 * **Why a boolean on `Person`?** Simple, stable, and cheap to persist/filter.
 * **Why predicates not a field on `Model` state?** Keeps UI binding unchanged; only the predicate changes.
 
-### [Proposed] List contacts by meeting date and time
+### List contacts by meeting date and time
 
-#### Proposed Implementation
+#### Implementation
 
 The proposed `list meeting` command enhances the `Logic` component by allowing users to view all contacts that have an upcoming meeting scheduled, ordered from the earliest to latest meeting date.
 
@@ -424,7 +431,7 @@ This ensures that the user can easily see which meetings are coming up first, pr
 
 The following class diagram illustrates how `ListMeetingCommand` integrates with the existing `Logic` component:
 
-<puml src="diagrams/ListMeetingClassDiagram.puml" alt="ListMeetingClassDiagram" />
+<puml src="diagrams/meeting/ListMeetingClassDiagram.puml" width="420" />
 
 #### Example Usage
 
@@ -443,7 +450,7 @@ Step&nbsp;5. The UI (`PersonListPanel`) automatically refreshes to display only 
 
 The following sequence diagram shows how the `list meeting` command flows through the `Logic` component:
 
-<puml src="diagrams/ListMeetingSequenceDiagram-Logic.puml" alt="ListMeetingSequenceDiagram-Logic" />
+<puml src="diagrams/meeting/ListMeetingSequenceDiagram.puml" width="420" />
 
 <box type="info" seamless>
 
@@ -461,7 +468,7 @@ The `ModelManager` exposes a sorted view layered on top of the filtered view:
 * `clearPersonListSorting()` removes any comparator, restoring the original order.
 * `getFilteredPersonList()` returns the `SortedList<Person>` that the UI binds to.
 
-<puml src="diagrams/ListMeetingModelDiagram.puml" alt="ListMeetingModelDiagram" />
+<puml src="diagrams/meeting/ListMeetingModelDiagram.puml" width="420" />
 
 #### Error handling (user-visible)
 
@@ -523,6 +530,15 @@ Alternative 1 was chosen as it offers clear separation of concerns, testability,
 * [Configuration guide](Configuration.md)
 * [DevOps guide](DevOps.md)
 
+**DevOps Rationale:**  
+The DevOps setup follows the AB3 baseline with adaptations for the Homey project.  
+Continuous Integration (CI) is managed via GitHub Actions, which runs tests and style checks on every push and pull request.  
+This ensures consistent build quality across team members.  
+The application is packaged as a single runnable JAR for portability and simplicity, following AB3’s Gradle setup.  
+All tests can be executed via `gradlew check`.  
+Log files are written to the local directory to support offline debugging.  
+Configuration and data storage remain in JSON to preserve human-editability.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Requirements**
@@ -531,37 +547,43 @@ Alternative 1 was chosen as it offers clear separation of concerns, testability,
 
 **Target user profile**: Property Agent
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* Manages a large number of client and stakeholder contacts
+* Prefers desktop applications over mobile alternatives
+* Has a fast typing sped
+* Prefers keyboard input to mouse interaction
+* Is comfortable using Command-Line Interface (CLI) applications
 
 **Value proposition**: 
 
-**What problem does the product solve?**
-Difficult to organise contacts and tasks on a singular centralised platform
-Easy to forget meetings when they’re tracked on separate apps
-Hard to navigate
-Grouping stakeholders by location/transaction
+**Problem Statement**
+Property agents often struggle to manage contacts, meetings, and transactions across multiple, 
+unconnected platforms. Meetings tracked in separate applications are easily forgotten, 
+while contact lists become difficult to organise and navigate.
+Furthermore, grouping stakeholders by location or transaction stage is often tedious and time-consuming.
 
-**How does it make the user's life easier?**
-Centralised platform for property agents to use to track, sort and schedule contacts in order for them to work more efficiently and stay organised
-Calendar reminders to keep the user on track with their schedule
-Able to be used on the go
+**Solution**
+Homey provides a centralized platform that enables property agents to efficiently track, organize, and schedule contacts. 
+It consolidates essential functions such as meeting visibility, contact tagging, and transaction tracking within a single interface.
 
-**What is the boundary beyond which the app will not help?**
-Unable to track legal/financial processing
-Not CRM replacement
-No marketing/listing management
+**Scope and Limitations**
+Homey focuses on contact and meeting management for property agents. It does not provide:
+* Legal or financial tracking functionalities
+* Full-fledged Customer Relationship Management (CRM) features
+* Marketing, listing, or property advertisement management tools
 
-**Persona:**
-Working adult, graduate already
-popular so a lot of clients
-generally independent but collaborates with other agents
-On the go since need to travel a lot to different property, so need something convenient
-Prefers typing to mouse usage
-Slightly forgetful due to large number of clients, hard to track
+**User Persona**:
+
+**Profile**
+A working professional and university graduate managing a large client base. 
+They are experienced, independent, and often collaborate with fellow agents. 
+Due to frequent travel between properties, 
+they require a lightweight and convenient solution that keeps their workflow synchronised across devices.
+
+**Behavioural Traits**
+* Prefers typing commands over using a mouse
+* Appreciates structured data organization and quick search capabilities
+* Occasionally forgetful due to a heavy client load and overlapping meetings
+* Values efficiency and minimal disruption while managing clients on the move
 
 ### User stories
 
@@ -589,37 +611,38 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | Forgetful property agent                               | Search for contacts using partial names                                | I can find their contact information despite not remembering their full name     |
 | `*`      | Property agent                                         | Input details for a new contact in one line                            | It is convenient                                                                 |
 | `* *`    | Property agent who handles many meetings               | Tag each client with their property location                           | I can quickly group and search for clients by area                               |
-| `* * *`  | Property agent who prefers typing                      | Search for client by typing their name                                 | Save time instead of scrolling through the whole address book                    |
+| `* * *`  | Property agent who prefers typing                      | Search for client by typing their name                                 | Save time instead of scrolling through thentire Homey contact list               |
 | `* *`    | Property agent managing multiple tasks                 | View upcoming meeting with the nearest deadline first                  | I know which client to attend to next                                            |
-| `*`      | Property agent who prefers typing                      | Autocomplete names/commands as I search through the addressbook        | Find my client more efficiently                                                  |
+| `*`      | Property agent who prefers typing                      | Autocomplete names/commands as I search through Homey                  | Find my client more efficiently                                                  |
 | `*`      | Property agent juggling many deals                     | Attach notes to each client’s profile                                  | I can remember key details of past conversations                                 |
 | `*`      | Property agent                                         | See which agent is linked to a shared client                           | Responsibilities are clear                                                       |
 | `* *`    | Property agent that wants to track deal history        | Sort contacts by date added as contact                                 | Prioritise loyal customers                                                       |
 | `*`      | Property agent                                         | Write multiple different commands to do the same thing                 | I don’t have to remember specific syntax for each command                        |
 | `*`      | Property agent with a lot of contacts                  | Archive contacts that have completed deals                             | I can prioritise contacts that I have ongoing deals with                         |
 | `*`      | Forgetful user                                         | Write simpler commands intuitively and when prompted to                | I don’t have to remember the complex syntax for each command                     |
-| `* *`    | Property agent                                         | Sort contacts by alphabetical order                                    | Easier to locate contacts within address book                                    |
+| `* *`    | Property agent                                         | Sort contacts by alphabetical order                                    | Easier to locate contacts within Homey                                           |
 | `* *`    | Property agent                                         | Edit contacts to add new information about them                        | I don’t have to delete and add contacts to add more information                  |
 | `* * *`  | Property agent                                         | Delete contacts that I no longer require                               | I have a less cluttered contact list that is easier to navigate                  |
 | `* * *`  | Property agent                                         | Add new contacts                                                       | I am able to contact new clients or agents                                       |
 | `* * *`  | Property agent                                         | Clear all entries                                                      | Faster delete all contacts if necessary                                          |
 | `* * *`  | Property agent                                         | List all my contact entries                                            | I can see my contact list in case I forget their names                           |
-| `* * *`  | New user                                               | Learn all the commands available                                       | I know how to use the address book                                               |
+| `* * *`  | New user                                               | Learn all the commands available                                       | I know how to use Homey                                                          |
 | `* * *`  | Property agent                                         | Find contacts by address                                               | Easily locate contacts that stay in that area                                    |
+| `* *`    | Property Agent juggling multiple stakeholders          | Edit or delete a meeting                                               | Quickly update or remove meeting                                                 |
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is `Homey` and the **Actor** is the `user`, unless specified otherwise)
 
 **Use case: Delete contacts that I no longer require**
 
 **MSS**
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  Homey shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
-
+4.  Homey deletes the person
+                          
     Use case ends.
 
 **Extensions**
@@ -638,7 +661,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 1. User lists active contacts (`list`).
-2. AddressBook shows active list.
+2. Homey shows active list.
 3. User enters `archive INDEX`.
 4. System marks the person archived and keeps the active list visible.
 
@@ -646,13 +669,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * 3a. Index invalid → System shows error, use case resumes at step 2.
 * 3b. Person already archived → System shows “This person is already archived.”, use case ends.
 
----
-
 **Use case: Unarchive a contact**
 
 **MSS**
 1. User switches to archived list (`list archive`).
-2. AddressBook shows archived list.
+2. Homey shows archived list.
 3. User enters `unarchive INDEX`.
 4. System marks the person active and switches back to the active list.
 
@@ -698,16 +719,28 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-**Use case: Add dates for meetings **
+**Use case: Add date and time for meetings**
 
 **MSS**
 
-1. User searches for a certain contact
-2. System displays details associated with contact including meetings
-3. User adds meeting date using command line
-4. System displays success message and meeting details
+1. User opens the application.
+2. User adds a contact with a meeting date and time.
+3. System validates the meeting input format (`YYYY-MM-DD HH:mm`).
+4. System updates the contact with the new meeting date and time.
+5. System displays a success message confirming the scheduled meeting.
 
-    Use case ends.
+   Use case ends.
+
+**Extensions**
+
+* **3a.** User enters an invalid meeting format.
+    * 3a1. System displays an error message with the correct format (e.g., “Meetings must follow the format YYYY-MM-DD HH:mm”).
+    * 3a2. User re-enters the correct date and time.
+        * Use case resumes at step 6.
+
+* **64b.** User tries to add a meeting for a non-existent contact index.
+    * 6b1. System displays “Invalid person index.”
+    * Use case ends.
 
 **Use case: Search for contacts using partial names**
 
@@ -780,23 +813,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * 1b. No contacts match the selected type.
     * 1b1. System shows “No contacts found.”
 
-**Use case: Set recurring reminders for contacts**
-
-**MSS**
-
-1. User opens application
-2. User types client’s name into the search bar
-3. System retrieves and displays contact
-4. User requests to set a recurring reminder
-5. System prompts for reminder details
-6. User enters reminder details
-7. System validates reminder details
-8. System saves the recurring reminder and confirms creation
-9. User views the reminder linked to the contact
-
-   Use case ends.
-
-**Use case: Link meeting to multiple contacts**
+**Use case: Link a meeting to multiple contacts**
 
 **MSS**
 
@@ -899,52 +916,30 @@ Precondition: User has launched the app.
 
 **MSS**
 
-Precondition: User has meetings scheduled and is at the landing page of the app.
+**Precondition:** User has at least one contact with a scheduled meeting.
 
-1. User selects “Sort by → Meeting Date”
-2. System rearranges client list by meeting times, with nearest deadline at the top
-3. User views the first item to check details (time, location, client notes, etc)
-
-   Use case ends.
-
-**Extensions**
-
-* 2a. No meetings scheduled.
-    * 2a1. System shows “No meetings scheduled” and suggests adding a meeting
-
-
-**Use case: Sort contacts by dates added**
-
-**MSS**
-
-Precondition: User is at the landing page of the app and has existing list of contacts.
-
-1. User selects “Sort by → Date Added”
-2. System rearranges contacts chronologically, with oldest client on top to prioritise loyal customers
+1. User enters the command `list meeting`.
+2. System filters all contacts with scheduled meetings.
+3. System sorts the contacts by meeting date and time in ascending order (earliest first).
+4. If two meetings share the same date and time, the contacts are sorted alphabetically by name.
+5. System displays the list of contacts with meetings, showing the nearest upcoming meeting first.
+6. User selects a contact to view full meeting and contact details in the right panel.
 
    Use case ends.
 
 **Extensions**
 
-* 1a. No contacts in list
-* 1b. System displays “Contact list empty”
+* **1a.** User enters the command in a different case (e.g., `list Meeting` or `LIST MEETING`).
+    * 1a1. System recognises the command and performs the same action.
+    * Use case resumes at step 2.
 
-**Use case: Sort contacts by alphabetical order**
+* **2a.** No contacts have meetings scheduled.
+    * 2a1. System displays a clear message: “No contacts with meetings found.”
+    * Use case ends.
 
-**MSS**
-
-1. User opens the app
-2. User selects “Sort by → Alphabetical Order”
-3. System rearranges all contacts in A–Z order
-
-   Use case ends.
-
-**Extensions**
-
-* 1a. No contacts in list
-    * 1a1. System displays “Contact list empty”
-* 1b. Duplicate names exist
-    * 1b1. System sorts by secondary field (e.g., phone number or email)
+* **3a.** User is currently viewing the archived list.
+    * 3a1. System only considers active contacts and excludes archived ones.
+    * Use case resumes at step 5.
 
 **Use case: Edit contacts to add new information about them**
 
@@ -999,7 +994,7 @@ Precondition: User is at the landing page of the app and has existing list of co
 2. User selects “Clear All Contacts” option
 3. System prompts user for confirmation
 4. User confirms the action
-5. System deletes all contacts from the address book
+5. System deletes all contacts from Homey
 6. User views empty contact list
 
    Use case ends.
@@ -1050,23 +1045,105 @@ Precondition: User is at the landing page of the app and has existing list of co
 
 **MSS**
 
-1. User requests to find contacts by specifying an address keyword.
-
-2. AddressBook filters and displays all contacts whose address contains the specified keyword.
-
-3. User views the list of matched contacts.
+1. User enters a command to find contacts by specifying one or more address keywords (e.g., `find a/Bedok`).
+2. System filters and displays all contacts whose addresses contain any of the specified keywords.
+3. User views the list of matched contacts, displayed in the main window.
 
    Use case ends.
 
 **Extensions**
 
-* 2a. No contact’s address matches the given keyword.
+* **1a.** User enters an empty or invalid address keyword.
+    * 1a1. System displays an error message prompting the user to enter at least one valid keyword.
+    * Use case ends.
 
-    * 2a1. AddressBook shows a message indicating that no contacts were found.
+* **2a.** No contact’s address matches the given keyword(s).
+    * 2a1. System displays a message indicating that no contacts were found.
+    * Use case ends.
 
-* 1a. User enters an invalid or empty address keyword.
+* **2b.** User provides multiple keywords (e.g., `find a/bedok north`).
+    * 2b1. System returns all contacts whose addresses contain **any** of the given keywords, regardless of order or case.
+    * Use case resumes at step 3.
 
-    * 1a1. AddressBook displays an error message prompting the user to provide a valid keyword.
+**Use case: Edit or remove meetings**
+
+**MSS**
+
+1. User opens the application.
+2. User views the contact list.
+3. User selects a contact to edit.
+4. User requests to edit the meeting details for that contact.
+5. System prompts for meeting input.
+6. User provides the new meeting date/time or leaves it blank to clear the meeting.
+7. System validates the meeting format (if provided).
+8. System updates or removes the meeting for the selected contact.
+9. System displays a success message confirming the update or removal.
+
+   Use case ends.
+
+**Extensions**
+
+* **6a.** User enters an invalid meeting format.
+    * 6a1. System displays an error message with the correct format (e.g., “YYYY-MM-DD HH:mm”).
+    * 6a2. User re-enters the meeting details.
+        * Use case resumes at step 7.
+
+* **7a.** User attempts to edit a meeting while specifying other fields (e.g., `s/closed`).
+    * 7a1. System displays error: “When editing a meeting, no other fields may be provided.”
+    * 7a2. User corrects the input or cancels the operation.
+        * Use case resumes at step 5 or ends.
+
+* **8a.** User tries to clear a meeting that does not exist.
+    * 8a1. System displays message: “No meetings to clear for [contact name].”
+    * Use case ends.
+
+**Use case: Change the transaction stage of a contact**
+
+**MSS**
+
+1. User requests to change the transaction stage of a contact by specifying the contact's index and the new transaction stage.
+2. Homey validates that the specified index exists and the transaction stage is valid.
+3. Homey updates the contact's transaction stage.
+4. Homey displays a success message confirming the update.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User changes the transaction stage using the `edit` command instead of `transaction`
+  * Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage. 
+* 1b. User enters an invalid command format or omits required fields (e.g. missing index or `s\`).
+  * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
+* 2a. The given index is invalid.
+  * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
+  * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
+* 2b. The transaction stage provided is empty or invalid (i.e. not one of `prospect`, `negotiating` or `closed`).
+  * 2b1. If the transaction stage provided is empty, Homey displays "Invalid command format! Transaction stage cannot be empty."
+  * 2b1. If the transaction stage provided is invalid, Homey displays the list of valid stages.
+
+**Use case: Editing a remark**
+
+**MSS**
+
+1. User requests to change the remark of a contact by specifying the contact's index and the new remark.
+2. Homey validates that the specified index exists and the remark length does not exceed 100 characters.
+3. Homey updates the contact's remark.
+4. Homey displays a success message confirming the update.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. User changes the remark using the `edit` command instead of `remark`
+  * 1a1. Steps 2-4 proceed identically but other fields can also be modified alongside the transaction stage.
+  * 1a2. If the remark exceeds 100 characters, Homey displays "Remark cannot exceed 100 characters."
+* 1b. User enters an invalid command format or omits required fields (e.g. missing index or `rm/`).
+  * 1b1. Homey displays "Invalid command format!" and the correct command usage details.
+* 2a. The given index is invalid.
+  * 2a1. If the index is non-positive, Homey displays "Invalid command format!" and indicates that the index must be positive.
+  * 2a2. If there are no contacts with that index, Homey displays "The person index provided is invalid".
+* 2b. The remark provided is invalid (i.e. more than 100 characters).
+  * Homey displays "Invalid command format! Remark cannot exceed 100 characters."
 
 ### Non-Functional Requirements
 
@@ -1134,22 +1211,127 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
-### Deleting a person
+### Viewing Help
 
-1. Deleting a person while all persons are being shown
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+### Interactive add
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+1. Test case: `add`  
+   Expected: Prompts for name, phone, email, address and transaction stage fields. Adds corresponding person based on your inputs.
+2. Test case: `add rm/This is a test. m/2025-12-01 00:00`  
+   Expected: Prompts for name, phone, email, address and transaction stage fields. Adds corresponding person with the given remark and meeting.
+3. Test case: `add`, then `cancel`  
+   Expected: Prompts for name, then aborts command.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+### Changing relational tag
+
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `relation 1 vendor`  
+   Expected: "Added relation vendor to Person: ...". Changes relation of first contact to be vendor.
+2. Test case: `relation 0 client`  
+   Expected: Error "Invalid command format!"
+3. Test case: `relation 1 friend`  
+   Expected: Error "Relation should be 'client' or 'vendor'."
+
+
+### Changing transaction stage
+
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `transaction 1 s/closed`  
+    Expected: "Added transaction stage to Person: ...; Transaction: [closed]; ..."  
+    The person's transaction stage tag displays `closed`.
+3. Test case: `transaction 1 s/invalidstage`  
+    Expected: Error "Transaction stage should be 'prospect', 'negotiating' or 'closed'."
+4. Test case: `transaction x s/closed` (x <= 0 or x > list size)  
+    Expected: Invalid index error.
+
+
+### Adding a remark
+
+1. Prerequisites: Ensure at least one person exists in the displayed list.
+2. Test case: `remark 1 rm/Likes nature`  
+   Expected: "Added remark to Person: ...; Remarks: Likes nature; ..."
+   The person's remark field displays "Likes nature".
+3. Test case: `remark 1 rm/`  
+   Expected: "Removed remark from Person: ...; Remarks:;" The person's remark field is no longer displayed.
+4. Test case: `remark 1 s/<STRING>` where `STRING` has more than 100 characters.  
+   Expected: Error "Invalid command format! Remark cannot exceed 100 characters"
+5. Test case: `transaction x s/closed` (x <= 0 or x > list size)  
+   Expected: Invalid index error.
+
+
+
+### Editing a contact's meeting
+
+1. Prerequisites: Ensure at least one contact exists by using `list`.
+2. Test case: edit 1 m/2025-11-03 14:00  
+   Expected: “Updated meeting for Kevin Tan: 2025-11-03 14:00” Meeting field is added to contact card
+3. Test case: edit 1 m/  
+   Expected: “Cleared meeting for Kevin Tan.” Meeting field is removed from the contact card.
+4. Test case: edit 1 m/invalid-date  
+   Expected: Error “Meeting must be in yyyy-MM-dd HH:mm (24h) format and be a real date/time, e.g. 2025-11-03 14:00.”
+
+### Listing contacts by meeting date
+
+1. Prerequisites: Ensure at least two contacts have meetings set using `list meeting`.
+2. Test case: list meeting  
+   Expected: Displays only contacts with meetings, sorted by earliest meeting first.
+3. Test case: Run list meeting when no contacts have meetings.  
+   Expected: Empty list message such as “No contacts with meetings found.”
+4. Test case: list Meeting or list MEETING  
+   Expected: "Updated meeting for Kevin Tan: 2025-11-11 09:30" (Will still work)
+
+### Finding contacts
+
+#### Find by name
+
+1. Prerequisites: List all persons with `list`. Multiple persons should be visible.
+2. Test case: `find john`
+   Expected: Shows contacts with names containing "john". 
+3. Test case: `find john alex`
+   Expected: Shows contacts containing "john" OR "alex" in their names.
+4. Test case: `find` or `find    `
+   Expected: Error "Invalid command format!" with usage instructions.
+
+#### Find by address
+
+1. Prerequisites: Ensure contacts have different addresses.
+2. Test case: `find a/bedok`
+   Expected: Shows all contacts with addresses containing "bedok".
+3. Test case: `find a/`
+   Expected: Error with address-specific usage message.
+
+#### Find by tag
+
+1. Prerequisites: Ensure contacts have various tags.
+2. Test case: `find t/friend`
+   Expected: Shows all contacts tagged with "friend".
+3. Test case: `find t/`
+   Expected: Error with tag-specific usage message.
+4. Test case: `find t/friend_buyer`
+   Expected: Error "Invalid keyword. Tags can only contain alphanumeric characters".
+
+#### Find by relation
+
+1. Prerequisites: Ensure you have both vendors and clients in the list.
+2. Test case: `find r/client`
+   Expected: Shows all contacts with relation "client".
+3. Test case: `find r/supplier`
+   Expected: Error "Invalid relation. Only 'client' or 'vendor' are allowed".
+4. Test case: `find r/client vendor`
+   Expected: Error "Relation search only accepts one keyword"
+
+#### Find by transaction stage 
+
+1. Prerequisites: Ensure contacts have different transaction stages.
+2. Test case: `find s/prospect`
+   Expected: Shows all contacts with transaction stage "prospect".
+3. Test case: `find s/pending`
+   Expected: Error "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed; are allowed".
+4. Test case: `find s/prospect closed`
+   Expected: Error "Transaction stage search only accepts one keyword"
 
 ### Archiving a person
 
@@ -1171,10 +1353,33 @@ testers are expected to do more *exploratory* testing.
 4. Test case: `unarchive 0`, `unarchive x`  
    Expected: Invalid index error.
 
-### Saving data
+--------------------------------------------------------------------------------------------------------------------
 
-1. Dealing with missing/corrupted data files
+## **Appendix: Effort**
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+* **Difficulty level**
+  * Moderate to high
+* **Challenges faced**
+  * Ensuring meeting commands interacted correctly with existing features without breaking core functionality
+  * Ensuring interactive commands did not break functionality for other commands and could work seamlessly with multiple steps
+  * Designing command logic that allows flexible `remark` editing while maintaining input validation rules (e.g. length limit and empty `remark` handling).
+  * Ensuring the `transaction` command correctly validates and updates only valid stages without affecting unrelated data.
+* **Effort required:**
+  * Implemented new logic for `Meeting` class and integrated it with `AddCommand`, `EditCommand`, and `ListMeetingCommand`.
+  * Implemented new logic for `InteractiveCommand` and adapted `LogicManager` for interactive add command.
+  * Features `relation`, `transaction` and `remark` are adapted from AB3's [add command tutorial](https://se-education.org/guides/tutorials/ab3AddRemark.html) and enhanced with improved code quality
+  * Implemented RemarkCommand, RemarkCommandParser, and Remark to support adding, editing, and deleting remarks with instant UI updates. Added 100-character validation and error handling, with tests (RemarkTest, RemarkCommandParserTest) for edge cases.
+  * Implemented Transaction, TransactionCommand and TransactionCommandParser to handle stage updates with validation and real-time UI reflection. Added tests (TransactionCommandParserTest) to ensure correct error handling for invalid inputs.
+* **Achievements of project:**
+  * Successfully extended into a property-agent focused app supporting meeting scheduling, editing, and listing.
 
-1. _{ more test cases …​ }_
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+**Team size:** 5 members. 
+
+1. None as of v1.5
+
+--------------------------------------------------------------------------------------------------------------------
+

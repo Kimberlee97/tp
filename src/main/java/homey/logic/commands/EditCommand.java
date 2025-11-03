@@ -5,6 +5,7 @@ import static homey.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static homey.logic.parser.CliSyntax.PREFIX_MEETING;
 import static homey.logic.parser.CliSyntax.PREFIX_NAME;
 import static homey.logic.parser.CliSyntax.PREFIX_PHONE;
+import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
@@ -49,6 +50,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_RELATION + "RELATION] "
             + "[" + PREFIX_TRANSACTION + "TRANSACTION STAGE] "
             + "[" + PREFIX_REMARK + "REMARK]"
             + "[" + PREFIX_TAG + "TAG]...\n"
@@ -65,6 +67,9 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_MEETING_SET = "Updated meeting for %1$s: %2$s";
     public static final String MESSAGE_EDIT_MEETING_CLEARED = "Cleared meeting for %1$s.";
     public static final String MESSAGE_EDIT_MEETING_NONE = "No meetings to clear for %1$s.";
+    public static final String MESSAGE_USAGE_MEETING_ONLY = COMMAND_WORD + " INDEX m/DATE_TIME\n"
+                    + "or: " + COMMAND_WORD + " INDEX m/ (to clear meeting)\n"
+                    + "Note: When editing a meeting, no other fields may be provided.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -81,23 +86,31 @@ public class EditCommand extends Command {
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
     }
 
-    private String generateFeedback(Person before, Person after, EditPersonDescriptor descriptor) {
-        final String name = after.getName().toString();
+    private String composeFeedback(Person before, Person after, EditPersonDescriptor d) {
+        StringBuilder fb = new StringBuilder();
 
-        if (!descriptor.isMeetingEdited()) {
-            return String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after));
+        if (d.hasNonMeetingEdits()) {
+            fb.append(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after)));
         }
 
-        if (descriptor.getMeeting().isPresent()) {
-            // edit 1 m/<datetime>  → meeting set/updated
-            String when = after.getMeeting().map(Meeting::toDisplayString).orElse("<unknown>");
-            return String.format(MESSAGE_EDIT_MEETING_SET, name, when);
+        if (d.isMeetingEdited()) {
+            if (fb.length() > 0) {
+                fb.append(System.lineSeparator());
+            }
+            final String name = after.getName().toString();
+            if (d.getMeeting().isPresent()) {
+                String when = after.getMeeting().map(Meeting::toDisplayString).orElse("<unknown>");
+                fb.append(String.format(MESSAGE_EDIT_MEETING_SET, name, when));
+            } else {
+                fb.append(before.getMeeting().isEmpty()
+                        ? String.format(MESSAGE_EDIT_MEETING_NONE, name)
+                        : String.format(MESSAGE_EDIT_MEETING_CLEARED, name));
+            }
         }
 
-        // edit 1 m/  → clear meeting or nothing to clear
-        return before.getMeeting().isEmpty()
-                ? String.format(MESSAGE_EDIT_MEETING_NONE, name)
-                : String.format(MESSAGE_EDIT_MEETING_CLEARED, name);
+        return (fb.length() == 0)
+                ? String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(after))
+                : fb.toString();
     }
 
     @Override
@@ -118,7 +131,7 @@ public class EditCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson);
 
-        String feedback = generateFeedback(personToEdit, editedPerson, editPersonDescriptor);
+        String feedback = composeFeedback(personToEdit, editedPerson, editPersonDescriptor);
         return new CommandResult(feedback);
     }
 
@@ -134,11 +147,10 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         TransactionStage updatedStage = editPersonDescriptor.getStage().orElse(personToEdit.getStage());
-        Relation updatedRelation = personToEdit.getRelation(); // edit command does not allow editing relation tags
+        Relation updatedRelation = editPersonDescriptor.getRelation().orElse(personToEdit.getRelation());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
 
-        // Meeting: preserve original unless user edited (m/ provided). Empty means 'clear'.
         Optional<Meeting> updatedMeeting = editPersonDescriptor.isMeetingEdited()
                 ? editPersonDescriptor.getMeeting()
                 : personToEdit.getMeeting();
@@ -184,6 +196,7 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Address address;
+        private Relation relation;
         private TransactionStage stage;
         private Remark remark;
         private Set<Tag> tags;
@@ -202,6 +215,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
+            setRelation(toCopy.relation);
             setStage(toCopy.stage);
             setRemark(toCopy.remark);
             setTags(toCopy.tags);
@@ -213,8 +227,13 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, stage, remark, tags)
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, relation, stage, remark, tags)
                     || meetingEdited; // include meeting edits
+        }
+
+        /** True if any non-meeting field is edited. */
+        public boolean hasNonMeetingEdits() {
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, relation, stage, remark, tags);
         }
 
         public void setName(Name name) {
@@ -247,6 +266,14 @@ public class EditCommand extends Command {
 
         public Optional<Address> getAddress() {
             return Optional.ofNullable(address);
+        }
+
+        public void setRelation(Relation relation) {
+            this.relation = relation;
+        }
+
+        public Optional<Relation> getRelation() {
+            return Optional.ofNullable(relation);
         }
 
         public void setStage(TransactionStage stage) {
@@ -317,6 +344,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && Objects.equals(relation, otherEditPersonDescriptor.relation)
                     && Objects.equals(stage, otherEditPersonDescriptor.stage)
                     && Objects.equals(remark, otherEditPersonDescriptor.remark)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags)
@@ -331,6 +359,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("address", address)
+                    .add("relation", relation)
                     .add("transaction stage", stage)
                     .add("remark", remark)
                     .add("tags", tags)

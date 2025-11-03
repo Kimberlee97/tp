@@ -11,6 +11,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import homey.logic.commands.FindCommand;
@@ -56,7 +58,6 @@ public class FindCommandParser implements Parser<FindCommand> {
             PREFIX_RELATION.toString(),
             PREFIX_TRANSACTION.toString()
     );
-
 
     @Override
     public FindCommand parse(String args) throws ParseException {
@@ -118,8 +119,13 @@ public class FindCommandParser implements Parser<FindCommand> {
 
     private FindCommand parseAddress(String args) throws ParseException {
         validateNotEmpty(args, buildAddressOnlyUsage());
+        Matcher matcher = Pattern.compile("^\"([^\"]+)\"$").matcher(args.trim());
+        if (matcher.find()) {
+            String phrase = matcher.group(1);
+            return new FindCommand(new AddressContainsKeywordsPredicate(List.of(phrase), true));
+        }
         List<String> keywords = extractKeywords(args);
-        return new FindCommand(new AddressContainsKeywordsPredicate(keywords));
+        return new FindCommand(new AddressContainsKeywordsPredicate(keywords, false));
     }
 
     private FindCommand parseTag(String args) throws ParseException {
