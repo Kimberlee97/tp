@@ -124,7 +124,6 @@ This glossary helps you understand the words used in commands, so you can follow
 | **Archive** | Hides a contact without deleting it.                                                                                                                                                         |
 | **Unarchive** | Restores an archived contact to the active list.                                                                                                                                             |
 | **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                                                                     |
-| **Case-insensitive** | Some commands and fields ignore letter casing (e.g. `find John` = `find JOHN`)                                                                                                               |
 | **Duplicate Contacts** | A contact that has the same name as an existing contact, even if other details differ.                                                                                                       |
 
 --------------------------------------------------------------------------------------------------------------------
@@ -321,7 +320,7 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 * **Automatic view switching:** The displayed list automatically switches between active, archived, and meeting views depending on the command entered.
 
-* **Reset view:** Clears any filters or search results (e.g., find, list meeting) and returns to the main contact list.
+* **Reset view:** Clears any filters or search results (e.g., `find`, `list meeting`) and returns to the main contact list.
 
 * **Instant update:** Any recent additions, edits, or deletions are immediately reflected in the displayed list.
 
@@ -329,7 +328,7 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 * **Case sensitivity:**
   * The base command `list` is case-sensitive. It must be typed exactly as `list`.
-  * Subcommands such as `active`, `archived`, `archive`, and `meeting` are case-insensitive (e.g., `list MEETING`, `list Archived`).
+  * Parameters such as `active`, `archived`, `archive`, and `meeting` are case-insensitive (e.g., `list MEETING`, `list Archived`).
 
 Displays all active contacts currently in Homey. Use this command when you want to return to the full contact view after performing filters or searches.
 
@@ -474,6 +473,7 @@ Adds a relation to an existing contact in Homey. Use this command to edit the re
 **How it works:**
 * Adds the specified relational tag to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The specified `RELATION` must be a valid relation: 'client' or 'vendor'.
+* The `RELATION` is case-insensitive (e.g., `Client`, `CLIENT` and `client` are treated the same).
 * Existing values will be updated to the input values.
 
 **Examples:**
@@ -509,8 +509,8 @@ forward or changes status, helping you maintain an accurate overview of your act
 **How it works:**
 * Replaces the transaction stage of the contact at the specified `INDEX` to `TRANSACTION STAGE`.
 * The given `TRANSACTION STAGE` must be one of the following: `prospect`, `negotiating` or `closed`.
-* `TRANSACTION STAGE` is case-insensitive — e.g. `prOsPECT` works the same as `prospect`
-* Additional whitespace is accepted — e.g. `s/   closed` works the same as `s/closed`
+* `TRANSACTION STAGE` is case-insensitive (e.g. `prOsPECT` works the same as `prospect`)
+* Additional whitespace is accepted (e.g. `s/   closed` works the same as `s/closed`)
 
 **Examples:**
 * `transaction 1 s/prospect`
