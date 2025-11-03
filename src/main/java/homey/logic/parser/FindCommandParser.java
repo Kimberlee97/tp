@@ -47,6 +47,8 @@ public class FindCommandParser implements Parser<FindCommand> {
             "Invalid transaction stage. Only 'prospect' or 'negotiating' or 'closed' are allowed";
     private static final String TAG_ERROR_MESSAGE =
             "Invalid keyword. Tags can only contain alphanumeric characters";
+    private static final String MULTIPLE_PREFIX_ERROR_MESSAGE = "Cannot search with multiple prefixes. "
+            + "Use only one of: name (no prefix), a/, t/, r/, or s/";
 
     private static final Set<String> VALID_PREFIXES = Set.of(
             PREFIX_ADDRESS.toString(),
@@ -181,9 +183,7 @@ public class FindCommandParser implements Parser<FindCommand> {
                 .filter(prefix -> !argMultimap.getAllValues(prefix).isEmpty())
                 .count();
         if (prefixCount > 1) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE)
-            );
+            throw new ParseException(MULTIPLE_PREFIX_ERROR_MESSAGE);
         }
     }
 
