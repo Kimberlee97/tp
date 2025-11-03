@@ -894,8 +894,7 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 **A**: At present, the allowed stages are limited to `prospect`, `negotiating`, or `closed`. You can add a custom tag instead to supplement the given stages.
 
 **Q**: Does Homey block overlapping meetings?
-**A**: Not in this version. Homey records a single start time per meeting but doesn’t validate clashes between contacts.
-       It is in the Planned Enhancements where we will block it and an error message when user tries to add the same `MEETING` to multiple contacts.
+**A**: No because there can be a group meeting scheduled with multiple contacts.
 
 --------------------------------------------------------------------------------------------------------------------
 

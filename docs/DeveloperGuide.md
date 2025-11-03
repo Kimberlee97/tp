@@ -1395,9 +1395,7 @@ testers are expected to do more *exploratory* testing.
 
 **Team size:** 5 members. 
 
-1. **Prevent scheduling duplicate meetings for different contacts at the same time**
-   **Current flaw:** Homey allows users to create multiple meetings with identical start times for different contacts. 
-   **Planned change:** In future releases, Homey will validate all meeting start times during add and edit commands. If the proposed meeting’s timestamp already exists in another contact’s record, the command will be rejected with a warning message such as:
-   `Bob has the same meeting date and time. Please schedule the meeting on another date or time.`
+1. None as of v1.5
+
 --------------------------------------------------------------------------------------------------------------------
 
