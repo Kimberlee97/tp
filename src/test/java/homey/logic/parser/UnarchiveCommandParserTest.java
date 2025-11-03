@@ -1,5 +1,7 @@
 package homey.logic.parser;
 
+import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.Messages.MESSAGE_INVALID_PERSON_LOWER_BOUND_INDEX;
 import static homey.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,5 +36,20 @@ public class UnarchiveCommandParserTest {
         assertThrows(ParseException.class, () -> parser.parse("zero"));
         assertThrows(ParseException.class, () -> parser.parse("")); // empty input
         assertThrows(ParseException.class, () -> parser.parse("1 extra")); // extra text
+    }
+
+    @Test
+    public void parse_emptyArgs_throwsParseException() {
+        ParseException ex = assertThrows(ParseException.class, () -> parser.parse(""));
+        assertEquals(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnarchiveCommand.MESSAGE_USAGE),
+                ex.getMessage());
+    }
+
+    @Test
+    public void parse_zeroOrNegative_throwsLowerBoundMessage() {
+        assertEquals(MESSAGE_INVALID_PERSON_LOWER_BOUND_INDEX,
+                assertThrows(ParseException.class, () -> parser.parse("0")).getMessage());
+        assertEquals(MESSAGE_INVALID_PERSON_LOWER_BOUND_INDEX,
+                assertThrows(ParseException.class, () -> parser.parse("-1")).getMessage());
     }
 }
