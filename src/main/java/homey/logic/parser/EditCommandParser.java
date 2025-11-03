@@ -10,6 +10,7 @@ import static homey.logic.parser.CliSyntax.PREFIX_RELATION;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
 import static homey.logic.parser.CliSyntax.PREFIX_TAG;
 import static homey.logic.parser.CliSyntax.PREFIX_TRANSACTION;
+import static homey.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
@@ -46,11 +47,20 @@ public class EditCommandParser implements Parser<EditCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
+
+        String[] preambleParts = preamble.split("\\s+");
+        if (preambleParts.length > 1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
         Index index;
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
+            index = ParserUtil.parseIndex(preambleParts[0]);
         } catch (ParseException pe) {
-            throw new ParseException(pe.getMessage(), pe);
+            if (pe.getMessage().equals(MESSAGE_INVALID_INDEX)) {
+                throw pe;
+            }
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
         }
 
         // Disallow duplicates for key prefixes (include meeting)

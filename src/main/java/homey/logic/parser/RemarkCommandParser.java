@@ -40,18 +40,24 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
      * Parses and validates the index.
      */
     private Index parseIndex(ArgumentMultimap argMultimap) throws ParseException {
+        String preamble = argMultimap.getPreamble().trim();
+        // No index
+        if (preamble.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+        }
+        // Handles extra text before prefixes
+        String[] preambleParts = preamble.split("\\s+");
+        if (preambleParts.length > 1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+        }
+
         try {
-            String preamble = argMultimap.getPreamble();
-            if (preamble.isEmpty()) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
-            }
-            return ParserUtil.parseIndex(preamble);
+            return ParserUtil.parseIndex(preambleParts[0]);
         } catch (IllegalValueException ive) {
             if (ive.getMessage().equals(MESSAGE_INVALID_INDEX)) {
                 throw new ParseException(ive.getMessage(), ive);
             }
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE), ive);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE), ive);
         }
     }
 

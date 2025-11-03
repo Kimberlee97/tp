@@ -31,12 +31,12 @@ public class RelationCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelationCommand.MESSAGE_USAGE);
 
         // no parameters
-        assertParseFailure(parser, RelationCommand.COMMAND_WORD, expectedMessage);
+        assertParseFailure(parser, "", expectedMessage);
 
         // no relation
-        assertParseFailure(parser, RelationCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON, expectedMessage);
+        assertParseFailure(parser, INDEX_FIRST_PERSON.getOneBased() + "", Relation.MESSAGE_CONSTRAINTS);
 
         // no index
-        assertParseFailure(parser, RelationCommand.COMMAND_WORD + " " + VALID_RELATION_VENDOR, expectedMessage);
+        assertParseFailure(parser, VALID_RELATION_VENDOR, ParserUtil.MESSAGE_INVALID_INDEX);
     }
 }

@@ -34,22 +34,7 @@ public class RelationCommandParser implements Parser<RelationCommand> {
         requireNonNull(args);
         args = args.toLowerCase();
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CLIENT, PREFIX_VENDOR);
-        String preamble = argMultimap.getPreamble().trim();
-        if (preamble.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelationCommand.MESSAGE_USAGE));
-        }
-
-        String firstToken = preamble.split("\\s+")[0];
-        try {
-            index = ParserUtil.parseIndex(firstToken);
-        } catch (IllegalValueException ive) {
-            if (ive.getMessage().equals(MESSAGE_INVALID_INDEX)) {
-                throw new ParseException(ive.getMessage(), ive);
-            }
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    RelationCommand.MESSAGE_USAGE), ive);
-        }
-
+        index = parseIndex(argMultimap);
         if (argMultimap.getValue(PREFIX_VENDOR).isEmpty() && argMultimap.getValue(PREFIX_CLIENT).isEmpty()
                 || argMultimap.getValue(PREFIX_VENDOR).isPresent() && argMultimap.getValue(PREFIX_CLIENT).isPresent()) {
             relation = ParserUtil.parseRelation("");
@@ -68,5 +53,27 @@ public class RelationCommandParser implements Parser<RelationCommand> {
         logger.fine("Creating Relation Command: " + index.getOneBased() + " " + relation.value);
 
         return new RelationCommand(index, relation);
+    }
+
+    private Index parseIndex(ArgumentMultimap argMultimap) throws ParseException {
+        String preamble = argMultimap.getPreamble().trim();
+        if (preamble.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelationCommand.MESSAGE_USAGE));
+        }
+
+        String[] parts = preamble.split("\\s+");
+        if (parts.length > 1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelationCommand.MESSAGE_USAGE));
+        }
+
+        try {
+            return ParserUtil.parseIndex(parts[0]);
+        } catch (IllegalValueException ive) {
+            if (ive.getMessage().equals(MESSAGE_INVALID_INDEX)) {
+                throw new ParseException(ive.getMessage(), ive);
+            }
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelationCommand.MESSAGE_USAGE), ive);
+        }
     }
 }
