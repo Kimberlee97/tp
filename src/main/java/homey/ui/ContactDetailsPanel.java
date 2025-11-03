@@ -92,6 +92,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
 
     private void setUpWrappableLabels() {
         registerWrappableLabel(contactNameLabel);
+        registerWrappableLabel(phoneLabel);
         registerWrappableLabel(addressLabel);
         registerWrappableLabel(emailLabel);
         registerWrappableLabel(remarkLabel);
@@ -183,7 +184,6 @@ public class ContactDetailsPanel extends UiPart<Region> {
 
     private void addRemarkLabel(Person person) {
         setOriginalTextForLabel(remarkLabel, "Remarks: " + person.getRemark().value);
-        // remarkLabel.setText("Remarks: " + makeWrappable(remarkLabel, person.getRemark().value));
         setRemarkVisibility(true);
     }
 
@@ -269,7 +269,7 @@ public class ContactDetailsPanel extends UiPart<Region> {
     private void displayBasicFields(Person person) {
         Platform.runLater(() -> {
             setOriginalTextForLabel(contactNameLabel, person.getName().fullName);
-            setLabelText(phoneLabel, "Phone: " + person.getPhone().value);
+            setOriginalTextForLabel(phoneLabel, "Phone: " + person.getPhone().value);
             setOriginalTextForLabel(addressLabel, "Address: " + person.getAddress().value);
             setOriginalTextForLabel(emailLabel, "Email: " + person.getEmail().value);
             setLabelText(relationLabel, "Relation: " + person.getRelation().value);
