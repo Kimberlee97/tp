@@ -155,7 +155,7 @@ How interactive commands work:
 
 The sequence diagram below shows how an interactive add command flows through the system:
 
-<puml src="diagrams/InteractiveAddSequenceDiagram.puml" width="600"/>
+<puml src="diagrams/InteractiveAddSequenceDiagram.puml" width="700"/>
 
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
