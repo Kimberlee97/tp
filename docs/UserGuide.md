@@ -240,7 +240,7 @@ Each contact will contain the following details:
 * Transaction stage: prospect, negotiating or closed
 * [optional] Remark
 * [optional] Tags
-* [optional] Next meeting date & time in **yyyy-MM-dd HH:mm** `24-hour` format.
+* [optional] Meeting date & time in **yyyy-MM-dd HH:mm** `24-hour` format.
 
 The relation and transaction stage fields help you as a property agent better manage and categorise your contacts.  
 The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
@@ -259,6 +259,8 @@ Homey prevents adding duplicate contacts.
 * The m/MEETING field is optional - use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
 * `MEETING` must follow **yyyy-MM-dd HH:mm** in (`24-hour` format).  
   Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
+* `MEETING` can be in the past but will be highlighted red in the contact card.
+* Multiple contacts can have the same `MEETING`.
 * The r/RELATION field is optional. The default relation for a new contact is client.
 * The rm/REMARK field is optional - use it to add additional details regarding the person.
 The remark field will be empty if no remark is given.
@@ -437,6 +439,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * `MEETING` must follow **yyyy-MM-dd HH:mm** (`24-hour` format).
+* `MEETING` can be in the past but will be highlighted red in the contact card. 
+* Multiple contacts can have the same `MEETING`.
 * You can remove all the person’s tags by typing `t/` without
   specifying any tags after it.
 * You can remove all the person’s remarks by typing `rm/` without
@@ -629,14 +633,16 @@ Examples:
 
 You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planning site visits in the same area.
 
-**Format:** `find a/KEYWORD [MORE_KEYWORDS]`
+**Format:** `find a/KEYWORD [MORE_KEYWORDS]` or `find a/"PHRASE"`
 
 **How it works:**
 * Only the address field is searched
+* To match an exact phrase, wrap it in quotation marks (" "). Homey will then return only addresses containing that contiguous phrase.
 * All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
+* `find a/"bedok north"` returns only contacts whose address includes the exact phrase `bedok north`
 * `find a/hou` returns all persons living in `hougang` and `Hougang` 
 &nbsp;
 <div style="display: inline-block; text-align: center;">
@@ -893,6 +899,9 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 
 **Q**: Can I customise or add new transaction stages beyond `prospect`, `negotiating`, `closed`?<br>
 **A**: At present, the allowed stages are limited to `prospect`, `negotiating`, or `closed`. You can add a custom tag instead to supplement the given stages.
+
+**Q**: Does Homey block overlapping meetings?
+**A**: No because there can be a group meeting scheduled with multiple contacts.
 
 --------------------------------------------------------------------------------------------------------------------
 

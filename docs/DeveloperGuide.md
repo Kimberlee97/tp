@@ -431,7 +431,7 @@ This ensures that the user can easily see which meetings are coming up first, pr
 
 The following class diagram illustrates how `ListMeetingCommand` integrates with the existing `Logic` component:
 
-<puml src="diagrams/meeting/ListMeetingClassDiagram.puml" width="420" />
+<puml src="diagrams/meeting/ListMeetingClassDiagram.puml" width="500" />
 
 #### Example Usage
 
@@ -450,7 +450,7 @@ Step&nbsp;5. The UI (`PersonListPanel`) automatically refreshes to display only 
 
 The following sequence diagram shows how the `list meeting` command flows through the `Logic` component:
 
-<puml src="diagrams/meeting/ListMeetingSequenceDiagram.puml" width="420" />
+<puml src="diagrams/meeting/ListMeetingSequenceDiagram.puml" width="520" />
 
 <box type="info" seamless>
 
@@ -468,7 +468,7 @@ The `ModelManager` exposes a sorted view layered on top of the filtered view:
 * `clearPersonListSorting()` removes any comparator, restoring the original order.
 * `getFilteredPersonList()` returns the `SortedList<Person>` that the UI binds to.
 
-<puml src="diagrams/meeting/ListMeetingModelDiagram.puml" width="420" />
+<puml src="diagrams/meeting/ListMeetingModelDiagram.puml" width="500" />
 
 #### Error handling (user-visible)
 
@@ -597,11 +597,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | Busy property agent                                    | view my schedule and contact list on-the-go                            | I can easily access necessary information when I’m outside or in a rush          |
 | `* *`    | Property Agent has to juggle multiple stakeholders     | Set reminders linked to specific contacts                              | I don’t miss client meetings or property showings                                |
 | `*`      | Property agent                                         | Add notes visible only to me                                           | Keep private thoughts while still sharing client basics                          |
-| `* *`    | Property Agent managing clients                        | Sort clients and agents by type                                        | I can filter out which types of deals I want to focus on at any point of time    |
+| `* *`    | Property Agent managing clients                        | Sort clients and vendors by type                                       | I can filter out which types of deals I want to focus on at any point of time    |
 | `*`      | Forgetful User                                         | Add detail related to the events in my schedule e.g. event description | I can remember what to prepare                                                   |
 | `*`      | Property agent                                         | Attach notes to each contact                                           | I can remember important details                                                 |
 | `*`      | Property agent that travels a lot                      | Group my clients and deals by area                                     | I can easily plan out meetings by proximity                                      |
-| `* *`    | Property agent                                         | Set recurring reminders like weekly check-in calls                     | I can maintain consistent follow-ups                                             |
 | `* *`    | Property Agent                                         | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                            |
 | `* *`    | Property agent                                         | Tag contacts by transaction stage like prospect, negotiating, closed   | I can track progress easily                                                      |
 | `* *`    | User that prefers visual information                   | Colour code my tags and events                                         | I can easily identify the type of contacts and events                            |
@@ -616,11 +615,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | Property agent who prefers typing                      | Autocomplete names/commands as I search through Homey                  | Find my client more efficiently                                                  |
 | `*`      | Property agent juggling many deals                     | Attach notes to each client’s profile                                  | I can remember key details of past conversations                                 |
 | `*`      | Property agent                                         | See which agent is linked to a shared client                           | Responsibilities are clear                                                       |
-| `* *`    | Property agent that wants to track deal history        | Sort contacts by date added as contact                                 | Prioritise loyal customers                                                       |
 | `*`      | Property agent                                         | Write multiple different commands to do the same thing                 | I don’t have to remember specific syntax for each command                        |
 | `*`      | Property agent with a lot of contacts                  | Archive contacts that have completed deals                             | I can prioritise contacts that I have ongoing deals with                         |
 | `*`      | Forgetful user                                         | Write simpler commands intuitively and when prompted to                | I don’t have to remember the complex syntax for each command                     |
-| `* *`    | Property agent                                         | Sort contacts by alphabetical order                                    | Easier to locate contacts within Homey                                           |
 | `* *`    | Property agent                                         | Edit contacts to add new information about them                        | I don’t have to delete and add contacts to add more information                  |
 | `* * *`  | Property agent                                         | Delete contacts that I no longer require                               | I have a less cluttered contact list that is easier to navigate                  |
 | `* * *`  | Property agent                                         | Add new contacts                                                       | I am able to contact new clients or agents                                       |
@@ -792,7 +789,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-**Use case: Sort clients and agents by type**
+**Use case: Sort clients and vendors by type**
 
 **MSS**
 
