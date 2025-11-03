@@ -315,7 +315,9 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 **General list behaviour:**
 
-* **Active list view:** Only shows contacts that are not archived.
+* **Active list view:** By default, shows only contacts that are not archived.
+
+* **Automatic view switching:** The displayed list automatically switches between active, archived, and meeting views depending on the command entered.
 
 * **Reset view:** Clears any filters or search results (e.g., find, list meeting) and returns to the main contact list.
 
@@ -323,47 +325,46 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 * **Contact interaction:** Clicking on a contact opens its detailed information card on the right panel.
 
-### Listing all contacts : `list`
+* **Case sensitivity:**
+  * The base command `list` is case-sensitive. It must be typed exactly as `list`.
+  * Subcommands such as `active`, `archived`, `archive`, and `meeting` are case-insensitive (e.g., `list MEETING`, `list Archived`).
 
-Displays all active contacts currently in your address book. Use this command when you want to return to the full contact view after performing filters or searches.
 
-**General behaviour:**
-- **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `mEeTIng` will match `meeting` (does not apply to the command `list`).
+### Listing all (active) contacts : `list` / `list active`
 
-#### List all contacts: `list`
+Displays all active (non-archived) contacts in Homey. 
+Use this to return to the full contact view after performing filters, searches, or archiving.
 
-Format: `list`
+Format: `list` / `list active`
 
 **How it works:** 
-* Shows all active (non-archived) contacts stored in Homey.
-* Ignores any extra spaces but not additional parameters unless specified in other commands.
+* Displays only active contacts.
+* Ignores extra spaces but not additional parameters unless specified in other commands.
 * Contacts are displayed in the order they were added.
-* Resets any previous filters, searches, or meeting-based listings.
+* Resets any previous filters or search results.
 
 **Example:**
-* `list` 
-  * Shows all contacts in homey.
-&nbsp;
+
+* `list active`
+    &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/ListContacts.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Listed all contacts</i></p>
+  <img src="images/listActive.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Shows the active list of contacts</i></p>
 </div>
 &nbsp;
 
 #### Listing contacts by meeting date : `list meeting`
 
-This command help you to display all contacts with meetings, sorted by the **earliest meeting first**.
+Displays all contacts with meetings, sorted by the **earliest meeting first**.
 
 **Format:**  
 `list meeting`
 
 **How it works:**
 * Displays only contacts with meetings, arranged from the nearest to the latest meeting.
-* `meeting` is case-insensitive. e.g `Meeting` will match `meeting` and both will work.
 * Contacts without meetings or that are archived will not be shown.
-* If date and time are equal, it will sort by name in `alphabetical order`.
-* If no contacts have meetings, Homey will display a clear message: `No contacts with meetings found.`
-* Click on the contact to reveal the contact card with full information on the right panel.
+* If date and time are equal, contacts are sorted by name in `alphabetical order`.
+* If no contacts have meetings, Homey displays message: `No contacts with meetings found.`
 
 **Example:**
 * `list meeting` 
@@ -376,14 +377,13 @@ This command help you to display all contacts with meetings, sorted by the **ear
 
 #### Listing archived contacts: `list archived` / `list archive`
 
-After archiving, you can view all hidden contacts using the `list archived` or `list archive` command.
+Displays all archived contacts. Use this command to view hidden contacts after archiving.
 
 **Format:** `list archived` or `list archive`
 
 **How it works:**
-* Displays all contacts that have been archived.
-* You can use `unarchive INDEX` to move them back into the active list.
-* The list view switches automatically to the archived list when the command is entered.
+* Displays all archived contacts.
+* You can use `unarchive INDEX` to move archived contacts back to the active list.
 
 **Example:**
 * `list archived` shows the archived contacts.
@@ -392,26 +392,6 @@ After archiving, you can view all hidden contacts using the `list archived` or `
   <img src="images/archiveCommandResult.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Alexandra's contact is moved to the archive list</i></p>
 </div>
-
-#### Listing active contacts: `list` / `list active`
-
-After archiving, you can view all active contacts using the `list` or `list active` command.
-
-**Format:** `list` or `list active`
-
-**How it works:**
-* Displays all contacts that are active (not archived).
-* The list view switches automatically to the active list when the command is entered.
-
-**Example:**
-* `list active` shows the active contacts.
-  &nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/listActive.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Shows the active list of contacts</i></p>
-</div>
-&nbsp;
-
 &nbsp;
 
 ## Editing Your Contacts
