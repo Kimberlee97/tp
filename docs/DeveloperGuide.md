@@ -136,9 +136,7 @@ Additional parsers added for this feature:
 
 #### Interactive Command Support
 
-The Logic component has been enhanced to support interactive commands that can prompt users for missing information. This is implemented through the following components:
-
-<puml src="diagrams/InteractiveLogicClassDiagram.puml" width="550"/>
+The Logic component has been enhanced to support interactive commands that can prompt users for missing information.
 
 How interactive commands work:
 
