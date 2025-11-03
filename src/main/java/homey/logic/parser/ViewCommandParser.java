@@ -1,5 +1,6 @@
 package homey.logic.parser;
 
+import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static java.util.Objects.requireNonNull;
 
 import homey.commons.core.index.Index;
@@ -16,8 +17,7 @@ public class ViewCommandParser implements Parser<ViewCommand> {
         requireNonNull(args);
         String trimmed = args.trim();
         if (trimmed.isEmpty()) {
-            throw new ParseException(ViewCommand.MESSAGE_USAGE
-                    + "\n" + Messages.MESSAGE_INVALID_PERSON_LOWER_BOUND_INDEX);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewCommand.MESSAGE_USAGE));
         }
         try {
             Index index = ParserUtil.parseIndex(trimmed);
