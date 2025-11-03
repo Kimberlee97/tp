@@ -832,6 +832,13 @@ You can remove all contacts from Homey at once. This is useful when you want to 
 **How it works:**
 * All contacts in Homey will be permanently deleted
 * This removes all contacts, not just the ones currently shown on your screen
+
+<box type="warning" seamless>
+
+**Caution:**
+**Running `clear` will delete all contacts immediately without asking for confirmation.** You cannot undo this action.
+Back up your data first.
+</box>
 &nbsp;
 
 &nbsp;
