@@ -186,7 +186,7 @@ If you're unsure about what to do, use the `help` command to open the User Guide
   This window provides a summary of all available commands and usage examples.  
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/helpOffline.png" width="auto" height="300" />
+  <img src="images/helpOffline2.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Offline Help window</i></p>
 </div>
 
