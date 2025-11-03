@@ -1385,7 +1385,7 @@ This happens because the name validation rejects these characters, and in the ca
 We plan to relax the name validation rules and refine the command parser to correctly handle such names. For example, the command `add n/"Muhammad s/o Rahman" p/91234567 e/m.rahman@example.com` will successfully add the contact instead of producing an invalid command error.
 
 
-2. **Allow names to be wrapped in the contact summary:** (KIV remove and put in known issues if not enough space)
+2. **Allow names to be wrapped in the contact summary:**
 Currently, when users add contacts with very long names, the contact summary does not wrap the name and instead truncates it with an ellipsis (...) when there is insufficient space.
 This makes it difficult for users to identify contacts with similar long names.
 We plan to enhance the UI layout so that long names automatically wrap onto the next line instead of being truncated, ensuring the full name remains visible in the contact summary.
@@ -1450,7 +1450,6 @@ We plan to make the error message more targeted by reducing the message content 
 `Invalid command format! 
 Parameters: INDEX (must be a positive integer) s/ TRANSACTION STAGE
 Example: transaction 1 s/prospect`.
-
 
 --------------------------------------------------------------------------------------------------------------------
 
