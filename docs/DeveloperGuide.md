@@ -42,7 +42,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** is the core component responsible for launching and shutting down the application.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -165,7 +165,7 @@ The sequence diagram below shows how an interactive add command flows through th
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
+* stores Homey's data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
@@ -196,7 +196,7 @@ field `archived`. Two predicates are exposed via `Model`:
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
 The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
+* can save both Homey's data and user preference data in JSON format, and read them back into corresponding objects.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
@@ -270,40 +270,40 @@ The find command uses the Strategy Pattern where different predicate classes imp
 
 The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+* `VersionedAddressBook#commit()` — Saves the current Homey state in its history.
+* `VersionedAddressBook#undo()` — Restores the previous Homey state from its history.
+* `VersionedAddressBook#redo()` — Restores a previously undone Homey state from its history.
 
 These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
 
 Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial Homey state, and the `currentStatePointer` pointing to that single Homey state.
 
 <puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 2. The user executes `delete 5` command to delete the 5th person in Homey. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of Homey after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted Homey state.
 
 <puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />
 
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified Homey state to be saved into the `addressBookStateList`.
 
 <puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />
 
 <box type="info" seamless>
 
-**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the Homey state will not be saved into the `addressBookStateList`.
 
 </box>
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous Homey state, and restores Homey to that state.
 
 <puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
 
 
 <box type="info" seamless>
 
-**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
+**Note:** If the `currentStatePointer` is at index 0, pointing to the initial Homey state, then there are no previous Homey states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
 than attempting to perform the undo.
 
 </box>
@@ -322,19 +322,19 @@ Similarly, how an undo operation goes through the `Model` component is shown bel
 
 <puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores Homey to that state.
 
 <box type="info" seamless>
 
-**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest Homey state, then there are no undone Homey states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
 
 </box>
 
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+Step 5. The user then decides to execute the command `list`. Commands that do not modify Homey, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
 
 <puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all Homey states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
 
 <puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />
 
@@ -346,7 +346,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 **Aspect: How undo & redo executes:**
 
-* **Alternative 1 (current choice):** Saves the entire address book.
+* **Alternative 1 (current choice):** Saves the entire Homey data state.
   * Pros: Easy to implement.
   * Cons: May have performance issues in terms of memory usage.
 
@@ -547,37 +547,43 @@ Configuration and data storage remain in JSON to preserve human-editability.
 
 **Target user profile**: Property Agent
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* Manages a large number of client and stakeholder contacts
+* Prefers desktop applications over mobile alternatives
+* Has a fast typing sped
+* Prefers keyboard input to mouse interaction
+* Is comfortable using Command-Line Interface (CLI) applications
 
 **Value proposition**: 
 
-**What problem does the product solve?**
-Difficult to organise contacts and tasks on a singular centralised platform
-Easy to forget meetings when they’re tracked on separate apps
-Hard to navigate
-Grouping stakeholders by location/transaction
+**Problem Statement**
+Property agents often struggle to manage contacts, meetings, and transactions across multiple, 
+unconnected platforms. Meetings tracked in separate applications are easily forgotten, 
+while contact lists become difficult to organise and navigate.
+Furthermore, grouping stakeholders by location or transaction stage is often tedious and time-consuming.
 
-**How does it make the user's life easier?**
-Centralised platform for property agents to use to track, sort and schedule contacts in order for them to work more efficiently and stay organised
-Calendar reminders to keep the user on track with their schedule
-Able to be used on the go
+**Solution**
+Homey provides a centralized platform that enables property agents to efficiently track, organize, and schedule contacts. 
+It consolidates essential functions such as meeting visibility, contact tagging, and transaction tracking within a single interface.
 
-**What is the boundary beyond which the app will not help?**
-Unable to track legal/financial processing
-Not CRM replacement
-No marketing/listing management
+**Scope and Limitations**
+Homey focuses on contact and meeting management for property agents. It does not provide:
+* Legal or financial tracking functionalities
+* Full-fledged Customer Relationship Management (CRM) features
+* Marketing, listing, or property advertisement management tools
 
-**Persona:**
-Working adult, graduate already
-popular so a lot of clients
-generally independent but collaborates with other agents
-On the go since need to travel a lot to different property, so need something convenient
-Prefers typing to mouse usage
-Slightly forgetful due to large number of clients, hard to track
+**User Persona**:
+
+**Profile**
+A working professional and university graduate managing a large client base. 
+They are experienced, independent, and often collaborate with fellow agents. 
+Due to frequent travel between properties, 
+they require a lightweight and convenient solution that keeps their workflow synchronised across devices.
+
+**Behavioural Traits**
+* Prefers typing commands over using a mouse
+* Appreciates structured data organization and quick search capabilities
+* Occasionally forgetful due to a heavy client load and overlapping meetings
+* Values efficiency and minimal disruption while managing clients on the move
 
 ### User stories
 
@@ -604,9 +610,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | Forgetful property agent                               | Search for contacts using partial names                                | I can find their contact information despite not remembering their full name     |
 | `*`      | Property agent                                         | Input details for a new contact in one line                            | It is convenient                                                                 |
 | `* *`    | Property agent who handles many meetings               | Tag each client with their property location                           | I can quickly group and search for clients by area                               |
-| `* * *`  | Property agent who prefers typing                      | Search for client by typing their name                                 | Save time instead of scrolling through the whole address book                    |
+| `* * *`  | Property agent who prefers typing                      | Search for client by typing their name                                 | Save time instead of scrolling through thentire Homey contact list               |
 | `* *`    | Property agent managing multiple tasks                 | View upcoming meeting with the nearest deadline first                  | I know which client to attend to next                                            |
-| `*`      | Property agent who prefers typing                      | Autocomplete names/commands as I search through the addressbook        | Find my client more efficiently                                                  |
+| `*`      | Property agent who prefers typing                      | Autocomplete names/commands as I search through Homey                  | Find my client more efficiently                                                  |
 | `*`      | Property agent juggling many deals                     | Attach notes to each client’s profile                                  | I can remember key details of past conversations                                 |
 | `*`      | Property agent                                         | See which agent is linked to a shared client                           | Responsibilities are clear                                                       |
 | `*`      | Property agent                                         | Write multiple different commands to do the same thing                 | I don’t have to remember specific syntax for each command                        |
@@ -617,22 +623,22 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | Property agent                                         | Add new contacts                                                       | I am able to contact new clients or agents                                       |
 | `* * *`  | Property agent                                         | Clear all entries                                                      | Faster delete all contacts if necessary                                          |
 | `* * *`  | Property agent                                         | List all my contact entries                                            | I can see my contact list in case I forget their names                           |
-| `* * *`  | New user                                               | Learn all the commands available                                       | I know how to use the address book                                               |
+| `* * *`  | New user                                               | Learn all the commands available                                       | I know how to use Homey                                                          |
 | `* * *`  | Property agent                                         | Find contacts by address                                               | Easily locate contacts that stay in that area                                    |
-| `* *`    | Property Agent juggling multiple stakeholders          | Edit or delete a meeting                                               | Quickly update or remove meeting                                                                                 |
+| `* *`    | Property Agent juggling multiple stakeholders          | Edit or delete a meeting                                               | Quickly update or remove meeting                                                 |
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is `Homey` and the **Actor** is the `user`, unless specified otherwise)
 
 **Use case: Delete contacts that I no longer require**
 
 **MSS**
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  Homey shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+4.  Homey deletes the person
                           
     Use case ends.
 
@@ -652,7 +658,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 1. User lists active contacts (`list`).
-2. AddressBook shows active list.
+2. Homey shows active list.
 3. User enters `archive INDEX`.
 4. System marks the person archived and keeps the active list visible.
 
@@ -664,7 +670,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 1. User switches to archived list (`list archive`).
-2. AddressBook shows archived list.
+2. Homey shows archived list.
 3. User enters `unarchive INDEX`.
 4. System marks the person active and switches back to the active list.
 
@@ -932,40 +938,6 @@ Precondition: User has launched the app.
     * 3a1. System only considers active contacts and excludes archived ones.
     * Use case resumes at step 5.
 
-
-**Use case: Sort contacts by dates added**
-
-**MSS**
-
-Precondition: User is at the landing page of the app and has existing list of contacts.
-
-1. User selects “Sort by → Date Added”
-2. System rearranges contacts chronologically, with oldest client on top to prioritise loyal customers
-
-   Use case ends.
-
-**Extensions**
-
-* 1a. No contacts in list
-* 1b. System displays “Contact list empty”
-
-**Use case: Sort contacts by alphabetical order**
-
-**MSS**
-
-1. User opens the app
-2. User selects “Sort by → Alphabetical Order”
-3. System rearranges all contacts in A–Z order
-
-   Use case ends.
-
-**Extensions**
-
-* 1a. No contacts in list
-    * 1a1. System displays “Contact list empty”
-* 1b. Duplicate names exist
-    * 1b1. System sorts by secondary field (e.g., phone number or email)
-
 **Use case: Edit contacts to add new information about them**
 
 **MSS**
@@ -1019,7 +991,7 @@ Precondition: User is at the landing page of the app and has existing list of co
 2. User selects “Clear All Contacts” option
 3. System prompts user for confirmation
 4. User confirms the action
-5. System deletes all contacts from the address book
+5. System deletes all contacts from Homey
 6. User views empty contact list
 
    Use case ends.
@@ -1241,6 +1213,7 @@ testers are expected to do more *exploratory* testing.
 
 
 ### Interactive add
+
 1. Test case: `add`  
    Expected: Prompts for name, phone, email, address and transaction stage fields. Adds corresponding person based on your inputs.
 2. Test case: `add rm/This is a test. m/2025-12-01 00:00`  
@@ -1250,6 +1223,7 @@ testers are expected to do more *exploratory* testing.
 
 
 ### Changing relational tag
+
 1. Prerequisites: Ensure at least one person exists in the displayed list.
 2. Test case: `relation 1 vendor`  
    Expected: "Added relation vendor to Person: ...". Changes relation of first contact to be vendor.
@@ -1287,6 +1261,7 @@ testers are expected to do more *exploratory* testing.
 
 
 ### Editing a contact's meeting
+
 1. Prerequisites: Ensure at least one contact exists by using `list`.
 2. Test case: edit 1 m/2025-11-03 14:00  
    Expected: “Updated meeting for Kevin Tan: 2025-11-03 14:00” Meeting field is added to contact card
@@ -1296,6 +1271,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error “Meeting must be in yyyy-MM-dd HH:mm (24h) format and be a real date/time, e.g. 2025-11-03 14:00.”
 
 ### Listing contacts by meeting date
+
 1. Prerequisites: Ensure at least two contacts have meetings set using `list meeting`.
 2. Test case: list meeting  
    Expected: Displays only contacts with meetings, sorted by earliest meeting first.
@@ -1304,9 +1280,10 @@ testers are expected to do more *exploratory* testing.
 4. Test case: list Meeting or list MEETING  
    Expected: "Updated meeting for Kevin Tan: 2025-11-11 09:30" (Will still work)
 
-### Finding contacts (include all find commands here)
+### Finding contacts
 
 #### Find by name
+
 1. Prerequisites: List all persons with `list`. Multiple persons should be visible.
 2. Test case: `find john`
    Expected: Shows contacts with names containing "john". 
@@ -1316,6 +1293,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error "Invalid command format!" with usage instructions.
 
 #### Find by address
+
 1. Prerequisites: Ensure contacts have different addresses.
 2. Test case: `find a/bedok`
    Expected: Shows all contacts with addresses containing "bedok".
@@ -1323,6 +1301,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error with address-specific usage message.
 
 #### Find by tag
+
 1. Prerequisites: Ensure contacts have various tags.
 2. Test case: `find t/friend`
    Expected: Shows all contacts tagged with "friend".
@@ -1332,6 +1311,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error "Invalid keyword. Tags can only contain alphanumeric characters".
 
 #### Find by relation
+
 1. Prerequisites: Ensure you have both vendors and clients in the list.
 2. Test case: `find r/client`
    Expected: Shows all contacts with relation "client".
@@ -1341,6 +1321,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error "Relation search only accepts one keyword"
 
 #### Find by transaction stage 
+
 1. Prerequisites: Ensure contacts have different transaction stages.
 2. Test case: `find s/prospect`
    Expected: Shows all contacts with transaction stage "prospect".

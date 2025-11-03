@@ -27,10 +27,11 @@
             <Region fx:constant="USE_PREF_SIZE" />
           </minWidth>
         </Label>
-        <Label fx:id="name" text="\$first" styleClass="contact-name-card" />
+        <Label fx:id="name" text="\$first" styleClass="contact-name-card" wrapText="true"/>
       </HBox>
       <!-- tags -->
       <FlowPane fx:id="tags" styleClass="contact-tags" hgap="5" vgap="5"/>
+      <Label fx:id="meeting" styleClass="contact-meeting" wrapText="true"/>
     </VBox>
   </GridPane>
 </HBox>

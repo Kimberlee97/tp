@@ -117,7 +117,7 @@ public class AddCommand extends InteractiveCommand {
             missingFields.remove(prefix);
         } catch (ParseException pe) {
             missingFields.put(prefix, ""); // Keep the field as missing if parsing fails
-            throw pe;
+            throw new ParseException(pe.getMessage() + "\n" + InteractiveCommand.MESSAGE_INTERACTIVE, pe);
         }
     }
 

@@ -13,6 +13,7 @@ import static homey.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static homey.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static homey.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static homey.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
+import static homey.logic.commands.CommandTestUtil.RELATION_DESC_VENDOR;
 import static homey.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static homey.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static homey.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
@@ -20,6 +21,7 @@ import static homey.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static homey.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static homey.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static homey.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static homey.logic.commands.CommandTestUtil.VALID_RELATION_VENDOR;
 import static homey.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static homey.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static homey.logic.parser.CliSyntax.PREFIX_ADDRESS;
@@ -156,6 +158,12 @@ public class EditCommandParserTest {
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
+        // relation
+        userInput = targetIndex.getOneBased() + RELATION_DESC_VENDOR;
+        descriptor = new EditPersonDescriptorBuilder().withRelation(VALID_RELATION_VENDOR).build();
+        expectedCommand = new EditCommand(targetIndex, descriptor);
+        assertParseSuccess(parser, userInput, expectedCommand);
+
         // tags
         userInput = targetIndex.getOneBased() + TAG_DESC_FRIEND;
         descriptor = new EditPersonDescriptorBuilder().withTags(VALID_TAG_FRIEND).build();
@@ -179,7 +187,7 @@ public class EditCommandParserTest {
 
         assertParseFailure(parser, userInput, Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
 
-        // mulltiple valid fields repeated
+        // multiple valid fields repeated
         userInput = targetIndex.getOneBased() + PHONE_DESC_AMY + ADDRESS_DESC_AMY + EMAIL_DESC_AMY
                 + TAG_DESC_FRIEND + PHONE_DESC_AMY + ADDRESS_DESC_AMY + EMAIL_DESC_AMY + TAG_DESC_FRIEND
                 + PHONE_DESC_BOB + ADDRESS_DESC_BOB + EMAIL_DESC_BOB + TAG_DESC_HUSBAND;
