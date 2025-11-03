@@ -1364,12 +1364,21 @@ testers are expected to do more *exploratory* testing.
   * Ensuring interactive commands did not break functionality for other commands and could work seamlessly with multiple steps
   * Designing command logic that allows flexible `remark` editing while maintaining input validation rules (e.g. length limit and empty `remark` handling).
   * Ensuring the `transaction` command correctly validates and updates only valid stages without affecting unrelated data.
+  * Extending the find command to support multiple search types (name, address, tag, relation, transaction stage) with proper validation and error handling for each type.
+  * Completely redesigning the GUI from AB3's basic list view to a modern two-panel layout with detailed contact preview, requiring significant restructuring of UI components and styling.
 * **Effort required:**
   * Implemented new logic for `Meeting` class and integrated it with `AddCommand`, `EditCommand`, and `ListMeetingCommand`.
   * Implemented new logic for `InteractiveCommand` and adapted `LogicManager` for interactive add command.
   * Features `relation`, `transaction` and `remark` are adapted from AB3's [add command tutorial](https://se-education.org/guides/tutorials/ab3AddRemark.html) and enhanced with improved code quality
   * Implemented RemarkCommand, RemarkCommandParser, and Remark to support adding, editing, and deleting remarks with instant UI updates. Added 100-character validation and error handling, with tests (RemarkTest, RemarkCommandParserTest) for edge cases.
   * Implemented Transaction, TransactionCommand and TransactionCommandParser to handle stage updates with validation and real-time UI reflection. Added tests (TransactionCommandParserTest) to ensure correct error handling for invalid inputs.
+  * Extended AB3's basic find command to support searching across multiple fields with prefix-based syntax. Extended FindCommandParser with field-specific validation, single/multiple keyword support, and comprehensive error messages to prevent invalid search combinations.
+  * Redesigned the GUI from AB3's original layout into a modern interface with:
+    * Two-panel split view (contact list + detailed preview)
+    * Enhanced contact cards displaying relation and transaction stage badges, with meeting information integrated directly into each card
+    * Dynamic color-coding system that turns meeting information red when the scheduled time has passed
+    * Detailed contact preview panel showing all information in a structured, readable format
+    * Better visual hierarchy and information organisation
 * **Achievements of project:**
   * Successfully extended into a property-agent focused app supporting meeting scheduling, editing, and listing.
 
