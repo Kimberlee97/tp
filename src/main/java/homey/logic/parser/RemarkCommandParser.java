@@ -2,6 +2,7 @@ package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.parser.CliSyntax.PREFIX_REMARK;
+import static homey.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
@@ -40,8 +41,15 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
      */
     private Index parseIndex(ArgumentMultimap argMultimap) throws ParseException {
         try {
-            return ParserUtil.parseIndex(argMultimap.getPreamble());
+            String preamble = argMultimap.getPreamble();
+            if (preamble.isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+            }
+            return ParserUtil.parseIndex(preamble);
         } catch (IllegalValueException ive) {
+            if (ive.getMessage().equals(MESSAGE_INVALID_INDEX)) {
+                throw new ParseException(ive.getMessage(), ive);
+            }
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE), ive);
         }

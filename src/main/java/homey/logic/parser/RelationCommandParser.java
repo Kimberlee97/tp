@@ -3,6 +3,7 @@ package homey.logic.parser;
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static homey.logic.parser.CliSyntax.PREFIX_CLIENT;
 import static homey.logic.parser.CliSyntax.PREFIX_VENDOR;
+import static homey.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static java.util.Objects.requireNonNull;
 
 import java.util.logging.Logger;
@@ -33,10 +34,18 @@ public class RelationCommandParser implements Parser<RelationCommand> {
         requireNonNull(args);
         args = args.toLowerCase();
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_CLIENT, PREFIX_VENDOR);
+        String preamble = argMultimap.getPreamble().trim();
+        if (preamble.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelationCommand.MESSAGE_USAGE));
+        }
 
+        String firstToken = preamble.split("\\s+")[0];
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble().split("\\s+")[0]);
+            index = ParserUtil.parseIndex(firstToken);
         } catch (IllegalValueException ive) {
+            if (ive.getMessage().equals(MESSAGE_INVALID_INDEX)) {
+                throw new ParseException(ive.getMessage(), ive);
+            }
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     RelationCommand.MESSAGE_USAGE), ive);
         }
