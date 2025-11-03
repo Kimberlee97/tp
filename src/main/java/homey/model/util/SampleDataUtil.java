@@ -22,7 +22,7 @@ import homey.model.tag.TransactionStage;
 public class SampleDataUtil {
 
     public static final Relation CLIENT_RELATION = new Relation("client");
-    public static final Remark DEFAULT_REMARK = new Remark("Needs at leas 4 rooms.");
+    public static final Remark DEFAULT_REMARK = new Remark("Needs at least 4 rooms.");
 
     public static Person[] getSamplePersons() {
         return new Person[] {
