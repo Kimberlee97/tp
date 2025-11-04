@@ -1385,5 +1385,13 @@ We plan to make the error message more targeted by reducing the message content 
 Parameters: INDEX (must be a positive integer) s/ TRANSACTION STAGE
 Example: transaction 1 s/prospect`.
 
+
+8. **Make “no results” message for find a/ more specific:**
+Currently, when a user searches for an address using find a/ and there are no matching contacts, Homey displays a generic message:
+`0 persons listed!`
+This message does not clearly indicate that the search was performed using the address field, which may confuse users who expect address-specific feedback.
+We plan to make the message more targeted by updating it to:
+`No contacts found in the specified area.`
+This enhancement improves clarity and user experience by providing context-aware feedback that directly reflects the user’s search intent when using `find a/`.
 --------------------------------------------------------------------------------------------------------------------
 

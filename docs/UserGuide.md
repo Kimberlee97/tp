@@ -410,6 +410,8 @@ Displays all archived contacts. Use this command to view hidden contacts after a
 </div>
 &nbsp;
 
+&nbsp;
+
 ### Editing Your Contacts
 
 Homey lets you update existing **active** contact details such as phone number, address, transaction stage, relation, remark, or meeting — all in one simple command.
@@ -832,6 +834,8 @@ Examples:
   <img src="images/delete1.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>John is deleted from Homey</i></p>
 </div>
+&nbsp;
+
 &nbsp;
 
 ### Clearing all entries : `clear`
