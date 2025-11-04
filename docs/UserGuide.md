@@ -119,24 +119,24 @@ If you're already familiar, jump directly to the section relevant to your needs.
 Before you start using Homey’s commands, here’s a list of key terms you’ll see throughout this guide.
 This glossary helps you understand the words used in commands, so you can follow the examples confidently.
 
-| **Term** | **Meaning**                                                                                                                                                                                  |
-|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                                                                          |
-| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                                                                    |
+| **Term** | **Meaning**                                                                                                                                                                                      |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                                                                              |
+| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                                                                        |
 | **Prefix** | A short label before a slash that identifies a type of information (e.g. `n/` for name, `p/` for phone). Must be separated from other text by a space (e.g. `edit 1 n/John`, not `edit 1n/John`) |
-| **Placeholder** | A word written in CAPITAL LETTERS that shows the kind of information you should type (e.g. `NAME` in `n/NAME` means you should enter a real name).                                           |
-| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                                                                          |
-| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                                                                     |
-| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                                                                   |
-| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                                                                   |
-| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                                                                    |
-| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                                                              |
-| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                                                                      |
-| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                                                               |
-| **Archive** | Hides a contact without deleting it.                                                                                                                                                         |
-| **Unarchive** | Restores an archived contact to the active list.                                                                                                                                             |
-| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                                                                     |
-| **Duplicate Contacts** | A contact that has the same name as an existing contact, even if other details differ.                                                                                                       |
+| **Placeholder** | A word written in CAPITAL LETTERS that shows the kind of information you should type (e.g. `NAME` in `n/NAME` means you should enter a real name).                                               |
+| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                                                                              |
+| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                                                                         |
+| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                                                                       |
+| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                                                                       |
+| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                                                                        |
+| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                                                                  |
+| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                                                                          |
+| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                                                                   |
+| **Archive** | Hides a contact without deleting it.                                                                                                                                                             |
+| **Unarchive** | Restores an archived contact to the active list.                                                                                                                                                 |
+| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                                                                         |
+| **Duplicate Contacts** | A contact that has the same name (case-sensitive) as an existing contact, even if other details differ.                                                                                          |
 
 --------------------------------------------------------------------------------------------------------------------
 &nbsp;
@@ -788,6 +788,12 @@ You can open the detailed information card of a specific contact directly withou
 
 Examples:
 * `view 1` opens the detailed information card for the 1st person in the current list.
+  &nbsp;
+<div style="display: inline-block; text-align: center;">
+  <img src="images/view.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Viewing the 1st contact in the list</i></p>
+</div>
+&nbsp;
 * `find john` followed by `view 1`
 &nbsp;
 
@@ -956,4 +962,5 @@ Furthermore, **certain edits can cause Homey to behave in unexpected ways** (e.g
 | **Help**        | `help [TOPIC]`<br> e.g., `help add`<br><br>`help offline`                                                                                                                                                                                           |
 | **Archive**     | `archive INDEX`<br> e.g., `archive 1`                                                                                                                                                                                                               |
 | **Unarchive**   | `unarchive INDEX`<br> e.g., `unarchive 1`                                                                                                                                                                                                           |
+| **View**        | `view INDEX`<br> e.g., `view 1`                                                                                                                                                                                                                     |
 
