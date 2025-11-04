@@ -194,7 +194,7 @@ If you're unsure about what to do, use the `help` command to open the User Guide
 - **Online access:** When you enter a `help [TOPIC]` command (e.g. `help add`), the browser automatically opens the relevant section of the User Guide.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/helpAdd.png" width="auto" height="300" />
+  <img src="images/helpAdd.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>User Guide opens to "Adding Contacts" section</i></p>
 </div>
 
@@ -204,7 +204,7 @@ If you're unsure about what to do, use the `help` command to open the User Guide
   This window provides a summary of all available commands and usage examples.  
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/helpOffline2.png" width="auto" height="300" />
+  <img src="images/helpOffline2.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Offline Help window</i></p>
 </div>
 
@@ -295,7 +295,7 @@ The remark field will be empty if no remark is given.
 * `add n/Jane Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-07 14:00 rm/Likes nature`  
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/JaneLim.png" width="auto" height="300" />
+  <img src="images/JaneLim.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Added Jade Lim as contact</i></p>
 </div>
 &nbsp;
@@ -308,7 +308,7 @@ The remark field will be empty if no remark is given.
   * Prompts for phone number input  
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/promptPhone.png" width="auto" height="100" />
+  <img src="images/promptPhone.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Prompt for phone number</i></p>
 </div>
 &nbsp;
@@ -317,7 +317,7 @@ The remark field will be empty if no remark is given.
   * Adds a new contact with a scheduled meeting on `3 Nov 2025, 2:00 PM`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/AddKevinMeeting.png" width="auto" height="300" />
+  <img src="images/kevin.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Added a contact Kevin with a scheduled meeting</i></p>
 </div>
 &nbsp;
@@ -364,7 +364,7 @@ Format: `list` / `list active`
 * `list active`
     &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/listActive.png" width="auto" height="300" />
+  <img src="images/listActive.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Shows the active list of contacts</i></p>
 </div>
 &nbsp;
@@ -387,7 +387,7 @@ Displays all contacts with meetings, sorted by the **earliest meeting first**.
   * Shows all contacts with meetings in `ascending order` of date and time.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/ListMeeting.png" width="auto" height="300" />
+  <img src="images/ListMeeting.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Listed contacts with meeting</i></p>
 </div>
 
@@ -405,7 +405,7 @@ Displays all archived contacts. Use this command to view hidden contacts after a
 * `list archived` shows the archived contacts.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/archiveCommandResult.png" width="auto" height="300" />
+  <img src="images/archiveCommandResult.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Listed archived contacts</i></p>
 </div>
 &nbsp;
@@ -449,7 +449,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
   * Edits the phone number and email address of the `1st` person to be `91234567` and `john@example.com` respectively.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/EditPhoneEmail.png" width="auto" height="300" />
+  <img src="images/EditPhoneEmail.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Edited the first person's phone number and email address</i></p>
 </div>
 
@@ -459,7 +459,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
   * Updates the `1st` contact’s meeting to the specified date and time.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/JohnMeeting.png" width="auto" height="300" />
+  <img src="images/JohnMeeting.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Updated John's meeting</i></p>
 </div>
 
@@ -467,7 +467,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
   * Clears the meeting for the `2nd` contact.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/ClearMeeting.png" width="auto" height="300" />
+  <img src="images/ClearMeeting.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Cleared a meeting for Jane Lim</i></p>
 </div>
 &nbsp;
@@ -499,7 +499,7 @@ Adds a relation to an existing contact in Homey. Use this command to edit the re
 *  `relation 2 client` Edits the relational tag of the 2nd person to be `client`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/relationClient2.png" width="auto" height="300" />
+  <img src="images/relationClient2.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Updated Jane's relation</i></p>
 </div>
 &nbsp;
@@ -539,7 +539,7 @@ forward or changes status, helping you maintain an accurate overview of your act
   * Replaces the transaction stage tag of the 1st contact to be `closed`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/transactionClosed.png" width="auto" height="300" />
+  <img src="images/transactionClosed.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Changed John's transaction stage to "closed"</i></p>
 </div>
 &nbsp;
@@ -574,7 +574,7 @@ stay organized.
   * Replaces the remark of the 1st contact to be "Likes windows".
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/remarkAdd2.png" width="auto" height="300" />
+  <img src="images/remarkAdd2.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Updated John's remark</i></p>
 </div>
 
@@ -582,7 +582,7 @@ stay organized.
   * Removes the remark of the 1st contact.
     &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/remarkRemove2.png" width="auto" height="300" />
+  <img src="images/remarkRemove2.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Removed John's remark</i></p>
 </div>
 &nbsp;
@@ -616,7 +616,7 @@ Examples:
 * `find john ja` returns `John Tan`, `Jane Lim`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/find.png" width="auto" height="300" />
+  <img src="images/find.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'john' or 'ja'</i></p>
 </div>
 &nbsp;
@@ -638,7 +638,7 @@ Examples:
 * `find a/30` returns all persons living in `Blk 30`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findAddress.png" width="auto" height="300" />
+  <img src="images/findAddress.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose addresses contain "30"</i></p>
 </div>
 &nbsp;
@@ -660,7 +660,7 @@ Examples:
 * `find t/bu` returns all persons with tags containing `bu` (e.g., `firsttimebuyer`, `budget`)
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findTagBu.png" width="auto" height="300" />
+  <img src="images/findTagBu.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose tags contain 'bu'</i></p>
 </div>
 &nbsp;
@@ -686,7 +686,7 @@ Examples:
 * `find r/vendor` returns all persons with relation `vendor`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findRelationVendor.png" width="auto" height="300" />
+  <img src="images/findRelationVendor.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose relation is vendor</i></p>
 </div>
 &nbsp;
@@ -714,7 +714,7 @@ Examples:
 * `find s/closed` returns all persons with transaction stage `closed`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findClosed.png" width="auto" height="300" />
+  <img src="images/findClosed.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose transaction stage is closed</i></p>
 </div>
 &nbsp;
@@ -748,7 +748,7 @@ Example:
 * `archive 2` archives the 2nd person in the active list.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/archive2.png" width="auto" height="300" />
+  <img src="images/archive2.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Archived John's contact</i></p>
 </div>
 &nbsp;
@@ -770,13 +770,13 @@ Examples:
 * `unarchive 1` restores the 1st person in the archived list.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/unarchive.png" width="auto" height="300" />
+  <img src="images/unarchive.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Unarchived 1st contact in the archive list</i></p>
 </div>
 &nbsp;
 
 <div style="display: inline-block; text-align: center;">
-  <img src="images/listUnarchive.png" width="auto" height="300" />
+  <img src="images/listUnarchive.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Contact returns to the active list</i></p>
 </div>
 &nbsp;
@@ -799,7 +799,7 @@ Examples:
 * `view 1` opens the detailed information card for the 1st person in the current list.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/view.png" width="auto" height="300" />
+  <img src="images/view.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Viewing the 1st contact in the list</i></p>
 </div>
 &nbsp;
@@ -825,12 +825,12 @@ Examples:
 * `find John` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findJohn.png" width="auto" height="300" />
+  <img src="images/findJohn.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Only the contacts containing "John" are listed</i></p>
 </div>
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/delete1.png" width="auto" height="300" />
+  <img src="images/delete1.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>John is deleted from Homey</i></p>
 </div>
 &nbsp;
