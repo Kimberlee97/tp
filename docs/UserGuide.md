@@ -431,7 +431,6 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * `MEETING` must follow **yyyy-MM-dd HH:mm** (`24-hour` format).
 * `MEETING` can be in the past but will be highlighted red in the contact card. 
 * Multiple contacts can have the same `MEETING`.
@@ -442,6 +441,10 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 * You can remove the person's meeting by typing `m/` without 
   specifying any meetings after it.
 * Click on the contact to reveal the contact card with full information on the right panel.
+
+**Caution:**
+When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
+</box>
 
 **Examples:**
 * `edit 1 p/91234567 e/john@example.com`

@@ -686,33 +686,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-**Use case: Get reminded of meetings and appointments when they are approaching**
-
-**MSS**
-
-1. User opens application
-2. Systems displays upcoming meetings at top of application page in a message bar upon startup
-
-    Use case ends.
-
-**Use case: Set reminders linked to specific contacts**
-
-**MSS**
-
-1. User searches for a certain contact
-2. System displays details associated with contact
-3. User adds reminder to contact using command line
-4. System displays success message and reminder details
-
-    Use case ends.
-
-**Use case: Add date and time for meetings**
+**Use case: Add dates for meetings**
 
 **MSS**
 
 1. User opens the application.
 2. User adds a contact with a meeting date and time.
-3. System validates the meeting input format (`YYYY-MM-DD HH:mm`).
+3. System validates the meeting input format (`yyyy-MM-dd HH:mm`).
 4. System updates the contact with the new meeting date and time.
 5. System displays a success message confirming the scheduled meeting.
 
@@ -768,13 +748,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
    Use case ends.
 
-**Use case: Tag each client with their property location**
+**Use case: Attach each client with their property location**
 
 **MSS**
 
 1. User lists all contacts or searches for client
 2. System retrieves and displays list of contacts
-3. User inputs command for tagging client location based on displayed index
+3. User inputs command for attaching client location based on displayed index
 4. System displays success message and location details
 
     Use case ends.
@@ -799,22 +779,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1b. No contacts match the selected type.
     * 1b1. System shows “No contacts found.”
-
-**Use case: Link a meeting to multiple contacts**
-
-**MSS**
-
-1. User opens application
-2. User views contact list and selects contact
-3. User requests to set a meeting for this contact
-4. System prompts for meeting details
-5. User enters meeting details, including other contacts involved
-6. System validates meeting details and validates other contacts exist
-7. System adds meeting details to the original contact
-8. System adds meeting details for all specified attendees
-9. System displays success message listing all contacts updated with the meeting
-
-   Use case ends.
 
 **Extensions**
 
@@ -843,43 +807,16 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
    Use case ends.
 
-**Use case: Color code tags and events**
-
-**MSS**
-
-1. User views contact list or searches for a specific contact
-2. System retrieves and displays contacts with their current details
-3. User inputs command for tagging and specifies color
-4. System updates the contact with the specified tag and color
-5. System displays success message
-
-   Use case ends.
-
-**Use case: Highlight overdue tasks and meetings**
+**Use case: Highlight overdue meetings**
 
 **MSS**
 
 1. User opens application
-2. System scans all meetings and tasks for overdue items (past current date/time)
+2. System scans all meetings for overdue items (past current date/time)
 3. System displays overdue items highlighted at the top of the interface
 4. User views the highlighted overdue items with associated contact details
 
    Use case ends.
-
-**Use case: Sort contacts by latest meeting**
-
-**MSS**
-
-1. User opens application
-2. User selects “Sort by → Meeting date”
-3. System rearranges contacts by latest meeting date, with nearest meeting first
-
-   Use case ends.
-
-**Extensions**
-
-* 2a. No contacts in list.
-    * 2a1. System displays “Contact list empty.”
 
 **Use case: Search for client by typing name**
 
@@ -998,7 +935,7 @@ Precondition: User has launched the app.
 **MSS**
 
 1. User opens app
-2. User selects “List All Contacts” option
+2. User selects "List All Contacts" option
 3. System retrieves all saved contacts
 4. System displays the full list of contact entries
 5. User scrolls or navigates through the displayed list
@@ -1071,14 +1008,9 @@ Precondition: User has launched the app.
 **Extensions**
 
 * **6a.** User enters an invalid meeting format.
-    * 6a1. System displays an error message with the correct format (e.g., “YYYY-MM-DD HH:mm”).
+    * 6a1. System displays an error message with the correct format (e.g., “yyyy-MM-dd HH:mm”).
     * 6a2. User re-enters the meeting details.
         * Use case resumes at step 7.
-
-* **7a.** User attempts to edit a meeting while specifying other fields (e.g., `s/closed`).
-    * 7a1. System displays error: “When editing a meeting, no other fields may be provided.”
-    * 7a2. User corrects the input or cancels the operation.
-        * Use case resumes at step 5 or ends.
 
 * **8a.** User tries to clear a meeting that does not exist.
     * 8a1. System displays message: “No meetings to clear for [contact name].”
