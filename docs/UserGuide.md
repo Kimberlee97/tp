@@ -324,7 +324,7 @@ The remark field will be empty if no remark is given.
 
 &nbsp;
 
-## Listing Your Contacts
+### Listing Your Contacts
 
 Homey lets you view all current contacts and get a clear overview of who you’re working with.
 
@@ -346,7 +346,7 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 Displays all **active contacts** currently in Homey. Use this command when you want to return to the full contact view after performing filters or searches.
 
-### Listing all (active) contacts : `list` / `list active`
+#### Listing all (active) contacts : `list` / `list active`
 
 Displays all active (non-archived) contacts in Homey. 
 Use this to return to the full contact view after performing filters, searches, or archiving.
@@ -410,7 +410,9 @@ Displays all archived contacts. Use this command to view hidden contacts after a
 </div>
 &nbsp;
 
-## Editing Your Contacts
+&nbsp;
+
+### Editing Your Contacts
 
 Homey lets you update existing **active** contact details such as phone number, address, transaction stage, relation, remark, or meeting — all in one simple command.
 
@@ -422,7 +424,7 @@ Homey lets you update existing **active** contact details such as phone number, 
 
 * **Conflict prevention:** Duplicate contacts are not allowed — Homey ensures edited entries do not match existing records.
 
-### Editing a contact: `edit`
+#### Editing a contact: `edit`
 
 Keeps your contact information up to date by editing an existing person’s details.
 
@@ -830,6 +832,8 @@ Examples:
   <img src="images/delete1.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>John is deleted from Homey</i></p>
 </div>
+&nbsp;
+
 &nbsp;
 
 ### Clearing all entries : `clear`
