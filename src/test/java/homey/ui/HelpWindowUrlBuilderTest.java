@@ -8,7 +8,7 @@ public class HelpWindowUrlBuilderTest {
 
     @Test
     public void knownTopic_add_usesAnchor() {
-        String expected = HelpWindow.USERGUIDE_URL + "#adding-a-person-add";
+        String expected = HelpWindow.USERGUIDE_URL + "#adding-a-contact-add";
         assertEquals(expected, HelpWindow.buildUserGuideUrl("add"));
     }
 
@@ -36,7 +36,7 @@ public class HelpWindowUrlBuilderTest {
     @Test
     void mixedCaseAndSpaces_normalizedByBuilder_returnsAnchor() {
         String raw = "  AdD  ";
-        String expected = HelpWindow.USERGUIDE_URL + "#adding-a-person-add";
+        String expected = HelpWindow.USERGUIDE_URL + "#adding-a-contact-add";
         assertEquals(expected, HelpWindow.buildUserGuideUrl(raw));
     }
 }

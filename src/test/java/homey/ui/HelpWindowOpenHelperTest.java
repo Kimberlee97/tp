@@ -27,7 +27,7 @@ public class HelpWindowOpenHelperTest {
                 }
         );
 
-        assertEquals(HelpWindow.USERGUIDE_URL + "#adding-a-person-add", seenUrl.get());
+        assertEquals(HelpWindow.USERGUIDE_URL + "#adding-a-contact-add", seenUrl.get());
         assertTrue(!ranFallback.get());
     }
 
