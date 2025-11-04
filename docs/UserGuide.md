@@ -31,8 +31,14 @@ If you're already familiar, jump directly to the section relevant to your needs.
 
 <!-- * Table of Contents -->
 <page-nav-print />
+&nbsp;
+
+&nbsp;
 
 --------------------------------------------------------------------------------------------------------------------
+&nbsp;
+
+&nbsp;
 
 ## Quick start
 
@@ -100,34 +106,42 @@ If you're already familiar, jump directly to the section relevant to your needs.
    * `exit` : Exits the app.
 
 8. Refer to the [Features](#features) below for details of each command.
+&nbsp;
+
+&nbsp;
 
 --------------------------------------------------------------------------------------------------------------------
+&nbsp;
+
+&nbsp;
 
 ## Glossary
 Before you start using Homey’s commands, here’s a list of key terms you’ll see throughout this guide.
 This glossary helps you understand the words used in commands, so you can follow the examples confidently.
 
-| **Term** | **Meaning**                                                                                                                                      |
-|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                              |
-| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                        |
-| **Prefix** | A short label before a slash that tells Homey what the information means (e.g. `n/` for name, `p/` for phone).                                   |
-| **Placeholder** | A word written in CAPITAL LETTERS that shows the kind of information you should type (e.g. `NAME` in `n/NAME` means you should enter a real name). |
-| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                              |
-| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                         |
-| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                       |
-| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                       |
-| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                        |
-| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                  |
-| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                          |
-| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                   |
-| **Archive** | Hides a contact without deleting it.                                                                                                             |
-| **Unarchive** | Restores an archived contact to the active list.                                                                                                 |
-| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                         |
-| **Case-insensitive** | Some commands and fields ignore letter casing (e.g. `find John` = `find JOHN`)                                                                   |
-| **Duplicate Contacts** | A contact that has the same name as an existing contact, even if other details differ.        |
+| **Term** | **Meaning**                                                                                                                                                                                  |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Command** | An instruction you type in Homey to perform an action (e.g. `add`, `edit`, `find`).                                                                                                          |
+| **Parameter** | The information you give after a command (e.g. in `add n/John`, `John` is the parameter).                                                                                                    |
+| **Prefix** | A short label before a slash that identifies a type of information (e.g. `n/` for name, `p/` for phone). Must be separated from other text by a space (e.g. `edit 1 n/John`, not `edit 1n/John`) |
+| **Placeholder** | A word written in CAPITAL LETTERS that shows the kind of information you should type (e.g. `NAME` in `n/NAME` means you should enter a real name).                                           |
+| **Index** | The number beside each contact in the list (e.g. `2` refers to the second contact).                                                                                                          |
+| **Optional field** | Extra details you may include, shown in brackets `[ ]` (e.g. `[t/TAG]`).                                                                                                                     |
+| **Required field** | Details you must include for the command to work (e.g. `n/NAME` in `add`).                                                                                                                   |
+| **Tag** | A label to group contacts (e.g. `t/friend`, `t/investor`).                                                                                                                                   |
+| **Transaction stage** | The deal status — `prospect`, `negotiating`, or `closed`.                                                                                                                                    |
+| **Relation** | Whether the contact is a `client` (buyer) or `vendor` (seller).                                                                                                                              |
+| **Meeting** | A scheduled appointment or viewing linked to a contact.                                                                                                                                      |
+| **Remark** | A short note about the contact (e.g. “Prefers text messages”).                                                                                                                               |
+| **Archive** | Hides a contact without deleting it.                                                                                                                                                         |
+| **Unarchive** | Restores an archived contact to the active list.                                                                                                                                             |
+| **List** | Shows your saved contacts (e.g. `list`, `list meeting`, `list archive`).                                                                                                                     |
+| **Duplicate Contacts** | A contact that has the same name as an existing contact, even if other details differ.                                                                                                       |
 
 --------------------------------------------------------------------------------------------------------------------
+&nbsp;
+
+&nbsp;
 
 ## Features
 
@@ -150,9 +164,9 @@ This glossary helps you understand the words used in commands, so you can follow
   * Example `[t/TAG]…​` means you can type nothing, one tag, or several. 
 
 
-* You can mix the order — for parameters only.
+* You can mix the order — for fields (prefix and parameter pairs) only.
   * Always type the command name (e.g. `find`, `add`, `edit`) and `INDEX` (if needed) first. 
-  * You can rearrange the parameters (e.g. `n/`, `p/`, `t/`) in any order you like. 
+  * You can rearrange the fields (e.g. `n/NAME`, `t/TAG`) in any order you like. 
   * Example: `add n/NAME p/PHONE_NUMBER` works the same as `add p/PHONE_NUMBER n/NAME`.
 
 
@@ -167,6 +181,9 @@ This glossary helps you understand the words used in commands, so you can follow
 
 * When copying commands from this guide, ensure no spaces disappear at line breaks.
 </box>
+&nbsp;
+
+&nbsp;
 
 ### Viewing Help
 
@@ -187,7 +204,7 @@ If you're unsure about what to do, use the `help` command to open the User Guide
   This window provides a summary of all available commands and usage examples.  
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/helpOffline.png" width="auto" height="300" />
+  <img src="images/helpOffline2.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Offline Help window</i></p>
 </div>
 
@@ -202,12 +219,12 @@ If you're unsure about what to do, use the `help` command to open the User Guide
 
 **Supported topics:**  
 `add`, `edit`, `delete`, `find`, `list`, `help`, `find a/`, `find t/`, `find r/`, `find s/`,  
-`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `edit meeting`, `clear`, and `exit`.
+`relation`, `transaction`, `archive`, `unarchive`, `remark`, `list meeting`, `list archived`, `list active`, `clear`, and `exit`.
 
 **Examples:**
 * `help` → Opens the User Guide home.
-* `help add` → Opens the “Adding a person” section.
-* `help edit` → Opens the “Editing a person” section.
+* `help add` → Opens the “Adding a Person” section.
+* `help edit` → Opens the “Editing Your Contacts” section.
 
 #### Help offline: `help offline`
 
@@ -223,7 +240,7 @@ This window provides a summary of all available commands and usage examples, all
 
 &nbsp;
 
-### Adding A Person: `add`
+### Adding A Contact: `add`
 
 This is the core functionality of Homey that allows it to be your one-stop manager assistant, adding contacts.  
 Use this feature whenever you want to add new contacts into Homey.
@@ -240,7 +257,13 @@ Each contact will contain the following details:
 * Transaction stage: prospect, negotiating or closed
 * [optional] Remark
 * [optional] Tags
-* [optional] Next meeting date & time in **yyyy-MM-dd HH:mm** `24-hour` format.
+* [optional] Meeting date & time in **yyyy-MM-dd HH:mm** `24-hour` format.
+
+**Note about names:** Homey accepts letters (A-Z, a-z), digits (0-9), and spaces. Some punctuation characters (for example apostrophes in "Conan O'Brian" or hyphens in "Jean-Luc") are not accepted by the validation logic and will be rejected.
+
+**Workarounds:**
+- **Remove the punctuation:** Conan O'Brian -> ConanOBrian
+- **Replace the punctuation with a space:** Jean-Luc Picard -> Jean Lun Picard
 
 The relation and transaction stage fields help you as a property agent better manage and categorise your contacts.  
 The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
@@ -254,42 +277,32 @@ Homey prevents adding duplicate contacts.
 
 **Tips:** 
 * A person can have any number of tags (including 0).
-* The s/TRANSACTION_STAGE field only accepts the values `prospect`, `negotiating` or `closed`.
-* The r/RELATION field only accepts the values `client` or `vendor`.
-* The m/MEETING field is optional - use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
+* The `s/TRANSACTION_STAGE` field only accepts the values `prospect`, `negotiating` or `closed`.
+* The `r/RELATION` field only accepts the values `client` or `vendor`.
+* The `m/MEETING` field is optional - use it to record a future meeting date and time (e.g. 2025-11-03 14:00).
 * `MEETING` must follow **yyyy-MM-dd HH:mm** in (`24-hour` format).  
   Example: `2025-11-03 14:00` (3 Nov 2025, 2:00 PM)
-* The r/RELATION field is optional. The default relation for a new contact is client.
-* The rm/REMARK field is optional - use it to add additional details regarding the person.
+* `MEETING` **can be in the past** but will be highlighted red in the contact card.
+* Multiple contacts can have the same `MEETING`.
+* The `r/RELATION` field is optional. The default relation for a new contact is client.
+* The `rm/REMARK` field is optional - use it to add additional details regarding the person.
 The remark field will be empty if no remark is given.
 * Click on the contact after adding to reveal the contact card with full information on the right panel.
 
 </box>
 
 **Examples:**
-* `add n/Jade Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00 rm/Likes nature`  
+* `add n/Jane Lim p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-07 14:00 rm/Likes nature`  
   &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/JadeLim.png" width="auto" height="300" />
+  <img src="images/JaneLim.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Added Jade Lim as contact</i></p>
 </div>
 &nbsp;
 
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 s/prospect`
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/AddJohnDoe.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Added John Doe as contact</i></p>
-</div>
-&nbsp;
 
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 s/negotiating t/criminal`
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/AddBetsyCrowe.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Added Betsy Crowe as contact</i></p>
-</div>
-&nbsp;
 
 * `add n/Jeremiah Loh e/jloh@example.com a/Loh Street s/prospect`
   * Prompts for phone number input  
@@ -317,55 +330,57 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 **General list behaviour:**
 
-* **Active list view:** Only shows contacts that are not archived.
+* **Active list view:** By default, shows only contacts that are **not archived**.
 
-* **Reset view:** Clears any filters or search results (e.g., find, list meeting) and returns to the main contact list.
+* **Automatic view switching:** The displayed list automatically switches between active, archived, and meeting views depending on the command entered.
+
+* **Reset view:** Clears any filters or search results (e.g., `find`, `list meeting`) and returns to the main contact list.
 
 * **Instant update:** Any recent additions, edits, or deletions are immediately reflected in the displayed list.
 
 * **Contact interaction:** Clicking on a contact opens its detailed information card on the right panel.
 
-### Listing all contacts : `list`
+* **Case sensitivity:**
+  * The base command `list` is case-sensitive. It must be typed exactly as `list`.
+  * Parameters such as `active`, `archived`, `archive`, and `meeting` are case-insensitive (e.g., `list MEETING`, `list Archived`).
 
-Displays all active contacts currently in Homey. Use this command when you want to return to the full contact view after performing filters or searches.
+Displays all **active contacts** currently in Homey. Use this command when you want to return to the full contact view after performing filters or searches.
 
-**General behaviour:**
-- **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `mEeTIng` will match `meeting` (does not apply to the command `list`).
+### Listing all (active) contacts : `list` / `list active`
 
-#### List all contacts: `list`
+Displays all active (non-archived) contacts in Homey. 
+Use this to return to the full contact view after performing filters, searches, or archiving.
 
-Format: `list`
+Format: `list` / `list active`
 
 **How it works:** 
-* Shows all active (non-archived) contacts stored in Homey.
-* Ignores any extra spaces but not additional parameters unless specified in other commands.
+* Displays only active contacts.
+* Ignores extra spaces but not additional parameters unless specified in other commands.
 * Contacts are displayed in the order they were added.
-* Resets any previous filters, searches, or meeting-based listings.
+* Resets any previous filters or search results.
 
 **Example:**
-* `list` 
-  * Shows all contacts in homey.
-&nbsp;
+
+* `list active`
+    &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/ListContacts.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Listed all contacts</i></p>
+  <img src="images/listActive.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Shows the active list of contacts</i></p>
 </div>
 &nbsp;
 
 #### Listing contacts by meeting date : `list meeting`
 
-This command help you to display all contacts with meetings, sorted by the **earliest meeting first**.
+Displays all contacts with meetings, sorted by the **earliest meeting first**.
 
 **Format:**  
 `list meeting`
 
 **How it works:**
 * Displays only contacts with meetings, arranged from the nearest to the latest meeting.
-* `meeting` is case-insensitive. e.g `Meeting` will match `meeting` and both will work.
 * Contacts without meetings or that are archived will not be shown.
-* If date and time are equal, it will sort by name in `alphabetical order`.
-* If no contacts have meetings, Homey will display a clear message: `No contacts with meetings found.`
-* Click on the contact to reveal the contact card with full information on the right panel.
+* If date and time are equal, contacts are sorted by name in `alphabetical order`.
+* If no contacts have meetings, Homey displays message: `No contacts with meetings found.`
 
 **Example:**
 * `list meeting` 
@@ -378,46 +393,26 @@ This command help you to display all contacts with meetings, sorted by the **ear
 
 #### Listing archived contacts: `list archived` / `list archive`
 
-After archiving, you can view all hidden contacts using the `list archived` or `list archive` command.
+Displays all archived contacts. Use this command to view hidden contacts after archiving.
 
 **Format:** `list archived` or `list archive`
 
 **How it works:**
-* Displays all contacts that have been archived.
-* You can use `unarchive INDEX` to move them back into the active list.
-* The list view switches automatically to the archived list when the command is entered.
+* Displays all archived contacts.
+* You can use `unarchive INDEX` to move archived contacts back to the active list.
 
 **Example:**
 * `list archived` shows the archived contacts.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/archiveCommandResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Alexandra's contact is moved to the archive list</i></p>
-</div>
-
-#### Listing active contacts: `list` / `list active`
-
-After archiving, you can view all active contacts using the `list` or `list active` command.
-
-**Format:** `list` or `list active`
-
-**How it works:**
-* Displays all contacts that are active (not archived).
-* The list view switches automatically to the active list when the command is entered.
-
-**Example:**
-* `list active` shows the active contacts.
-  &nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/listActive.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Shows the active list of contacts</i></p>
+  <p style="text-align: center; margin-top: 4px;"><i>Listed archived contacts</i></p>
 </div>
 &nbsp;
 
-&nbsp;
 ### Editing Your Contacts
 
-Homey lets you update existing contact details such as phone number, address, transaction stage, relation, remark, or meeting — all in one simple command.
+Homey lets you update existing **active** contact details such as phone number, address, transaction stage, relation, remark, or meeting — all in one simple command.
 
 **General editing behaviours:**
 
@@ -427,7 +422,7 @@ Homey lets you update existing contact details such as phone number, address, tr
 
 * **Conflict prevention:** Duplicate contacts are not allowed — Homey ensures edited entries do not match existing records.
 
-#### Editing a contact: `edit`
+### Editing a contact: `edit`
 
 Keeps your contact information up to date by editing an existing person’s details.
 
@@ -438,6 +433,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * `MEETING` must follow **yyyy-MM-dd HH:mm** (`24-hour` format).
+* `MEETING` can be in the past but will be highlighted red in the contact card. 
+* Multiple contacts can have the same `MEETING`.
 * You can remove all the person’s tags by typing `t/` without
   specifying any tags after it.
 * You can remove all the person’s remarks by typing `rm/` without
@@ -447,8 +444,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 * Click on the contact to reveal the contact card with full information on the right panel.
 
 **Examples:**
-* `edit 1 p/91234567 e/johndoe@example.com`
-  * Edits the phone number and email address of the `1st` person to be `91234567` and `johndoe@example.com` respectively.
+* `edit 1 p/91234567 e/john@example.com`
+  * Edits the phone number and email address of the `1st` person to be `91234567` and `john@example.com` respectively.
   &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/EditPhoneEmail.png" width="auto" height="300" />
@@ -456,19 +453,13 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 </div>
 
 * `edit 2 n/Betsy Crower t/`
-  * Edits the name of the `2nd` person to be `Betsy Crower` and clears all existing tags.
-  &nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/EditNameTag.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Edited the second person's name and clear all tags</i></p>
-</div>
 
 * `edit 1 m/2025-11-10 09:30` 
   * Updates the `1st` contact’s meeting to the specified date and time.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/EditKevinMeeting.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Updated Kevin's meeting</i></p>
+  <img src="images/JohnMeeting.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Updated John's meeting</i></p>
 </div>
 
 * `edit 2 m/` 
@@ -476,13 +467,15 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
 &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/ClearMeeting.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Cleared a meeting for Poppy Lim</i></p>
+  <p style="text-align: center; margin-top: 4px;"><i>Cleared a meeting for Jane Lim</i></p>
 </div>
 &nbsp;
 
 &nbsp;
 
-### Add relation : `relation`
+&nbsp;
+
+### Adding a relation : `relation`
 
 Adds a relation to an existing contact in Homey. Use this command to edit the relation of an existing contact.
 
@@ -492,18 +485,22 @@ Adds a relation to an existing contact in Homey. Use this command to edit the re
 **How it works:**
 * Adds the specified relational tag to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The specified `RELATION` must be a valid relation: 'client' or 'vendor'.
+* The `RELATION` is case-insensitive (e.g., `Client`, `CLIENT` and `client` are treated the same).
 * Existing values will be updated to the input values.
 
 **Examples:**
 *  `relation 2 client` Edits the relational tag of the 2nd person to be `client`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/relationClient.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Updated Bernice's relation</i></p>
+  <img src="images/relationClient2.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Updated Jane's relation</i></p>
 </div>
 &nbsp;
 
 *  `relation 1 vendor` Edits the relational tag of the 1st person to be `vendor`.
+&nbsp;
+
+&nbsp;
 
 ### Tracking Deal Progress
 
@@ -527,25 +524,19 @@ forward or changes status, helping you maintain an accurate overview of your act
 **How it works:**
 * Replaces the transaction stage of the contact at the specified `INDEX` to `TRANSACTION STAGE`.
 * The given `TRANSACTION STAGE` must be one of the following: `prospect`, `negotiating` or `closed`.
-* `TRANSACTION STAGE` is case-insensitive — e.g. `prOsPECT` works the same as `prospect`
-* Additional whitespace is accepted — e.g. `s/   closed` works the same as `s/closed`
+* `TRANSACTION STAGE` is case-insensitive (e.g. `prOsPECT` works the same as `prospect`)
+* Additional whitespace is accepted (e.g. `s/   closed` works the same as `s/closed`)
 
 **Examples:**
-* `transaction 1 s/prospect`
-  * Replaces the transaction stage tag of the 1st contact to be `prospect`.
+* `transaction 1 s/closed`
+  * Replaces the transaction stage tag of the 1st contact to be `closed`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/transactionProspect.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Changed John's transaction stage to "prospect"</i></p>
+  <img src="images/transactionClosed.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Changed John's transaction stage to "closed"</i></p>
 </div>
+&nbsp;
 
-* `transaction 1 s/NEGOTIATING` 
-  * Replaces the transaction stage tag of the 1st contact to be `negotiating`.
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/transactionNegotiating.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Changed John's transaction stage to "negotiating"</i></p>
-</div>
 &nbsp;
 
 ### Adding Remarks 
@@ -572,11 +563,11 @@ stay organized.
 * Extra spaces around `rm/` are ignored — e.g. `rm/   Has pets` works the same as `rm/Has pets`
 
 **Examples:**
-* `remark 1 rm/Likes nature` 
-  * Replaces the remark of the 1st contact to be "Likes nature".
+* `remark 1 rm/Likes windows` 
+  * Replaces the remark of the 1st contact to be "Likes windows".
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/remarkAdd.png" width="auto" height="300" />
+  <img src="images/remarkAdd2.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Updated John's remark</i></p>
 </div>
 
@@ -584,14 +575,16 @@ stay organized.
   * Removes the remark of the 1st contact.
     &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/removeRemark.png" width="auto" height="300" />
+  <img src="images/remarkRemove2.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Removed John's remark</i></p>
 </div>
 &nbsp;
 
+&nbsp;
+
 ### Finding Your Contacts
 
-Homey helps you quickly locate any contact in your property database. You can search using `find` command with different filters to match your workflow needs.
+Homey helps you quickly locate any **active** contacts in your property database. You can search using `find` command with different filters to match your workflow needs.
 
 **General search rules** (applies to name, address, and tag searches):
 - **Case-insensitive:** Uppercase and lowercase letters are treated the same - typing `john` will match `John`
@@ -613,18 +606,11 @@ You can search for contacts whose names contain keywords you specify. This is us
 Examples:
 * `find John` returns `john` and `John Doe`
 * `find ale` returns `Alex Yeoh` and `Alexandra Tan`
+* `find john ja` returns `John Tan`, `Jane Lim`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findAleResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'ale'</i></p>
-</div>
-&nbsp;
-
-* `find john alex` returns `Alex Yeoh`, `John Doe`, `Alexandra Tan`, `John Elks` 
-&nbsp;
-<div style="display: inline-block; text-align: center;">
-  <img src="images/findJohnAlexResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'john' or 'alex'</i></p>
+  <img src="images/find.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose names contain 'john' or 'ja'</i></p>
 </div>
 &nbsp;
 
@@ -632,19 +618,21 @@ Examples:
 
 You can search for contacts based on their address. This is particularly useful when you are managing properties in specific neighbourhoods or planning site visits in the same area.
 
-**Format:** `find a/KEYWORD [MORE_KEYWORDS]`
+**Format:** `find a/KEYWORD [MORE_KEYWORDS]` or `find a/"PHRASE"`
 
 **How it works:**
 * Only the address field is searched
+* To match an exact phrase, wrap it in quotation marks (" "). Homey will then return **only addresses containing that contiguous phrase**.
 * All general search rules apply: case-insensitive matching, partial matching, multiple keywords, and flexible keyword order
 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
-* `find a/hou` returns all persons living in `hougang` and `Hougang` 
+* `find a/"bedok north"` returns only contacts whose address includes the exact phrase `bedok north`
+* `find a/30` returns all persons living in `Blk 30`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findAddressHougang.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose addresses contain Hougang</i></p>
+  <img src="images/findAddress.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose addresses contain "30"</i></p>
 </div>
 &nbsp;
 
@@ -661,8 +649,8 @@ You can search for contacts with specific tags you have assigned them. Tags help
 
 Examples:
 * `find t/condo` returns all persons tagged with `condo`
-* `find t/bu` returns all persons with tags containing `bu` (e.g., `firsttimebuyer`, `budget`)
 * `find t/buyer budget` returns persons tagged with either `buyer` or `budget`
+* `find t/bu` returns all persons with tags containing `bu` (e.g., `firsttimebuyer`, `budget`)
 &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/findTagBu.png" width="auto" height="300" />
@@ -687,12 +675,12 @@ You can filter your contacts by whether they are property sellers or buyers. Thi
 * `client`
 
 Examples:
-* `find r/vendor` returns all persons with relation `vendor`
 * `find r/client` returns all persons with relation `client`
+* `find r/vendor` returns all persons with relation `vendor`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findRelationClient.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose relation is client</i></p>
+  <img src="images/findRelationVendor.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose relation is vendor</i></p>
 </div>
 &nbsp;
 
@@ -719,83 +707,95 @@ Examples:
 * `find s/closed` returns all persons with transaction stage `closed`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/findTransactionClosed.png" width="auto" height="300" />
+  <img src="images/findClosed.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Displays contacts whose transaction stage is closed</i></p>
 </div>
 &nbsp;
 
 &nbsp;
 
-&nbsp;
+### Archiving Your Contacts
 
-### Archiving Your Contacts: `archive`
+Homey allows you to archive contacts you no longer actively work with, removing them from your main view while preserving all their information. This helps keep your workspace organised without permanently deleting any contact.
 
-Homey lets you move a contact from the **active list** to the **archived list**, keeping your workspace organised without losing any information. Use this feature when you want to temporarily hide a contact instead of deleting them.
+General archiving behaviour:
+- **Hidden but retained:** Archived contacts are removed from the **active list** but remain safely stored in the system.
+- **Viewable on demand:** You can view all archived contacts using `list archived` or `list archive`.
+- **Restoration available:** Use `unarchive` to move a contact back to the **active list** whenever needed.
+- **Restricted interaction:** Commands such as `find`, `list meeting`, and `edit` **do not** work on archived contacts — **unarchive them first** to interact with or modify their details.
 
-**General archiving behaviour:**
-- **Hidden but retained:** Archived contacts are removed from the active list but remain stored in the system.
-- **Viewable on demand:** You can view archived contacts using the `list archived` or `list archive` command.
-- **Restoration available:** Use the `unarchive INDEX` command to move a contact back to the active list.
+#### Archive a contact: `archive`
 
-You can archive a contact by specifying their index in the currently displayed list.
+Archives a contact by moving them out of the active contact list.  
+Only works when viewing the active list (after using `list` or `list active`).
 
-**Format:** `archive INDEX`
+Format: `archive INDEX`
 
-**How it works:**
+How it works:
 * Archives the person at the specified `INDEX` (as shown in the current list).
 * The index must be a positive integer - e.g. `1`, `2`, `3`, ...
-* Only works when viewing the **active list** (i.e. after using `list`).
+* Only works when viewing the active list (i.e. after using `list`).
 * Once archived, the person will no longer appear in the active contact list.
 
-**Example:**
+Example:
 * `archive 2` archives the 2nd person in the active list.
-&nbsp;
+  &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/archiveCommand.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>Archived Alexandra's contact</i></p>
+  <img src="images/archive2.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Archived John's contact</i></p>
 </div>
 &nbsp;
 
-&nbsp;
+#### Unarchive a contact: `unarchive`
 
-### Unarchiving Your Contacts: `unarchive`
+Restores an archived contact back to the active contact list.  
+Only works when viewing the archived list (after using `list archived`).
 
-You can restore a contact from the **archived list** back to the **active list**, allowing you to re-engage with previously hidden contacts.
+Format: `unarchive INDEX`
 
-**General unarchiving behaviour:**
-- **Restores visibility:** Moves the selected contact from the archived list back to the active list.
-- **Active list only:** Once unarchived, the person immediately reappears in the active list.
-- **Archived list restricted:** The command only works when viewing the **archived list** (i.e. after using `list archived`).
-- **View restored contacts:** Use `list active` or `list` to see the restored contact in your main view.
-
-You can unarchive a contact by specifying their index in the currently displayed archived list.
-
-**Format:** `unarchive INDEX`
-
-**How it works:**
+How it works:
 * Unarchives the person at the specified `INDEX` (as shown in the archived list).
 * The index must be a positive integer  e.g. `1`, `2`, `3`, ...
-* Only works when viewing the **archived list**.
-* The restored person will immediately return to the **active list**.
+* Only works when viewing the archived list.
+* The restored person will immediately return to the active list.
 
-**Examples:**
+Examples:
 * `unarchive 1` restores the 1st person in the archived list.
-&nbsp;
+  &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/unarchiveCommand.png" width="auto" height="300" />
+  <img src="images/unarchive.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Unarchived 1st contact in the archive list</i></p>
 </div>
 &nbsp;
 
 <div style="display: inline-block; text-align: center;">
-  <img src="images/unarchiveCommandResult.png" width="auto" height="300" />
+  <img src="images/listUnarchive.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Contact returns to the active list</i></p>
 </div>
 &nbsp;
 
 &nbsp;
 
-### Deleting a person : `delete`
+### Viewing contact details: `view`
+
+You can open the detailed information card of a specific contact directly without clicking on them. This is useful when you want to quickly access a contact's full details using just the keyboard.
+
+**Format:** `view INDEX`
+
+**How it works:**
+* Opens the detailed contact card on the right panel for the person at the specified `INDEX`
+* The index refers to the index number shown in the displayed contact list
+* The index must be a positive integer: 1,2,3, and so on
+* Works with any currently displayed list (active, archived, filtered results)
+
+Examples:
+* `view 1` opens the detailed information card for the 1st person in the current list.
+* `find john` followed by `view 1`
+&nbsp;
+
+&nbsp;
+
+### Deleting a Contact : `delete`
 
 You can remove a contact from Homey permanently. This is useful when you no longer need to maintain a record of a particular client or vendor.
 
@@ -808,16 +808,17 @@ You can remove a contact from Homey permanently. This is useful when you no long
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in Homey.
-* `find James` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find John` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/deleteJamesResult.png" width="auto" height="300" />
-  <p style="text-align: center; margin-top: 4px;"><i>James Ho is deleted from Homey</i></p>
+  <img src="images/findJohn.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>Only the contacts containing "John" are listed</i></p>
 </div>
 &nbsp;
-
-&nbsp;
-
+<div style="display: inline-block; text-align: center;">
+  <img src="images/delete1.png" width="auto" height="300" />
+  <p style="text-align: center; margin-top: 4px;"><i>John is deleted from Homey</i></p>
+</div>
 &nbsp;
 
 ### Clearing all entries : `clear`
@@ -829,6 +830,13 @@ You can remove all contacts from Homey at once. This is useful when you want to 
 **How it works:**
 * All contacts in Homey will be permanently deleted
 * This removes all contacts, not just the ones currently shown on your screen
+
+<box type="warning" seamless>
+
+**Caution:**
+**Running `clear` will delete all contacts immediately without asking for confirmation.** You cannot undo this action.
+Back up your data first.
+</box>
 &nbsp;
 
 &nbsp;
@@ -852,6 +860,9 @@ You can close the Homey application safely. All your information is automaticall
 Homey automatically saves all contact data to your hard disk after every command that changes the data. There is no need to save manually.
 If Homey cannot save (e.g., disk is full or lacks file permissions), an error message will appear and your changes won't be kept. 
 Free up storage or check file permissions, then try again.
+&nbsp;
+
+&nbsp;
 
 ### Editing the data file
 
@@ -874,11 +885,17 @@ When editing the file, ensure that the data complies with the respective constra
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, Homey will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, Homey will **discard all data and start with an empty data file at the next run**.  Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, **certain edits can cause Homey to behave in unexpected ways** (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
+&nbsp;
+
+&nbsp;
 
 --------------------------------------------------------------------------------------------------------------------
+&nbsp;
+
+&nbsp;
 
 ## FAQ
 
@@ -897,14 +914,29 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 **Q**: Can I customise or add new transaction stages beyond `prospect`, `negotiating`, `closed`?<br>
 **A**: At present, the allowed stages are limited to `prospect`, `negotiating`, or `closed`. You can add a custom tag instead to supplement the given stages.
 
+**Q**: Does Homey block overlapping meetings?
+**A**: No because there can be a group meeting scheduled with multiple contacts.
+&nbsp;
+
+&nbsp;
+
 --------------------------------------------------------------------------------------------------------------------
+&nbsp;
+
+&nbsp;
 
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If the Help window is shown** (e.g. when your system blocks opening the browser) and you **minimize it**, running the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again will not restore it automatically. The remedy is to manually restore the minimized Help Window.
+&nbsp;
+
+&nbsp;
 
 --------------------------------------------------------------------------------------------------------------------
+&nbsp;
+
+&nbsp;
 
 ## Command summary
 
@@ -916,7 +948,7 @@ Furthermore, certain edits can cause Homey to behave in unexpected ways (e.g., i
 | **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRANSACTION_STAGE] [rm/REMARK] [t/TAG]…​ [m/MEETING] ​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`, `edit 3 m/2025-10-10 09:30`                               |
 | **Relation**    | `relation INDEX RELATION` <br> e.g., `relation 1 vendor`                                                                                                                                                                                            |
 | **Transaction** | `transaction INDEX s/TRANSACTION_STAGE` <br> e.g., `transaction 1 s/prospect`                                                                                                                                                                       |
-| **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`                                                                                                                                                                                      
+| **Remark**      | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/Likes nature`                                                                                                                                                                                      |
 | **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                                                          |
 | **Find a/**     | `find a/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find a/Bedok`                                                                                                                                                                                           |
 | **Find t/**     | `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/friend`                                                                                                                                                                                          |

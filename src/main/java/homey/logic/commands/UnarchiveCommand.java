@@ -63,7 +63,6 @@ public class UnarchiveCommand extends Command {
 
         final Person unarchived = personToUnarchive.unarchived();
         model.setPerson(personToUnarchive, unarchived);
-        model.updateFilteredPersonList(Model.PREDICATE_SHOW_ACTIVE_PERSONS); // show active persons again
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, unarchived.getName()));
     }

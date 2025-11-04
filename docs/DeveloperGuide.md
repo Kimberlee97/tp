@@ -136,9 +136,7 @@ Additional parsers added for this feature:
 
 #### Interactive Command Support
 
-The Logic component has been enhanced to support interactive commands that can prompt users for missing information. This is implemented through the following components:
-
-<puml src="diagrams/InteractiveLogicClassDiagram.puml" width="550"/>
+The Logic component has been enhanced to support interactive commands that can prompt users for missing information.
 
 How interactive commands work:
 
@@ -155,7 +153,7 @@ How interactive commands work:
 
 The sequence diagram below shows how an interactive add command flows through the system:
 
-<puml src="diagrams/InteractiveAddSequenceDiagram.puml" width="600"/>
+<puml src="diagrams/InteractiveAddSequenceDiagram.puml"/>
 
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
@@ -431,7 +429,7 @@ This ensures that the user can easily see which meetings are coming up first, pr
 
 The following class diagram illustrates how `ListMeetingCommand` integrates with the existing `Logic` component:
 
-<puml src="diagrams/meeting/ListMeetingClassDiagram.puml" width="420" />
+<puml src="diagrams/meeting/ListMeetingClassDiagram.puml" width="500" />
 
 #### Example Usage
 
@@ -450,7 +448,7 @@ Step&nbsp;5. The UI (`PersonListPanel`) automatically refreshes to display only 
 
 The following sequence diagram shows how the `list meeting` command flows through the `Logic` component:
 
-<puml src="diagrams/meeting/ListMeetingSequenceDiagram.puml" width="420" />
+<puml src="diagrams/meeting/ListMeetingSequenceDiagram.puml" width="520" />
 
 <box type="info" seamless>
 
@@ -468,7 +466,7 @@ The `ModelManager` exposes a sorted view layered on top of the filtered view:
 * `clearPersonListSorting()` removes any comparator, restoring the original order.
 * `getFilteredPersonList()` returns the `SortedList<Person>` that the UI binds to.
 
-<puml src="diagrams/meeting/ListMeetingModelDiagram.puml" width="420" />
+<puml src="diagrams/meeting/ListMeetingModelDiagram.puml" width="500" />
 
 #### Error handling (user-visible)
 
@@ -589,46 +587,35 @@ they require a lightweight and convenient solution that keeps their workflow syn
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a ...                                               | I want to ...                                                          | So that I can ...                                                                |
-|----------|--------------------------------------------------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| `* *`    | Property Agent                                         | view my contacts and schedule in one platform                          | I don’t have to switch between apps                                              |
-| `* *`    | Property Agent with many clients and colleagues        | sort my contacts into categories (tagging)                             | it is easier to remember my relationship with them                               |
-| `* *`    | Forgetful user                                         | Get reminded of meetings and appointments when they are approaching    | I don’t ghost my clients or agents                                               |
-| `*`      | Busy property agent                                    | view my schedule and contact list on-the-go                            | I can easily access necessary information when I’m outside or in a rush          |
-| `* *`    | Property Agent has to juggle multiple stakeholders     | Set reminders linked to specific contacts                              | I don’t miss client meetings or property showings                                |
-| `*`      | Property agent                                         | Add notes visible only to me                                           | Keep private thoughts while still sharing client basics                          |
-| `* *`    | Property Agent managing clients                        | Sort clients and agents by type                                        | I can filter out which types of deals I want to focus on at any point of time    |
-| `*`      | Forgetful User                                         | Add detail related to the events in my schedule e.g. event description | I can remember what to prepare                                                   |
-| `*`      | Property agent                                         | Attach notes to each contact                                           | I can remember important details                                                 |
-| `*`      | Property agent that travels a lot                      | Group my clients and deals by area                                     | I can easily plan out meetings by proximity                                      |
-| `* *`    | Property agent                                         | Set recurring reminders like weekly check-in calls                     | I can maintain consistent follow-ups                                             |
-| `* *`    | Property Agent                                         | Link a meeting to multiple contacts                                    | Group viewings or negotiations are scheduled smoothly                            |
-| `* *`    | Property agent                                         | Tag contacts by transaction stage like prospect, negotiating, closed   | I can track progress easily                                                      |
-| `* *`    | User that prefers visual information                   | Colour code my tags and events                                         | I can easily identify the type of contacts and events                            |
-| `* *`    | Property Agent                                         | Set overdue tasks or meetings highlighted                              | I can prioritise catching up quickly                                             |
-| `* *`    | Property agent                                         | Add dates for meetings                                                 | I can keep track of important events and attend them                             |
-| `* *`    | Property agent that wants to track their current deals | Sort contacts by earliest meeting                                      | I can prioritise deals or meetings that have been delayed or are taking too long |
-| `* *`    | Forgetful property agent                               | Search for contacts using partial names                                | I can find their contact information despite not remembering their full name     |
-| `*`      | Property agent                                         | Input details for a new contact in one line                            | It is convenient                                                                 |
-| `* *`    | Property agent who handles many meetings               | Tag each client with their property location                           | I can quickly group and search for clients by area                               |
-| `* * *`  | Property agent who prefers typing                      | Search for client by typing their name                                 | Save time instead of scrolling through thentire Homey contact list               |
-| `* *`    | Property agent managing multiple tasks                 | View upcoming meeting with the nearest deadline first                  | I know which client to attend to next                                            |
-| `*`      | Property agent who prefers typing                      | Autocomplete names/commands as I search through Homey                  | Find my client more efficiently                                                  |
-| `*`      | Property agent juggling many deals                     | Attach notes to each client’s profile                                  | I can remember key details of past conversations                                 |
-| `*`      | Property agent                                         | See which agent is linked to a shared client                           | Responsibilities are clear                                                       |
-| `* *`    | Property agent that wants to track deal history        | Sort contacts by date added as contact                                 | Prioritise loyal customers                                                       |
-| `*`      | Property agent                                         | Write multiple different commands to do the same thing                 | I don’t have to remember specific syntax for each command                        |
-| `*`      | Property agent with a lot of contacts                  | Archive contacts that have completed deals                             | I can prioritise contacts that I have ongoing deals with                         |
-| `*`      | Forgetful user                                         | Write simpler commands intuitively and when prompted to                | I don’t have to remember the complex syntax for each command                     |
-| `* *`    | Property agent                                         | Sort contacts by alphabetical order                                    | Easier to locate contacts within Homey                                           |
-| `* *`    | Property agent                                         | Edit contacts to add new information about them                        | I don’t have to delete and add contacts to add more information                  |
-| `* * *`  | Property agent                                         | Delete contacts that I no longer require                               | I have a less cluttered contact list that is easier to navigate                  |
-| `* * *`  | Property agent                                         | Add new contacts                                                       | I am able to contact new clients or agents                                       |
-| `* * *`  | Property agent                                         | Clear all entries                                                      | Faster delete all contacts if necessary                                          |
-| `* * *`  | Property agent                                         | List all my contact entries                                            | I can see my contact list in case I forget their names                           |
-| `* * *`  | New user                                               | Learn all the commands available                                       | I know how to use Homey                                                          |
-| `* * *`  | Property agent                                         | Find contacts by address                                               | Easily locate contacts that stay in that area                                    |
-| `* *`    | Property Agent juggling multiple stakeholders          | Edit or delete a meeting                                               | Quickly update or remove meeting                                                 |
+| Priority | As a ...                                               | I want to ...                                                        | So that I can ...                                                              |
+|----------|--------------------------------------------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| `* *`    | property agent                                         | view my contacts and meetings in one platform                        | manage my meetings and contacts together seamlessly                            |
+| `* *`    | property agent with many clients and colleagues        | sort my contacts into categories (tagging)                           | easily remember my relationship with them                                      |
+| `*`      | busy property agent                                    | view my meetings and contact list on-the-go                          | easily access necessary information when I’m outside or in a rush              |
+| `*`      | property agent                                         | add notes visible only to me                                         | keep private thoughts while still sharing client basics                        |
+| `* *`    | property agent managing clients                        | sort clients and vendors by type                                     | filter out which types of deals I want to focus on at any point of time        |
+| `*`      | property agent                                         | attach notes to each contact                                         | remember important details                                                     |
+| `* *`    | property agent                                         | tag contacts by transaction stage like prospect, negotiating, closed | track progress easily                                                          |
+| `* *`    | property agent                                         | set overdue meetings highlighted                                     | prioritise catching up quickly                                                 |
+| `* *`    | property agent                                         | add dates for meetings                                               | keep track of important events and attend them                                 |
+| `* *`    | property agent that wants to track their current deals | sort contacts by earliest meeting                                    | prioritise deals or meetings that have been delayed or are taking too long     |
+| `* *`    | forgetful property agent                               | search for contacts using partial names                              | find their contact information despite not remembering their full name         |
+| `*`      | property agent                                         | input details for a new contact in one line                          | add contacts more conveniently                                                 |
+| `* *`    | property agent who handles many meetings               | attach each client with their property location                      | remember where they live                                                       |
+| `* * *`  | property agent who prefers typing                      | search for client by typing their name                               | save time instead of scrolling through the entire Homey contact list           |
+| `* *`    | property agent managing multiple tasks                 | view upcoming meeting with the nearest deadline first                | know which client to attend to next                                            |
+| `*`      | property agent juggling many deals                     | attach notes to each client’s profile                                | remember key details of past conversations                                     |
+| `*`      | property agent                                         | write multiple different commands to do the same thing               | operate faster as I don’t have to remember specific syntax for each command    |
+| `*`      | property agent with a lot of contacts                  | archive contacts that have completed deals                           | prioritise contacts that I have ongoing deals with                             |
+| `*`      | forgetful user                                         | write simpler commands intuitively and when prompted to              | operate faster as I don’t have to remember the complex syntax for each command |
+| `* *`    | property agent                                         | edit contacts to add new information about them                      | can keep my contacts updated without deleting and creating a new one           |
+| `* * *`  | property agent                                         | delete contacts that I no longer require                             | have a less cluttered contact list that is easier to navigate                  |
+| `* * *`  | property agent                                         | add new contacts                                                     | contact new clients or agents                                                  |
+| `* * *`  | property agent                                         | clear all entries                                                    | faster delete all contacts if necessary                                        |
+| `* * *`  | property agent                                         | list all my contact entries                                          | see my contact list in case I forget their names                               |
+| `* * *`  | new user                                               | learn all the commands available                                     | know how to use Homey                                                          |
+| `* * *`  | property agent                                         | find contacts by address                                             | easily locate contacts that stay in that area                                  |
+| `* *`    | property agent juggling multiple stakeholders          | edit or delete a meeting                                             | quickly update or remove meeting                                               |
 
 ### Use cases
 
@@ -792,7 +779,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-**Use case: Sort clients and agents by type**
+**Use case: Sort clients and vendors by type**
 
 **MSS**
 
@@ -1149,7 +1136,7 @@ Precondition: User has launched the app.
 
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2. Works fully offline
-3. Should be able to hold up to `1000` persons without a noticeable sluggishness in performance for typical usage.
+3. With a data file of 1000 contacts, all CRUD operations and search commands should execute and render results in under 500ms on typical hardware.
 4. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 5. All user data should be persistent and survives app restarts and OS reboots.
 6. Backups are stored locally
@@ -1157,7 +1144,7 @@ Precondition: User has launched the app.
 8. Runs without installer, double-clickable JAR.
 9. Usable at `1280×720` (`150%` scale) and higher, optimised for `1920×1080` and higher (`100/125%` scale).
 10. All commands operable via typing/shortcuts (keyboard first)
-11. Support partial matches and case-insensitive search
+11. Search operations must be flexible, supporting partial word matches and case-insensitive queries for improved user experience.
 12. Product ≤ `100MB`, PDFs ≤ `15MB`, no unnecessary assets
 13. Dataset size tested up to `2000` contacts
 14. Clear separation of UI/Logic/Model/Storage
@@ -1180,6 +1167,7 @@ Precondition: User has launched the app.
 * **Human Editable Text Storage**: Data stored in plain text format (e.g. JSON, TXT) so users can open and manually edit it outside the app if needed
 * **Double-clickable JAR**: A Java Archive file packaged so that the application can be run directly by double-clicking, without needing an installer
 * **Partial Match Search**: A search feature that allows results to be found even if the user types only part of a name, address or tag. The search is case-insensitive and returns all matching entries containing the keyword substring.
+* **CRUD**: The four basic data operations - Create (add), Read (list/find), Update (edit/remark/transaction), and Delete (delete/clear)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1364,12 +1352,32 @@ testers are expected to do more *exploratory* testing.
   * Ensuring interactive commands did not break functionality for other commands and could work seamlessly with multiple steps
   * Designing command logic that allows flexible `remark` editing while maintaining input validation rules (e.g. length limit and empty `remark` handling).
   * Ensuring the `transaction` command correctly validates and updates only valid stages without affecting unrelated data.
+  * Ensuring the `help` command worked seamlessly in both online and offline modes without causing UI freezes or blocking the main thread.
+  * Handling environments that block browser access - needed fallback logic for the in-app Help window.
+  * Managing URL anchor mappings so that help [TOPIC] always deep-links to the correct User Guide section, even when document headings change.
+  * Implementing `archive` and `unarchive` without breaking existing `list`, `find`, and `delete` commands - required careful state tracking between active and archived lists.
+  * Maintaining index consistency after archiving/unarchiving, since both lists use different data views.
+  * Preventing users from accidentally interacting with archived contacts (e.g., blocking `edit` and `find` actions until unarchived).
+  * Extending the find command to support multiple search types (name, address, tag, relation, transaction stage) with proper validation and error handling for each type.
+  * Completely redesigning the GUI from AB3's basic list view to a modern two-panel layout with detailed contact preview, requiring significant restructuring of UI components and styling.
 * **Effort required:**
   * Implemented new logic for `Meeting` class and integrated it with `AddCommand`, `EditCommand`, and `ListMeetingCommand`.
   * Implemented new logic for `InteractiveCommand` and adapted `LogicManager` for interactive add command.
   * Features `relation`, `transaction` and `remark` are adapted from AB3's [add command tutorial](https://se-education.org/guides/tutorials/ab3AddRemark.html) and enhanced with improved code quality
   * Implemented RemarkCommand, RemarkCommandParser, and Remark to support adding, editing, and deleting remarks with instant UI updates. Added 100-character validation and error handling, with tests (RemarkTest, RemarkCommandParserTest) for edge cases.
   * Implemented Transaction, TransactionCommand and TransactionCommandParser to handle stage updates with validation and real-time UI reflection. Added tests (TransactionCommandParserTest) to ensure correct error handling for invalid inputs.
+  * Created the HelpCommand, HelpWindow, and integrated URL anchor mapping for deep-link support.
+  * Added fallback logic and event handling to open the offline Help window when the browser cannot be launched.
+  * Implemented `archive` and `unarchive` commands with bidirectional state updates between the active and archived contact lists.
+  * Added validation checks and user feedback messages for restricted operations on archived contacts.
+  * Thoroughly tested UI behavior to ensure commands like `find` and `edit` interacted correctly with the new archive system.
+  * Extended AB3's basic find command to support searching across multiple fields with prefix-based syntax. Extended FindCommandParser with field-specific validation, single/multiple keyword support, and comprehensive error messages to prevent invalid search combinations.
+  * Redesigned the GUI from AB3's original layout into a modern interface with:
+    * Two-panel split view (contact list + detailed preview)
+    * Enhanced contact cards displaying relation and transaction stage badges, with meeting information integrated directly into each card
+    * Dynamic color-coding system that turns meeting information red when the scheduled time has passed
+    * Detailed contact preview panel showing all information in a structured, readable format
+    * Better visual hierarchy and information organisation
 * **Achievements of project:**
   * Successfully extended into a property-agent focused app supporting meeting scheduling, editing, and listing.
 
@@ -1379,7 +1387,71 @@ testers are expected to do more *exploratory* testing.
 
 **Team size:** 5 members. 
 
-1. None as of v1.5
+1. **Allow names with apostrophes, hyphens, and slashes to be added correctly:**
+Currently, users cannot add contacts whose names contain special characters such as apostrophes (O'Neill), hyphens (Anne-Marie), or slashes (Muhammad s/o Rahman).
+This happens because the name validation rejects these characters, and in the case of slashes, the command parser interprets them as prefixes (e.g., s/).
+We plan to relax the name validation rules and refine the command parser to correctly handle such names. For example, the command `add n/"Muhammad s/o Rahman" p/91234567 e/m.rahman@example.com` will successfully add the contact instead of producing an invalid command error.
+
+
+2. **Allow multiple contacts with identical names to be added correctly:**  
+Currently, Homey prevents users from adding a new contact if another contact with the same name already exists. This restriction forces users to artificially modify names (e.g., “John Tan 1”, “John Tan 2”) to differentiate between different clients or vendors, which reduces data clarity and makes the contact list less natural to use.
+We plan to relax this restriction by identifying contacts internally using unique identifiers instead of relying on the name field for equality checks. This will involve modifying the duplicate detection logic in the `AddCommand` and `AddressBook` classes to compare contacts based on their unique IDs rather than their names.
+For example, users will be able to add both “John Tan” (buyer) and “John Tan” (vendor) as separate contacts without encountering a duplicate contact error.
+
+
+3. **Allow multiple phone numbers and email addresses for a single contact:**  
+Currently, each contact in Homey can only store one phone number and one email address. This limits flexibility, as many clients or vendors may have multiple contact channels (e.g., personal and work numbers, or separate emails for correspondence and billing).
+We plan to enhance Homey’s contact model to support multiple phone numbers and email addresses per contact. This will involve updating the `Person` class to store lists of phone numbers and email addresses, modifying the `add` and `edit` command parsers to accept multiple entries, and adjusting the UI and storage components to display and save them correctly.
+For example, users will be able to add a contact such as:  
+`add n/Alex Tan p/91234567 p/97865432 e/alex@gmail.com e/alex.tan@company.com`  
+to store both numbers and emails under a single contact.
+
+
+4. **Prevent total data loss on startup due to a single invalid field:**  
+Currently, when Homey starts up and encounters a single invalid field (e.g., a corrupted phone number or improperly formatted date) in the saved data file, the entire address book fails to load. This results in complete data loss until the user manually fixes or deletes the corrupted file.
+We plan to improve the data loading mechanism to perform **partial recovery** instead of rejecting the entire dataset.
+Specifically, Homey will:
+   - Skip only the affected entries containing invalid fields.
+   - Load all remaining valid contacts into the application.
+   - Display a clear error message indicating which records were skipped and why.
+   
+   This ensures that users do not lose all their saved contacts due to one malformed entry and improves overall data resilience.
+
+
+5. **Make error message for `relation` more specific:**
+Currently, the error message for `relation` is:
+`Invalid command format!
+relation: Edits relation tag of the person identified by the index number used in the last person listing. Existing relation tag will be overwritten.
+Parameters: INDEX (must be a positive integer) [client/vendor]
+Example: relation 1 client`, including redundant information which forces users to read through a verbose message before finding the relevant information.
+We plan to make the error message more targeted by reducing the message content to:
+`Invalid command format!
+Parameters: INDEX (must be a positive integer) [client/vendor]
+Example: relation 1 client`.
+
+
+6. **Make error message for `remark` more specific:**
+Currently, the error message for `remark` is:
+`Invalid command format! 
+remark: Edits the remark of the person identified by the index number used in the last person listing.
+Parameters: INDEX (must be a positive integer) rm/[REMARK] (must not be more than 100 characters)
+Example: remark 1 rm/Prefers properties in the East.`, including redundant information which forces users to read through a verbose message before finding the relevant information.
+We plan to make the error message more targeted by reducing the message content to:
+`Invalid command format! 
+Parameters: INDEX (must be a positive integer) rm/[REMARK] (must not be more than 100 characters)
+Example: remark 1 rm/Prefers properties in the East.`.
+
+
+7. **Make error message for `transaction` more specific:**
+Currently, the error message for `transaction` is:
+`Invalid command format! 
+transaction: Edits the transaction stage of the person identified by the index number used in the last person listing. Existing transaction stage will be overwritten by the input.
+Parameters: INDEX (must be a positive integer) s/ TRANSACTION STAGE
+Example: transaction 1 s/prospect`, including redundant information which forces users to read through a verbose message before finding the relevant information.
+We plan to make the error message more targeted by reducing the message content to:
+`Invalid command format! 
+Parameters: INDEX (must be a positive integer) s/ TRANSACTION STAGE
+Example: transaction 1 s/prospect`.
 
 --------------------------------------------------------------------------------------------------------------------
 

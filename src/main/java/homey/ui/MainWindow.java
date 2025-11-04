@@ -8,6 +8,9 @@ import homey.logic.Logic;
 import homey.logic.commands.CommandResult;
 import homey.logic.commands.exceptions.CommandException;
 import homey.logic.parser.exceptions.ParseException;
+import homey.model.Model;
+import homey.model.ModelManager;
+import homey.model.person.Person;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -32,6 +35,7 @@ public class MainWindow extends UiPart<Stage> {
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
     private ContactDetailsPanel contactDetailsPanel;
+    private Model model;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -70,6 +74,29 @@ public class MainWindow extends UiPart<Stage> {
         helpWindow = new HelpWindow();
     }
 
+    public void setModel(Model model) {
+        this.model = model;
+
+        if (model instanceof ModelManager) {
+            ModelManager mm = (ModelManager) model;
+            mm.selectedPersonProperty().addListener((obs, oldPerson, newPerson) -> {
+                if (newPerson == null) {
+                    hidePersonCard();
+                } else {
+                    showPersonCard(newPerson);
+                }
+            });
+        }
+    }
+
+    private void showPersonCard(Person person) {
+        contactDetailsPanel.setContact(person);
+    }
+
+    private void hidePersonCard() {
+        contactDetailsPanel.clearContact();
+    }
+
     public Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -78,6 +105,8 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
+        setModel(logic.getModel());
+
         setUpPersonListPanel();
         setUpResultDisplay();
         setUpStatusBar();

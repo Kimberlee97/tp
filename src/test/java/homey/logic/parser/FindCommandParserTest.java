@@ -307,30 +307,30 @@ public class FindCommandParserTest {
     @Test
     public void parse_mixedAddressAndTag_throwsParseException() {
         assertParseFailure(parser, " a/Bedok t/friend",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                "Cannot search with multiple prefixes. Use only one of: name (no prefix), a/, t/, r/, or s/");
     }
 
     @Test
     public void parse_mixedTagAndRelation_throwsParseException() {
         assertParseFailure(parser, " t/client r/client",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                "Cannot search with multiple prefixes. Use only one of: name (no prefix), a/, t/, r/, or s/");
     }
 
     @Test
     public void parse_mixedRelationAndTransaction_throwsParseException() {
         assertParseFailure(parser, " r/client s/prospect",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                "Cannot search with multiple prefixes. Use only one of: name (no prefix), a/, t/, r/, or s/");
     }
 
     @Test
     public void parse_mixedEmptyTagAndAddress_throwsParseException() {
         assertParseFailure(parser, " t/ a/Bedok",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                "Cannot search with multiple prefixes. Use only one of: name (no prefix), a/, t/, r/, or s/");
     }
 
     @Test
     public void parse_mixedThreePrefixes_throwsParseException() {
         assertParseFailure(parser, " a/bedok t/friend r/client",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                "Cannot search with multiple prefixes. Use only one of: name (no prefix), a/, t/, r/, or s/");
     }
 }

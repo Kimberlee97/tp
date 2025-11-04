@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -12,6 +13,8 @@ import homey.commons.core.GuiSettings;
 import homey.commons.core.LogsCenter;
 import homey.model.person.Meeting;
 import homey.model.person.Person;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -26,6 +29,7 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
     private final SortedList<Person> sortedPersons;
+    private final ObjectProperty<Person> selectedPerson = new SimpleObjectProperty<>(null);
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -148,6 +152,20 @@ public class ModelManager implements Model {
     @Override
     public void clearPersonListSorting() {
         sortedPersons.setComparator(null); // back to source order
+    }
+
+    @Override
+    public void setSelectedPerson(Person person) {
+        selectedPerson.set(person);
+    }
+
+    @Override
+    public Optional<Person> getSelectedPerson() {
+        return Optional.ofNullable(selectedPerson.get());
+    }
+
+    public ObjectProperty<Person> selectedPersonProperty() {
+        return selectedPerson;
     }
 
     @Override
