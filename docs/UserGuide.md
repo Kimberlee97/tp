@@ -442,10 +442,6 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
   specifying any meetings after it.
 * Click on the contact to reveal the contact card with full information on the right panel.
 
-**Caution:**
-When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
-</box>
-
 **Examples:**
 * `edit 1 p/91234567 e/john@example.com`
   * Edits the phone number and email address of the `1st` person to be `91234567` and `john@example.com` respectively.
@@ -472,6 +468,14 @@ When editing tags, the existing tags of the person will be removed i.e. adding o
   <img src="images/ClearMeeting.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Cleared a meeting for Jane Lim</i></p>
 </div>
+&nbsp;
+
+<box type="warning" seamless>
+
+**Caution:**
+**When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
+Back up your data first.
+</box>
 &nbsp;
 
 &nbsp;
