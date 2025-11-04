@@ -27,6 +27,24 @@ If you're already familiar, jump directly to the section relevant to your needs.
     display: block !important;
   }
 }
+<style>
+
+
+img {
+  display: block;
+  margin: 1.2em auto;      
+  width: 65%;              
+  height: auto;           
+  border-radius: 4px;      
+}
+
+/* Caption styling */
+p img + p, div img + p {
+  text-align: center;
+  font-style: italic;
+  margin-top: 4px;
+  color: #444;
+}
 </style>
 
 <!-- * Table of Contents -->
