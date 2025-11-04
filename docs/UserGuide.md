@@ -309,6 +309,8 @@ The remark field will be empty if no remark is given.
 </div>
 &nbsp;
 
+&nbsp;
+
 ## Listing Your Contacts
 
 Homey lets you view all current contacts and get a clear overview of who you’re working with.
@@ -413,8 +415,7 @@ After archiving, you can view all active contacts using the `list` or `list acti
 &nbsp;
 
 &nbsp;
-
-## Editing Your Contacts
+### Editing Your Contacts
 
 Homey lets you update existing contact details such as phone number, address, transaction stage, relation, remark, or meeting — all in one simple command.
 
@@ -426,7 +427,7 @@ Homey lets you update existing contact details such as phone number, address, tr
 
 * **Conflict prevention:** Duplicate contacts are not allowed — Homey ensures edited entries do not match existing records.
 
-### Editing a person: `edit`
+#### Editing a contact: `edit`
 
 Keeps your contact information up to date by editing an existing person’s details.
 
@@ -477,6 +478,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
   <img src="images/ClearMeeting.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Cleared a meeting for Poppy Lim</i></p>
 </div>
+&nbsp;
+
 &nbsp;
 
 ### Add relation : `relation`
