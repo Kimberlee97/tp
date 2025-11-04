@@ -482,6 +482,8 @@ Back up your data first.
 
 &nbsp;
 
+&nbsp;
+
 ### Adding a relation : `relation`
 
 Adds a relation to an existing contact in Homey. Use this command to edit the relation of an existing contact.
@@ -929,7 +931,7 @@ Furthermore, **certain edits can cause Homey to behave in unexpected ways** (e.g
 **Q**: Can I customise or add new transaction stages beyond `prospect`, `negotiating`, `closed`?<br>
 **A**: At present, the allowed stages are limited to `prospect`, `negotiating`, or `closed`. You can add a custom tag instead to supplement the given stages.
 
-**Q**: Does Homey block overlapping meetings?
+**Q**: Does Homey block overlapping meetings?<br>
 **A**: No because there can be a group meeting scheduled with multiple contacts.
 &nbsp;
 
