@@ -74,7 +74,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
    </box>
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/changeDirectory.png" width="auto" height="250" />
+  <img src="images/changeDirectory.png" width="auto" height="300" />
   <p style="text-align: center; margin-top: 4px;"><i>Changing directory to home folder</i></p>
 </div>
 
@@ -88,7 +88,7 @@ If you're already familiar, jump directly to the section relevant to your needs.
 6. A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
 &nbsp;
 <div style="display: inline-block; text-align: center;">
-  <img src="images/appLaunch.png" width="auto" height="300" />
+  <img src="images/appLaunch.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>App launch landing page</i></p>
 </div>
 
