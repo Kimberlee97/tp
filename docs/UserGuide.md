@@ -774,6 +774,25 @@ Examples:
 
 &nbsp;
 
+### Viewing contact details: `view`
+
+You can open the detailed information card of a specific contact directly without clicking on them. This is useful when you want to quickly access a contact's full details using just the keyboard.
+
+**Format:** `view INDEX`
+
+**How it works:**
+* Opens the detailed contact card on the right panel for the person at the specified `INDEX`
+* The index refers to the index number shown in the displayed contact list
+* The index must be a positive integer: 1,2,3, and so on
+* Works with any currently displayed list (active, archived, filtered results)
+
+Examples:
+* `view 1` opens the detailed information card for the 1st person in the current list.
+* `find john` followed by `view 1`
+&nbsp;
+
+&nbsp;
+
 ### Deleting a Contact : `delete`
 
 You can remove a contact from Homey permanently. This is useful when you no longer need to maintain a record of a particular client or vendor.
