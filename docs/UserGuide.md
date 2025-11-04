@@ -262,8 +262,8 @@ Each contact will contain the following details:
 **Note about names:** Homey accepts letters (A-Z, a-z), digits (0-9), and spaces. Some punctuation characters (for example apostrophes in "Conan O'Brian" or hyphens in "Jean-Luc") are not accepted by the validation logic and will be rejected.
 
 **Workarounds:**
-- **Remove the punctuation:** Conan O'Brian -> ConanOBrian
-- **Replace the punctuation with a space:** Jean-Luc Picard -> Jean Lun Picard
+- **Remove the punctuation:** Conan O'Brian &rarr; ConanOBrian
+- **Replace the punctuation with a space:** Jean-Luc Picard &rarr; Jean Lun Picard
 
 The relation and transaction stage fields help you as a property agent better manage and categorise your contacts.  
 The meeting field allows you to log client appointments, property viewings, or consultations, helping you to stay organised.
@@ -313,7 +313,7 @@ The remark field will be empty if no remark is given.
 </div>
 &nbsp;
 
-* `add n/Kevin Tan p/87438807 e/jade@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
+* `add n/Kevin Tan p/87438807 e/kevin2@ex.com a/Blk 30 s/prospect m/2025-11-03 14:00`
   * Adds a new contact with a scheduled meeting on `3 Nov 2025, 2:00 PM`.
 &nbsp;
 <div style="display: inline-block; text-align: center;">
@@ -391,6 +391,8 @@ Displays all contacts with meetings, sorted by the **earliest meeting first**.
   <p style="text-align: center; margin-top: 4px;"><i>Listed contacts with meeting</i></p>
 </div>
 
+&nbsp;
+
 #### Listing archived contacts: `list archived` / `list archive`
 
 Displays all archived contacts. Use this command to view hidden contacts after archiving.
@@ -452,6 +454,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
   <img src="images/EditPhoneEmail.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Edited the first person's phone number and email address</i></p>
 </div>
+&nbsp;
 
 * `edit 2 n/Betsy Crower t/`
 
@@ -462,6 +465,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/RELATION] [s/TRA
   <img src="images/JohnMeeting.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Updated John's meeting</i></p>
 </div>
+&nbsp;
 
 * `edit 2 m/` 
   * Clears the meeting for the `2nd` contact.
@@ -579,7 +583,7 @@ stay organized.
   <img src="images/remarkAdd2.png" width="auto" height="500" />
   <p style="text-align: center; margin-top: 4px;"><i>Updated John's remark</i></p>
 </div>
-
+&nbsp;
 * `remark 1 rm/` 
   * Removes the remark of the 1st contact.
     &nbsp;
@@ -637,7 +641,7 @@ You can search for contacts based on their address. This is particularly useful 
 Examples:
 * `find a/Bedok` returns all persons living in `Bedok`
 * `find a/"bedok north"` returns only contacts whose address includes the exact phrase `bedok north`
-* `find a/30` returns all persons living in `Blk 30`
+* `find a/30` returns all persons whose addresses contain `30`
 &nbsp;
 <div style="display: inline-block; text-align: center;">
   <img src="images/findAddress.png" width="auto" height="500" />
