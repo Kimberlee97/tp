@@ -25,7 +25,7 @@ import homey.model.tag.TransactionStage;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Invalid index: index must be a positive integer "
-            + "(starting from 1).";
+            + "(starting from 1) and within the displayed list range.";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
