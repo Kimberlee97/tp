@@ -805,6 +805,7 @@ Examples:
   <p style="text-align: center; margin-top: 4px;"><i>Viewing the 1st contact in the list</i></p>
 </div>
 &nbsp;
+
 * `find john` followed by `view 1`
 &nbsp;
 
