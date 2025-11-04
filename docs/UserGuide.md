@@ -324,7 +324,7 @@ The remark field will be empty if no remark is given.
 
 &nbsp;
 
-## Listing Your Contacts
+### Listing Your Contacts
 
 Homey lets you view all current contacts and get a clear overview of who you’re working with.
 
@@ -346,7 +346,7 @@ Homey lets you view all current contacts and get a clear overview of who you’r
 
 Displays all **active contacts** currently in Homey. Use this command when you want to return to the full contact view after performing filters or searches.
 
-### Listing all (active) contacts : `list` / `list active`
+#### Listing all (active) contacts : `list` / `list active`
 
 Displays all active (non-archived) contacts in Homey. 
 Use this to return to the full contact view after performing filters, searches, or archiving.
@@ -422,7 +422,7 @@ Homey lets you update existing **active** contact details such as phone number, 
 
 * **Conflict prevention:** Duplicate contacts are not allowed — Homey ensures edited entries do not match existing records.
 
-### Editing a contact: `edit`
+#### Editing a contact: `edit`
 
 Keeps your contact information up to date by editing an existing person’s details.
 
@@ -855,7 +855,7 @@ You can close the Homey application safely. All your information is automaticall
 
 &nbsp;
 
-### Saving the data
+## Saving the data
 
 Homey automatically saves all contact data to your hard disk after every command that changes the data. There is no need to save manually.
 If Homey cannot save (e.g., disk is full or lacks file permissions), an error message will appear and your changes won't be kept. 
@@ -914,7 +914,7 @@ Furthermore, **certain edits can cause Homey to behave in unexpected ways** (e.g
 **Q**: Can I customise or add new transaction stages beyond `prospect`, `negotiating`, `closed`?<br>
 **A**: At present, the allowed stages are limited to `prospect`, `negotiating`, or `closed`. You can add a custom tag instead to supplement the given stages.
 
-**Q**: Does Homey block overlapping meetings?
+**Q**: Does Homey block overlapping meetings?<br>
 **A**: No because there can be a group meeting scheduled with multiple contacts.
 &nbsp;
 
