@@ -74,9 +74,9 @@ public class HelpWindow extends UiPart<Stage> {
      * in the UG and use the part after the '#').
      */
     private static final Map<String, String> ANCHORS = Map.ofEntries(
-            Map.entry("add", "#adding-a-person-add"),
+            Map.entry("add", "#adding-a-contact-add"),
             Map.entry("edit", "#editing-your-contacts"),
-            Map.entry("delete", "#deleting-a-person-delete"),
+            Map.entry("delete", "#deleting-a-contact-delete"),
             Map.entry("find", "#finding-your-contacts"),
             Map.entry("list", "#listing-your-contacts"),
             Map.entry("help", "#viewing-help"),
@@ -86,11 +86,12 @@ public class HelpWindow extends UiPart<Stage> {
             Map.entry("find t/", "#find-by-tag-find-t"),
             Map.entry("find r/", "#find-by-relation-find-r"),
             Map.entry("find s/", "#find-by-transaction-stage-find-s"),
-            Map.entry("relation", "#add-relation-relation"),
+            Map.entry("relation", "#adding-a-relation-relation"),
             Map.entry("transaction", "#tracking-deal-progress"),
-            Map.entry("archive", "#archiving-your-contacts-archive"),
-            Map.entry("unarchive", "#unarchiving-your-contacts-unarchive"),
+            Map.entry("archive", "#archive-a-contact-archive"),
+            Map.entry("unarchive", "#unarchive-a-contact-unarchive"),
             Map.entry("remark", "#adding-remarks"),
+            Map.entry("view", "#viewing-contact-details-view"),
             Map.entry("list archived", "#listing-archived-contacts-list-archived-list-archive"),
             Map.entry("list active", "#listing-active-contacts-list-list-active"),
             Map.entry("list meeting", "#listing-contacts-by-meeting-date-list-meeting")
