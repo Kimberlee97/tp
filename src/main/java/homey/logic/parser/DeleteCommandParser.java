@@ -1,6 +1,7 @@
 package homey.logic.parser;
 
 import static homey.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static homey.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 
 import homey.commons.core.index.Index;
 import homey.logic.commands.DeleteCommand;
@@ -18,9 +19,16 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
      */
     public DeleteCommand parse(String args) throws ParseException {
         try {
+            if (args.isEmpty()) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+            }
             Index index = ParserUtil.parseIndex(args);
             return new DeleteCommand(index);
         } catch (ParseException pe) {
+            if (pe.getMessage().equals(MESSAGE_INVALID_INDEX)) {
+                throw pe;
+            }
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), pe);
         }
